@@ -57,7 +57,7 @@ export function SignupFormDemo() {
             const res = await signIn("credentials", {
                 name: firstname + lastname,
                 password: password,
-                phone : number,
+                email : number,
                 redirect: false,
             });
 
