@@ -20,5 +20,9 @@
   "workspaces": [
     "apps/*",
     "packages/*"
-  ]
+  ],
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "next-auth": "^4.24.7"
+  }
 }
