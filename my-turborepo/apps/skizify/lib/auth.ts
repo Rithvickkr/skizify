@@ -9,7 +9,7 @@ export const authOptions = {
       CredentialsProvider({
           name: 'Credentials',
           credentials: {
-            phone: { label: "PhoneNumber", type: "text", placeholder: "1231231231", required: true },
+            email: { label: "Email", type: "text", placeholder: "1231231231", required: true },
             password: { label: "Password", type: "password", required: true },
             name  : {label : "Name" , type : "text" }
           },
@@ -19,7 +19,7 @@ export const authOptions = {
             const hashedPassword = await bcrypt.hash(credentials.password, 10);
             const existingUser = await db.user.findFirst({
                 where: {
-                    number: credentials.phone
+                    email: credentials.email
                 }
             });
 
@@ -29,7 +29,7 @@ export const authOptions = {
                     return {
                         id: existingUser.id.toString(),
                         name: existingUser.name,
-                        email: existingUser.number
+                        email: existingUser.email
                     }
                 }
                 return null;
@@ -38,7 +38,7 @@ export const authOptions = {
             try {
                 const user = await db.user.create({
                     data: {
-                        number: credentials.phone,
+                        email: credentials.email,
                         password: hashedPassword,
                         name: credentials.name
                     }
@@ -47,7 +47,7 @@ export const authOptions = {
                 return {
                     id: user.id.toString(),
                     name: user.name,
-                    email: user.number
+                    email: user.email
                 }
             } catch(e) {
                 console.error(e);
