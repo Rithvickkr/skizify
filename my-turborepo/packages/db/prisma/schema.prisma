@@ -50,6 +50,7 @@ enum AuthType {
   GOOGLE
   FACEBOOK
   GITHUB
+  TWITTER
 }
 
 enum GigStatus {
