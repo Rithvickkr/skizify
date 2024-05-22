@@ -12,3 +12,48 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id          String    @id @default(uuid())
+  email       String    @unique
+  name        String?
+  password    String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  gigsCreated Gigs[]    @relation(name: "Author")
+  skizzers    Skizzer[] @relation(name: "Skizzer")
+  authType    AuthType?
+}
+
+model Gigs {
+  id           String    @id @default(uuid())
+  title        String
+  content      String
+  timeslot     DateTime
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  author       User      @relation(name: "Author", fields: [authorId], references: [id])
+  authorId     String
+  acceptedBy   Skizzer?  @relation(name: "AcceptedUsers", fields: [acceptedById], references: [id])
+  acceptedById String?
+  status       GigStatus
+}
+
+model Skizzer {
+  id        String @id @default(uuid())
+  skizzerId String
+  user      User   @relation(name: "Skizzer", fields: [skizzerId], references: [id])
+  gigs      Gigs[] @relation(name: "AcceptedUsers")
+}
+
+enum AuthType {
+  GOOGLE
+  FACEBOOK
+  GITHUB
+}
+
+enum GigStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
