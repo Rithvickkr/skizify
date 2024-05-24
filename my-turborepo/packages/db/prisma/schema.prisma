@@ -50,7 +50,7 @@ enum AuthType {
   GOOGLE
   FACEBOOK
   GITHUB
-  X
+  PENDING //if the User is not verified 
 }
 
 enum GigStatus {
