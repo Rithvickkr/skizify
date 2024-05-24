@@ -45,7 +45,7 @@ export function SignupFormDemo() {
         </div>
         <LabelInputContainer className="mb-4">
           <Label htmlFor="email">E-mail</Label>
-          <Input id="email" placeholder="123456789" type="email" onChange={(e) => setnumber(e.target.value)}/>
+          <Input id="email" placeholder="XYZ@email.com" type="email" onChange={(e) => setnumber(e.target.value)}/>
         </LabelInputContainer>
         <LabelInputContainer className="mb-4">
           <Label htmlFor="password">Password</Label>
