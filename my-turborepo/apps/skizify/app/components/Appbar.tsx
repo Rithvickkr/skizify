@@ -18,3 +18,16 @@ export function Appbar() {
     </div>
   )
 }
+
+//That's HOW IT LOOKS IN useSession
+// {
+//     data: {
+//       user: {
+//         name: 'yash',
+//         email: '09438509345',
+//         id: 'c60a7ce3-4969-4021-9496-ae9fb98eff8a'
+//       },
+//       expires: '2024-06-23T10:19:53.640Z'
+//     },
+//     status: 'authenticated'
+//   }

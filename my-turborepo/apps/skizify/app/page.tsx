@@ -5,10 +5,20 @@ import { redirect } from "next/navigation";
 
 export default async function Page() {
   const session = await getServerSession(authOptions);
-  console.log(session);
   if(session?.user){
     redirect('/dashboard');
   }else{
     redirect('/api/auth/signin');
   }
 }
+
+
+//That's how session looks in getServerSession
+// {
+//   user: {
+//     name: 'yash',
+//     email: '09438509345',
+//     image: undefined,
+//     id: 'c60a7ce3-4969-4021-9496-ae9fb98eff8a'
+//   }
+// }
