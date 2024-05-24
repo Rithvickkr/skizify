@@ -1,10 +1,11 @@
-
+import { Appbar } from "../../components/Appbar";
 
 
 export default async function Page() {
   return (
     <div>
-        Hello this is me 
+      <Appbar />
+      Hello This is me
     </div>
   )
 }
