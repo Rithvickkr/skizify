@@ -8,7 +8,7 @@ export async function Appbar() {
   const handleSignOut = async () => {
     try {
       await signOut();
-      router.push('/signin');
+      window.location.href = '/signin'; 
     } catch (error) {
       console.error('Error signing out:', error);
     }
@@ -28,6 +28,8 @@ export async function Appbar() {
   );
 }
 
+//navigation is only used in client-side components
+//router is only used in Server components
 
 //That's HOW IT LOOKS IN useSession
 // {
