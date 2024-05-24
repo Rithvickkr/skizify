@@ -17,7 +17,7 @@ export const authOptions: NextAuthOptions = {
         if (!credentials?.email || !credentials.password) {
           throw new Error("Missing email or password");
         }
-
+        const hashedPassword = await bcrypt.hash(credentials.password, 10);
         const existingUser = await db.user.findFirst({
           where: { email: credentials.email },
         });
@@ -30,13 +30,10 @@ export const authOptions: NextAuthOptions = {
               name: existingUser.name,
               email: existingUser.email,
             };
-          } else {
-            throw new Error("Invalid password");
-          }
+          } return null;
         }
 
         try {
-          const hashedPassword = await bcrypt.hash(credentials.password, 10);
           const user = await db.user.create({
             data: {
               email: credentials.email,
