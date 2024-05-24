@@ -12,12 +12,12 @@ export async function Appbar() {
 
   return (
     <div>
-      <div className="flex">
-        <div className="bg-black text-stone-100 mx-3">
-          <button onClick={handleSignOut}>Sign out</button>
-        </div>
+      <div className="flex justify-center">
         <div className="bg-black text-stone-100 mx-3">
           <button onClick={() => signIn()}>Sign in</button>
+        </div>
+        <div className="bg-black text-stone-100 mx-3">
+          <button onClick={handleSignOut}>Sign out</button>
         </div>
       </div>
     </div>
