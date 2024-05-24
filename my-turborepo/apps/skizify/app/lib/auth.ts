@@ -34,6 +34,7 @@ export const authOptions: NextAuthOptions = {
         }
 
         try {
+          const hashedPassword = await bcrypt.hash(credentials.password, 10);
           const user = await db.user.create({
             data: {
               email: credentials.email,

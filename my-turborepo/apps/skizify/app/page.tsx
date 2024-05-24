@@ -12,6 +12,8 @@ export default async function Page() {
   }
 }
 
+//We are using redirect for redirecting
+//we could have also use router.push
 
 //That's how session looks in getServerSession
 // {
