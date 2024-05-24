@@ -1,14 +1,10 @@
 "use client"
 import { signIn, signOut } from "next-auth/react";
-import { useRouter } from 'next/navigation'; // Correct import statement
-
 export async function Appbar() {
-  const router = useRouter();
-
   const handleSignOut = async () => {
     try {
       await signOut();
-      window.location.href = '/signin'; 
+      window.location.href = '/signin';
     } catch (error) {
       console.error('Error signing out:', error);
     }
