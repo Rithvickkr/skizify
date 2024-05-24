@@ -4,8 +4,9 @@ import { SignupFormDemo } from "../components/SignupForm"
 
 export default function SigninPage(){
     return (
-        <div>
+        <div className="p-10">
             <SignupFormDemo />
+            
         </div>
     )
-}
+} 
