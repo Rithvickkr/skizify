@@ -44,8 +44,8 @@ export function SignupFormDemo() {
           </LabelInputContainer>
         </div>
         <LabelInputContainer className="mb-4">
-          <Label htmlFor="email">Phone Number</Label>
-          <Input id="email" placeholder="XXXXX-XXXXX" type="text" onChange={(e) => setnumber(e.target.value)}/>
+          <Label htmlFor="email">E-mail</Label>
+          <Input id="email" placeholder="123456789" type="email" onChange={(e) => setnumber(e.target.value)}/>
         </LabelInputContainer>
         <LabelInputContainer className="mb-4">
           <Label htmlFor="password">Password</Label>
