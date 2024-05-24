@@ -34,25 +34,26 @@ export const authOptions: NextAuthOptions = {
             throw new Error("Invalid password");
           }
         }
-
-        try {
-          const hashedPassword = await bcrypt.hash(credentials.password, 10);
-          const user = await db.user.create({
-            data: {
-              email: credentials.email,
-              password: hashedPassword,
-              name: credentials.name || null,
-            },
-          });
-
-          return {
-            id: user.id.toString(),
-            name: user.name,
-            email: user.email,
-          };
-        } catch (e) {
-          console.error("Error creating user:", e);
-          throw new Error("Unable to create user");
+        else{
+          try {
+            const hashedPassword = await bcrypt.hash(credentials.password, 10);
+            const user = await db.user.create({
+              data: {
+                email: credentials.email,
+                password: hashedPassword,
+                name: credentials.name || null,
+              },
+            });
+  
+            return {
+              id: user.id.toString(),
+              name: user.name,
+              email: user.email,
+            };
+          } catch (e) {
+            console.error("Error creating user:", e);
+            throw new Error("Unable to create user");
+          }
         }
       },
     }),
