@@ -1,23 +1,33 @@
 "use client"
-import { signIn, signOut, useSession } from "next-auth/react"
+import { signIn, signOut } from "next-auth/react";
+import { useRouter } from 'next/navigation'; // Correct import statement
 
+export async function Appbar() {
+  const router = useRouter();
 
-export function Appbar() {
-  const session = useSession();
-  console.log(session);
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      router.push('/signin');
+    } catch (error) {
+      console.error('Error signing out:', error);
+    }
+  };
+
   return (
     <div>
       <div className="flex">
-        <div className="bg-black text-stone-100">
-      <button onClick={() => signOut()}>Sign out</button>
+        <div className="bg-black text-stone-100 mx-3">
+          <button onClick={handleSignOut}>Sign out</button>
         </div>
-        <div className="bg-black text-stone-100">
-      <button onClick={() => signIn()}>Sign in</button>
+        <div className="bg-black text-stone-100 mx-3">
+          <button onClick={() => signIn()}>Sign in</button>
         </div>
       </div>
     </div>
-  )
+  );
 }
+
 
 //That's HOW IT LOOKS IN useSession
 // {
