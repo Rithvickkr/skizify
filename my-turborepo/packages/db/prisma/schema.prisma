@@ -23,6 +23,7 @@ model User {
   gigsCreated Gigs[]    @relation(name: "Author")
   skizzers    Skizzer[] @relation(name: "Skizzer")
   authType    AuthType?
+  languages   String[]  // Array of languages in which the user is proficient
 }
 
 model Gigs {
