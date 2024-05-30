@@ -6,7 +6,6 @@ export default function SigninPage(){
     return (
         <div className="p-10">
             <SignupFormDemo />
-            
         </div>
     )
 } 

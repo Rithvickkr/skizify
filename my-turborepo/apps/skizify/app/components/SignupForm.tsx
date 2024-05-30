@@ -7,7 +7,6 @@ import {
   IconBrandGithub,
   IconBrandGoogle,
 } from "@tabler/icons-react";
-import router from "next/navigation";
 import { useRouter } from 'next/navigation';
 import { signIn } from "next-auth/react";
 
@@ -57,7 +56,7 @@ export function SignupFormDemo() {
           onClick={async () => {
             try{
               const res = await signIn("credentials", {
-                  name: firstname + lastname,
+                  name: `${firstname} ${lastname}`,
                   password: password,
                   email : number,
                   redirect: false,
