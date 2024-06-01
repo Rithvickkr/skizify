@@ -1,4 +1,5 @@
-import GigPost from "../../components/GigPost";
+import { GigPost } from "../../components/GigPost";
+
 
 export default function Home(){
     return (

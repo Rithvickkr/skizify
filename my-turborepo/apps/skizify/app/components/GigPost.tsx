@@ -1,39 +1,60 @@
-import { Button } from "@repo/ui/button"
-import { SVGProps } from "react"
-import SwitchTheme from "./SwitchTheme"
-export default function GigPost(){
-    return (
-        <div>
-        <header className="bg-gray-800 hover:bg-gray-900 text-white px-4 py-3 flex items-center justify-between">
-          <h1 className="text-xl font-bold font-display">Post a Tutoring Gig</h1>
-          <button type="button">
-            <XIcon className="h-6 w-6 cursor-pointer" />
-            <span className="sr-only">Close</span>
-          </button>
-        </header>
-        <div className="flex flex-col">
-          <div></div>
-        </div>
-        </div>
-    )
+import * as React from "react"
+
+import { Button } from "../../@/components/ui/button"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "../../@/components/ui/card"
+
+import { Input } from "../../@/components/ui/input"
+import { Label } from "../../@/components/ui/label"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../../@/components/ui/select"
+
+export function GigPost() {
+  return (
+    <Card className="w-[350px]">
+      <CardHeader>
+        <CardTitle>Create project</CardTitle>
+        <CardDescription>Deploy your new project in one-click.</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <form>
+          <div className="grid w-full items-center gap-4">
+            <div className="flex flex-col space-y-1.5">
+              <Label htmlFor="name">Name</Label>
+              <Input id="name" placeholder="Name of your project" />
+            </div>
+            <div className="flex flex-col space-y-1.5">
+              <Label htmlFor="framework">Framework</Label>
+              <Select>
+                <SelectTrigger id="framework">
+                  <SelectValue placeholder="Select" />
+                </SelectTrigger>
+                <SelectContent position="popper">
+                  <SelectItem value="next">Next.js</SelectItem>
+                  <SelectItem value="sveltekit">SvelteKit</SelectItem>
+                  <SelectItem value="astro">Astro</SelectItem>
+                  <SelectItem value="nuxt">Nuxt.js</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+        </form>
+      </CardContent>
+      <CardFooter className="flex justify-between">
+        <Button variant="outline">Cancel</Button>
+        <Button>Deploy</Button>
+      </CardFooter>
+    </Card>
+  )
 }
-//Defined a Header
-function XIcon(props : JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) {
-    return (
-      <svg
-        {...props}
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path d="M18 6 6 18" />
-        <path d="m6 6 12 12" />
-      </svg>
-    )
-  }
