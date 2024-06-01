@@ -24,14 +24,17 @@ model User {
   skizzers    Skizzer[] @relation(name: "Skizzer")
   authType    AuthType?
   languages   String[]  // Array of languages in which the user is proficient
+  reviewsGiven      Reviews[]  @relation(name:"GiventoUser")
+  reviewsReceived   Reviews[]  @relation(name:"GivenbyUser")
 }
 
 model Gigs {
   id           String    @id @default(uuid())
   title        String
   content      String
-  timeslot     DateTime
-  createdAt    DateTime  @default(now())
+  startdate    DateTime
+  enddate      DateTime      
+  createdAt    DateTime  @default(now()) //When the Post is Created
   updatedAt    DateTime  @updatedAt
   author       User      @relation(name: "Author", fields: [authorId], references: [id])
   authorId     String
@@ -47,6 +50,18 @@ model Skizzer {
   gigs      Gigs[] @relation(name: "AcceptedUsers")
 }
 
+model Reviews {
+  id          String    @id @default(uuid())
+  content     String
+  rating      Int
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  givento     String    
+  givenby     String     
+  giventoUser User      @relation(name: "GiventoUser" , fields: [givento] , references: [id])    
+  givenbyUser User      @relation(name: "GivenbyUser" , fields: [givenby] , references: [id])
+}
+
 enum AuthType {
   GOOGLE
   FACEBOOK
@@ -59,3 +74,4 @@ enum GigStatus {
   ACCEPTED
   REJECTED
 }
+
