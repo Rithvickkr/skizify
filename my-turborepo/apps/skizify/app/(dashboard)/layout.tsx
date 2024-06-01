@@ -13,8 +13,8 @@ export default function Layout({
       <div className="flex w-screen">
         <div className="flex flex-col w-1/5 min-h-screen bg-[#fafbfb] dark:bg-gray-800 border-r dark:border-slate-700">
         <div className="flex">
-          <div className="size-10 rounded-full bg-neutral-300 min-w-lg m-4 pl-8 cursor-pointer"></div>
-          <div className="font-display text-3xl font-bold m-4 cursor-pointer">ABC</div>
+          <div className="size-10 rounded-full bg-neutral-300 min-w-lg m-4 pl-8 cursor-pointer border border-gray-400 dark:border-gray-800"></div>
+          <div className="font-display text-3xl font-bold m-4 cursor-pointer ">ABC</div>
         </div>
         <div className="pt-24">
           <SidebarItem href={'/postgig'} title={'Post a Gig'} icon={<PlusIcon />} />

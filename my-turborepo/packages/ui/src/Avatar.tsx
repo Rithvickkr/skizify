@@ -15,7 +15,7 @@ export const Avatar = ({
     return (
         <div className="cursor-pointer self-center focus:outline-0">
                     {photo ? <Image src={photo} alt={altname} height ={20} width={20} className="rounded-full"/> :
-                    <div className="h-10 w-10 rounded-full bg-[#d1d5d8] text-gray-50 flex justify-center items-center">
+                    <div className="h-10 w-10 rounded-full bg-[#d1d5d8] border border-gray-400 dark:border-gray-800 text-gray-50 flex justify-center items-center focus:outline-0">
                         <div>
                         {name.charAt(0)}
                         </div>

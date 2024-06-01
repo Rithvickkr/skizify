@@ -48,7 +48,7 @@ export const Appbar = ({
                         <DropdownMenuSeparator />
                         <DropdownMenuItem className="focus:outline-0 x">
                             <div className="flex flex-col dark:text-slate-50 py-2">
-                                <div className="my-1 font-semibold  ">{user?.name}</div>
+                                <div className="my-1 font-semibold">{user?.name}</div>
                                 <div className="text-xs truncate">{user?.email}</div>
                             </div>
                         </DropdownMenuItem>
