@@ -43,7 +43,7 @@ export const Appbar = ({
                 
                 <DropdownMenu>
                     <DropdownMenuTrigger><Avatar photo={user?.photo} name={name} altname={altname}/></DropdownMenuTrigger>
-                    <DropdownMenuContent className="w-56 mr-3 mt-2 shadow-2xl bg-white dark:bg-[#020817] dark:border-gray-700 p-3 ">
+                    <DropdownMenuContent className="w-56 mr-3 mt-2 shadow-2xl bg-white dark:bg-[#020817] dark:border-gray-700 p-3">
                         {/* <DropdownMenuLabel>My Account</DropdownMenuLabel> */}
                         <DropdownMenuSeparator />
                         <DropdownMenuItem className="focus:outline-0 x">
@@ -54,7 +54,7 @@ export const Appbar = ({
                         </DropdownMenuItem>
                         <hr className="dark:border-gray-700"/>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem className="p-1 mb-2 focus:outline-0 dark:bg-gray-800 dark:hover:bg-gray-900 rounded-md shadow-md  cursor-pointer ">
+                        <DropdownMenuItem className="p-1 mb-2 focus:outline-0 hover:text-gray-500 dark:bg-gray-800 dark:hover:bg-gray-900 rounded-md shadow-md  cursor-pointer ">
                             <MoonIcon className="mr-2 size-4 m-2" />
                             <SwitchTheme />
                         </DropdownMenuItem>
@@ -64,7 +64,7 @@ export const Appbar = ({
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <hr className="dark:border-gray-700"/>
-                        <DropdownMenuItem onClick={user ? onSignout : onSignin} className="p-1 my-2 focus:outline-0 dark:bg-gray-800 dark:hover:bg-gray-900 rounded-md shadow-md  cursor-pointer ">
+                        <DropdownMenuItem onClick={user ? onSignout : onSignin} className="p-1 my-2 focus:outline-0 hover:text-gray-500 dark:bg-gray-800 dark:hover:bg-gray-900 rounded-md shadow-md  cursor-pointer ">
                             <LogOutIcon className="mr-2 size-4 m-2"/>
                             <span className=" p-1 ">{user ? "Logout" : "Login"}</span>
                         </DropdownMenuItem>

@@ -11,11 +11,13 @@ export default function GigPost(){
             <span className="sr-only">Close</span>
           </button>
         </header>
-        Hello
-        <SwitchTheme />
+        <div className="flex flex-col">
+          <div></div>
+        </div>
         </div>
     )
 }
+//Defined a Header
 function XIcon(props : JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) {
     return (
       <svg

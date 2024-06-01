@@ -37,9 +37,6 @@ export default function SwitchTheme() {
           <DropdownMenuRadioItem value="dark">
             <span className="cursor-pointer p-1 ml-3 self-center">Light</span>
           </DropdownMenuRadioItem>
-          <DropdownMenuRadioItem value="system">
-            <span className="cursor-pointer p-1 ml-3 self-center">System</span>
-          </DropdownMenuRadioItem>
         </DropdownMenuRadioGroup>
       </DropdownMenuContent>
     </DropdownMenu>
