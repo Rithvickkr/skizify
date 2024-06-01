@@ -1,6 +1,7 @@
-import * as React from "react"
+"use client";
+import * as React from "react";
 
-import { Button } from "../../@/components/ui/button"
+import { Button } from "../../@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -8,18 +9,11 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "../../@/components/ui/card"
+} from "../../@/components/ui/card";
 
-import { Input } from "../../@/components/ui/input"
+import { Input } from "../../@/components/ui/input";
 import { Label } from "../../@/components/ui/label"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../../@/components/ui/select"
-
+import Datepick from "./Datepick";
 export function GigPost() {
   return (
     <Card className="w-[350px]">
@@ -31,23 +25,22 @@ export function GigPost() {
         <form>
           <div className="grid w-full items-center gap-4">
             <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="name">Name</Label>
-              <Input id="name" placeholder="Name of your project" />
+              <Label htmlFor="name">Title</Label>
+              <Input id="name" placeholder="title lof project" />
             </div>
-            <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="framework">Framework</Label>
-              <Select>
-                <SelectTrigger id="framework">
-                  <SelectValue placeholder="Select" />
-                </SelectTrigger>
-                <SelectContent position="popper">
-                  <SelectItem value="next">Next.js</SelectItem>
-                  <SelectItem value="sveltekit">SvelteKit</SelectItem>
-                  <SelectItem value="astro">Astro</SelectItem>
-                  <SelectItem value="nuxt">Nuxt.js</SelectItem>
-                </SelectContent>
-              </Select>
+            <div className="grid w-full items-center gap-4">
+              <div className="flex flex-col space-y-1.5">
+                <Label htmlFor="name">Description</Label>
+                <Input id="name" placeholder="this is my description" />
+              </div>
+            <div className="grid w-full items-center gap-4">
+              <div className="flex flex-col space-y-1.5">
+                <Label htmlFor="name">Description</Label>
+              <Datepick/>
+              </div>
+              <div className="flex flex-col space-y-1.5"></div>
             </div>
+          </div>
           </div>
         </form>
       </CardContent>
@@ -56,5 +49,5 @@ export function GigPost() {
         <Button>Deploy</Button>
       </CardFooter>
     </Card>
-  )
+  );
 }
