@@ -55,7 +55,7 @@ export function GigPost() {
                   </div>
                 </div>
               </div>
-              <div className="grid w-full items-center gap-4">
+              
                 <div className="flex items-center justify-center">
                   <Label htmlFor="name">To</Label>
                 </div>
@@ -78,7 +78,7 @@ export function GigPost() {
                       placeholder="this is my description"
                     />
                   </div>
-                </div>
+                
               </div>
             </div>
           </div>
@@ -86,7 +86,7 @@ export function GigPost() {
       </CardContent>
       <CardFooter className="flex justify-between">
         <Button variant="outline">Cancel</Button>
-        <Button>Deploy</Button>
+        <Button>Post</Button>
       </CardFooter>
     </Card>
   );
