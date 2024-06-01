@@ -4,9 +4,8 @@ import {
     HistoryIcon,
     LogOutIcon,
     Settings,
-    User2Icon,
-    Bird,
-    MoonIcon
+    MoonIcon,
+    WandSparkles
   } from 'lucide-react';
 
 import {
@@ -19,6 +18,7 @@ import {
   } from "../../../apps/skizify/@/components/ui/dropdown-menu"
 
   import SwitchTheme from "../../../apps/skizify/app/components/SwitchTheme"
+  import { Button } from "../../../apps/skizify/@/components/ui/button";
 interface AppbarProps {
     user?: {
         name?: string | null;
@@ -41,6 +41,7 @@ export const Appbar = ({
     return (
             <div className="flex justify-end items-center p-3">
                 
+                <div>
                 <DropdownMenu>
                     <DropdownMenuTrigger><Avatar photo={user?.photo} name={name} altname={altname}/></DropdownMenuTrigger>
                     <DropdownMenuContent className="w-56 mr-3 mt-2 shadow-2xl bg-white dark:bg-[#020817] dark:border-gray-700 p-3">
@@ -64,12 +65,19 @@ export const Appbar = ({
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <hr className="dark:border-gray-700"/>
+                        <DropdownMenuItem className="p-1 focus:outline-0 hover:text-gray-500 cursor-pointer rounded-md shadow-md dark:bg-gray-800 dark:hover:bg-gray-900">
+                            <WandSparkles className="mr-2 size-4 m-2"/>
+                            <span>Become a Teacher</span>
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <hr className="dark:border-gray-700"/>
                         <DropdownMenuItem onClick={user ? onSignout : onSignin} className="p-1 my-2 focus:outline-0 hover:text-gray-500 dark:bg-gray-800 dark:hover:bg-gray-900 rounded-md shadow-md  cursor-pointer ">
                             <LogOutIcon className="mr-2 size-4 m-2"/>
                             <span className=" p-1 ">{user ? "Logout" : "Login"}</span>
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
+                </div>
 
             </div>
     )
