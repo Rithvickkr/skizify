@@ -1,20 +1,25 @@
 "use client";
 import React from "react";
 import {DateRangePicker} from "@nextui-org/date-picker";
-import {parseZonedDateTime} from "@internationalized/date";
+import {DateValue, parseAbsoluteToLocal} from "@internationalized/date";
+import {RangeValue} from "@react-types/shared";
 
 export default function Datepick() {
+  let [date, setDate] = React.useState<RangeValue<DateValue>>({
+    start: parseAbsoluteToLocal("2024-04-01T18:45:22Z"),
+    end: parseAbsoluteToLocal("2024-04-08T19:15:22Z"),
+  });
+
   return (
-    <div className="w-full max-w-xl flex flex-row gap-4 ">
+    <div className=" flex flex-col items-start gap-4">
       <DateRangePicker
-        label="Event duration"
-        hideTimeZone
-        visibleMonths={2}
-        defaultValue={{
-          start: parseZonedDateTime("2024-04-01T00:45[America/Los_Angeles]"),
-          end: parseZonedDateTime("2024-04-08T11:15[America/Los_Angeles]"),
-        }}
+        fullWidth
+        granularity="second"
+        label="Date and time range"
+        value={date}
+        onChange={setDate}
       />
+
     </div>
   );
 }
