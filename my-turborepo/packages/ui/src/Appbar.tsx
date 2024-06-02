@@ -44,11 +44,11 @@ export const Appbar = ({
                 <div>
                 <DropdownMenu>
                     <DropdownMenuTrigger><Avatar photo={user?.photo} name={name} altname={altname}/></DropdownMenuTrigger>
-                    <DropdownMenuContent className="w-56 mr-3 mt-2 shadow-2xl bg-white dark:bg-[#020817] dark:border-gray-700 p-3">
+                    <DropdownMenuContent className="w-60 mr-3 mt-2 shadow-2xl bg-white dark:bg-[#020817] dark:border-gray-700 p-3">
                         {/* <DropdownMenuLabel>My Account</DropdownMenuLabel> */}
                         <DropdownMenuSeparator />
                         <DropdownMenuItem className="focus:outline-0 x">
-                            <div className="flex flex-col dark:text-slate-50 py-2">
+                            <div className="flex flex-col dark:text-slate-50">
                                 <div className="my-1 font-semibold">{user?.name}</div>
                                 <div className="text-xs truncate">{user?.email}</div>
                             </div>

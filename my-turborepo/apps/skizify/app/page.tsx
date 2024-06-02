@@ -2,7 +2,6 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "./lib/auth";
 import { redirect } from "next/navigation";
-
 export default async function Page() {
   const session = await getServerSession(authOptions);
   if(session?.user){
@@ -11,6 +10,8 @@ export default async function Page() {
     redirect('/api/auth/signin');
   }
 }
+
+//Big task was to import the recoil from packages folder
 
 //We are using redirect for redirecting
 //we could have also use router.push

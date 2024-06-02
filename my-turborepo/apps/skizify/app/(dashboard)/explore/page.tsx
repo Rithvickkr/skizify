@@ -1,8 +1,9 @@
+import GigStructure from "../../components/mygigs/Gig";
 
 export default async function Page() {
   return (
     <div>
-      Hello This is me
+      <GigStructure />
     </div>
   )
 }

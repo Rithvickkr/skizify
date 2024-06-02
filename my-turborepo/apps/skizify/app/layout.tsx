@@ -2,6 +2,8 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Providers } from "./providers";
+import { RecoilRoot } from 'recoil';
+
 // import {NextUIProvider} from "@nextui-org/react";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -21,7 +23,9 @@ export default function RootLayout({
       <body className={inter.className}>
       <Providers >
         {/* <NextUIProvider> */}
+        <RecoilRoot>
           {children}
+        </RecoilRoot>
         {/* </NextUIProvider> */}
       </Providers>
       </body>
