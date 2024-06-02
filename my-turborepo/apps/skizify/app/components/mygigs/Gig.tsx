@@ -1,24 +1,31 @@
-"use client"
 import { useSession } from "next-auth/react";
 import { BentoGrid, BentoGridItem } from "./Bentogrid";
 import { Avatar } from "@repo/ui/avatar";
-export default function GigStructure(){
-    const session = useSession();
-    if(!session?.data?.user){
-        return <div>loading...</div>
-    }
-    const { data : {
-        user :{
-            name ,
-            email
-        }
-    }  } = session;
-    return (
-        <div>
-            <BentoGrid>
-                <BentoGridItem title="This is a Gig" description="This is the constent which I want to Store"
-                header="Gig" icon={<Avatar name={name} altname={name} photo=}/>} />
-            </BentoGrid>
-        </div>
-    )
+import { getServerSession } from "next-auth";
+
+import prisma from "@repo/db/client";
+// import {getUserImage} from "../../lib/actions/getImage";
+import { authOptions } from "../../lib/auth";
+export default async function GigStructure() {
+  const session = getServerSession(authOptions);
+  console.log(session);
+  if (!session) {
+    return <div>loading...</div>;
+  }
+  
+  // const image = await getUserImage();
+
+  return (
+    <div>
+      <BentoGrid>
+        <BentoGridItem
+          title="This is a Gig"
+          description="This is the constent which I want to Store"
+          header="Gig"
+          icon={<Avatar name={"user"} />}
+        />
+      </BentoGrid>
+    </div>
+  );
 }
+//TASK FOR LATER IS TO IMPORT THE AVATAR FROM THE DB

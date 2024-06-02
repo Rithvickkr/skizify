@@ -1,8 +1,8 @@
 "use client";
 import React from "react";
-import {DateRangePicker} from "@nextui-org/date-picker";
-import {DateValue, parseAbsoluteToLocal} from "@internationalized/date";
-import {RangeValue} from "@react-types/shared";
+import { DateRangePicker } from "@nextui-org/date-picker";
+import { DateValue, parseAbsoluteToLocal } from "@internationalized/date";
+import { RangeValue } from "@react-types/shared";
 
 export default function Datepick() {
   let [date, setDate] = React.useState<RangeValue<DateValue>>({
@@ -11,7 +11,7 @@ export default function Datepick() {
   });
 
   return (
-    <div className=" flex flex-col items-start gap-4">
+    <div className="flex flex-col items-start gap-4">
       <DateRangePicker
         fullWidth
         granularity="second"
@@ -19,7 +19,6 @@ export default function Datepick() {
         value={date}
         onChange={setDate}
       />
-
     </div>
   );
 }

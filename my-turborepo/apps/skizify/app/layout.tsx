@@ -2,7 +2,6 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Providers } from "./providers";
-import { RecoilRoot } from 'recoil';
 
 // import {NextUIProvider} from "@nextui-org/react";
 
@@ -23,9 +22,7 @@ export default function RootLayout({
       <body className={inter.className}>
       <Providers >
         {/* <NextUIProvider> */}
-        <RecoilRoot>
           {children}
-        </RecoilRoot>
         {/* </NextUIProvider> */}
       </Providers>
       </body>
@@ -34,4 +31,4 @@ export default function RootLayout({
 }
 //suppressHydrationWarning When there is a Mismatch of components 
 // like Component is not adaptable to Dark mode then HydrationWarning will be there
-
+//Added Recoil Root 

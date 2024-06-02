@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { signIn, signOut } from "next-auth/react";
 import { useSession } from "next-auth/react";
 import { Appbar } from "@repo/ui/appbar";
@@ -9,16 +9,20 @@ export async function AppbarClient() {
   const handleSignOut = async () => {
     try {
       await signOut();
-      window.location.href = '/signin';
+      window.location.href = "/signin";
     } catch (error) {
-      console.error('Error signing out:', error);
+      console.error("Error signing out:", error);
     }
   };
 
-
   return (
     <div>
-      <Appbar user={session.data?.user} onSignin={signIn} onSignout={handleSignOut} altname={name}/>
+      <Appbar
+        user={session.data?.user}
+        onSignin={signIn}
+        onSignout={handleSignOut}
+        altname={name}
+      />
     </div>
   );
 }

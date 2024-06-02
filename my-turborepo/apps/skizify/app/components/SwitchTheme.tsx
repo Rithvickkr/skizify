@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 import { useTheme } from "next-themes";
 import { Button } from "../../@/components/ui/button";
 import {
@@ -11,13 +11,13 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "../../@/components/ui/dropdown-menu"
+} from "../../@/components/ui/dropdown-menu";
 
 export default function SwitchTheme() {
   const { theme, setTheme } = useTheme();
 
   const toggleTheme = () => {
-    setTheme(theme === 'dark' ? 'light' : 'dark');
+    setTheme(theme === "dark" ? "light" : "dark");
   };
 
   return (
@@ -25,20 +25,20 @@ export default function SwitchTheme() {
       <DropdownMenuTrigger asChild className="">
         <span className="p-1">Theme</span>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-36 dark:bg-gray-900 bg-white border dark:border-gray-700">
+      <DropdownMenuContent className="w-36 border bg-white dark:border-gray-700 dark:bg-gray-900">
         <DropdownMenuLabel>
-            <span className="dark:bg-gray-800">Appeareance</span>
+          <span className="dark:bg-gray-800">Appeareance</span>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuRadioGroup value={theme} onValueChange={toggleTheme}>
           <DropdownMenuRadioItem value="light">
-            <span className="cursor-pointer p-1 ml-3 self-center">Dark</span>
+            <span className="ml-3 cursor-pointer self-center p-1">Dark</span>
           </DropdownMenuRadioItem>
           <DropdownMenuRadioItem value="dark">
-            <span className="cursor-pointer p-1 ml-3 self-center">Light</span>
+            <span className="ml-3 cursor-pointer self-center p-1">Light</span>
           </DropdownMenuRadioItem>
         </DropdownMenuRadioGroup>
       </DropdownMenuContent>
     </DropdownMenu>
-  )
+  );
 }
