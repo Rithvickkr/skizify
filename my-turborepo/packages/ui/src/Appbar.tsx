@@ -34,7 +34,6 @@ export const Appbar = ({
     user,
     onSignout,
     onSignin,
-    altname
 } : AppbarProps) => {
 
     const name = user?.name || "User";
@@ -43,7 +42,7 @@ export const Appbar = ({
                 
                 <div>
                 <DropdownMenu>
-                    <DropdownMenuTrigger><Avatar photo={user?.photo} name={name} altname={altname}/></DropdownMenuTrigger>
+                    <DropdownMenuTrigger><Avatar photo={user?.photo} name={name}/></DropdownMenuTrigger>
                     <DropdownMenuContent className="w-60 mr-3 mt-2 shadow-2xl bg-white dark:bg-[#020817] dark:border-gray-700 p-3">
                         {/* <DropdownMenuLabel>My Account</DropdownMenuLabel> */}
                         <DropdownMenuSeparator />

@@ -31,10 +31,10 @@ export default function SwitchTheme() {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuRadioGroup value={theme} onValueChange={toggleTheme}>
-          <DropdownMenuRadioItem value="light">
+          <DropdownMenuRadioItem value="dark">
             <span className="ml-3 cursor-pointer self-center p-1">Dark</span>
           </DropdownMenuRadioItem>
-          <DropdownMenuRadioItem value="dark">
+          <DropdownMenuRadioItem value="light">
             <span className="ml-3 cursor-pointer self-center p-1">Light</span>
           </DropdownMenuRadioItem>
         </DropdownMenuRadioGroup>
