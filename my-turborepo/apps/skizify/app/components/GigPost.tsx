@@ -23,22 +23,36 @@ export function GigPost() {
   const [time, setTime] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
   const [endTime, setEndTime] = useState<string>("");
-  console.log(session);
 
+  function calculateTimeInterval(startDateTime: string, endDateTime: string) {
+    // Convert ISO strings to Date objects
+    const startDate = new Date(startDateTime);
+    const endDate = new Date(endDateTime);
+  
+    // Calculate the difference in milliseconds
+    const differenceInMilliseconds = endDate.getTime() - startDate.getTime();
+  
+    // Convert milliseconds to other units
+    const differenceInSeconds = differenceInMilliseconds / 1000;
+    const differenceInMinutes = differenceInSeconds / 60;
+    const differenceInHours = differenceInMinutes / 60;
+  
+    return {
+      milliseconds: differenceInMilliseconds,
+      seconds: differenceInSeconds,
+      minutes: differenceInMinutes,
+      hours: differenceInHours,
+    };
+  }
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(session);
-
     if (session) {
-      try {
+      // Format date and time to ISO-8601
+      const startDateTime = new Date(`${date}T${time}:00`).toISOString();
+      const endDateTime = new Date(`${endDate}T${endTime}:00`).toISOString();
+      const interval = calculateTimeInterval(startDateTime, endDateTime);
       
-        await GigSet(title, description, date, time, endDate, endTime, session);
-        console.log("Gig set successfully!");
-      } catch (error) {
-        console.error("Error setting gig:", error);
-      }
-    } else {
-      console.error("No session found");
+      await GigSet(title, description, startDateTime, endDateTime, session, interval);
     }
 
     console.log({
@@ -65,7 +79,7 @@ export function GigPost() {
                 id="title"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                placeholder="Title of project"
+                placeholder="title of project"
               />
             </div>
             <div className="flex flex-col space-y-1.5">
@@ -74,7 +88,7 @@ export function GigPost() {
                 id="description"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                placeholder="This is my description"
+                placeholder="this is my description"
               />
             </div>
             <div className="flex flex-col space-y-1.5">
@@ -84,7 +98,7 @@ export function GigPost() {
                 type="date"
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
-                placeholder="Date of event"
+                placeholder="date of event"
               />
             </div>
             <div className="flex flex-col space-y-1.5">
@@ -94,7 +108,7 @@ export function GigPost() {
                 type="time"
                 value={time}
                 onChange={(e) => setTime(e.target.value)}
-                placeholder="Time of event"
+                placeholder="time of event"
               />
             </div>
             <div className="flex items-center justify-center">
@@ -107,7 +121,7 @@ export function GigPost() {
                 type="date"
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
-                placeholder="End date of event"
+                placeholder="end date of event"
               />
             </div>
             <div className="flex flex-col space-y-1.5">
@@ -117,16 +131,16 @@ export function GigPost() {
                 type="time"
                 value={endTime}
                 onChange={(e) => setEndTime(e.target.value)}
-                placeholder="End time of event"
+                placeholder="end time of event"
               />
             </div>
           </div>
+          <CardFooter className="flex justify-between mt-5">
+            <Button variant="outline">Cancel</Button>
+            <Button type="submit">Post</Button>
+          </CardFooter>
         </form>
       </CardContent>
-      <CardFooter className="flex justify-between">
-        <Button variant="outline">Cancel</Button>
-        <Button type="submit" onClick={handleSubmit}>Post</Button>
-      </CardFooter>
     </Card>
   );
 }

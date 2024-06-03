@@ -30,6 +30,7 @@ export const getServerSideProps = async () => {
   return {
     props: {
       image: userimage,
+      
     },
   };
 };

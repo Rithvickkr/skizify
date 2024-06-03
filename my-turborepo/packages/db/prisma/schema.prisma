@@ -33,8 +33,8 @@ model Gigs {
   id           String    @id @default(uuid())
   title        String
   content      String
-  startdate    DateTime
-  enddate      DateTime      
+  startDateTime    DateTime
+  endDateTime      DateTime      
   createdAt    DateTime  @default(now()) //When the Post is Created
   updatedAt    DateTime  @updatedAt
   author       User      @relation(name: "Author", fields: [authorId], references: [id])
@@ -42,9 +42,7 @@ model Gigs {
   acceptedBy   Skizzer?  @relation(name: "AcceptedUsers", fields: [acceptedById], references: [id])
   acceptedById String?
   status       GigStatus
-  starttime    String
-  endtime      String
-  Interval     Float  //for 1.5 , 2.5 hr
+  Interval     Json //This will store the interval of the Gig
 }
 
 model Skizzer {
