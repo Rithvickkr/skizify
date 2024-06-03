@@ -42,6 +42,8 @@ model Gigs {
   acceptedBy   Skizzer?  @relation(name: "AcceptedUsers", fields: [acceptedById], references: [id])
   acceptedById String?
   status       GigStatus
+  starttime   String
+  endtime     String
 }
 
 model Skizzer {
