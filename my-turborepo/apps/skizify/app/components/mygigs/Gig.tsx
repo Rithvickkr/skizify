@@ -67,6 +67,90 @@ export default async function GigStructure() {
           header="Gig"
           icon={<Avatar name={"user"} />}
         />
+        <BentoGridItem
+          title="This is a Gig"
+          description="This is the constent which I want to Store"
+          header="Gig"
+          icon={<Avatar name={"user"} />}
+        />
+        <BentoGridItem
+          title="This is a Gig"
+          description="This is the constent which I want to Store"
+          header="Gig"
+          icon={<Avatar name={"user"} />}
+        />
+        <BentoGridItem
+          title="This is a Gig"
+          description="This is the constent which I want to Store"
+          header="Gig"
+          icon={<Avatar name={"user"} />}
+        />
+        <BentoGridItem
+          title="This is a Gig"
+          description="This is the constent which I want to Store"
+          header="Gig"
+          icon={<Avatar name={"user"} />}
+        />
+        <BentoGridItem
+          title="This is a Gig"
+          description="This is the constent which I want to Store"
+          header="Gig"
+          icon={<Avatar name={"user"} />}
+        />
+        <BentoGridItem
+          title="This is a Gig"
+          description="This is the constent which I want to Store"
+          header="Gig"
+          icon={<Avatar name={"user"} />}
+        />
+        <BentoGridItem
+          title="This is a Gig"
+          description="This is the constent which I want to Store"
+          header="Gig"
+          icon={<Avatar name={"user"} />}
+        />
+        <BentoGridItem
+          title="This is a Gig"
+          description="This is the constent which I want to Store"
+          header="Gig"
+          icon={<Avatar name={"user"} />}
+        />
+        <BentoGridItem
+          title="This is a Gig"
+          description="This is the constent which I want to Store"
+          header="Gig"
+          icon={<Avatar name={"user"} />}
+        />
+        <BentoGridItem
+          title="This is a Gig"
+          description="This is the constent which I want to Store"
+          header="Gig"
+          icon={<Avatar name={"user"} />}
+        />
+        <BentoGridItem
+          title="This is a Gig"
+          description="This is the constent which I want to Store"
+          header="Gig"
+          icon={<Avatar name={"user"} />}
+        />
+        <BentoGridItem
+          title="This is a Gig"
+          description="This is the constent which I want to Store"
+          header="Gig"
+          icon={<Avatar name={"user"} />}
+        />
+        <BentoGridItem
+          title="This is a Gig"
+          description="This is the constent which I want to Store"
+          header="Gig"
+          icon={<Avatar name={"user"} />}
+        />
+        <BentoGridItem
+          title="This is a Gig"
+          description="This is the constent which I want to Store"
+          header="Gig"
+          icon={<Avatar name={"user"} />}
+        />
       </BentoGrid>
     </div>
   );

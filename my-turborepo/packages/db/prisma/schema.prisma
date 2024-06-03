@@ -22,9 +22,9 @@ model User {
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   gigsCreated Gigs[]    @relation(name: "Author")
-  skizzers    Skizzer[] @relation(name: "Skizzer")
+  skizzers    Skizzer? @relation(name: "Skizzer") //This will specify one and one reealtion
   authType    AuthType?
-  languages   String[]  // Array of languages in which the user is proficient
+  languages   String[]
   reviewsGiven      Reviews[]  @relation(name:"GiventoUser")
   reviewsReceived   Reviews[]  @relation(name:"GivenbyUser")
 }
@@ -42,13 +42,14 @@ model Gigs {
   acceptedBy   Skizzer?  @relation(name: "AcceptedUsers", fields: [acceptedById], references: [id])
   acceptedById String?
   status       GigStatus
-  starttime   String
-  endtime     String
+  starttime    String
+  endtime      String
+  Interval     Float  //for 1.5 , 2.5 hr
 }
 
 model Skizzer {
   id        String @id @default(uuid())
-  skizzerId String
+  skizzerId String @unique
   user      User   @relation(name: "Skizzer", fields: [skizzerId], references: [id])
   gigs      Gigs[] @relation(name: "AcceptedUsers")
 }
