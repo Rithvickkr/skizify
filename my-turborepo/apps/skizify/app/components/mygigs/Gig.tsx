@@ -8,57 +8,10 @@ import prisma from "@repo/db/client";
 import { authOptions } from "../../lib/auth";
 
 //This will fetch Data from DB
-export const getServerSideProps = async () => {
-  const session = await getServerSession(authOptions);
-  console.log(session);
-  let userimage = "";
-  try {
-    const user = await prisma.user.findUnique({
-      where: {
-        email: session?.user?.email || "",
-      },
-      select: {
-        userImage: true,
-      },
-    });
-    if (user) {
-      userimage = user.userImage || "";
-    }
-  } catch (err) {
-    console.log("Unable to fetch Data from the Server", err);
-  }
-  return {
-    props: {
-      image: userimage,
-      
-    },
-  };
-};
 
-//   const session = await getServerSession(authOptions);
-//   if (!session) {
-//     return null;
-//   }
-//   try {
-//     if (session.user?.email) {
-//       const user = await prisma.user.findUnique({
-//         where: {
-//           email: session.user?.email,
-//         },
-//         select: {
-//           userImage: true,
-//         },
-//       });
-//       return user?.userImage;
-//     }
-//   } catch (error) {
-//     console.error("Error fetching user image:", error);
-//   }
-//   return "";
-
-export default async function GigStructure() {
+export default async function GigStructure({image}:{image : string}) {
   // const image = await getUserImage();
-
+  console.log(image)
   return (
     <div>
       <BentoGrid>
@@ -66,91 +19,91 @@ export default async function GigStructure() {
           title="This is a Gig"
           description="This is the constent which I want to Store"
           header="Gig"
-          icon={<Avatar name={"user"} />}
+          icon={<Avatar name={"Guser"} photo={image}/>}
         />
         <BentoGridItem
           title="This is a Gig"
           description="This is the constent which I want to Store"
           header="Gig"
-          icon={<Avatar name={"user"} />}
+          icon={<Avatar name={"Guser"} photo={image}/>}
         />
         <BentoGridItem
           title="This is a Gig"
           description="This is the constent which I want to Store"
           header="Gig"
-          icon={<Avatar name={"user"} />}
+          icon={<Avatar name={"Guser"} photo={image}/>}
         />
         <BentoGridItem
           title="This is a Gig"
           description="This is the constent which I want to Store"
           header="Gig"
-          icon={<Avatar name={"user"} />}
+          icon={<Avatar name={"Guser"} photo={image}/>}
         />
         <BentoGridItem
           title="This is a Gig"
           description="This is the constent which I want to Store"
           header="Gig"
-          icon={<Avatar name={"user"} />}
+          icon={<Avatar name={"Guser"} photo={image}/>}
         />
         <BentoGridItem
           title="This is a Gig"
           description="This is the constent which I want to Store"
           header="Gig"
-          icon={<Avatar name={"user"} />}
+          icon={<Avatar name={"Guser"} photo={image}/>}
         />
         <BentoGridItem
           title="This is a Gig"
           description="This is the constent which I want to Store"
           header="Gig"
-          icon={<Avatar name={"user"} />}
+          icon={<Avatar name={"Guser"} photo={image}/>}
         />
         <BentoGridItem
           title="This is a Gig"
           description="This is the constent which I want to Store"
           header="Gig"
-          icon={<Avatar name={"user"} />}
+          icon={<Avatar name={"Guser"} photo={image}/>}
         />
         <BentoGridItem
           title="This is a Gig"
           description="This is the constent which I want to Store"
           header="Gig"
-          icon={<Avatar name={"user"} />}
+          icon={<Avatar name={"Guser"} photo={image}/>}
         />
         <BentoGridItem
           title="This is a Gig"
           description="This is the constent which I want to Store"
           header="Gig"
-          icon={<Avatar name={"user"} />}
+          icon={<Avatar name={"Guser"} photo={image}/>}
         />
         <BentoGridItem
           title="This is a Gig"
           description="This is the constent which I want to Store"
           header="Gig"
-          icon={<Avatar name={"user"} />}
+          icon={<Avatar name={"Guser"} photo={image}/>}
         />
         <BentoGridItem
           title="This is a Gig"
           description="This is the constent which I want to Store"
           header="Gig"
-          icon={<Avatar name={"user"} />}
+          icon={<Avatar name={"Guser"} photo={image}/>}
         />
         <BentoGridItem
           title="This is a Gig"
           description="This is the constent which I want to Store"
           header="Gig"
-          icon={<Avatar name={"user"} />}
+          icon={<Avatar name={"Guser"} photo={image}/>}
         />
         <BentoGridItem
           title="This is a Gig"
           description="This is the constent which I want to Store"
           header="Gig"
-          icon={<Avatar name={"user"} />}
+          icon={<Avatar name={"Guser"} photo={image}/>}
         />
         <BentoGridItem
           title="This is a Gig"
           description="This is the constent which I want to Store"
           header="Gig"
-          icon={<Avatar name={"user"} />}
+          icon={<Avatar name={"Guser"} photo={image}/>}
         />
       </BentoGrid>
     </div>

@@ -4,7 +4,6 @@ import { useSession } from "next-auth/react";
 import { Appbar } from "@repo/ui/appbar";
 export async function AppbarClient() {
   const session = useSession();
-  console.log(session);
   const name = session.data?.user?.name || "User";
   const handleSignOut = async () => {
     try {
