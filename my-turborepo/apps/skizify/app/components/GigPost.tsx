@@ -1,7 +1,8 @@
 "use client";
 import React, { useState } from "react";
 import { useSession } from "next-auth/react";
-
+import { UserRole } from "@prisma/client";
+import { useRouter } from "next/navigation";
 import { Button } from "../../@/components/ui/button";
 import {
   Card,
@@ -16,6 +17,7 @@ import { Label } from "../../@/components/ui/label";
 import { GigSet } from "../lib/actions/setgig";
 
 export function GigPost() {
+  const router = useRouter()
   const { data: session } = useSession();
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
@@ -71,7 +73,12 @@ export function GigPost() {
       endTime,
     });
   };
-
+  if(session?.user.role === UserRole.SKIZZER){
+    router.push('/explore')
+    return <div></div>
+  }
+  //Ritvick
+  // Correct this with middleware later as HTML is Loading which we don't want on the Screen
   return (
     <Card className="w-[350px]">
       <CardHeader>

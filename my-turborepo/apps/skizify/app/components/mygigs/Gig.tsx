@@ -1,13 +1,5 @@
-import { useSession } from "next-auth/react";
 import { BentoGrid, BentoGridItem } from "./Bentogrid";
 import { Avatar } from "@repo/ui/avatar";
-import { getServerSession } from "next-auth";
-import { imageString} from "@repo/store"
-import prisma from "@repo/db/client";
-// import {getUserImage} from "../../lib/actions/getImage";
-import { authOptions } from "../../lib/auth";
-import { getUserImage } from "../../lib/actions/getImage";
-
 //This will fetch Data from DB
 
 export default async function GigStructure({image}:{image : string}) {
