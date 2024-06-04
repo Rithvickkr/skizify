@@ -17,7 +17,7 @@ import { Label } from "../../@/components/ui/label";
 import { GigSet } from "../lib/actions/setgig";
 
 export function GigPost() {
-  const router = useRouter()
+  const router = useRouter();
   const { data: session } = useSession();
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
@@ -26,19 +26,20 @@ export function GigPost() {
   const [endDate, setEndDate] = useState<string>("");
   const [endTime, setEndTime] = useState<string>("");
 
-  function calculateTimeInterval(startDateTime: string, endDateTime: string) {
-    // Convert ISO strings to Date objects
-    const startDate = new Date(startDateTime);
-    const endDate = new Date(endDateTime);
-  
+  function calculateTimeInterval(startTime: string, endTime: string) {
+    // Convert times to Date objects on the same arbitrary date
+    const date = new Date().toISOString().split("T")[0]; // Get today's date in YYYY-MM-DD format
+    const startDateTime1 = new Date(`${date}T${startTime}:00`);
+    const endDateTime1 = new Date(`${date}T${endTime}:00`);
+
     // Calculate the difference in milliseconds
-    const differenceInMilliseconds = endDate.getTime() - startDate.getTime();
-  
+    const differenceInMilliseconds = endDateTime1.getTime() - startDateTime1.getTime();
+
     // Convert milliseconds to other units
     const differenceInSeconds = differenceInMilliseconds / 1000;
     const differenceInMinutes = differenceInSeconds / 60;
     const differenceInHours = differenceInMinutes / 60;
-  
+
     return {
       milliseconds: differenceInMilliseconds,
       seconds: differenceInSeconds,
@@ -46,15 +47,17 @@ export function GigPost() {
       hours: differenceInHours,
     };
   }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (session) {
-      // Format date and time to ISO-8601
+      // Only calculate interval between time and endTime
+      const interval = calculateTimeInterval(time, endTime);
       const startDateTime = new Date(`${date}T${time}:00`).toISOString();
       const endDateTime = new Date(`${endDate}T${endTime}:00`).toISOString();
-      const interval = calculateTimeInterval(startDateTime, endDateTime);
-      
-      await GigSet(title, description, startDateTime, endDateTime, session, interval);
+
+      await GigSet(title, description,startDateTime,endDateTime, session, interval);
+
       setTitle("");
       setDescription("");
       setDate("");
@@ -73,12 +76,12 @@ export function GigPost() {
       endTime,
     });
   };
-  if(session?.user.role === UserRole.SKIZZER){
-    router.push('/explore')
-    return <div></div>
+
+  if (session?.user.role === UserRole.SKIZZER) {
+    router.push('/explore');
+    return <div></div>;
   }
-  //Ritvick
-  // Correct this with middleware later as HTML is Loading which we don't want on the Screen
+
   return (
     <Card className="w-[350px]">
       <CardHeader>
