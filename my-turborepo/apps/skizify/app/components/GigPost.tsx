@@ -154,7 +154,7 @@ export function GigPost() {
           </div>
           <CardFooter className="flex justify-between mt-5">
             <Button variant="outline">Cancel</Button>
-            <Button type="submit">Post</Button>
+            <Button type="submit" onClick={handleSubmit}>Post</Button>
           </CardFooter>
         </form>
       </CardContent>
