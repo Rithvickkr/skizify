@@ -12,7 +12,7 @@ export const BentoGridcopy = ({
     <div
       className={cn(
         "mx-auto grid max-w-7xl grid-cols-1 gap-4 p-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4",
-        className
+        className,
       )}
     >
       {children}
@@ -20,7 +20,7 @@ export const BentoGridcopy = ({
   );
 };
 
-export const BentoGridItemcopy= ({
+export const BentoGridItemcopy = ({
   className,
   title,
   description,
@@ -44,20 +44,20 @@ export const BentoGridItemcopy= ({
   acceptedby?: string | React.ReactNode;
 }) => {
   const formatTimeInterval = (hours: number, minutes: number) => {
-        const totalMinutes = Math.floor(hours * 60 + minutes); // Convert hours to minutes and add the extra minutes
-        const formattedHours = Math.floor(totalMinutes / 60); // Calculate total hours
-        const formattedMinutes = totalMinutes % 60; // Get the remainder for minutes
-        const paddedMinutes = String(formattedMinutes).padStart(2, "0");
-        return `${formattedHours}:${paddedMinutes}`;
-      }
+    const totalMinutes = Math.floor(hours * 60 + minutes); // Convert hours to minutes and add the extra minutes
+    const formattedHours = Math.floor(totalMinutes / 60); // Calculate total hours
+    const formattedMinutes = totalMinutes % 60; // Get the remainder for minutes
+    const paddedMinutes = String(formattedMinutes).padStart(2, "0");
+    return `${formattedHours}:${paddedMinutes}`;
+  };
   return (
     <div
-    className={cn(
-      "group/bento shadow-input row-span-1 flex flex-col justify-between space-y-4 rounded-xl border border-transparent bg-white p-4 transition duration-200 hover:shadow-xl dark:border-white/[0.2] dark:bg-black dark:shadow-none",
-      className
-    )}
-  >
-       {header}
+      className={cn(
+        "group/bento shadow-input row-span-1 flex flex-col justify-between space-y-4 rounded-xl border border-transparent bg-white p-4 transition duration-200 hover:shadow-xl dark:border-white/[0.2] dark:bg-black dark:shadow-none",
+        className,
+      )}
+    >
+      {header}
       <div className="transition duration-200 group-hover/bento:translate-x-2">
         <div className="flex items-center gap-4">
           <div>{icon}</div>
@@ -65,23 +65,33 @@ export const BentoGridItemcopy= ({
             {sender}
           </div>
         </div>
-        <div className="mt-2 font-sans text-lg font-bold text-neutral-800 dark:text-neutral-200">
+        <div className="font-sans mt-2 text-lg font-bold text-neutral-800 dark:text-neutral-200">
           {title}
         </div>
-        <div className="mt-1 font-sans text-sm text-neutral-600 dark:text-neutral-300">
+        <div className="font-sans mt-1 text-sm text-neutral-600 dark:text-neutral-300">
           {description}
         </div>
-        <div className="mt-1 font-sans text-sm text-neutral-600 dark:text-neutral-300">
-          <strong>Range: </strong>{range}
+        <div className="font-sans mt-1 text-sm text-neutral-600 dark:text-neutral-300">
+          <strong>Range: </strong>
+          {range}
         </div>
-        <div className="mt-1 font-sans text-sm text-neutral-600 dark:text-neutral-300">
-          <strong>Interval: </strong>{formatTimeInterval(interval.hours, interval.minutes)}
+        <div className="font-sans mt-1 text-sm text-neutral-600 dark:text-neutral-300">
+          <strong>Interval: </strong>
+          {formatTimeInterval(interval.hours, interval.minutes)}
         </div>
-        <div className="mt-1 font-sans text-sm text-neutral-600 dark:text-neutral-300">
-          <strong>Accepted by: </strong>{acceptedby}
+        <div className="font-sans mt-1 text-sm text-neutral-600 dark:text-neutral-300">
+          <strong>Accepted by: </strong>
+          {acceptedby}
         </div>
-        <div className="mt-1 font-sans text-sm text-neutral-600 dark:text-neutral-300">
-          <strong>Status: </strong>{status}
+        <div className="font-sans mt-1 text-sm text-neutral-600 dark:text-neutral-300">
+          <strong>Status: </strong>
+          <h5
+            className={
+              status == "ACCEPTED" ? "text-green-600" : "text-blue-600"
+            }
+          >
+            {status}
+          </h5>
         </div>
       </div>
     </div>
