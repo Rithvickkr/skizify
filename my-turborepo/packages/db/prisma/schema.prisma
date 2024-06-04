@@ -14,54 +14,48 @@ datasource db {
 }
 
 model User {
-  id          String    @id @default(uuid())
-  email       String    @unique
-  name        String?
-  password    String
-  userImage   String?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  gigsCreated Gigs[]    @relation(name: "Author")
-  skizzers    Skizzer? @relation(name: "Skizzer") //This will specify one and one reealtion
-  authType    AuthType?
-  languages   String[]
-  reviewsGiven      Reviews[]  @relation(name:"GiventoUser")
-  reviewsReceived   Reviews[]  @relation(name:"GivenbyUser")
+  id                String    @id @default(uuid())
+  email             String    @unique
+  name              String?
+  password          String
+  userImage         String?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  gigsCreated       Gigs[]    @relation(name: "Author")
+  gigsAccepted      Gigs[]    @relation(name: "AcceptedUsers") //This will specify one and one reealtion
+  authType          AuthType?
+  languages         String[]
+  reviewsGiven      Reviews[] @relation(name: "GiventoUser")
+  reviewsReceived   Reviews[] @relation(name: "GivenbyUser")
+  role              UserRole  @default(USER)
 }
 
 model Gigs {
-  id           String    @id @default(uuid())
-  title        String
-  content      String
-  startDateTime    DateTime
-  endDateTime      DateTime      
-  createdAt    DateTime  @default(now()) //When the Post is Created
-  updatedAt    DateTime  @updatedAt
-  author       User      @relation(name: "Author", fields: [authorId], references: [id])
-  authorId     String
-  acceptedBy   Skizzer?  @relation(name: "AcceptedUsers", fields: [acceptedById], references: [id])
-  acceptedById String?
-  status       GigStatus
-  Interval     Json //This will store the interval of the Gig
-}
-
-model Skizzer {
-  id        String @id @default(uuid())
-  skizzerId String @unique
-  user      User   @relation(name: "Skizzer", fields: [skizzerId], references: [id])
-  gigs      Gigs[] @relation(name: "AcceptedUsers")
+  id              String    @id @default(uuid())
+  title           String
+  content         String
+  startDateTime   DateTime
+  endDateTime     DateTime
+  createdAt       DateTime  @default(now()) //When the Post is Created
+  updatedAt       DateTime  @updatedAt
+  authorId        String
+  acceptedById    String?
+  Interval        Json //This will store the interval of the Gig
+  status          GigStatus
+  acceptedBy      User?     @relation(name: "AcceptedUsers", fields: [acceptedById], references: [id])
+  author          User      @relation(name: "Author", fields: [authorId], references: [id])
 }
 
 model Reviews {
-  id          String    @id @default(uuid())
-  content     String
-  rating      Int
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  givento     String    
-  givenby     String     
-  giventoUser User      @relation(name: "GiventoUser" , fields: [givento] , references: [id])    
-  givenbyUser User      @relation(name: "GivenbyUser" , fields: [givenby] , references: [id])
+  id              String   @id @default(uuid())
+  content         String
+  rating          Int
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  givento         String
+  givenby         String
+  giventoUser     User     @relation(name: "GiventoUser", fields: [givento], references: [id])
+  givenbyUser     User     @relation(name: "GivenbyUser", fields: [givenby], references: [id])
 }
 
 enum AuthType {
@@ -77,3 +71,7 @@ enum GigStatus {
   REJECTED
 }
 
+enum UserRole {
+  USER
+  SKIZZER
+}
