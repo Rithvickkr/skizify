@@ -21,10 +21,10 @@ export default async function () {
   };
 
   return (
-    <div>
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-5">
       {gigs.map((gig: any) => (
-        <div className="p-5" key={gig.id}>
-          <Card className="w-[350px]">
+        <div key={gig.id}>
+          <Card className="w-full">
             <CardHeader>
               <CardTitle>{gig.title}</CardTitle>
             </CardHeader>
@@ -32,9 +32,8 @@ export default async function () {
             <CardContent>
               {formatTimeInterval(gig.Interval.hours, gig.Interval.minutes)}
             </CardContent>
-            <CardContent>Accepted by - {gig.acceptedbyId}</CardContent>
+            <CardContent>Accepted by - {gig.acceptedbyId?gig.acceptedbyId:"0"}</CardContent>
             <CardFooter>{new Date(gig.startDateTime).toLocaleString()}</CardFooter>
-            <CardFooter>{new Date(gig.endDateTime).toLocaleString()}</CardFooter>
           </Card>
         </div>
       ))}
