@@ -24,25 +24,22 @@ export const BentoGridItem = ({
   className,
   title,
   description,
-  header,
   icon,
   sender,
 }: {
   className?: string;
   title?: string | React.ReactNode;
   description?: string | React.ReactNode;
-  header?: React.ReactNode;
   icon?: React.ReactNode;
   sender?: string | React.ReactNode;
 }) => {
   return (
     <div
       className={cn(
-        "group/bento shadow-input row-span-1 flex flex-col justify-between space-y-4 rounded-xl border border-transparent bg-white p-4 transition duration-200 hover:shadow-xl dark:border-white/[0.2] dark:bg-black dark:shadow-none",
+        "group/bento shadow-input row-span-1 flex cursor-pointer flex-col justify-between space-y-4 rounded-xl border border-[#d1d5d8] bg-white p-4 transition duration-200 hover:shadow-xl dark:border-gray-800 dark:bg-[#020817] dark:shadow-none",
         className,
       )}
     >
-      {header}
       <div className="transition duration-200 group-hover/bento:translate-x-2">
         <div className="flex gap-10">
           <div>{icon}</div>
