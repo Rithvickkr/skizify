@@ -1,3 +1,4 @@
+import { send } from "process";
 import { cn } from "../../utils/cn";
 
 export const BentoGrid = ({
@@ -25,12 +26,14 @@ export const BentoGridItem = ({
   description,
   header,
   icon,
+  sender,
 }: {
   className?: string;
   title?: string | React.ReactNode;
   description?: string | React.ReactNode;
   header?: React.ReactNode;
   icon?: React.ReactNode;
+  sender?: string | React.ReactNode;
 }) => {
   return (
     <div
@@ -41,7 +44,10 @@ export const BentoGridItem = ({
     >
       {header}
       <div className="transition duration-200 group-hover/bento:translate-x-2">
-        {icon}
+        <div className="flex gap-10">
+          <div>{icon}</div>
+          <div>{sender}</div>
+        </div>
         <div className="font-sans mb-2 mt-2 font-bold text-neutral-600 dark:text-neutral-200">
           {title}
         </div>
