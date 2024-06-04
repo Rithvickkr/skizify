@@ -53,6 +53,13 @@ export function GigPost() {
       const interval = calculateTimeInterval(startDateTime, endDateTime);
       
       await GigSet(title, description, startDateTime, endDateTime, session, interval);
+      setTitle("");
+      setDescription("");
+      setDate("");
+      setTime("");
+      setEndDate("");
+      setEndTime("");
+      window.alert("Gig posted successfully");
     }
 
     console.log({
