@@ -33,7 +33,8 @@ export default async function () {
               {formatTimeInterval(gig.Interval.hours, gig.Interval.minutes)}
             </CardContent>
             <CardContent>Accepted by - {gig.acceptedbyId?gig.acceptedbyId:"0"}</CardContent>
-            <CardFooter>{new Date(gig.startDateTime).toLocaleString()}</CardFooter>
+            <CardFooter>{new Date(gig.startDateTime).toLocaleString().slice(0,8)} to {new Date(gig.endDateTime).toLocaleString().slice(0,8)}</CardFooter>
+            <CardFooter>Status-<h5 className={gig.status=="ACCEPTED"?"text-green-600":"text-blue-600"}>{gig.status}</h5></CardFooter>
           </Card>
         </div>
       ))}
