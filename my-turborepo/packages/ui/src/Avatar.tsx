@@ -21,7 +21,7 @@ export const Avatar = ({ name, photo }: AvatarProps) => {
           className="rounded-full"
         />
       ) : (
-        <div className="h-10 w-10 rounded-full bg-[#d1d5d8] border border-gray-400 dark:border-gray-800 text-gray-50 flex justify-center items-center focus:outline-0">
+        <div className="flex h-10 w-10 items-center justify-center rounded-full border border-white bg-[black] text-white focus:outline-0 dark:border-gray-800 dark:bg-white dark:text-black">
           <div>{char}</div>
         </div>
       )}

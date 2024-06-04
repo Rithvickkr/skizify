@@ -40,17 +40,11 @@ export default async function GigStructure({
             select: {
               userImage: true,
               name: true,
+              gigsAccepted: true,
             },
           });
 
-          return (
-            <BentoGridItem
-              title={gig.title}
-              description={gig.content}
-              icon={<Avatar name={user?.name} photo={user?.userImage} />}
-              sender={user?.name || ""}
-            />
-          );
+          return <BentoGridItem gig={gig} poster={user} />;
         })}
       </BentoGrid>
     </div>
