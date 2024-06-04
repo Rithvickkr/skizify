@@ -30,7 +30,6 @@ export async function GigSet(
         },
       },
     });
-    console.log(gig);
     return gig;
   }
 }

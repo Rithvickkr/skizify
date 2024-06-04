@@ -13,7 +13,7 @@ import {
 
 import { Input } from "../../@/components/ui/input";
 import { Label } from "../../@/components/ui/label";
-import { GigSet } from "../lib/actions/gigset";
+import { GigSet } from "../lib/actions/setgig";
 
 export function GigPost() {
   const { data: session } = useSession();

@@ -13,7 +13,6 @@ export default async function Page() {
 }
 export const getImage = async () => {
   const session = await getServerSession(authOptions);
-  console.log(session);
   let userimage = "";
   try {
     const user = await prisma.user.findUnique({

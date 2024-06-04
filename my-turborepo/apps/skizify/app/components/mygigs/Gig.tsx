@@ -6,13 +6,12 @@ import { imageString} from "@repo/store"
 import prisma from "@repo/db/client";
 // import {getUserImage} from "../../lib/actions/getImage";
 import { authOptions } from "../../lib/auth";
+import { getUserImage } from "../../lib/actions/getImage";
 
 //This will fetch Data from DB
 
 export default async function GigStructure({image}:{image : string}) {
 
-  // const image = await getUserImage();
-  
   console.log(image);
 
   return (

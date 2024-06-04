@@ -42,7 +42,6 @@ export const authOptions: NextAuthOptions = {
               name: credentials.name || null,
             },
           });
-
           return {
             id: user.id.toString(),
             name: user.name,
@@ -57,12 +56,34 @@ export const authOptions: NextAuthOptions = {
   ],
   secret: process.env.JWT_SECRET || "secret",
   callbacks: {
-    async session({ token, session }: { token: JWT, session: any }) {
-      if (token?.sub) {
-        session.user.id = token.sub;
+    async session({ token, session }: { token: any, session: any }) {
+      if (token) {
+        session.user.id = token.id;
+        session.user.role = token.role;
+        session.user.userImage = token.userImage;
       }
       return session;
     },
+    async jwt({ token }) {
+      const dbUser= await db.user.findFirst({
+        where : {
+          email : token.email || "",
+        },
+      })
+
+      if(!dbUser){
+        return token
+      }
+
+      return {
+        id : dbUser.id ,
+        name : dbUser.name,
+        email : dbUser.email,
+        userImage : dbUser.userImage || "",
+        role : dbUser.role
+      };
+    }
+
   },
   pages: {
     signIn: '/signin',
