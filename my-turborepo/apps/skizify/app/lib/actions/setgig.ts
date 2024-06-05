@@ -7,6 +7,7 @@ export async function GigSet(
   endDateTime: String,
   session: any,
   interval: any,
+  timeneed:number
 ) {
   const user = await prisma.user.findUnique({
     where: { email: session.user.email },
@@ -28,6 +29,7 @@ export async function GigSet(
           minutes: number;
           hours: number;
         },
+        timeneeded: timeneed as number,
       },
     });
     return gig;

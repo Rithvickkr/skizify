@@ -38,6 +38,7 @@ model Gigs {
   endDateTime     DateTime
   createdAt       DateTime  @default(now()) //When the Post is Created
   updatedAt       DateTime  @updatedAt
+  timeneeded      Int
   authorId        String
   acceptedById    String?
   Interval        Json //This will store the interval of the Gig

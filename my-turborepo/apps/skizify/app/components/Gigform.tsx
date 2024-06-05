@@ -8,6 +8,24 @@ import { Input } from "../../@/components/ui/input";
 import { Label } from "../../@/components/ui/label";
 import { GigSet } from "../lib/actions/setgig";
 import { cn } from "../utils/cn";
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from "../../@/components/ui/popover";
+
+
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+  SelectGroup,
+  SelectLabel,
+} from "../../@/components/ui/select"
+import { ChevronDownIcon } from "lucide-react";
+
 
 const LabelInputContainer = ({
   children,
@@ -32,6 +50,7 @@ export function GigForm() {
   const [time, setTime] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
   const [endTime, setEndTime] = useState<string>("");
+  const [Timeneed, setTimeneed] = useState<number>(0);
 
   function calculateTimeInterval(startTime: string, endTime: string) {
     const date = new Date().toISOString().split("T")[0];
@@ -102,6 +121,7 @@ export function GigForm() {
         endDateTime,
         session,
         interval,
+        Timeneed,
       );
 
       setTitle("");
@@ -120,6 +140,7 @@ export function GigForm() {
       time,
       endDate,
       endTime,
+      Timeneed,
     });
   };
 
@@ -160,6 +181,46 @@ export function GigForm() {
             placeholder="Event Description"
             className="w-full rounded border p-2"
           />
+        </LabelInputContainer>
+        <LabelInputContainer>
+          <Label htmlFor="timeneeded">Slot</Label>
+          <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="outline" className="m-2 w-full">
+                  <div className="flex items-center justify-between">
+                    <span>Select a time</span>
+                    <ChevronDownIcon className="h-4 w-4" />
+                  </div>
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="space-y-4 border border-[#d1d5d8] bg-white p-4 transition duration-200 hover:shadow-xl dark:border-gray-800 dark:bg-[#020817] dark:shadow-none">
+                <div className="grid grid-cols-3 gap-2">
+                  <Button
+                    variant="default"
+                    className="border-[#d1d5d8] bg-black px-2 py-1 text-xs text-white dark:bg-white dark:text-black"
+                    onClick={() => setTimeneed(30)}
+                  >
+                  30 mins
+                  </Button>
+                  <Button
+                    variant="default"
+                    className="border-[#d1d5d8] bg-black px-2 py-1 text-xs text-white dark:bg-white dark:text-black"
+                    onClick={() => setTimeneed(45)}
+                  >
+                   45 mins
+                  </Button>
+                  <Button
+                    variant="default"
+
+                    className="border-[#d1d5d8] bg-black px-2 py-1 text-xs text-white dark:bg-white dark:text-black"
+                    onClick={() => setTimeneed(60)}
+                  >
+                    1 hour
+                  </Button>
+                 
+                </div>
+              </PopoverContent>
+            </Popover>
         </LabelInputContainer>
         <div className="flex space-x-2">
           <LabelInputContainer className="flex-1">
