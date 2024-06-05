@@ -18,6 +18,7 @@ export interface GigsInterface {
   acceptedById: string | null;
   Interval: any; //as it is a JSON vlaue
   status: GigStatus;
+  timeneeded: number
 }
 
 export default async function Page() {

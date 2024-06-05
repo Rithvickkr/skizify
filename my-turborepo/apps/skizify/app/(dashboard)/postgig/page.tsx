@@ -1,4 +1,3 @@
-import { GigPost } from "../../components/GigPost";
 import { GigForm } from "../../components/Gigform";
 
 

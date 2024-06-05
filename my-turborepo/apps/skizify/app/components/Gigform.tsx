@@ -14,7 +14,6 @@ import {
   PopoverContent,
 } from "../../@/components/ui/popover";
 
-
 import {
   Select,
   SelectContent,
@@ -23,9 +22,8 @@ import {
   SelectValue,
   SelectGroup,
   SelectLabel,
-} from "../../@/components/ui/select"
+} from "../../@/components/ui/select";
 import { ChevronDownIcon } from "lucide-react";
-
 
 const LabelInputContainer = ({
   children,
@@ -51,6 +49,7 @@ export function GigForm() {
   const [endDate, setEndDate] = useState<string>("");
   const [endTime, setEndTime] = useState<string>("");
   const [Timeneed, setTimeneed] = useState<number>(0);
+  const [selectedTime, setSelectedTime] = useState<number | null>(null);
 
   function calculateTimeInterval(startTime: string, endTime: string) {
     const date = new Date().toISOString().split("T")[0];
@@ -80,7 +79,7 @@ export function GigForm() {
       maxEndDate.setDate(startDate.getDate() + 2);
       if (endDateValue > maxEndDate) {
         window.alert(
-          "End date cannot be more than 2 days after the start date.",
+          "End date cannot be more than 2 days after the start date."
         );
         setEndDate("");
         throw new Error("End date cannot be more than 2 days after the start date.");
@@ -92,7 +91,7 @@ export function GigForm() {
     date: String,
     time: String,
     endDate: String,
-    endTime: String,
+    endTime: String
   ) => {
     if (date && time && endDate && endTime) {
       const startDateTime = new Date(`${date}T${time}`);
@@ -121,7 +120,7 @@ export function GigForm() {
         endDateTime,
         session,
         interval,
-        Timeneed,
+        Timeneed
       );
 
       setTitle("");
@@ -185,42 +184,40 @@ export function GigForm() {
         <LabelInputContainer>
           <Label htmlFor="timeneeded">Slot</Label>
           <Popover>
-              <PopoverTrigger asChild>
-                <Button variant="outline" className="m-2 w-full">
-                  <div className="flex items-center justify-between">
-                    <span>Select a time</span>
-                    <ChevronDownIcon className="h-4 w-4" />
-                  </div>
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="space-y-4 border border-[#d1d5d8] bg-white p-4 transition duration-200 hover:shadow-xl dark:border-gray-800 dark:bg-[#020817] dark:shadow-none">
-                <div className="grid grid-cols-3 gap-2">
-                  <Button
-                    variant="default"
-                    className="border-[#d1d5d8] bg-black px-2 py-1 text-xs text-white dark:bg-white dark:text-black"
-                    onClick={() => setTimeneed(30)}
-                  >
-                  30 mins
-                  </Button>
-                  <Button
-                    variant="default"
-                    className="border-[#d1d5d8] bg-black px-2 py-1 text-xs text-white dark:bg-white dark:text-black"
-                    onClick={() => setTimeneed(45)}
-                  >
-                   45 mins
-                  </Button>
-                  <Button
-                    variant="default"
-
-                    className="border-[#d1d5d8] bg-black px-2 py-1 text-xs text-white dark:bg-white dark:text-black"
-                    onClick={() => setTimeneed(60)}
-                  >
-                    1 hour
-                  </Button>
-                 
+            <PopoverTrigger asChild>
+              <Button variant="outline" className="m-2 w-full">
+                <div className="flex items-center justify-between">
+                  <span>
+                    {selectedTime
+                      ? `${selectedTime} mins selected`
+                      : "Select a time"}
+                  </span>
+                  <ChevronDownIcon className="h-4 w-4" />
                 </div>
-              </PopoverContent>
-            </Popover>
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="space-y-4 border border-[#d1d5d8] bg-white p-4 transition duration-200 hover:shadow-xl dark:border-gray-800 dark:bg-[#020817] dark:shadow-none">
+              <div className="grid grid-cols-3 gap-2">
+                {[30, 45, 60].map((time) => (
+                  <Button
+                    key={time}
+                    variant="default"
+                    className={`border-[#d1d5d8] px-2 py-1 text-xs ${
+                      selectedTime === time
+                        ? "bg-black text-white dark:bg-white dark:text-black"
+                        : "bg-white text-black"
+                    }`}
+                    onClick={() => {
+                      setTimeneed(time);
+                      setSelectedTime(time);
+                    }}
+                  >
+                    {time} mins
+                  </Button>
+                ))}
+              </div>
+            </PopoverContent>
+          </Popover>
         </LabelInputContainer>
         <div className="flex space-x-2">
           <LabelInputContainer className="flex-1">
@@ -267,7 +264,7 @@ export function GigForm() {
               value={endTime}
               onChange={(e) => {
                 setEndTime(e.target.value);
-                validateTimes(date, time, endDate, endTime);
+                validateTimes(date, time, endDate, e.target.value);
               }}
               placeholder="Select End Time"
             />
@@ -275,7 +272,7 @@ export function GigForm() {
         </div>
         <div className="mt-5 flex justify-between">
           <Button variant="outline">Cancel</Button>
-          <Button type="submit" onClick={handleSubmit}>
+          <Button variant="default" className="bg-black text-white dark:bg-white dark:text-white" onClick={handleSubmit}>
             Post
           </Button>
         </div>

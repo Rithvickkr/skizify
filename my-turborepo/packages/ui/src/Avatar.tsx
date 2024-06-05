@@ -1,12 +1,13 @@
 import Image from "next/image";
 import { ReactNode } from "react";
-
+import { cn } from "../../../apps/skizify/app/utils/cn";
 interface AvatarProps {
   name: string | null | undefined;
   photo?: any;
+  classname? : string
 }
 
-export const Avatar = ({ name, photo }: AvatarProps) => {
+export const Avatar = ({ name, photo ,classname }: AvatarProps) => {
   const fallbackChar = "U"; //for User
   const char = name ? name.charAt(0) : fallbackChar;
 
@@ -21,7 +22,7 @@ export const Avatar = ({ name, photo }: AvatarProps) => {
           className="rounded-full"
         />
       ) : (
-        <div className="flex h-10 w-10 items-center justify-center rounded-full border border-white bg-[black] text-white focus:outline-0 dark:border-gray-800 dark:bg-white dark:text-black">
+        <div className={cn("flex h-10 w-10 items-center justify-center rounded-full border border-white bg-[black] text-white focus:outline-0 dark:border-gray-800 dark:bg-white dark:text-black",classname)}>
           <div>{char}</div>
         </div>
       )}

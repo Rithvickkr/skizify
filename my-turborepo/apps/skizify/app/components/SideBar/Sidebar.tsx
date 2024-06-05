@@ -3,7 +3,7 @@ import { authOptions } from "../../lib/auth";
 import { SidebarItem } from "./SidebarItem";
 import { JSX, SVGProps } from "react";
 import { UserRole } from "@prisma/client";
-import {SquareCheckBig} from "lucide-react"
+import { SquareCheckBig } from "lucide-react";
 export async function Sidebar() {
   const session = await getServerSession(authOptions);
   console.log(session);
@@ -12,26 +12,37 @@ export async function Sidebar() {
   }
   return (
     <div className="flex min-h-screen w-1/5 flex-col border-r bg-[#fafbfb] dark:border-slate-700 dark:bg-gray-800">
-      <div className="flex">
-        <div className="min-w-lg m-4 size-10 cursor-pointer rounded-full border border-gray-400 bg-neutral-300 pl-8 dark:border-gray-800"></div>
+      <div className="flex items-center">
+        <div className="flex size-10 m-2 items-center justify-center rounded-full border border-white bg-[black] text-white focus:outline-0 dark:border-gray-800 dark:bg-white dark:text-black">
+          <div>S</div>
+        </div>
         <div className="m-4 cursor-pointer font-display text-3xl font-bold">
           ABC
         </div>
       </div>
       <div className="pt-24">
-        {
-            session.user.role === UserRole.USER ? (<SidebarItem
+        {session.user.role === UserRole.USER ? (
+          <SidebarItem
             href={"/postgig"}
             title={"Post a Gig"}
             icon={<PlusIcon />}
-          />) : ""
-        }
-        
-        
+          />
+        ) : (
+          ""
+        )}
+
         <SidebarItem
           href={"/mygigs"}
-          title={session.user.role === UserRole.USER ? "My Gigs" : "Accepted Gigs"}
-          icon={ session.user.role === UserRole.USER ? <BriefcaseIcon /> : <SquareCheckBig />}
+          title={
+            session.user.role === UserRole.USER ? "My Gigs" : "Accepted Gigs"
+          }
+          icon={
+            session.user.role === UserRole.USER ? (
+              <BriefcaseIcon />
+            ) : (
+              <SquareCheckBig />
+            )
+          }
         />
         <SidebarItem
           href={"/explore"}
@@ -40,7 +51,9 @@ export async function Sidebar() {
         />
         <SidebarItem
           href={"/schedule"}
-          title={session.user.role === UserRole.USER ? "Appointments" : "Calendar"}
+          title={
+            session.user.role === UserRole.USER ? "Appointments" : "Calendar"
+          }
           icon={<CalendarIcon />}
         />
         <SidebarItem href={"/profile"} title={"Profile"} icon={<UserIcon />} />
