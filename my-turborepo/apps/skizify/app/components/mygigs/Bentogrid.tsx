@@ -13,6 +13,7 @@ import {
 import { Button } from "../../../@/components/ui/button";
 import { Clock7 } from "lucide-react";
 import { BookButton } from "./Booking";
+import { BookButton2 } from "./Booking2.0";
 // {
 //   id: string;
 //   title: string;
@@ -228,17 +229,19 @@ export const BentoGridItem = ({
                 </div>
               </PopoverContent>
             </Popover> */}
-            <div className="flex space-x-4">
-              <BookButton
+            <div className=" flex space-x-4">
+              <div className="flex-1">
+              <BookButton2
                 gig={gig}
                 poster={poster}
                 Datetimepackage={datetimepackage}
               />
-              <Button className="m-1 flex-1 bg-white text-black">
+              </div>
+              <Button className="m-1 col-span-1 flex-1 bg-white text-black">
                 Message
               </Button>
             </div>
-          </CardContent>
+          </CardContent> 
         </Card>
       </div>
     </div>

@@ -57,7 +57,7 @@ const TimeSlider: React.FC<TimeSliderProps> = ({ startTime, endTime }) => {
   const isDarkMode = document.documentElement.classList.contains("dark");
 
   return (
-    <div className="flex flex-col items-center justify-center">
+    <div className="flex flex-col items-center justify-center px-4">
       <div className="mx-4 w-full">
         <Slider
           min={parseTimeToMinutes(startTime)}
