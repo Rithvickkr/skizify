@@ -9,7 +9,7 @@ import { useSession } from "next-auth/react";
 import { Avatar } from "@repo/ui/avatar";
 import { getImageSet } from "../../lib/actions/imageset";
 
-export default async function Component() {
+export default function Component() {
   const [name, setName] = useState<string>("");
   const [username, setUsername] = useState<string>("");
   const [bio, setBio] = useState<string>("");

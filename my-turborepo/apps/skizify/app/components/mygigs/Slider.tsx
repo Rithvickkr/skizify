@@ -1,44 +1,51 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Slider from "rc-slider";
+import Tooltip from "rc-tooltip";
 import "rc-slider/assets/index.css";
+import "rc-tooltip/assets/bootstrap.css";
 
 interface TimeSliderProps {
   startTime: string;
   endTime: string;
+  timeneeded: number; // New prop for extra minutes
 }
 
-const TimeSlider: React.FC<TimeSliderProps> = ({ startTime, endTime }) => {
-  const [selectedTime, setSelectedTime] = useState<[number, number]>([0, 0]);
+const TimeSlider: React.FC<TimeSliderProps> = ({ startTime, endTime , timeneeded}) => {
+  const [selectedTime, setSelectedTime] = useState<number>(0);
+  const [maxTime, setMaxTime] = useState<number>(0);
+  const [endTimeInMinutes, setEndTimeInMinutes] = useState<number>(0);
 
   useEffect(() => {
-    setSelectedTime([
-      parseTimeToMinutes(startTime),
-      parseTimeToMinutes(endTime),
-    ]);
-  }, [startTime, endTime]);
+    const endTimeMinutes = parseTimeToMinutes(endTime);
+    const maxAllowedTime = endTimeMinutes - timeneeded;
+    setSelectedTime(parseTimeToMinutes(startTime));
+    setMaxTime(maxAllowedTime);
+    setEndTimeInMinutes(endTimeMinutes);
+  }, [startTime, endTime, timeneeded]);
 
   const parseTimeToMinutes = (time: string): number => {
     const [hours, minutes, period] = time.split(/[:\s]/);
-    let totalMinutes =
-      parseInt(hours || "0", 10) * 60 + parseInt(minutes || "0", 10);
-    if (period && period.toLowerCase() === "pm") {
+    let totalMinutes = parseInt(hours || "0", 10) * 60 + parseInt(minutes || "0", 10);
+    if (period && period.toLowerCase() === "pm" && hours !== "12") {
       totalMinutes += 12 * 60;
     }
     return totalMinutes;
   };
 
   const handleChange = (value: number | number[] | undefined) => {
-    const newValue = typeof value === "number" ? value : 0;
-    setSelectedTime([newValue, selectedTime[1] || 0]);
+    if (typeof value === "number") {
+      setSelectedTime(value);
+    } else if (Array.isArray(value)) {
+      setSelectedTime(value[0] ?? 0); // Ensure value[0] is not undefined
+    }
   };
 
   const handleFinalChange = (value: number | number[] | undefined) => {
-    if (Array.isArray(value)) {
-      setSelectedTime([value[0] ?? 0, value[1] ?? 0]); // Ensure value[1] is a number
-    } else {
-      const newValue = value !== undefined ? value : 0; // Assign a default value if value is undefined
-      setSelectedTime([newValue, selectedTime[1] || 0]); // Ensure newValue is a number
+    if (typeof value === "number") {
+      setSelectedTime(value);
+    } else if (Array.isArray(value)) {
+      setSelectedTime(value[0] ?? 0); // Ensure value[0] is not undefined
     }
   };
 
@@ -58,34 +65,52 @@ const TimeSlider: React.FC<TimeSliderProps> = ({ startTime, endTime }) => {
 
   return (
     <div className="flex flex-col items-center justify-center px-4">
-      <div className="mx-4 w-full">
-        <Slider
-          min={parseTimeToMinutes(startTime)}
-          max={parseTimeToMinutes(endTime)}
-          value={selectedTime[0]}
-          onChange={handleChange}
-          onAfterChange={handleFinalChange}
-          trackStyle={{
-            backgroundColor: isDarkMode ? "#f4f4f5" : "#18181b",
-            height: "8px", // Adjust track height
-          }}
-          handleStyle={{
-            backgroundColor: isDarkMode ? "#18181b" : "#ffffff",
-            border: `2px solid ${isDarkMode ? "#f4f4f5" : "#18181b"}`,
-            width: "24px",
-            height: "24px",
-            opacity: 1,
-            marginTop: "-8px", // Center the thumb
-            outline: "none", // Remove blue ring on focus
-            boxShadow: "none",
-          }}
-          railStyle={{
-            backgroundColor: isDarkMode ? "#18181b" : "#f4f4f5",
-            height: "8px", // Adjust rail height
-          }}
-        />
+      <div className="mx-4 w-full relative">
+        <Tooltip
+          overlay={`${formatTime(selectedTime)}`}
+          placement="top"
+          visible={true}
+          overlayStyle={{ opacity: 1 , color: "#ffffff" }} // Adjust the opacity here
+          
+        >
+          <Slider
+            min={parseTimeToMinutes(startTime)}
+            max={maxTime} // Set max to maxTime to prevent thumb from going beyond this point
+            value={selectedTime}
+            onChange={handleChange}
+            onAfterChange={handleFinalChange}
+            trackStyle={{
+              backgroundColor: isDarkMode ? "#f4f4f5" : "#18181b",
+              height: "8px", // Adjust track height
+            }}
+            handleStyle={{
+              backgroundColor: isDarkMode ? "#18181b" : "#ffffff",
+              border: `2px solid ${isDarkMode ? "#f4f4f5" : "#18181b"}`,
+              width: "24px",
+              height: "24px",
+              opacity: 1,
+              marginTop: "-8px", // Center the thumb
+              outline: "none", // Remove blue ring on focus
+              boxShadow: "none",
+            }}
+            railStyle={{
+              backgroundColor: isDarkMode ? "#18181b" : "#f4f4f5",
+              height: "8px", // Adjust rail height
+            }}
+            marks={{
+              [maxTime]: {
+                style: {
+                  color: isDarkMode ? "#f4f4f5" : "#18181b",
+                }
+              },
+            }}
+          />
+        </Tooltip>
       </div>
-      {formatTime(selectedTime[0])}
+      <div className="flex w-full items-center justify-between px-1 text-gray-500 dark:text-gray-400 mt-4 text-base ">
+        <span>{startTime}</span>
+        <span>{formatTime(maxTime)}</span>
+      </div>
     </div>
   );
 };

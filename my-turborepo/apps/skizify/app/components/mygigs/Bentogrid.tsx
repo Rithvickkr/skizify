@@ -36,6 +36,7 @@ export interface Datetimepackage {
   sessionTime: string;
   startTime: string;
   endTime: string;
+  timeneeded : number
 }
 
 export const BentoGrid = ({
@@ -104,6 +105,7 @@ export const BentoGridItem = ({
         : "1 Hr";
   const startTime = formatTime(gig.startDateTime);
   const endTime = formatTime(gig.endDateTime);
+  const timeneeded = gig.timeneeded
   const datetimepackage: Datetimepackage = {
     startDATEmonth,
     startDATEday,
@@ -112,7 +114,10 @@ export const BentoGridItem = ({
     sessionTime,
     startTime,
     endTime,
+    timeneeded
   };
+  // "rc-tooltip": "^6.2.0",
+
   return (
     <div
       className={cn(
