@@ -32,7 +32,7 @@ const TimeSlider: React.FC<TimeSliderProps> = ({ startTime, endTime , timeneeded
     }
     return totalMinutes;
   };
-
+ 
   const handleChange = (value: number | number[] | undefined) => {
     if (typeof value === "number") {
       setSelectedTime(value);
