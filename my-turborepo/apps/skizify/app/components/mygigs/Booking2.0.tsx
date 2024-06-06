@@ -15,7 +15,7 @@ import { Datetimepackage } from "./Bentogrid";
 import { Button } from "../../../@/components/ui/button";
 import TimeSlider from "./Slider";
 import { Avatar } from "@repo/ui/avatar";
-import { ScrollArea } from "../../../@/components/ui/scroll-area";
+import { ScrollArea, ScrollBar } from "../../../@/components/ui/scroll-area";
 
 export function BookButton2({
   gig,
@@ -66,6 +66,8 @@ export function BookButton2({
                 </div>
                 <ScrollArea className="w-full truncate text-wrap rounded-md border p-2 px-2 text-sm">
                   {gig.content}
+                  <ScrollBar orientation="vertical" />
+
                 </ScrollArea>
               </div>
             </CredenzaDescription>

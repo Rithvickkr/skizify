@@ -3,7 +3,7 @@ import { GigsInterface } from "../../(dashboard)/explore/page";
 import { Avatar } from "@repo/ui/avatar";
 import { JSX, SVGProps } from "react";
 import { Card, CardContent } from "../../../@/components/ui/card";
-import { ScrollArea } from "../../../@/components/ui/scroll-area";
+import { ScrollArea, ScrollBar } from "../../../@/components/ui/scroll-area";
 
 import {
   Popover,
@@ -165,6 +165,7 @@ export const BentoGridItem = ({
                 </div>
                 <ScrollArea className="w-full truncate text-wrap rounded-md border p-2 px-2 text-sm">
                   {gig.content}
+                  <ScrollBar orientation="horizontal" />
                 </ScrollArea>
               </div>
 

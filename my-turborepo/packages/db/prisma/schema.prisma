@@ -23,31 +23,34 @@ model User {
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
   gigsCreated     Gigs[]    @relation(name: "Author")
-  gigsAccepted    Gigs[]    @relation(name: "AcceptedUsers") //This will specify one and one reealtion
+  gigsAccepted    GigUser[] //to know which of the Request is Accepted or not
   authType        AuthType?
   languages       String[]
   reviewsGiven    Reviews[] @relation(name: "GiventoUser")
   reviewsReceived Reviews[] @relation(name: "GivenbyUser")
   role            UserRole  @default(USER)
+  confirmedGigs   Gigs[]    @relation(name: "ConfirmedUser") //User will get to know which his requests are accpeted
   bio             String?
   education       String?
 }
 
 model Gigs {
-  id              String    @id @default(uuid())
-  title           String
-  content         String
-  startDateTime   DateTime
-  endDateTime     DateTime
-  createdAt       DateTime  @default(now()) //When the Post is Created
-  updatedAt       DateTime  @updatedAt
-  timeneeded      Int
-  authorId        String
-  acceptedById    String?
-  Interval        Json //This will store the interval of the Gig
-  status          GigStatus
-  acceptedBy      User?     @relation(name: "AcceptedUsers", fields: [acceptedById], references: [id])
-  author          User      @relation(name: "Author", fields: [authorId], references: [id])
+  id            String    @id @default(uuid())
+  title         String
+  content       String
+  startDateTime DateTime
+  endDateTime   DateTime
+  createdAt     DateTime  @default(now()) // When the Post is Created
+  updatedAt     DateTime  @updatedAt
+  timeneeded    Int       
+  authorId      String
+  confirmUserId String?
+  confirmedUser User?     @relation(name: "ConfirmedUser", fields: [confirmUserId], references: [id])
+  status        GigStatus
+  author        User      @relation(name: "Author", fields: [authorId], references: [id])
+  acceptedUsers GigUser[]
+  Interval      Json //This will store the interval of the Gig
+
 }
 
 model Reviews {
@@ -61,7 +64,15 @@ model Reviews {
   giventoUser     User     @relation(name: "GiventoUser", fields: [givento], references: [id])
   givenbyUser     User     @relation(name: "GivenbyUser", fields: [givenby], references: [id])
 }
-
+model GigUser {
+  id       String  @id @default(uuid())
+  gig      Gigs    @relation(fields: [gigId], references: [id])
+  gigId    String
+  user     User    @relation(fields: [userId], references: [id])
+  userId   String
+  accepted Boolean //Teacher will also get to know which of the Requests are accepted
+  @@unique([gigId, userId])
+}
 enum AuthType {
   GOOGLE
   FACEBOOK
