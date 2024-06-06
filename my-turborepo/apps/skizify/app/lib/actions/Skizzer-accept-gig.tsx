@@ -3,4 +3,9 @@
  * update the 
  * timeneeeded , 
  */
-export function acceptGig()
+import prisma from "@repo/db/client"
+import { UserRole , GigStatus } from "@prisma/client";
+
+export function acceptGig(){
+
+}
