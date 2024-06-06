@@ -28,6 +28,8 @@ model User {
   reviewsGiven    Reviews[] @relation(name: "GiventoUser")
   reviewsReceived Reviews[] @relation(name: "GivenbyUser")
   role            UserRole  @default(USER)
+  bio             String?
+  education       String?
 }
 
 model Gigs {
