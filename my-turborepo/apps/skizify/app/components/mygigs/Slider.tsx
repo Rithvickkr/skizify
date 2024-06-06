@@ -11,28 +11,35 @@ interface TimeSliderProps {
   timeneeded: number; // New prop for extra minutes
 }
 
-const TimeSlider: React.FC<TimeSliderProps> = ({ startTime, endTime , timeneeded}) => {
+const TimeSlider: React.FC<TimeSliderProps> = ({ startTime, endTime, timeneeded }) => {
   const [selectedTime, setSelectedTime] = useState<number>(0);
   const [maxTime, setMaxTime] = useState<number>(0);
   const [endTimeInMinutes, setEndTimeInMinutes] = useState<number>(0);
 
   useEffect(() => {
-    const endTimeMinutes = parseTimeToMinutes(endTime);
-    const maxAllowedTime = endTimeMinutes - timeneeded;
-    setSelectedTime(parseTimeToMinutes(startTime));
-    setMaxTime(maxAllowedTime);
-    setEndTimeInMinutes(endTimeMinutes);
+    if (startTime && endTime) {
+      const endTimeMinutes = parseTimeToMinutes(endTime);
+      const maxAllowedTime = endTimeMinutes - timeneeded;
+      setSelectedTime(parseTimeToMinutes(startTime));
+      setMaxTime(maxAllowedTime);
+      setEndTimeInMinutes(endTimeMinutes);
+    }
   }, [startTime, endTime, timeneeded]);
 
   const parseTimeToMinutes = (time: string): number => {
-    const [hours, minutes, period] = time.split(/[:\s]/);
-    let totalMinutes = parseInt(hours || "0", 10) * 60 + parseInt(minutes || "0", 10);
-    if (period && period.toLowerCase() === "pm" && hours !== "12") {
+    const [hoursStr, minutesStr, period] = time.split(/[:\s]/);
+    const hours = hoursStr ? parseInt(hoursStr, 10) : 0;
+    const minutes = minutesStr ? parseInt(minutesStr, 10) : 0;
+
+    let totalMinutes = hours * 60 + minutes;
+    if (period && period.toLowerCase() === "pm" && hours !== 12) {
       totalMinutes += 12 * 60;
+    } else if (period && period.toLowerCase() === "am" && hours === 12) {
+      totalMinutes -= 12 * 60;
     }
     return totalMinutes;
   };
- 
+
   const handleChange = (value: number | number[] | undefined) => {
     if (typeof value === "number") {
       setSelectedTime(value);
@@ -70,8 +77,7 @@ const TimeSlider: React.FC<TimeSliderProps> = ({ startTime, endTime , timeneeded
           overlay={`${formatTime(selectedTime)}`}
           placement="top"
           visible={true}
-          overlayStyle={{ opacity: 1 , color: "#ffffff" }} // Adjust the opacity here
-          
+          overlayStyle={{ opacity: 1, color: "#ffffff" }} // Adjust the opacity here
         >
           <Slider
             min={parseTimeToMinutes(startTime)}
@@ -101,7 +107,7 @@ const TimeSlider: React.FC<TimeSliderProps> = ({ startTime, endTime , timeneeded
               [maxTime]: {
                 style: {
                   color: isDarkMode ? "#f4f4f5" : "#18181b",
-                }
+                },
               },
             }}
           />
