@@ -82,8 +82,7 @@ export function BookButton({
           <div>
             <TimeSlider
               startTime={Datetimepackage.startTime}
-              endTime={Datetimepackage.endTime}
-            />
+              endTime={Datetimepackage.endTime} timeneeded={0}            />
           </div>
           <div className="flex items-center justify-between px-2 text-sm text-gray-500 dark:text-gray-400">
             <span>{Datetimepackage.startTime}</span>
