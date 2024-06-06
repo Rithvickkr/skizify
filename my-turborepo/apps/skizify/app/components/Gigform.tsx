@@ -272,7 +272,7 @@ export function GigForm() {
         </div>
         <div className="mt-5 flex justify-between">
           <Button variant="outline">Cancel</Button>
-          <Button variant="default" className="bg-black text-white dark:bg-white dark:text-white" onClick={handleSubmit}>
+          <Button variant="default" className="bg-black text-white dark:bg-white dark:text-black" onClick={handleSubmit}>
             Post
           </Button>
         </div>
