@@ -1,12 +1,6 @@
 import { send } from "process";
 import { cn } from "../../utils/cn";
-import {
-  CircleCheckBig,
-  Clock7,
-  Hourglass,
-  HourglassIcon,
-  UserRoundCheck,
-} from "lucide-react";
+import { CircleCheckBig, Clock7, Hourglass, HourglassIcon, UserRoundCheck } from "lucide-react";
 import { ScrollArea } from "../../../@/components/ui/scroll-area";
 
 export const BentoGridcopy = ({
@@ -79,57 +73,50 @@ export const BentoGridItemcopy = ({
         <div className="font-sans mt-1 text-sm text-neutral-600 dark:text-neutral-300">
           {description}
         </div> */}
-        <div className="w-full">
-          <div className="my-2 flex flex-col">
-            <div className="ml-2 h-7 justify-items-center font-display text-xl font-medium">
-              {title || "Title"}
-            </div>
-            <ScrollArea className="w-full truncate text-wrap rounded-md border p-2 px-2 text-sm">
-              {description || "Description"}
-            </ScrollArea>
+         <div className="w-full">
+              <div className="my-2 flex flex-col">
+                <div className="ml-2 h-7 justify-items-center font-display text-xl font-medium">
+                  {title || "Title"}
+                </div>
+                <ScrollArea className="w-full truncate text-wrap rounded-md border p-2 px-2 text-sm">
+                  {description || "Description"}
+                </ScrollArea>
+              </div>
+        <div className="flex justify-between">
+          <div className="self-center"><Clock7 className="size-4" /></div>
+          <div className="font-sans mt-1 pl-2 text-sm text-neutral-600 dark:text-neutral-300">
+            {range}
           </div>
-          <div className="flex justify-between">
-            <div className="self-center">
-              <Clock7 className="size-4" />
-            </div>
-            <div className="font-sans mt-1 pl-2 text-sm text-neutral-600 dark:text-neutral-300">
-              {range}
-            </div>
+        </div>
+        <div className="flex ">
+          <div className="self-center"><Hourglass className="size-4"/></div>
+          <div className="font-sans mt-1 pl-2 text-sm text-neutral-600 dark:text-neutral-300">
+          {formatTimeInterval(interval.hours, interval.minutes)}
           </div>
-          <div className="flex">
-            <div className="self-center">
-              <Hourglass className="size-4" />
-            </div>
-            <div className="font-sans mt-1 pl-2 text-sm text-neutral-600 dark:text-neutral-300">
-              {formatTimeInterval(interval.hours, interval.minutes)}
-            </div>
+        </div>
+       
+        <div className="flex ">
+          <div className="self-center"><UserRoundCheck className="size-4"/></div>
+          <div className="font-sans mt-1 pl-2 text-sm text-neutral-600 dark:text-neutral-300">
+          {acceptedby}
           </div>
+        </div>
 
-          <div className="flex">
-            <div className="self-center">
-              <UserRoundCheck className="size-4" />
-            </div>
-            <div className="font-sans mt-1 pl-2 text-sm text-neutral-600 dark:text-neutral-300">
-              {acceptedby}
-            </div>
-          </div>
-
-          <div className="flex">
-            <div className="self-center">
-              <CircleCheckBig className="size-4" />
-            </div>
-            <div className="font-sans mt-1 pl-2 text-sm text-neutral-600 dark:text-neutral-300">
-              <h5
-                className={
-                  status == "ACCEPTED" ? "text-green-600" : "text-blue-600"
-                }
-              >
-                {status}
-              </h5>
-            </div>
+       
+        <div className="flex ">
+          <div className="self-center"><CircleCheckBig className="size-4"/></div>
+          <div className="font-sans mt-1 pl-2 text-sm text-neutral-600 dark:text-neutral-300">
+          <h5
+            className={
+              status == "ACCEPTED" ? "text-green-600" : "text-blue-600"
+            }
+          >
+            {status}
+          </h5>
           </div>
         </div>
       </div>
     </div>
+  </div>
   );
 };

@@ -1,53 +1,8 @@
-// import React from "react";
-// import {
-//   Card,
-//   CardContent,
-//   CardFooter,
-//   CardHeader,
-//   CardTitle,
-// } from "../../../@/components/ui/card";
-// import getgigs from "../../lib/actions/getgigs";
-
-// export default async function () {
-//   const gigs: any = await getgigs();
-//   console.log(gigs);
-
-//   const formatTimeInterval = (hours: number, minutes: number) => {
-//     const totalMinutes = Math.floor(hours * 60 + minutes); // Convert hours to minutes and add the extra minutes
-//     const formattedHours = Math.floor(totalMinutes / 60); // Calculate total hours
-//     const formattedMinutes = totalMinutes % 60; // Get the remainder for minutes
-//     const paddedMinutes = String(formattedMinutes).padStart(2, "0");
-//     return `${formattedHours}:${paddedMinutes}`;
-//   };
-
-//   return (
-//     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-5">
-//       {gigs.map((gig: any) => (
-//         <div key={gig.id}>
-//           <Card className="w-full">
-//             <CardHeader>
-//               <CardTitle>{gig.title}</CardTitle>
-//             </CardHeader>
-//             <CardContent>{gig.content}</CardContent>
-//             <CardContent>
-//               {formatTimeInterval(gig.Interval.hours, gig.Interval.minutes)}
-//             </CardContent>
-//             <CardContent>Accepted by - {gig.acceptedbyId?gig.acceptedbyId:"0"}</CardContent>
-//             <CardFooter>{new Date(gig.startDateTime).toLocaleString().slice(0,8)} to {new Date(gig.endDateTime).toLocaleString().slice(0,8)}</CardFooter>
-//             <CardFooter>Status-<h5 className={gig.status=="ACCEPTED"?"text-green-600":"text-blue-600"}>{gig.status}</h5></CardFooter>
-//           </Card>
-//         </div>
-//       ))}
-//     </div>
-//   );
-// }
 import { getServerSession } from "next-auth/next";
-import GigStructure from "../../components/mygigs/Gig";
 import { authOptions } from "../../lib/auth";
 import prisma from "@repo/db/client";
 import getgigs, { getAllgigs } from "../../lib/actions/getgigs";
-import { UserRole } from "@prisma/client";
-import { GigStatus } from "@prisma/client";
+import { UserRole, GigStatus } from "@prisma/client";
 import GigStructurecopy from "../../components/mygigs/Gigcopy";
 
 export interface GigsInterface {
@@ -60,16 +15,39 @@ export interface GigsInterface {
   updatedAt: Date;
   authorId: string;
   acceptedById: string | null;
-  Interval: any; //as it is a JSON vlaue
+  Interval: any; // as it is a JSON value
   status: GigStatus;
+  timeneeded: number;
 }
 
+// Function to delete expired gigs
+const deleteExpiredGigs = async () => {
+  const currentDate = new Date();
+  await prisma.gigs.deleteMany({
+    where: {
+      endDateTime: {
+        lt: currentDate,
+      },
+    },
+  });
+};
+
 export default async function Page() {
+  // Delete expired gigs from the database
+  await deleteExpiredGigs();
+
+  // Fetch active gigs
   const gigs: GigsInterface[] = await getgigs();
-  console.log(gigs);
+
+  // Filter out gigs whose end date has passed (just to be sure)
+  const currentDate = new Date();
+  const activeGigs = gigs.filter(
+    (gig) => new Date(gig.endDateTime) >= currentDate,
+  );
+
   return (
-    <div>
-      <GigStructurecopy gigs={gigs}/>
+    <div className="h-screen">
+      <GigStructurecopy gigs={activeGigs} />
     </div>
   );
 }
