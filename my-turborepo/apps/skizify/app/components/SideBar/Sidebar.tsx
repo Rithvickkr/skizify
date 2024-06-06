@@ -56,7 +56,11 @@ export async function Sidebar() {
           }
           icon={<CalendarIcon />}
         />
-        <SidebarItem href={"/profile"} title={"Profile"} icon={<UserIcon />} />
+        {session.user.role === UserRole.SKIZZER ? (
+          <SidebarItem href={"/profile"} title={"Profile"} icon={<UserIcon />} />
+        ) : (
+          ""
+        )}
       </div>
     </div>
   );
