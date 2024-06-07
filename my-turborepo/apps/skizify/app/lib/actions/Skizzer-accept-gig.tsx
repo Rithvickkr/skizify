@@ -1,26 +1,35 @@
 "use server";
 /**
  * update the
- * timeneeeded ,
- * I have to update the Gig table and GIGUSER TABLE
- *
+ * I have to update the Gig User TABLE
+ * 
  */
 import prisma from "@repo/db/client";
-import { UserRole, GigStatus } from "@prisma/client";
 import { GigsInterface } from "../../(dashboard)/explore/page";
-import { Datetimepackage } from "../../components/mygigs/Bentogrid";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth";
 export async function acceptGig({
   gig,
-  poster,
-  Datetimepackage,
 }: {
   gig: GigsInterface;
-  poster: any;
-  Datetimepackage: Datetimepackage;
 }) {
+    //Update the GigTable
     const session = await getServerSession(authOptions);
+    if(!session){
+      console.log("Session Don't exist");
+    }
+    try {
+      await prisma.gigUser.create({
+        data : {
+          gigId : gig.id,
+          skizzerId : session?.user.id || "",
+          UserId : gig.authorId,
+        }
+      })
+      console.log("Meeting is requested");
+    }catch(err){
+      console.log('Meeting is not Booked');
+    }
 
 }
 // model Gigs {
@@ -42,14 +51,17 @@ export async function acceptGig({
 //   }
 
 // model GigUser {
-//     id       String  @id @default(uuid())
-//     gig      Gigs    @relation(fields: [gigId], references: [id])
-//     gigId    String
-//     user     User    @relation(fields: [userId], references: [id])
-//     userId   String
-//     accepted Boolean //Teacher will also get to know which of the Requests are accepted
-//     @@unique([gigId, userId])
-//   }
+//   id        String    @id @default(uuid())
+//   gig       Gigs      @relation(fields: [gigId], references: [id], onDelete: Cascade)
+//   gigId     String
+//   user      User      @relation(name: "UserCreatedGig", fields: [UserId], references: [id])
+//   Skizzer   User      @relation(name: "UserAccptedGig", fields: [skizzerId], references: [id])
+//   skizzerId String
+//   UserId    String
+//   status    GigStatus @default(PENDING)
+
+//   @@unique([skizzerId, UserId])
+// }
 
 // export interface GigsInterface {
 //     id: string;

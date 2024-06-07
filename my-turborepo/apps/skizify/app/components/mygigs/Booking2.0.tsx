@@ -17,6 +17,8 @@ import TimeSlider from "./Slider";
 import { Avatar } from "@repo/ui/avatar";
 import { ScrollArea, ScrollBar } from "../../../@/components/ui/scroll-area";
 import { Button as ButtonE } from "../ui/button";
+import { acceptGig } from "../../lib/actions/Skizzer-accept-gig";
+import BookmeetingButton from "./Bookbutton";
 export function BookButton2({
   gig,
   poster,
@@ -104,10 +106,7 @@ export function BookButton2({
             <ButtonE className="m-1 flex-1 bg-white text-black hover:bg-white hover:ring-black dark:text-black dark:bg-white dark:hover:bg-white dark:hover:text-black dark:hover:ring-white shadow" variant="ringHover">
               Message
             </ButtonE>
-            <ButtonE className="my-1 mr-1 flex-1 bg-black text-white dark:bg-white hover:bg-black hover:ring-black dark:text-black dark:hover:bg-white dark:hover:text-black dark:hover:ring-white" variant="ringHover">
-              <CheckCheck className="mr-2 size-4" />
-              Accept
-            </ButtonE>
+            <BookmeetingButton gig={gig} />
           </CredenzaFooter>
         </CredenzaContent>
       </Credenza>
