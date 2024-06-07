@@ -39,7 +39,6 @@ export default async function GigStructure({
             select: {
               userImage: true,
               name: true,
-              gigsAccepted: true,
             },
           });
 
