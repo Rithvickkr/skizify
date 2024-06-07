@@ -16,7 +16,7 @@ import { Button } from "../../../@/components/ui/button";
 import TimeSlider from "./Slider";
 import { Avatar } from "@repo/ui/avatar";
 import { ScrollArea, ScrollBar } from "../../../@/components/ui/scroll-area";
-
+import { Button as ButtonE } from "../ui/button";
 export function BookButton2({
   gig,
   poster,
@@ -30,9 +30,9 @@ export function BookButton2({
     <div>
       <Credenza>
         <CredenzaTrigger asChild>
-          <Button className="col-span-1 m-1 w-full bg-black text-white dark:border dark:border-white dark:bg-[#020817]">
+          <ButtonE className="col-span-1 m-1 w-full bg-black text-white dark:border dark:border-white dark:bg-[#020817]" variant="gooeyLeft">
             Book
-          </Button>
+          </ButtonE>
         </CredenzaTrigger>
         <CredenzaContent>
           <CredenzaHeader>
@@ -67,13 +67,12 @@ export function BookButton2({
                 <ScrollArea className="w-full truncate text-wrap rounded-md border p-2 px-2 text-sm">
                   {gig.content}
                   <ScrollBar orientation="vertical" />
-
                 </ScrollArea>
               </div>
             </CredenzaDescription>
           </CredenzaHeader>
           <CredenzaBody>
-            <div className="flex items-center justify-between px-2 h-fit">
+            <div className="flex h-fit items-center justify-between px-2">
               <div className="mr-3 flex gap-2 text-sm text-gray-500 dark:text-gray-400">
                 <div className="self-center">
                   <Clock7 className="size-6" />
@@ -102,11 +101,13 @@ export function BookButton2({
             {/* <CredenzaClose asChild>
               <button>Close</button>
             </CredenzaClose> */}
-            <Button className="m-1 flex-1 bg-white text-black">Message</Button>
-            <Button className="my-1 mr-1 flex-1 bg-black text-white dark:border dark:border-white dark:bg-[#020817]">
+            <ButtonE className="m-1 flex-1 bg-white text-black hover:bg-white hover:ring-black dark:text-black dark:bg-white dark:hover:bg-white dark:hover:text-black dark:hover:ring-white shadow" variant="ringHover">
+              Message
+            </ButtonE>
+            <ButtonE className="my-1 mr-1 flex-1 bg-black text-white dark:bg-white hover:bg-black hover:ring-black dark:text-black dark:hover:bg-white dark:hover:text-black dark:hover:ring-white" variant="ringHover">
               <CheckCheck className="mr-2 size-4" />
               Accept
-            </Button>
+            </ButtonE>
           </CredenzaFooter>
         </CredenzaContent>
       </Credenza>

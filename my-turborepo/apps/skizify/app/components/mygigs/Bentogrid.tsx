@@ -4,7 +4,7 @@ import { Avatar } from "@repo/ui/avatar";
 import { JSX, SVGProps } from "react";
 import { Card, CardContent } from "../../../@/components/ui/card";
 import { ScrollArea, ScrollBar } from "../../../@/components/ui/scroll-area";
-
+import { Button as ButtonE } from "../ui/button";
 import {
   Popover,
   PopoverTrigger,
@@ -243,9 +243,9 @@ export const BentoGridItem = ({
                 Datetimepackage={datetimepackage}
               />
               </div>
-              <Button className="m-1 col-span-1 flex-1 bg-white text-black">
+              <ButtonE className="m-1 col-span-1 flex-1 bg-white text-black hover:bg-white shadow">
                 Message
-              </Button>
+              </ButtonE>
             </div>
           </CardContent> 
         </Card>
