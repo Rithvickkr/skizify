@@ -23,7 +23,6 @@ import { BookButton2 } from "./Booking2.0";
 //   createdAt: Date;
 //   updatedAt: Date;
 //   authorId: string;
-//   acceptedById: string | null;
 //   Interval: any; //as it is a JSON vlaue
 //   status: GigStatus;
 // }

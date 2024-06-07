@@ -14,7 +14,6 @@ export interface GigsInterface {
   createdAt: Date;
   updatedAt: Date;
   authorId: string;
-  acceptedById: string | null;
   Interval: any; // as it is a JSON value
   status: GigStatus;
   timeneeded: number;

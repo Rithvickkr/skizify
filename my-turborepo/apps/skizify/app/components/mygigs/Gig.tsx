@@ -13,7 +13,6 @@ import prisma from "@repo/db/client";
 //   createdAt: new Date('2024-06-04T09:18:16.000Z'),
 //   updatedAt: new Date('2024-06-04T09:18:16.000Z'),
 //   authorId: '04ba4c81-3704-4ce1-a06c-3dc298fe85ec',
-//   acceptedById: null,
 //   Interval: {
 //     hours: 26.05,
 //     minutes: 1563,

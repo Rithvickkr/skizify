@@ -31,7 +31,6 @@ export default async function GigStructurecopy({ gigs }: { gigs: GigsInterface[]
             range={gig.startDateTime.toDateString() + " to " + gig.endDateTime.toDateString()}
             status={gig.status}
             interval={gig.Interval}
-            acceptedby={gig.acceptedById || "0"}
             icon={<Avatar name={gig.user?.name} photo={gig.user?.userImage} />}
             sender={gig.user?.name || ""}
           />

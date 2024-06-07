@@ -18,7 +18,7 @@ model User {
   username        String?   @unique
   email           String    @unique
   name            String?
-  password        String
+  password        String  
   userImage       String?
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
@@ -50,7 +50,6 @@ model Gigs {
   author        User      @relation(name: "Author", fields: [authorId], references: [id])
   acceptedUsers GigUser[]
   Interval      Json //This will store the interval of the Gig
-
 }
 
 model Reviews {

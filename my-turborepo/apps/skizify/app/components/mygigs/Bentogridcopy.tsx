@@ -32,7 +32,6 @@ export const BentoGridItemcopy = ({
   range,
   status,
   interval,
-  acceptedby,
 }: {
   className?: string;
   title?: string | React.ReactNode;
@@ -43,7 +42,6 @@ export const BentoGridItemcopy = ({
   range?: string | React.ReactNode;
   status?: string | React.ReactNode;
   interval?: any | React.ReactNode;
-  acceptedby?: string | React.ReactNode;
 }) => {
   const formatTimeInterval = (hours: number, minutes: number) => {
     const totalMinutes = Math.floor(hours * 60 + minutes); // Convert hours to minutes and add the extra minutes
@@ -98,7 +96,7 @@ export const BentoGridItemcopy = ({
         <div className="flex ">
           <div className="self-center"><UserRoundCheck className="size-4"/></div>
           <div className="font-sans mt-1 pl-2 text-sm text-neutral-600 dark:text-neutral-300">
-          {acceptedby}
+            Accepted By
           </div>
         </div>
 
