@@ -35,11 +35,7 @@ export default async function GigStructure({
           const user = await prisma.user.findUnique({
             where: {
               id: gig.authorId,
-            },
-            select: {
-              userImage: true,
-              name: true,
-            },
+            }
           });
 
           return <BentoGridItem gig={gig} poster={user} />;
