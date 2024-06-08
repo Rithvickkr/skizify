@@ -12,8 +12,8 @@ import {
 } from "../../../@/components/ui/popover";
 import { Button } from "../../../@/components/ui/button";
 import { Clock7 } from "lucide-react";
-import { BookButton } from "./Booking";
 import { BookButton2 } from "./Booking2.0";
+
 // {
 //   id: string;
 //   title: string;
@@ -35,7 +35,7 @@ export interface Datetimepackage {
   sessionTime: string;
   startTime: string;
   endTime: string;
-  timeneeded : number
+  timeneeded: number;
 }
 
 export const BentoGrid = ({
@@ -104,7 +104,7 @@ export const BentoGridItem = ({
         : "1 Hr";
   const startTime = formatTime(gig.startDateTime);
   const endTime = formatTime(gig.endDateTime);
-  const timeneeded = gig.timeneeded
+  const timeneeded = gig.timeneeded;
   const datetimepackage: Datetimepackage = {
     startDATEmonth,
     startDATEday,
@@ -113,7 +113,7 @@ export const BentoGridItem = ({
     sessionTime,
     startTime,
     endTime,
-    timeneeded
+    timeneeded,
   };
   // "rc-tooltip": "^6.2.0",
 
@@ -234,19 +234,19 @@ export const BentoGridItem = ({
                 </div>
               </PopoverContent>
             </Popover> */}
-            <div className=" flex space-x-4">
+            <div className="flex space-x-4">
               <div className="flex-1">
-              <BookButton2
-                gig={gig}
-                poster={poster}
-                Datetimepackage={datetimepackage}
-              />
+                <BookButton2
+                  gig={gig}
+                  poster={poster}
+                  Datetimepackage={datetimepackage}
+                />
               </div>
-              <ButtonE className="m-1 col-span-1 flex-1 bg-white text-black hover:bg-white shadow">
+              <ButtonE className="col-span-1 m-1 flex-1 bg-white text-black shadow hover:bg-white">
                 Message
               </ButtonE>
             </div>
-          </CardContent> 
+          </CardContent>
         </Card>
       </div>
     </div>

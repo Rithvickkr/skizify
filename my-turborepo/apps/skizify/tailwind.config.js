@@ -15,7 +15,7 @@ module.exports = {
   ],
   theme: {
     fontFamily:{
-      'display': ['Chivo']
+      'display': ['Archivo']
     },
 
     extend: {},

@@ -32,7 +32,10 @@ export function BookButton2({
     <div>
       <Credenza>
         <CredenzaTrigger asChild>
-          <ButtonE className="col-span-1 m-1 w-full bg-black text-white dark:border dark:border-white dark:bg-[#020817]" variant="gooeyLeft">
+          <ButtonE
+            className="col-span-1 m-1 w-full bg-black text-white dark:border dark:border-white dark:bg-[#020817]"
+            variant="gooeyLeft"
+          >
             Book
           </ButtonE>
         </CredenzaTrigger>
@@ -103,7 +106,10 @@ export function BookButton2({
             {/* <CredenzaClose asChild>
               <button>Close</button>
             </CredenzaClose> */}
-            <ButtonE className="m-1 flex-1 bg-white text-black hover:bg-white hover:ring-black dark:text-black dark:bg-white dark:hover:bg-white dark:hover:text-black dark:hover:ring-white shadow" variant="ringHover">
+            <ButtonE
+              className="m-1 flex-1 bg-white text-black shadow hover:bg-white hover:ring-black dark:bg-white dark:text-black dark:hover:bg-white dark:hover:text-black dark:hover:ring-white"
+              variant="ringHover"
+            >
               Message
             </ButtonE>
             <BookmeetingButton gig={gig} />

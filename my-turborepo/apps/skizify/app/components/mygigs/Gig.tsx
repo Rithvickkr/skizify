@@ -37,7 +37,6 @@ export default async function GigStructure({
               id: gig.authorId,
             }
           });
-
           return <BentoGridItem gig={gig} poster={user} />;
         })}
       </div>

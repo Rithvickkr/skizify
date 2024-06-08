@@ -11,8 +11,13 @@ export default function Layout({
   }): JSX.Element {
     return (
       <div className="flex w-screen">
+        <div className="fixed w-1/5">
         <Sidebar />
-        <div className="w-full">
+        </div>
+        <div className="w-1/5">
+
+        </div>
+        <div className="w-4/5">
         <AppbarClient />
           {children}  
         </div>

@@ -57,7 +57,6 @@ export const BentoGridItemcopy = ({
         className,
       )}
     >
-      {header}
       <div className="transition duration-200 group-hover/bento:translate-x-2">
         <div className="flex items-center gap-4">
           <div>{icon}</div>
