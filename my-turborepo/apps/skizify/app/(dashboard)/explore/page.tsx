@@ -22,7 +22,6 @@ export interface GigsInterface {
 
 export default async function Page() {
   const gigs: GigsInterface[] = await getAllgigs();
-  console.log(gigs);
   return (
     <div>
       <GigStructure gigs={gigs}/>

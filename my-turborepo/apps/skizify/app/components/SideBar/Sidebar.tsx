@@ -6,7 +6,6 @@ import { UserRole } from "@prisma/client";
 import { SquareCheckBig } from "lucide-react";
 export async function Sidebar() {
   const session = await getServerSession(authOptions);
-  console.log(session);
   if (!session) {
     return <div>Loading ....</div>;
   }

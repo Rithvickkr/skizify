@@ -2,6 +2,7 @@ import { send } from "process";
 import { cn } from "../../utils/cn";
 import { CircleCheckBig, Clock7, Hourglass, HourglassIcon, UserRoundCheck } from "lucide-react";
 import { ScrollArea } from "../../../@/components/ui/scroll-area";
+import MygigCard from "../mygigspage/Mygigcard";
 
 export const BentoGridcopy = ({
   className,

@@ -77,7 +77,6 @@ export function SignupFormDemo() {
                 redirect: false,
               });
 
-              console.log(res);
               router.push("/");
             } catch (err) {
               alert(err);

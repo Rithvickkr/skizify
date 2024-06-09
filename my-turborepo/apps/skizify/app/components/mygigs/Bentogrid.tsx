@@ -13,7 +13,8 @@ import {
 import { Button } from "../../../@/components/ui/button";
 import { Clock7 } from "lucide-react";
 import { BookButton2 } from "./Booking2.0";
-
+import MygigCard from "../mygigspage/Mygigcard";
+import { Month, SessionTime, formatTime } from "../../lib/actions/ConvertgigInfo";
 // {
 //   id: string;
 //   title: string;
@@ -57,32 +58,6 @@ export const BentoGrid = ({
   );
 };
 
-function Month(monthNumber: number) {
-  const months = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
-  ];
-  return months[monthNumber];
-}
-function formatTime(date: Date): string {
-  const options: Intl.DateTimeFormatOptions = {
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: true,
-  };
-  return date.toLocaleTimeString("en-US", options);
-}
-
 export const BentoGridItem = ({
   className,
   gig,
@@ -92,16 +67,11 @@ export const BentoGridItem = ({
   gig: GigsInterface;
   poster: any;
 }) => {
-  const startDATEmonth = Month(gig.startDateTime.getMonth());
+  const startDATEmonth = Month(gig.startDateTime);
   const startDATEday = gig.startDateTime.getDay();
-  const endDATEmonth = Month(gig.endDateTime.getMonth());
+  const endDATEmonth = Month(gig.endDateTime);
   const endDATEday = gig.endDateTime.getDay();
-  const sessionTime =
-    gig.timeneeded === 30
-      ? "30 min"
-      : gig.timeneeded === 45
-        ? "45 min"
-        : "1 Hr";
+  const sessionTime =SessionTime(gig.timeneeded);
   const startTime = formatTime(gig.startDateTime);
   const endTime = formatTime(gig.endDateTime);
   const timeneeded = gig.timeneeded;

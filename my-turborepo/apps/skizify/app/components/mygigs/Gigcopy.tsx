@@ -2,6 +2,7 @@ import { BentoGridItemcopy, BentoGridcopy } from "./Bentogridcopy";
 import { Avatar } from "@repo/ui/avatar";
 import prisma from "@repo/db/client";
 import { GigsInterface } from "../../(dashboard)/explore/page";
+import MygigCard from "../mygigspage/Mygigcard";
 
 export default async function GigStructurecopy({ gigs }: { gigs: GigsInterface[] }) {
   // Fetch user data for each gig
@@ -36,6 +37,8 @@ export default async function GigStructurecopy({ gigs }: { gigs: GigsInterface[]
           />
         ))}
       </BentoGridcopy>
+      <MygigCard />
+
     </div>
   );
 }
