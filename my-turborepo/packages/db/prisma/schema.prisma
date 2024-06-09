@@ -30,21 +30,22 @@ model User {
 }
 
 model Gigs {
-  id            String    @id @default(uuid())
-  title         String
-  content       String
-  startDateTime DateTime
-  endDateTime   DateTime
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  timeneeded    Int
-  authorId      String
-  confirmUserId String?
-  confirmedUser User?     @relation(name: "ConfirmedUser", fields: [confirmUserId], references: [id])
-  status        GigStatus @default(PENDING)
-  author        User      @relation(name: "Author", fields: [authorId], references: [id])
-  acceptedUsers GigUser[] 
-  Interval      Json
+  id              String    @id @default(uuid())
+  title           String
+  content         String
+  startDateTime   DateTime
+  endDateTime     DateTime
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  timeneeded      Int
+  authorId        String
+  confirmUserId   String?
+  Budgetfinalised Int?
+  confirmedUser   User?     @relation(name: "ConfirmedUser", fields: [confirmUserId], references: [id])
+  status          GigStatus @default(PENDING)
+  author          User      @relation(name: "Author", fields: [authorId], references: [id])
+  acceptedUsers   GigUser[]
+  Interval        Json
 }
 
 model Reviews {
@@ -60,15 +61,16 @@ model Reviews {
 }
 
 model GigUser {
-  id        String    @id @default(uuid())
-  gig       Gigs      @relation(fields: [gigId], references: [id], onDelete: Cascade)
-  gigId     String
-  user      User      @relation(name: "UserCreatedGig", fields: [UserId], references: [id])
-  Skizzer   User      @relation(name: "UserAccptedGig", fields: [skizzerId], references: [id])
-  skizzerId String
-  UserId    String
-  status    GigStatus @default(PENDING)
-
+  id            String    @id @default(uuid())
+  gig           Gigs      @relation(fields: [gigId], references: [id], onDelete: Cascade)
+  gigId         String
+  user          User      @relation(name: "UserCreatedGig", fields: [UserId], references: [id])
+  Skizzer       User      @relation(name: "UserAccptedGig", fields: [skizzerId], references: [id])
+  skizzerId     String
+  UserId        String
+  status        GigStatus @default(PENDING)
+  budget        Int?
+  finalDateTime DateTime?
   @@unique([skizzerId, UserId])
 }
 
