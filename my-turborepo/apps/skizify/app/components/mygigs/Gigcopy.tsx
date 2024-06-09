@@ -23,7 +23,7 @@ export default async function GigStructurecopy({ gigs }: { gigs: GigsInterface[]
 
   return (
     <div>
-      <BentoGridcopy>
+      {/* <BentoGridcopy>
         {gigsWithUserData.map(gig => (
           <BentoGridItemcopy
             key={gig.id}
@@ -36,7 +36,7 @@ export default async function GigStructurecopy({ gigs }: { gigs: GigsInterface[]
             sender={gig.user?.name || ""}
           />
         ))}
-      </BentoGridcopy>
+      </BentoGridcopy> */}
       <MygigCard />
 
     </div>
