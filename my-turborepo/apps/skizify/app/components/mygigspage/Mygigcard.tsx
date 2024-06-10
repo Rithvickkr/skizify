@@ -18,7 +18,7 @@ import {
   formatTime,
 } from "../../lib/actions/ConvertgigInfo";
 import { Button } from "../ui/button";
-import AcceptedBy from "./AcceptedBy";
+// import AcceptedBy from "./AcceptedBy";
 
 //This will take content,
 export default async function MygigCard() {
@@ -31,19 +31,23 @@ export default async function MygigCard() {
         return (
           <div className="flex w-full flex-col rounded-lg border border-gray-300 p-3 shadow-md transition duration-200 hover/mygiggs:translate-x-2">
             <div className="flex w-full justify-between">
-              <div className="flex space-x-1">
+              <div className="flex space-x-1 ">
                 <Avatar
                   name={session?.user.name}
                   photo={session?.user.userImage}
-                  classname="size-10 text-sm"
+                  classname="size-10 text-sm mr-3"
                 />
                 <div className="self-center">
-                  <span className="text-md text-gray-500">
+                  <span className="md:text-md text-sm text-gray-500">
                     {session?.user.name}
                   </span>
                 </div>
+                
               </div>
               <div className="flex self-center">
+                <div className="text-gray-500 m-1 p-1 self-center text-xs md:text-sm truncate">
+                  Posted on {`${formatTime(gig.createdAt)} ${Month(gig.createdAt)} ${gig.createdAt.getDay()}`}
+                </div>
                 <div className="m-1 cursor-pointer rounded p-1 text-gray-500 shadow">
                   <Pencil
                     className="size-4 text-black dark:text-white md:size-6"
@@ -61,9 +65,10 @@ export default async function MygigCard() {
                 </div>
               </div>
             </div>
+            <hr className="my-1"/>
 
             <div className="my-3 flex">
-              <div className="flex flex-1 flex-col">
+              <div className="flex flex-1 flex-col shadow-sm-light ">
                 <div className="ml-2 font-display text-lg md:text-xl">
                   <h1>{gig.title || "Title"}</h1>
                 </div>
@@ -75,7 +80,7 @@ export default async function MygigCard() {
                 </div>
               </div>
 
-              <div className="grid flex-1 grid-cols-1 py-2 pl-2 md:grid-cols-2">
+              <div className="grid flex-1 grid-cols-1 py-2 pl-2 md:grid-cols-2 ">
                 <div className="my-1 flex place-content-start items-center p-2 sm:my-2 md:my-0">
                   <div>
                     <CalendarDays
@@ -94,7 +99,7 @@ export default async function MygigCard() {
                       absoluteStrokeWidth
                     />
                   </div>
-                  <div className="text-xs font-medium sm:text-sm lg:text-base">{`${formatTime(gig.startDateTime)} - ${formatTime(gig.endDateTime)}`}</div>
+                  <div className="text-xs font-base sm:text-sm lg:text-base">{`${formatTime(gig.startDateTime)} - ${formatTime(gig.endDateTime)}`}</div>
                 </div>
                 <div className="my-1 flex place-content-start items-center p-2 sm:my-2 md:my-0">
                   <div>
@@ -108,7 +113,7 @@ export default async function MygigCard() {
                     {SessionTime(gig.timeneeded)}
                   </div>
                 </div>
-                <AcceptedBy gig={gig} />
+                {/* <AcceptedBy gig={gig} /> */}
               </div>
             </div>
           </div>
