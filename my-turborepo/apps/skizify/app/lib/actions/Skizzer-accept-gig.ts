@@ -3,6 +3,7 @@ import prisma from "@repo/db/client";
 import { GigsInterface } from "../../(dashboard)/explore/page";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth";
+
 export async function acceptGig({ gig }: { gig: GigsInterface }) {
   const session = await getServerSession(authOptions);
   if (!session) {

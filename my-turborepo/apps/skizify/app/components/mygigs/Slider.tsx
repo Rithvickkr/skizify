@@ -71,13 +71,23 @@ const TimeSlider: React.FC<TimeSliderProps> = ({ startTime, endTime, timeneeded 
   const isDarkMode = document.documentElement.classList.contains("dark");
 
   return (
-    <div className="flex flex-col items-center justify-center px-4">
-      <div className="mx-4 w-full relative">
+    <div className="flex flex-col items-center justify-center px-2">
+      <div className="mx-2 w-full relative">
         <Tooltip
-          overlay={`${formatTime(selectedTime)}`}
+          overlay={<span style={{ color: "#000000" }}>{formatTime(selectedTime)}</span>}
           placement="top"
           visible={true}
-          overlayStyle={{ opacity: 1, color: "#ffffff" }} // Adjust the opacity here
+          overlayInnerStyle={{
+            backgroundColor: "#ffffff", // Set background color to white
+            color: "#000000", // Set text color to black for visibility
+            padding: "7px",
+            borderRadius: "4px",
+            border: "1px solid #d9d9d9",
+            boxShadow: "0 0 5px rgba(0, 0, 0, 0.1)",
+          }}
+          overlayStyle={{
+            opacity: 1,
+          }}
         >
           <Slider
             min={parseTimeToMinutes(startTime)}
@@ -113,12 +123,14 @@ const TimeSlider: React.FC<TimeSliderProps> = ({ startTime, endTime, timeneeded 
           />
         </Tooltip>
       </div>
-      <div className="flex w-full items-center justify-between px-1 text-gray-500 dark:text-gray-400 mt-4 text-base ">
+      {/* <div className="flex w-full items-center text-sm justify-between px-1 text-gray-500 dark:text-gray-400 mt-2">
         <span>{startTime}</span>
         <span>{formatTime(maxTime)}</span>
-      </div>
+      </div> */}
     </div>
   );
+  
+  
 };
 
 export default TimeSlider;

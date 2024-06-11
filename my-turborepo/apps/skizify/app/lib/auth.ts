@@ -62,7 +62,6 @@ export const authOptions: NextAuthOptions = {
         session.user.role = token.role;
         session.user.userImage = token.userImage;
       }
-      console.log(session);
       return session;
     },
     async jwt({ token }) {

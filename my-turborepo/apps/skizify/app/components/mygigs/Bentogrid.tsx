@@ -37,6 +37,8 @@ export interface Datetimepackage {
   startTime: string;
   endTime: string;
   timeneeded: number;
+  startDateTime : Date;
+  endDateTime : Date
 }
 
 export const BentoGrid = ({
@@ -68,13 +70,15 @@ export const BentoGridItem = ({
   poster: any;
 }) => {
   const startDATEmonth = Month(gig.startDateTime);
-  const startDATEday = gig.startDateTime.getDay();
+  const startDATEday = gig.startDateTime.getDate();
   const endDATEmonth = Month(gig.endDateTime);
-  const endDATEday = gig.endDateTime.getDay();
+  const endDATEday = gig.endDateTime.getDate();
   const sessionTime =SessionTime(gig.timeneeded);
   const startTime = formatTime(gig.startDateTime);
   const endTime = formatTime(gig.endDateTime);
   const timeneeded = gig.timeneeded;
+  const startDateTime = gig.startDateTime;
+  const endDateTime = gig.endDateTime;
   const datetimepackage: Datetimepackage = {
     startDATEmonth,
     startDATEday,
@@ -84,9 +88,10 @@ export const BentoGridItem = ({
     startTime,
     endTime,
     timeneeded,
+    startDateTime,
+    endDateTime
   };
   // "rc-tooltip": "^6.2.0",
-
   return (
     <div
       className={cn(

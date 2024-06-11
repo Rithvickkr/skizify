@@ -70,79 +70,74 @@ export function GigForm() {
     };
   }
 
-  const validateDates = (date: any, endDate: any) => {
+  const validateDates = (date: string, endDate: string): boolean => {
     if (date && endDate) {
       const startDate = new Date(date);
       const endDateValue = new Date(endDate);
-
       const maxEndDate = new Date(startDate);
       maxEndDate.setDate(startDate.getDate() + 2);
       if (endDateValue > maxEndDate) {
-        window.alert(
-          "End date cannot be more than 2 days after the start date."
-        );
-        setEndDate("");
-        throw new Error("End date cannot be more than 2 days after the start date.");
+        window.alert("End date cannot be more than 2 days after the start date.");
+        return false;
       }
     }
+    return true;
   };
 
-  const validateTimes = (
-    date: String,
-    time: String,
-    endDate: String,
-    endTime: String
-  ) => {
+  const validateTimes = (date: string, time: string, endDate: string, endTime: string): boolean => {
     if (date && time && endDate && endTime) {
       const startDateTime = new Date(`${date}T${time}`);
       const endDateTime = new Date(`${endDate}T${endTime}`);
-
       if (endDateTime <= startDateTime) {
         window.alert("End time must be greater than start time.");
         setEndTime("");
-        throw new Error("End time must be greater than start time.");
+        return false;
       }
     }
+    return true;
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
     if (session) {
+      const isValidDates = validateDates(date, endDate);
+      if (!isValidDates) {
+        setEndDate(""); // Reset endDate if the dates are invalid
+        return;
+      }
+
+      const isValidTimes = validateTimes(date, time, endDate, endTime);
+      if (!isValidTimes) {
+        return;
+      }
+
       const interval = calculateTimeInterval(time, endTime);
       const startDateTime = new Date(`${date}T${time}:00`).toISOString();
       const endDateTime = new Date(`${endDate}T${endTime}:00`).toISOString();
-      validateDates(date, endDate);
-      validateTimes(date, time, endDate, endTime);
-      await GigSet(
-        title,
-        description,
-        startDateTime,
-        endDateTime,
-        session,
-        interval,
-        Timeneed
-      );
 
-      setTitle("");
-      setDescription("");
-      setDate("");
-      setTime("");
-      setEndDate("");
-      setEndTime("");
-      window.alert("Gig posted successfully");
+      try {
+        await GigSet(
+          title,
+          description,
+          startDateTime,
+          endDateTime,
+          session,
+          interval,
+          Timeneed
+        );
+        setTitle("");
+        setDescription("");
+        setDate("");
+        setTime("");
+        setEndDate("");
+        setEndTime("");
+        window.alert("Gig posted successfully");
+      } catch (error) {
+        console.error("Error posting gig:", error);
+        window.alert("Failed to post gig. Please try again.");
+      }
     }
-
-    console.log({
-      title,
-      description,
-      date,
-      time,
-      endDate,
-      endTime,
-      Timeneed,
-    });
   };
-
   if (session?.user.role === UserRole.SKIZZER) {
     router.push("/explore");
     return <div></div>;
