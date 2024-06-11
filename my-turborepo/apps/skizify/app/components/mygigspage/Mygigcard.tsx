@@ -1,7 +1,6 @@
+"use client";
 import { Avatar } from "@repo/ui/avatar";
-import { getServerSession } from "next-auth";
-import { authOptions } from "../../lib/auth";
-import getgigs from "../../lib/actions/getgigs";
+import { deleteGig } from "../../lib/actions/deletegig";
 import {
   ArrowRightIcon,
   CalendarDays,
@@ -9,7 +8,6 @@ import {
   Hourglass,
   Pencil,
   Trash,
-  Trash2,
 } from "lucide-react";
 import { ScrollArea, ScrollBar } from "../../../@/components/ui/scroll-area";
 import {
@@ -18,20 +16,43 @@ import {
   formatTime,
 } from "../../lib/actions/ConvertgigInfo";
 import { Button } from "../ui/button";
-// import AcceptedBy from "./AcceptedBy";
+import { GigsInterface } from "../../(dashboard)/explore/page";
 
-//This will take content,
-export default async function MygigCard() {
-  const session = await getServerSession(authOptions);
-  const gigs = await getgigs();
+interface User {
+  userImage: string;
+  name: string;
+}
+
+interface MygigCardProps {
+  gigs: GigsInterface[];
+  session: any;
+}
+
+export default function MygigCard({ gigs, session }: MygigCardProps) {
+  // const deleteGig = async (id: string, session: any) => {
+  //   try {
+  //     await deleteGig(id, session);
+  //   } catch (error) {
+  //     console.error("Error deleting gig:", error);
+  //     throw new Error("There was an error deleting the gig");
+  //   }
+  const deleteGigs= async (id: string, session: any) => {
+
+       await deleteGig(id, session);
+      window.alert("Gig deleted successfully");
+      window.location.reload();
+  }
 
   return (
     <div className="group/mygiggs space-y-4 p-3 transition duration-200">
-      {gigs.map((gig) => {
-        return (
-          <div className="flex w-full flex-col rounded-lg border border-gray-300 p-3 shadow-md transition duration-200 hover/mygiggs:translate-x-2">
+      {Array.isArray(gigs) && gigs.length > 0 ? (
+        gigs.map((gig) => (
+          <div
+            key={gig.id}
+            className="flex w-full flex-col rounded-lg border border-gray-300 p-3 shadow-md transition duration-200 hover/mygiggs:translate-x-2"
+          >
             <div className="flex w-full justify-between">
-              <div className="flex space-x-1 ">
+              <div className="flex space-x-1">
                 <Avatar
                   name={session?.user.name}
                   photo={session?.user.userImage}
@@ -42,11 +63,11 @@ export default async function MygigCard() {
                     {session?.user.name}
                   </span>
                 </div>
-                
               </div>
               <div className="flex self-center">
-                <div className="text-gray-500 m-1 p-1 self-center text-xs md:text-sm truncate">
-                  Posted on {`${formatTime(gig.createdAt)} ${Month(gig.createdAt)} ${gig.createdAt.getDay()}`}
+                <div className="m-1 self-center truncate p-1 text-xs text-gray-500 md:text-sm">
+                  Posted on{" "}
+                  {`${formatTime(gig.createdAt)} ${Month(gig.createdAt)} ${gig.createdAt.getDay()}`}
                 </div>
                 <div className="m-1 cursor-pointer rounded p-1 text-gray-500 shadow">
                   <Pencil
@@ -61,14 +82,18 @@ export default async function MygigCard() {
                     color="#ff0000"
                     strokeWidth={1.5}
                     absoluteStrokeWidth
+                    onClick={() => {
+                      deleteGigs(gig.id, session);
+                      // window.location.reload();
+                      // window.alert("Gig deleted successfully");
+                    }}
                   />
                 </div>
               </div>
             </div>
-            <hr className="my-1"/>
-
+            <hr className="my-1" />
             <div className="my-3 flex">
-              <div className="flex flex-1 flex-col shadow-sm-light ">
+              <div className="flex flex-1 flex-col shadow-sm-light">
                 <div className="ml-2 font-display text-lg md:text-xl">
                   <h1>{gig.title || "Title"}</h1>
                 </div>
@@ -79,48 +104,45 @@ export default async function MygigCard() {
                   </ScrollArea>
                 </div>
               </div>
-
-              <div className="grid flex-1 grid-cols-1 py-2 pl-2 md:grid-cols-2 ">
+              <div className="grid flex-1 grid-cols-1 py-2 pl-2 md:grid-cols-2">
                 <div className="my-1 flex place-content-start items-center p-2 sm:my-2 md:my-0">
-                  <div>
-                    <CalendarDays
-                      className="mr-3 size-5 cursor-pointer text-xl font-medium text-gray-400 dark:text-white md:size-6"
-                      strokeWidth={1.5}
-                      absoluteStrokeWidth
-                    />
+                  <CalendarDays
+                    className="mr-3 size-5 cursor-pointer text-xl font-medium text-gray-400 dark:text-white md:size-6"
+                    strokeWidth={1.5}
+                    absoluteStrokeWidth
+                  />
+                  <div className="text-sm font-medium text-gray-400 lg:text-base">
+                    {`${Month(gig.startDateTime)} ${gig.startDateTime.getDay()} - ${Month(gig.endDateTime)} ${gig.endDateTime.getDay()}`}
                   </div>
-                  <div className="text-sm font-medium text-gray-400 lg:text-base">{`${Month(gig.startDateTime)} ${gig.startDateTime.getDay()} - ${Month(gig.endDateTime)} ${gig.endDateTime.getDay()}`}</div>
                 </div>
                 <div className="my-1 flex place-content-start items-center py-2 pl-2 sm:my-2 md:my-0">
-                  <div>
-                    <Hourglass
-                      className="mr-3 size-5 cursor-pointer text-xl font-medium dark:text-white md:size-6"
-                      strokeWidth={1.5}
-                      absoluteStrokeWidth
-                    />
+                  <Hourglass
+                    className="mr-3 size-5 cursor-pointer text-xl font-medium dark:text-white md:size-6"
+                    strokeWidth={1.5}
+                    absoluteStrokeWidth
+                  />
+                  <div className="font-base text-xs sm:text-sm lg:text-base">
+                    {`${formatTime(gig.startDateTime)} - ${formatTime(gig.endDateTime)}`}
                   </div>
-                  <div className="text-xs font-base sm:text-sm lg:text-base">{`${formatTime(gig.startDateTime)} - ${formatTime(gig.endDateTime)}`}</div>
                 </div>
                 <div className="my-1 flex place-content-start items-center p-2 sm:my-2 md:my-0">
-                  <div>
-                    <Clock7
-                      className="mr-3 size-5 cursor-pointer text-xl font-medium text-gray-400 dark:text-white md:size-6"
-                      strokeWidth={1.5}
-                      absoluteStrokeWidth
-                    />
-                  </div>
+                  <Clock7
+                    className="mr-3 size-5 cursor-pointer text-xl font-medium text-gray-400 dark:text-white md:size-6"
+                    strokeWidth={1.5}
+                    absoluteStrokeWidth
+                  />
                   <div className="text-sm font-medium text-gray-400 md:text-base">
-                    {SessionTime(gig.timeneeded)}
+                    {SessionTime(Number(gig.timeneeded))}
                   </div>
                 </div>
                 {/* <AcceptedBy gig={gig} /> */}
               </div>
             </div>
           </div>
-        );
-      })}
+        ))
+      ) : (
+        <div>No gigs available</div>
+      )}
     </div>
   );
 }
-
-//space-x,y-2/3/4 to give space b/w it's children

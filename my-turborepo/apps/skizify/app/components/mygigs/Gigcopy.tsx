@@ -3,23 +3,28 @@ import { Avatar } from "@repo/ui/avatar";
 import prisma from "@repo/db/client";
 import { GigsInterface } from "../../(dashboard)/explore/page";
 import MygigCard from "../mygigspage/Mygigcard";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../../lib/auth";
 
 export default async function GigStructurecopy({ gigs }: { gigs: GigsInterface[] }) {
   // Fetch user data for each gig
-  const gigsWithUserData = await Promise.all(
-    gigs.map(async gig => {
-      const user = await prisma.user.findUnique({
-        where: {
-          id: gig.authorId,
-        },
-        select: {
-          userImage: true,
-          name: true,
-        },
-      });
-      return { ...gig, user };
-    })
-  );
+  const session = await getServerSession(authOptions);
+  console.log("session", session);
+
+  // const gigsWithUserData: GigWithUser[] = await Promise.all(
+  //   gigs.map(async gig => {
+  //     const user = await prisma.user.findUnique({
+  //       where: {
+  //         id: gig.authorId,
+  //       },
+  //       select: {
+  //         userImage: true,
+  //         name: true,
+  //       },
+  //     });
+  //     return { ...gig, user };
+  //   })
+  // );
 
   return (
     <div>
@@ -37,8 +42,8 @@ export default async function GigStructurecopy({ gigs }: { gigs: GigsInterface[]
           />
         ))}
       </BentoGridcopy> */}
-      <MygigCard />
-
+    
+      <MygigCard gigs={gigs} session={session} />
     </div>
   );
 }
