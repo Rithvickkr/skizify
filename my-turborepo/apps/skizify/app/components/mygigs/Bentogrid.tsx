@@ -14,7 +14,11 @@ import { Button } from "../../../@/components/ui/button";
 import { Clock7 } from "lucide-react";
 import { BookButton2 } from "./Booking2.0";
 import MygigCard from "../mygigspage/Mygigcard";
-import { Month, SessionTime, formatTime } from "../../lib/actions/ConvertgigInfo";
+import {
+  Month,
+  SessionTime,
+  formatTime,
+} from "../../lib/actions/ConvertgigInfo";
 // {
 //   id: string;
 //   title: string;
@@ -29,16 +33,16 @@ import { Month, SessionTime, formatTime } from "../../lib/actions/ConvertgigInfo
 // }
 
 export interface Datetimepackage {
-  startDATEmonth: string | undefined;
-  startDATEday: number;
+  startDATEmonth: string | undefined; //contains start day month
+  startDATEday: number; //conatins start date date
   endDATEmonth: string | undefined;
   endDATEday: number;
-  sessionTime: string;
-  startTime: string;
+  sessionTime: string; // will be a String Convert timeneeded into 30min | 45min | 1Hr
+  startTime: string; // has start time
   endTime: string;
-  timeneeded: number;
-  startDateTime : Date;
-  endDateTime : Date
+  timeneeded: number; // this is Duration of the meeting
+  startDateTime: Date; //has original Date and Time
+  endDateTime: Date;
 }
 
 export const BentoGrid = ({
@@ -73,7 +77,7 @@ export const BentoGridItem = ({
   const startDATEday = gig.startDateTime.getDate();
   const endDATEmonth = Month(gig.endDateTime);
   const endDATEday = gig.endDateTime.getDate();
-  const sessionTime =SessionTime(gig.timeneeded);
+  const sessionTime = SessionTime(gig.timeneeded);
   const startTime = formatTime(gig.startDateTime);
   const endTime = formatTime(gig.endDateTime);
   const timeneeded = gig.timeneeded;
@@ -89,7 +93,7 @@ export const BentoGridItem = ({
     endTime,
     timeneeded,
     startDateTime,
-    endDateTime
+    endDateTime,
   };
   // "rc-tooltip": "^6.2.0",
   return (

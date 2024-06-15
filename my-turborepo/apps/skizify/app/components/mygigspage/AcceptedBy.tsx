@@ -18,9 +18,8 @@ import { ArrowRightIcon, CheckCheck, Clock7 } from "lucide-react";
 import { Skizzer_acceptedGig } from "../../lib/actions/Skizzer-accept-gig";
 
 export default async function AcceptedBy({ gig }: { gig: GigsInterface }) {
-//Fetch the Users Reveiws , ratings , Budget Proposed , time Proposed 
-const SKizzersInfo = await Skizzer_acceptedGig(gig.id);
-console.log(SKizzersInfo);
+  //Fetch the Users Reveiws , ratings , Budget Proposed , time Proposed
+  const SKizzersInfo = await Skizzer_acceptedGig(gig.id);
   return (
     <div>
       <Credenza>
@@ -39,27 +38,20 @@ console.log(SKizzersInfo);
         <CredenzaContent>
           <CredenzaHeader>
             <CredenzaTitle>
-                <div className="md:text-4xl text-2xl font-bold font-display">
-                    Search Results
-                </div>
+              <div className="font-display text-2xl font-bold md:text-4xl">
+                Search Results
+              </div>
             </CredenzaTitle>
             <CredenzaDescription>
-                <div className="text-lg text-gray-400">
-                    Request accepted by Skizzers
-                </div>
+              <div className="text-lg text-gray-400">
+                Request accepted by Skizzers
+              </div>
             </CredenzaDescription>
           </CredenzaHeader>
 
-
-
           <CredenzaBody>
-            <div>
-                
-            </div>
+            <div></div>
           </CredenzaBody>
-
-
-
 
           <CredenzaFooter className="flex justify-between space-x-4">
             <Button
@@ -69,12 +61,12 @@ console.log(SKizzersInfo);
               Messages
             </Button>
             <Button
-            className="col-span-1 m-1 w-full bg-black text-white dark:border dark:border-white dark:bg-[#020817] flex-1"
-            variant="gooeyLeft"
-          >
-            <CheckCheck className="mr-2 size-4" />
-            Accept 
-          </Button>
+              className="col-span-1 m-1 w-full flex-1 bg-black text-white dark:border dark:border-white dark:bg-[#020817]"
+              variant="gooeyLeft"
+            >
+              <CheckCheck className="mr-2 size-4" />
+              Accept
+            </Button>
           </CredenzaFooter>
         </CredenzaContent>
       </Credenza>

@@ -114,7 +114,6 @@ export function GigForm() {
       const interval = calculateTimeInterval(time, endTime);
       const startDateTime = new Date(`${date}T${time}:00`).toISOString();
       const endDateTime = new Date(`${endDate}T${endTime}:00`).toISOString();
-
       try {
         await GigSet(
           title,
@@ -200,7 +199,7 @@ export function GigForm() {
                     className={`border-[#d1d5d8] px-2 py-1 text-xs ${
                       selectedTime === time
                         ? "bg-black text-white dark:bg-white dark:text-black"
-                        : "bg-white text-black"
+                        : "bg-white text-black dark:bg-gray-800 dark:text-white"
                     }`}
                     onClick={() => {
                       setTimeneed(time);

@@ -13,7 +13,6 @@ import { Clock7 } from "lucide-react";
 import { GigsInterface } from "../../(dashboard)/explore/page";
 import { Datetimepackage } from "./Bentogrid";
 import { Button } from "../../../@/components/ui/button";
-import TimeSlider from "./Slider";
 import { Avatar } from "@repo/ui/avatar";
 import { ScrollArea, ScrollBar } from "../../../@/components/ui/scroll-area";
 import { Button as ButtonE } from "../ui/button";
@@ -88,64 +87,14 @@ export function BookButton2({
                 <div className="self-center text-base font-normal">{`${Datetimepackage.startTime} - ${Datetimepackage.endTime}`}</div>
               </div>
             </div> */}
-            <div className="flex flex-col">
-              <div className="font-serif mb-4 text-base font-medium">
-                Meeting Starts from:
-              </div>
-              <div className="">
-                <TimeSlider
-                  startTime={Datetimepackage.startTime}
-                  endTime={Datetimepackage.endTime}
-                  timeneeded={Datetimepackage.timeneeded}
-                />
-              </div>
-            </div>
-            <div className="my-3"></div>
-            <div>
-              <Label htmlFor="date-range">Meeting date</Label>
-              <div className="mt-2 flex items-center gap-4">
-                <Button
-                  variant="outline"
-                  className="h-auto w-full flex-col items-start bg-transparent hover:bg-[#f4f4f5] hover:dark:bg-transparent"
-                >
-                  <span className="text-[0.65rem] font-semibold uppercase">
-                    Start date
-                  </span>
-                  <span className="font-normal">{`${Datetimepackage.startDATEmonth} ${Datetimepackage.startDATEday}, ${Datetimepackage.startDateTime.getFullYear()}`}</span>
-                </Button>
-
-                <Button
-                  variant="outline"
-                  className="h-auto w-full flex-col items-start bg-transparent hover:bg-[#f4f4f5] hover:dark:bg-transparent"
-                >
-                  <span className="text-[0.65rem] font-semibold uppercase">
-                    End date
-                  </span>
-                  <span className="font-normal">{`${Datetimepackage.endDATEmonth} ${Datetimepackage.endDATEday}, ${Datetimepackage.endDateTime.getFullYear()}`}</span>
-                </Button>
-              </div>
-            </div>
             <div className="mt-3">
-              <SelectDATE
-                startTime={Datetimepackage.startDateTime}
-                endTime={Datetimepackage.endDateTime}
-              />
-            </div>
-            <div className="flex flex-col mt-3">
-              <Label htmlFor="date-range"  className="my-2">Propose Budget {`(in $)`}</Label>
-              
-              <ButtonE
-                className="p-0 rounded bg-transparent  text-black shadow hover:bg-transparent  hover:ring-black dark:bg-transparent border   dark:text-white dark:hover:text-black dark:hover:ring-white"
-              >
-                <input className="h-9 w-full rounded dark:bg-transparent placeholder-white placeholder:dark:text-white placeholder:font-light text-sm   placeholder:text-sm   text-black dark:text-white focus:outline-none focus:ring-0 focus:border-transparent border-0 dark:border dark:border-white" type="text" placeholder="Enter the Budget" required/>
-                {/*Enter the Zod validation , user can put*/}
-              </ButtonE>
+              <SelectDATE Datetimepackage={Datetimepackage} gig={gig} />
             </div>
           </CredenzaBody>
-          <CredenzaFooter className="flex justify-between space-x-4">
-            {/* <CredenzaClose asChild>
+          {/* <CredenzaFooter className="flex justify-between space-x-4">
+            <CredenzaClose asChild>
               <button>Close</button>
-            </CredenzaClose> */}
+            </CredenzaClose>
             <ButtonE
               className="m-1 flex-1 bg-white text-black shadow hover:bg-white hover:ring-black dark:bg-white dark:text-black dark:hover:bg-white dark:hover:text-black dark:hover:ring-white"
               variant="ringHover"
@@ -153,7 +102,7 @@ export function BookButton2({
               Message
             </ButtonE>
             <BookmeetingButton gig={gig} />
-          </CredenzaFooter>
+          </CredenzaFooter> */}
         </CredenzaContent>
       </Credenza>
     </div>

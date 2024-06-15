@@ -71,7 +71,8 @@ model GigUser {
   status        GigStatus @default(PENDING)
   budget        Int?
   finalDateTime DateTime?
-  @@unique([skizzerId, UserId])
+  //@@unique([skizzerId, UserId]) This means they can never build realtion in future
+  @@unique([gigId , skizzerId])
 }
 
 enum AuthType {

@@ -30,13 +30,12 @@ export default async function GigStructure({
 }) {
   return (
     <div>
-      <div className="mx-auto grid max-w-7xl grid-cols-1  md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 w-full gap-4">
+      <div className="mx-auto grid w-full max-w-7xl grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
         {gigs.map(async (gig) => {
-          console.log(gigs)
           const user = await prisma.user.findUnique({
             where: {
               id: gig.authorId,
-            }
+            },
           });
           return <BentoGridItem gig={gig} poster={user} />;
         })}

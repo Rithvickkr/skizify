@@ -4,22 +4,27 @@ import { GigsInterface } from "../../(dashboard)/explore/page";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth";
 
-export async function acceptGig({ gig }: { gig: GigsInterface }) {
+export async function acceptGig({ gig , budget , finalDateTime }: { gig: GigsInterface , budget? : number , finalDateTime? : string }) {
   const session = await getServerSession(authOptions);
   if (!session) {
     console.log("Session Don't exist");
   }
+  console.log(finalDateTime);
+  console.log(budget);
   try {
     await prisma.gigUser.create({
       data: {
         gigId: gig.id,
         skizzerId: session?.user.id || "",
         UserId: gig.authorId,
+        budget : budget || 0,  //Currently set the min budget to 0
+        finalDateTime
       },
     });
-    console.log("Meeting is requested");
+     return ("Meeting is requested");
   } catch (err) {
-    console.log("Meeting is not Booked");
+    console.log(err);
+     return ("Meeting is not Booked");
   }
 }
 
