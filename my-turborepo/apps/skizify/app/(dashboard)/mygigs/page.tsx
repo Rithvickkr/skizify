@@ -33,7 +33,7 @@ const deleteExpiredGigs = async () => {
 
 export default async function Page() {
   // Delete expired gigs from the database
-  await deleteExpiredGigs();
+  // await deleteExpiredGigs();
 
   // Fetch active gigs
   const gigs: GigsInterface[] = await getgigs();

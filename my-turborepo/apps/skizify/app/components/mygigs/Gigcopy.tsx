@@ -7,9 +7,6 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../../lib/auth";
 
 export default async function GigStructurecopy({ gigs }: { gigs: GigsInterface[] }) {
-  // Fetch user data for each gig
-  const session = await getServerSession(authOptions);
-  console.log("session", session);
 
   // const gigsWithUserData: GigWithUser[] = await Promise.all(
   //   gigs.map(async gig => {
@@ -43,7 +40,7 @@ export default async function GigStructurecopy({ gigs }: { gigs: GigsInterface[]
         ))}
       </BentoGridcopy> */}
     
-      <MygigCard gigs={gigs} session={session} />
+      <MygigCard gigs={gigs}/>
     </div>
   );
 }

@@ -9,7 +9,7 @@ interface AvatarProps {
 
 export const Avatar = ({ name, photo ,classname }: AvatarProps) => {
   const fallbackChar = "U"; //for User
-  const char = name ? name.charAt(0) : fallbackChar;
+  const char = name ? name.charAt(0).toUpperCase() : fallbackChar;
 
   return (
     <div className="cursor-pointer self-center focus:outline-0">

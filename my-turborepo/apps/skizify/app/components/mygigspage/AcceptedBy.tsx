@@ -16,6 +16,7 @@ import { ScrollBar } from "../../../@/components/ui/scroll-area";
 import BookmeetingButton from "../mygigs/Bookbutton";
 import { ArrowRightIcon, CheckCheck, Clock7 } from "lucide-react";
 import { Skizzer_acceptedGig } from "../../lib/actions/Skizzer-accept-gig";
+import SkizzerselectCard from "./SkizzerSelectCard";
 
 export default async function AcceptedBy({ gig }: { gig: GigsInterface }) {
   //Fetch the Users Reveiws , ratings , Budget Proposed , time Proposed
@@ -35,7 +36,7 @@ export default async function AcceptedBy({ gig }: { gig: GigsInterface }) {
             </Button>
           </div>
         </CredenzaTrigger>
-        <CredenzaContent>
+        <CredenzaContent className="border-2 border-black">
           <CredenzaHeader>
             <CredenzaTitle>
               <div className="font-display text-2xl font-bold md:text-4xl">
@@ -50,12 +51,12 @@ export default async function AcceptedBy({ gig }: { gig: GigsInterface }) {
           </CredenzaHeader>
 
           <CredenzaBody>
-            <div></div>
+            <SkizzerselectCard SKizzersInfo={SKizzersInfo} />
           </CredenzaBody>
 
-          <CredenzaFooter className="flex justify-between space-x-4">
+          {/* <CredenzaFooter className="flex justify-between space-x-4">
             <Button
-              className="m-1 flex-1 bg-white text-black shadow hover:bg-white hover:ring-black dark:bg-white dark:text-black dark:hover:bg-white dark:hover:text-black dark:hover:ring-white"
+              className="m-1 flex-1 bg-white text-black shadow border border-white hover:bg-white hover:ring-black dark:bg-white dark:text-black dark:hover:bg-white dark:hover:text-black dark:hover:ring-white"
               variant="ringHover"
             >
               Messages
@@ -67,7 +68,7 @@ export default async function AcceptedBy({ gig }: { gig: GigsInterface }) {
               <CheckCheck className="mr-2 size-4" />
               Accept
             </Button>
-          </CredenzaFooter>
+          </CredenzaFooter> */}
         </CredenzaContent>
       </Credenza>
     </div>

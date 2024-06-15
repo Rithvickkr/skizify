@@ -41,10 +41,11 @@ model Gigs {
   authorId        String
   confirmUserId   String?
   Budgetfinalised Int?
+  finalDateTime   DateTime?
   confirmedUser   User?     @relation(name: "ConfirmedUser", fields: [confirmUserId], references: [id])
   status          GigStatus @default(PENDING)
   author          User      @relation(name: "Author", fields: [authorId], references: [id])
-  acceptedUsers   GigUser[]
+  acceptedUsers   GigUser[] ///WHAT THIS MEANS IS THAT IT CONTAINS ALL THE ELEMENTS WHICH HAS GIGid equal to the original id
   Interval        Json
 }
 
@@ -71,8 +72,9 @@ model GigUser {
   status        GigStatus @default(PENDING)
   budget        Int?
   finalDateTime DateTime?
+
   //@@unique([skizzerId, UserId]) This means they can never build realtion in future
-  @@unique([gigId , skizzerId])
+  @@unique([gigId, skizzerId])
 }
 
 enum AuthType {

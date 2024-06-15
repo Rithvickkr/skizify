@@ -1,4 +1,3 @@
-"use client";
 import { Avatar } from "@repo/ui/avatar";
 import { deleteGig } from "../../lib/actions/deletegig";
 import {
@@ -17,18 +16,18 @@ import {
 } from "../../lib/actions/ConvertgigInfo";
 import { Button } from "../ui/button";
 import { GigsInterface } from "../../(dashboard)/explore/page";
+import { useSession } from "next-auth/react";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../../lib/auth";
+import AcceptedBy from "./AcceptedBy";
 
 interface User {
   userImage: string;
   name: string;
 }
 
-interface MygigCardProps {
-  gigs: GigsInterface[];
-  session: any;
-}
-
-export default function MygigCard({ gigs, session }: MygigCardProps) {
+export default async function MygigCard({ gigs }: {gigs : GigsInterface[]}) {
+  const session = await getServerSession(authOptions);
   // const deleteGig = async (id: string, session: any) => {
   //   try {
   //     await deleteGig(id, session);
@@ -67,26 +66,26 @@ export default function MygigCard({ gigs, session }: MygigCardProps) {
               <div className="flex self-center">
                 <div className="m-1 self-center truncate p-1 text-xs text-gray-500 md:text-sm">
                   Posted on{" "}
-                  {`${formatTime(gig.createdAt)} ${Month(gig.createdAt)} ${gig.createdAt.getDay()}`}
+                  {`${formatTime(gig.createdAt)} ${Month(gig.createdAt)} ${gig.createdAt.getDate()}`}
                 </div>
                 <div className="m-1 cursor-pointer rounded p-1 text-gray-500 shadow">
                   <Pencil
-                    className="size-4 text-black dark:text-white md:size-6"
+                    className="size-4 text-black dark:text-white md:size-5"
                     strokeWidth={1.3}
                     absoluteStrokeWidth
                   />
                 </div>
                 <div className="m-1 cursor-pointer rounded p-1 text-red-500 shadow">
                   <Trash
-                    className="size-4 md:size-6"
+                    className="size-4 md:size-5"
                     color="#ff0000"
                     strokeWidth={1.5}
                     absoluteStrokeWidth
-                    onClick={() => {
-                      deleteGigs(gig.id, session);
-                      // window.location.reload();
-                      // window.alert("Gig deleted successfully");
-                    }}
+                    // onClick={() => {
+                    //   deleteGigs(gig.id, session);
+                    //   // window.location.reload();
+                    //   // window.alert("Gig deleted successfully");
+                    // }}
                   />
                 </div>
               </div>
@@ -112,7 +111,7 @@ export default function MygigCard({ gigs, session }: MygigCardProps) {
                     absoluteStrokeWidth
                   />
                   <div className="text-sm font-medium text-gray-400 lg:text-base">
-                    {`${Month(gig.startDateTime)} ${gig.startDateTime.getDay()} - ${Month(gig.endDateTime)} ${gig.endDateTime.getDay()}`}
+                    {`${Month(gig.startDateTime)} ${gig.startDateTime.getDate()} - ${Month(gig.endDateTime)} ${gig.endDateTime.getDate()}`}
                   </div>
                 </div>
                 <div className="my-1 flex place-content-start items-center py-2 pl-2 sm:my-2 md:my-0">
@@ -135,7 +134,7 @@ export default function MygigCard({ gigs, session }: MygigCardProps) {
                     {SessionTime(Number(gig.timeneeded))}
                   </div>
                 </div>
-                {/* <AcceptedBy gig={gig} /> */}
+                <AcceptedBy gig={gig} />
               </div>
             </div>
           </div>
