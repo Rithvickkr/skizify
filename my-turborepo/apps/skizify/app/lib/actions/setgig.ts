@@ -38,6 +38,6 @@ export async function GigSet(
     }
   } catch (err) {
     console.log("Error posting Gig");
-    alert("Error posting Gig");
+    console.log(err);
   }
 }

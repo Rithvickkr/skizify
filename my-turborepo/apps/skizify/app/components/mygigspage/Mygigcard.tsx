@@ -1,3 +1,4 @@
+"use client";
 import { Avatar } from "@repo/ui/avatar";
 import { deleteGig } from "../../lib/actions/deletegig";
 import {
@@ -17,8 +18,6 @@ import {
 import { Button } from "../ui/button";
 import { GigsInterface } from "../../(dashboard)/explore/page";
 import { useSession } from "next-auth/react";
-import { getServerSession } from "next-auth";
-import { authOptions } from "../../lib/auth";
 import AcceptedBy from "./AcceptedBy";
 
 interface User {
@@ -26,21 +25,18 @@ interface User {
   name: string;
 }
 
-export default async function MygigCard({ gigs }: {gigs : GigsInterface[]}) {
-  const session = await getServerSession(authOptions);
-  // const deleteGig = async (id: string, session: any) => {
-  //   try {
-  //     await deleteGig(id, session);
-  //   } catch (error) {
-  //     console.error("Error deleting gig:", error);
-  //     throw new Error("There was an error deleting the gig");
-  //   }
-  const deleteGigs= async (id: string, session: any) => {
+interface MygigCardProps {
+  gigs: GigsInterface[];
+}
 
-       await deleteGig(id, session);
-      window.alert("Gig deleted successfully");
-      window.location.reload();
-  }
+export default function MygigCard({ gigs }: MygigCardProps) {
+  const { data: session } = useSession();
+
+  const deleteGigs = async (id: string) => {
+    await deleteGig(id, session);
+    window.alert("Gig deleted successfully");
+    window.location.reload();
+  };
 
   return (
     <div className="group/mygiggs space-y-4 p-3 transition duration-200">
@@ -81,11 +77,7 @@ export default async function MygigCard({ gigs }: {gigs : GigsInterface[]}) {
                     color="#ff0000"
                     strokeWidth={1.5}
                     absoluteStrokeWidth
-                    // onClick={() => {
-                    //   deleteGigs(gig.id, session);
-                    //   // window.location.reload();
-                    //   // window.alert("Gig deleted successfully");
-                    // }}
+                    onClick={() => deleteGigs(gig.id)}
                   />
                 </div>
               </div>
