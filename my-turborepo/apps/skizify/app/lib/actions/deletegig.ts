@@ -1,14 +1,13 @@
-"use server";
-import prisma from "@repo/db/client"; 
+"use server"
+import prisma from "@repo/db/client";
 
-export const deleteGig = async (gigId: string, session: any) => {
-
-  if (!session) {
-    throw new Error("You must be logged in to delete a gig");
-  }
-  
-  try
-  { await prisma.gigs.delete({
+export const deleteGig = async (gigId: string) => {
+  console.log(gigId);
+  try {
+    if(!gigId){
+      throw new Error("gigId is not present")
+    }
+    await prisma.gigs.delete({
       where: {
         id: gigId,
       },

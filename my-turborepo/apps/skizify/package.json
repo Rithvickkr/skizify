@@ -24,6 +24,7 @@
     "@repo/ui": "*",
     "@tabler/icons-react": "^3.5.0",
     "@types/bcrypt": "^5.0.2",
+    "antd": "^5.18.3",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "flowbite-react": "^0.9.0",

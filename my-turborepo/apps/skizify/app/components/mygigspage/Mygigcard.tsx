@@ -1,6 +1,7 @@
-"use client";
 import { Avatar } from "@repo/ui/avatar";
 import { deleteGig } from "../../lib/actions/deletegig";
+import { getServerSession } from "next-auth";
+ import { authOptions } from "../../lib/auth";
 import {
   ArrowRightIcon,
   CalendarDays,
@@ -19,6 +20,7 @@ import { Button } from "../ui/button";
 import { GigsInterface } from "../../(dashboard)/explore/page";
 import { useSession } from "next-auth/react";
 import AcceptedBy from "./AcceptedBy";
+import EditDeleteCard from "./EditDeletecard";
 
 interface User {
   userImage: string;
@@ -29,22 +31,16 @@ interface MygigCardProps {
   gigs: GigsInterface[];
 }
 
-export default function MygigCard({ gigs }: MygigCardProps) {
-  const { data: session } = useSession();
 
-  const deleteGigs = async (id: string) => {
-    await deleteGig(id, session);
-    window.alert("Gig deleted successfully");
-    window.location.reload();
-  };
-
+ export default async function MygigCard({ gigs }: {gigs : GigsInterface[]}) {
+   const session = await getServerSession(authOptions);
   return (
     <div className="group/mygiggs space-y-4 p-3 transition duration-200">
       {Array.isArray(gigs) && gigs.length > 0 ? (
         gigs.map((gig) => (
           <div
             key={gig.id}
-            className="flex w-full flex-col rounded-lg border border-gray-300 p-3 shadow-md transition duration-200 hover/mygiggs:translate-x-2"
+            className="flex w-full flex-col rounded-lg border border-gray-300 p-3 shadow-md transition duration-200 hover/mygiggs:translate-x-2 dark:bg-[#020817]"
           >
             <div className="flex w-full justify-between">
               <div className="flex space-x-1">
@@ -60,26 +56,7 @@ export default function MygigCard({ gigs }: MygigCardProps) {
                 </div>
               </div>
               <div className="flex self-center">
-                <div className="m-1 self-center truncate p-1 text-xs text-gray-500 md:text-sm">
-                  Posted on{" "}
-                  {`${formatTime(gig.createdAt)} ${Month(gig.createdAt)} ${gig.createdAt.getDate()}`}
-                </div>
-                <div className="m-1 cursor-pointer rounded p-1 text-gray-500 shadow">
-                  <Pencil
-                    className="size-4 text-black dark:text-white md:size-5"
-                    strokeWidth={1.3}
-                    absoluteStrokeWidth
-                  />
-                </div>
-                <div className="m-1 cursor-pointer rounded p-1 text-red-500 shadow">
-                  <Trash
-                    className="size-4 md:size-5"
-                    color="#ff0000"
-                    strokeWidth={1.5}
-                    absoluteStrokeWidth
-                    onClick={() => deleteGigs(gig.id)}
-                  />
-                </div>
+                <EditDeleteCard gig={gig} />
               </div>
             </div>
             <hr className="my-1" />

@@ -143,7 +143,7 @@ export function GigForm() {
   }
 
   return (
-    <div className="shadow-input mx-auto w-full max-w-md rounded-none bg-white p-4 dark:bg-black md:rounded-2xl md:p-8">
+    <div className="shadow-input mx-auto w-full max-w-md rounded-none bg-white p-4 dark:bg-[#020817] md:rounded-2xl md:p-8 ">
       <h2 className="text-xl font-bold text-neutral-800 dark:text-neutral-200">
         
         Create Event

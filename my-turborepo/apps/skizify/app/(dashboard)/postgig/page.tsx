@@ -3,7 +3,7 @@ import { GigForm } from "../../components/Gigform";
 
 export default function Home(){
     return (
-        <div className=" flex justify-center items-center">
+        <div className=" flex justify-center items-center container ">
             <GigForm/>
         </div>
     )

@@ -1,18 +1,31 @@
 "use client";
+
 import { Pencil, Trash } from "lucide-react";
 import { GigsInterface } from "../../(dashboard)/explore/page";
 import { Month, formatTime } from "../../lib/actions/ConvertgigInfo";
-import {  } from "next-auth";
-import { authOptions } from "../../lib/auth";
-import { deleteGig } from "../../lib/actions/deletegig";
 import { useSession } from "next-auth/react";
+import prisma from "@repo/db/client";
+import { deleteGig } from "../../lib/actions/deletegig";
+
 export default function EditDeleteCard({ gig }: { gig: GigsInterface }) {
-  const session = useSession(); //using getServerSession ,COMMON MISTAKE
-  const deleteGigs = async (id: string, session: any) => {
-    await deleteGig(id, session);
-    window.alert("Gig deleted successfully");
-    window.location.reload();
+  const session  = useSession();
+
+  if (!session) {
+    // If session doesn't exist, the user will not be able to see the Edit and Delete options
+    return <div></div>;
+  }
+
+  const handleDeleteGig = async (gigId: string) => {
+    try {
+      await deleteGig(gigId);
+      window.location.reload();
+      window.alert("Gig deleted Succesfully");
+    } catch (error) {
+      console.error("Error deleting gig:", error);
+      window.alert("Gig is not deleted");
+    }
   };
+
   return (
     <div className="flex self-center">
       <div className="m-1 self-center truncate p-1 text-xs text-gray-500 md:text-sm">
@@ -32,11 +45,7 @@ export default function EditDeleteCard({ gig }: { gig: GigsInterface }) {
           color="#ff0000"
           strokeWidth={1.5}
           absoluteStrokeWidth
-          onClick={() => {
-            deleteGigs(gig.id, session);
-            // window.location.reload();
-            // window.alert("Gig deleted successfully");
-          }}
+          onClick={() => handleDeleteGig(gig.id)}
         />
       </div>
     </div>
