@@ -7,7 +7,7 @@ import { SquareCheckBig } from "lucide-react";
 export async function Sidebar() {
   const session = await getServerSession(authOptions);
   if (!session) {
-    return <div>Loading ....</div>;
+    return <div>Loading .... </div>;
   }
   return (
     <div className="flex min-h-screen flex-col border-r bg-[#fafbfb] dark:border-slate-700 dark:bg-gray-800">
