@@ -94,19 +94,22 @@ export function SelectDATE({
     return `${paddedHour}:${paddedMinute}`;
   }
 
+  
+
+
   const handleChange = (value: number | number[] | undefined) => {
     if (typeof value === "number") {
-      setSelectedTime(value);
+      setSelectedTime(value <= maxTime ? value : maxTime); // Ensure the value does not exceed maxTime
     } else if (Array.isArray(value)) {
-      setSelectedTime(value[0] ?? 0); // Ensure value[0] is not undefined
+      setSelectedTime(value[0] !== undefined && value[0] <= maxTime ? value[0] : maxTime); // Ensure value[0] does not exceed maxTime
     }
   };
-
+  
   const handleFinalChange = (value: number | number[] | undefined) => {
     if (typeof value === "number") {
-      setSelectedTime(value);
+      setSelectedTime(value <= maxTime ? value : maxTime); // Ensure the value does not exceed maxTime
     } else if (Array.isArray(value)) {
-      setSelectedTime(value[0] ?? 0); // Ensure value[0] is not undefined // "??" provides a Fallback to the variable if variable is null or undefined
+      setSelectedTime(value[0] !== undefined && value[0] <= maxTime ? value[0] : maxTime); // Ensure value[0] does not exceed maxTime
     }
   };
 

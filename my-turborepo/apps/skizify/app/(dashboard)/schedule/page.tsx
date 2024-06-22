@@ -1,8 +1,9 @@
+import Example from "../../components/CalendarPage/Calendar";
 
 export default function Home(){
     return (
         <div>
-            You have visited page
+            <Example />
         </div>
     )
 }
