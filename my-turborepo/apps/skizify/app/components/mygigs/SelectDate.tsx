@@ -164,7 +164,7 @@ export function SelectDATE({
                     max={maxTime} // Set max to maxTime to prevent thumb from going beyond this point
                     value={selectedTime}
                     onChange={handleChange}
-                    onAfterChange={handleFinalChange}
+                    onChangeComplete={handleFinalChange}
                     trackStyle={{
                       backgroundColor: isDarkMode ? "#f4f4f5" : "#18181b",
                       height: "8px", // Adjust track height

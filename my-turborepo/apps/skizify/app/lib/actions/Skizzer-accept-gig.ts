@@ -25,7 +25,7 @@ export async function acceptGig({ gig , budget , finalDateTime }: { gig: GigsInt
      return ("Meeting is requested");
   } catch (err) {
     console.log(err);
-     return ("Meeting is not Booked");
+     return (`Meeting is not Booked ${err} <---This is the error `);
   }
 }
 export interface Skizzerinfo {
@@ -54,6 +54,7 @@ export async function Skizzer_acceptedGig(gigId: string){
         gigId : true,
         budget : true ,
         finalDateTime : true,
+        skizzerId : true,
         Skizzer : {
           select :{
             name : true,

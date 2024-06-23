@@ -1,7 +1,14 @@
 import { Avatar } from "@repo/ui/avatar";
 import { deleteGig } from "../../lib/actions/deletegig";
 import { getServerSession } from "next-auth";
- import { authOptions } from "../../lib/auth";
+import { authOptions } from "../../lib/auth";
+import { GigStatus } from "@prisma/client";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "../../../@/components/ui/tooltip"
 import {
   ArrowRightIcon,
   CalendarDays,
@@ -31,9 +38,8 @@ interface MygigCardProps {
   gigs: GigsInterface[];
 }
 
-
- export default async function MygigCard({ gigs }: {gigs : GigsInterface[]}) {
-   const session = await getServerSession(authOptions);
+export default async function MygigCard({ gigs }: { gigs: GigsInterface[] }) {
+  const session = await getServerSession(authOptions);
   return (
     <div className="group/mygiggs space-y-4 p-3 transition duration-200">
       {Array.isArray(gigs) && gigs.length > 0 ? (
@@ -103,7 +109,27 @@ interface MygigCardProps {
                     {SessionTime(Number(gig.timeneeded))}
                   </div>
                 </div>
-                <AcceptedBy gig={gig} />
+                {gig.status === GigStatus.CONFIRMED ? (
+                  <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger>
+                  <Button
+                    className="w-full bg-black text-white hover:bg-black dark:bg-white dark:text-black hover:dark:bg-white"
+                    Icon={ArrowRightIcon}
+                    iconPlacement="right"
+                    variant="gooeyLeft"
+                  >
+                    Booked 🎉
+                  </Button>
+                    </TooltipTrigger>
+                    <TooltipContent className="bg-black text-white dark:bg-white dark:text-black">
+                      <p>Check out Calendar</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+                ) : (
+                  <AcceptedBy gig={gig} />
+                )}
               </div>
             </div>
           </div>

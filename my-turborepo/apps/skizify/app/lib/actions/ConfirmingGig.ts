@@ -2,7 +2,8 @@
 import prisma from "@repo/db/client";
 import { UserRole, GigStatus } from "@prisma/client";
 
-export async function ConfirmingGig({
+// Function to confirm a Skizzer for a gig
+export async function confirmGig({
   skizzerid,
   gigId,
   budget,
@@ -12,26 +13,25 @@ export async function ConfirmingGig({
   gigId: string;
   budget: number;
   finalDateTime: Date;
-}) {
-  //Now I have to confirm it in the Gig and also update the Status of both Table
+}){
   try {
+    // Update the gig with confirmation details
     const gig = await prisma.gigs.update({
-      where: {
-        id: gigId,
-      },
+      where: { id: gigId },
       data: {
-        finalDateTime: finalDateTime,
+        finalDateTime,
         Budgetfinalised: budget,
         confirmUserId: skizzerid,
         status: GigStatus.CONFIRMED,
       },
     });
+    
+    // If gig update is successful, update the gig user status
     if (gig) {
-      const updateRole = await prisma.gigUser.update({
+      const updatedRole = await prisma.gigUser.update({
         where: {
-          gigId_skizzerId: {
-            //WHY Because there we can't find on the Basis of indivisual ID
-            gigId: gigId,
+          gigId_skizzerId: { //WHY ? Check the schema, they are uique constraints
+            gigId,
             skizzerId: skizzerid,
           },
         },
@@ -39,24 +39,18 @@ export async function ConfirmingGig({
           status: GigStatus.CONFIRMED,
         },
       });
-      if (updateRole) {
-        console.log("Yes")
-        return { message: "Gig Confirmed Successfully" };
+
+      // Check if the role update is successful
+      if (updatedRole) {
+        return { message: "Gig confirmed successfully" };
       } else {
-        console.log("Yes")
-        throw new Error("Error in updating status in Giguser Table");
+        throw new Error("Failed to make changes in GigUser Table");
       }
     } else {
-        console.log("Yes")
-      throw new Error("Error in updating Gig Table");
+      throw new Error("Failed to make changes in Gig Table");
     }
-    //Updating the confirmId
-  } catch(err : any) {
-    console.log("Yes")
-    console.log(err)
-    console.log(
-      "Skizzer is not accepted right now, Status of gig is still unconfirmed",
-      err,
-    );
+  } catch (error: any) {
+    console.error("Error confirming gig:", error);
+    throw new Error("Skizzer is not accepted right now, status of gig is still unconfirmed");
   }
 }

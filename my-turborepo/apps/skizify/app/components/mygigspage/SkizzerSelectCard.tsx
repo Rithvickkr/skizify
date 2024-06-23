@@ -6,7 +6,22 @@ import { useState } from "react";
 import { CalendarDays, CheckCheck, Star } from "lucide-react";
 import { Month, formatTime } from "../../lib/actions/ConvertgigInfo";
 import { Button } from "../ui/button";
-import { ConfirmingGig } from "../../lib/actions/ConfirmingGig";
+import { confirmGig } from "../../lib/actions/ConfirmingGig";
+
+// SKizzersInfo  this is an array
+// [
+//   {
+//     id: '2fd9e5f8-acd2-46a5-be19-668a510a8e1c',
+//     gigId: '0df65238-1092-4bd2-9dfd-cbc3bf67a1bd',
+//     budget: 83724,
+//     finalDateTime: new Date('2024-06-28T07:54:00.000Z'),
+//     Skizzer: {
+//       name: 'wnhdfj3krhfd@krjhf.com ',
+//       userImage: null,
+//       reviewsReceived: []
+//     }
+//   }
+// ]
 export default function SkizzerselectCard({
   SKizzersInfo,
 }: {
@@ -69,23 +84,37 @@ export default function SkizzerselectCard({
             const info = SKizzersInfo.find((x : any) => { //This will return that Item
               return x.id === selectedCard;
             })
+            console.log(selectedCard)
+            //This is info
+            // {
+            //   id: '406422c6-2e1c-4e86-bd2b-c2b189e3aecf',
+            //   gigId: 'b14b9bba-67df-40a5-a6a5-eca28d3cd15a',
+            //   budget: 24234234,
+            //   finalDateTime: new Date('2024-06-29T10:45:00.000Z'),
+            //   skizzerId: 'f3840f5e-982e-4c17-9dee-cecb87b8d2f9',
+            //   Skizzer: {
+            //     name: 'ashagrover2212@gmail.com ',
+            //     userImage: null,
+            //     reviewsReceived: []
+            //   }
+            // }
+            console.log(info)
             try {
-              const change = await ConfirmingGig({
-                skizzerid : selectedCard || "",
-                gigId : info.gigId,
-                finalDateTime : info.finalDateTime,
-                budget : info.budget
-              })
-              console.log("Yes")
-              if(change){
-                console.log("Yes")
-                alert("Yeah Now the meeting is booked")
-              }else{
-                throw new Error('Confirming Gig Server action failed')
+              const change = await confirmGig({
+                skizzerid: info.skizzerId || "", //selected Id 
+                gigId: info.gigId,
+                finalDateTime: info.finalDateTime,
+                budget: info.budget,
+              });
+              if (change) {
+                console.log("Gig confirmed successfully");
+                window.alert("The meeting is now booked.");
+              } else {
+                throw new Error("Confirming gig server action failed");
               }
-            }catch(err) {
-              console.log(err);
-              alert("Not Confirmed/or Choose one")
+            } catch (error) {
+              console.error(error);
+              window.alert("Failed to confirm. Please choose one and try again.");
             }
           } }
         >

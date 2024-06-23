@@ -79,7 +79,6 @@ export function SignupFormDemo() {
 
               router.push("/");
             } catch (err) {
-              alert(err);
               console.error(err);
             }
           }}
