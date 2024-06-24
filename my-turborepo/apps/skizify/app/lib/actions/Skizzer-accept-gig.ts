@@ -4,7 +4,9 @@ import { GigsInterface } from "../../(dashboard)/explore/page";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth";
 
-export async function acceptGig({ gig , budget , finalDateTime }: { gig: GigsInterface , budget? : number , finalDateTime? : string }) {
+//Accept button in Book page when requesting for meeting
+//This is clicked by SKizzer to request for the Meeting
+export async function acceptGig({ gig , budget , finalDateTime }: { gig: GigsInterface , budget : number , finalDateTime : string }) {
   const session = await getServerSession(authOptions);
   if (!session) {
     console.log("Session Don't exist");
@@ -35,6 +37,7 @@ export interface Skizzerinfo {
   Skizzer : any
 }
 
+//This is fetch the Skizzer details on a particular Gig of user on mygigs page
 // This will return User name , userImage , rating, review , proposed budget , Date and Time of the meeting 
 // it want's gig Id , it will find the Gig in the records , and we will get the person who has accepted the request
 export async function Skizzer_acceptedGig(gigId: string){
@@ -66,6 +69,6 @@ export async function Skizzer_acceptedGig(gigId: string){
     })
     return Users
     }catch(err){
-    console.log("Error fetching Skizzer's who accpeted Request",err);
+    console.log("Error fetching Skizzer's who accepted Request",err);
   }
 }

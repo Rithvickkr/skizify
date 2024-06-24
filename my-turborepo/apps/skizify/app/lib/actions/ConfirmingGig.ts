@@ -1,6 +1,7 @@
 "use server";
 import prisma from "@repo/db/client";
 import { UserRole, GigStatus } from "@prisma/client";
+import { formatTime } from "./ConvertgigInfo";
 
 // Function to confirm a Skizzer for a gig
 export async function confirmGig({
@@ -13,7 +14,7 @@ export async function confirmGig({
   gigId: string;
   budget: number;
   finalDateTime: Date;
-}){
+}) {
   try {
     // Update the gig with confirmation details
     const gig = await prisma.gigs.update({
@@ -24,13 +25,14 @@ export async function confirmGig({
         confirmUserId: skizzerid,
         status: GigStatus.CONFIRMED,
       },
-    });
-    
+    }); //No problem Works fine
+
     // If gig update is successful, update the gig user status
     if (gig) {
       const updatedRole = await prisma.gigUser.update({
         where: {
-          gigId_skizzerId: { //WHY ? Check the schema, they are uique constraints
+          gigId_skizzerId: {
+            //WHY ? Check the schema, they are uique constraints
             gigId,
             skizzerId: skizzerid,
           },
@@ -51,6 +53,8 @@ export async function confirmGig({
     }
   } catch (error: any) {
     console.error("Error confirming gig:", error);
-    throw new Error("Skizzer is not accepted right now, status of gig is still unconfirmed");
+    throw new Error(
+      "Skizzer is not accepted right now, status of gig is still unconfirmed",
+    );
   }
 }

@@ -203,7 +203,7 @@ export function SelectDATE({
         <div className="my-3"></div>
         <div>
           <Label htmlFor="date-range">Meeting date</Label>
-          <div className="mt-2 flex items-center gap-4">
+          <div className="mt-2 flex items-center gap-4 mb-2">
             <Button
               variant="outline"
               className="h-auto w-full flex-col items-start bg-transparent hover:bg-[#f4f4f5] hover:dark:bg-transparent"
@@ -272,7 +272,7 @@ export function SelectDATE({
               <button>Close</button>
             </CredenzaClose> */}
         <Button
-          className="m-1 flex-1 bg-white text-black shadow hover:bg-white hover:ring-black dark:bg-white dark:text-black dark:hover:bg-white dark:hover:text-black dark:hover:ring-white"
+          className="m-1 flex-1 bg-white text-black shadow hover:bg-white hover:ring-black dark:bg-gray-200 dark:text-black dark:hover:bg-white dark:hover:text-black dark:hover:ring-white"
           variant="ringHover"
         >
           Message
@@ -290,7 +290,7 @@ export function SelectDATE({
               alert("Failed");
             }
           }}
-          className="my-1 mr-1 flex-1 bg-black text-white hover:bg-black hover:ring-black dark:bg-white dark:text-black dark:hover:bg-white dark:hover:text-black dark:hover:ring-white"
+          className="my-1 mr-1 flex-1 bg-black text-white hover:bg-black hover:ring-black dark:bg-gray-200 dark:text-black dark:hover:bg-white dark:hover:text-black dark:hover:ring-white"
           variant="ringHover"
         >
           <CheckCheck className="mr-2 size-4" />

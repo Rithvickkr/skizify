@@ -32,14 +32,14 @@ export default function EditDeleteCard({ gig }: { gig: GigsInterface }) {
         Posted on{" "}
         {`${formatTime(gig.createdAt)} ${Month(gig.createdAt)} ${gig.createdAt.getDay()}`}
       </div>
-      <div className="m-1 cursor-pointer rounded p-1 text-gray-500 shadow">
+      <div className="m-1 cursor-pointer rounded p-1 text-gray-500 shadow dark:border dark:border-gray-800">
         <Pencil
-          className="size-4 text-black dark:text-white md:size-6"
+          className="size-4 text-black dark:text-white md:size-6 "
           strokeWidth={1.3}
           absoluteStrokeWidth
         />
       </div>
-      <div className="m-1 cursor-pointer rounded p-1 text-red-500 shadow">
+      <div className="m-1 cursor-pointer rounded p-1 text-red-500 shadow dark:border dark:border-gray-800">
         <Trash
           className="size-4 md:size-6"
           color="#ff0000"

@@ -46,7 +46,7 @@ export default async function MygigCard({ gigs }: { gigs: GigsInterface[] }) {
         gigs.map((gig) => (
           <div
             key={gig.id}
-            className="flex w-full flex-col rounded-lg border border-gray-300 p-3 shadow-md transition duration-200 hover/mygiggs:translate-x-2 dark:bg-[#020817]"
+            className="flex w-full flex-col rounded-lg border border-gray-300 dark:border-2 dark:border-gray-800 p-3 shadow-md transition duration-200 hover/mygiggs:translate-x-2 dark:bg-[#020817]"
           >
             <div className="flex w-full justify-between">
               <div className="flex space-x-1">
@@ -65,7 +65,7 @@ export default async function MygigCard({ gigs }: { gigs: GigsInterface[] }) {
                 <EditDeleteCard gig={gig} />
               </div>
             </div>
-            <hr className="my-1" />
+            <hr className="my-1 dark:border-gray-800" />
             <div className="my-3 flex">
               <div className="flex flex-1 flex-col shadow-sm-light">
                 <div className="ml-2 font-display text-lg md:text-xl">
@@ -80,7 +80,7 @@ export default async function MygigCard({ gigs }: { gigs: GigsInterface[] }) {
               </div>
               <div className="grid flex-1 grid-cols-1 py-2 pl-2 md:grid-cols-2">
                 <div className="my-1 flex place-content-start items-center p-2 sm:my-2 md:my-0">
-                  <CalendarDays
+                <Clock7
                     className="mr-3 size-5 cursor-pointer text-xl font-medium text-gray-400 dark:text-white md:size-6"
                     strokeWidth={1.5}
                     absoluteStrokeWidth
@@ -100,7 +100,7 @@ export default async function MygigCard({ gigs }: { gigs: GigsInterface[] }) {
                   </div>
                 </div>
                 <div className="my-1 flex place-content-start items-center p-2 sm:my-2 md:my-0">
-                  <Clock7
+                <CalendarDays
                     className="mr-3 size-5 cursor-pointer text-xl font-medium text-gray-400 dark:text-white md:size-6"
                     strokeWidth={1.5}
                     absoluteStrokeWidth

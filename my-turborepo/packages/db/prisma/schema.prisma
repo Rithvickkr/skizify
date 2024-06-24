@@ -70,9 +70,8 @@ model GigUser {
   skizzerId     String
   UserId        String
   status        GigStatus @default(PENDING)
-  budget        Int?
-  finalDateTime DateTime?
-
+  budget        Int
+  finalDateTime DateTime
   //@@unique([skizzerId, UserId]) This means they can never build realtion in future
   @@unique([gigId, skizzerId])
 }

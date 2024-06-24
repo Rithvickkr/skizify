@@ -17,7 +17,6 @@ import { Avatar } from "@repo/ui/avatar";
 import { ScrollArea, ScrollBar } from "../../../@/components/ui/scroll-area";
 import { Button as ButtonE } from "../ui/button";
 import { acceptGig } from "../../lib/actions/Skizzer-accept-gig";
-import BookmeetingButton from "./Bookbutton";
 import { SelectDATE } from "./SelectDate";
 import { Content } from "@radix-ui/react-popover";
 import { Label } from "../../../@/components/ui/label";
@@ -41,7 +40,7 @@ export function BookButton2({
             Book
           </ButtonE>
         </CredenzaTrigger>
-        <CredenzaContent className="border-2 border-black">
+        <CredenzaContent className="border-2 border-black dark:border dark:border-gray-200">
           <CredenzaHeader>
             <CredenzaTitle>
               <div className="flex justify-between">

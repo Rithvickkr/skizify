@@ -13,7 +13,6 @@ import {
 import { Button } from "../ui/button";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 import { ScrollBar } from "../../../@/components/ui/scroll-area";
-import BookmeetingButton from "../mygigs/Bookbutton";
 import { ArrowRightIcon, CheckCheck, Clock7 } from "lucide-react";
 import { Skizzer_acceptedGig } from "../../lib/actions/Skizzer-accept-gig";
 import SkizzerselectCard from "./SkizzerSelectCard";
@@ -36,7 +35,7 @@ export default async function AcceptedBy({ gig }: { gig: GigsInterface }) {
             </Button>
           </div>
         </CredenzaTrigger>
-        <CredenzaContent className="border-2 border-black">
+        <CredenzaContent className="border border-black dark:border-white">
           <CredenzaHeader>
             <CredenzaTitle>
               <div className="font-display text-2xl font-bold md:text-4xl">

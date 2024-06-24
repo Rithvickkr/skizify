@@ -29,14 +29,13 @@ export default function SkizzerselectCard({
 }) {
   const [selectedCard, setselectedCard] = useState(""); // (This will store the Skizzer Id) and will update it into gig and will confirm and also confirm the Status of the Gig User
   //aslo I will put a limit if the user selected someone , then there that gig will not be displayed on the main screen
-  console.log(SKizzersInfo);
   return (
     <div>
-      <div className="flex flex-col space-y-4 p-2">
+      <div className="flex flex-col space-y-4 p-2 border border-white">
         {SKizzersInfo.map((skizzer: any) => {
           return (
             <div
-              className={`flex cursor-pointer justify-between rounded-md p-4 shadow-md hover:border hover:border-black ${selectedCard === skizzer.id ? "border border-black bg-neutral-100" : ""}`}
+              className={`flex cursor-pointer justify-between rounded-md p-4 shadow-md hover:border hover:border-black dark:hover:border-white ${selectedCard === skizzer.id ? "border border-black bg-neutral-100 dark:bg-transparent dark:border-white" : ""}`}
               key={skizzer.id}
               onClick={() => setselectedCard(skizzer.id)}
             >
