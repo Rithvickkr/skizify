@@ -145,7 +145,7 @@ export default function Example() {
                     type="button"
                     onClick={() => setSelectedDay(day)}
                     className={classNames( //This is How to put conditions in Classname in tailwind
-                      isEqual(day, selectedDay) && "bg-black text-white dark:text-black",
+                      isEqual(day, selectedDay) && "bg-black text-white dark:text-black dark:bg-white",
                       isEqual(day, selectedDay) &&
                         !isToday(day) &&
                         " dark:bg-white dark:text-black",
@@ -159,12 +159,12 @@ export default function Example() {
                       !isEqual(day, selectedDay) &&
                         !isToday(day) &&
                         !isSameMonth(day, firstDayCurrentMonth) &&
-                        "text-gray-400 dark:text-white",
-                      isEqual(day, selectedDay) && isToday(day) && "bg-red-500 dark:text-white",
+                        "text-gray-400 dark:text-white ",
+                      isEqual(day, selectedDay) && isToday(day) && "bg-red-500 dark:bg-red-500 dark:text-white",
                       !isEqual(day, selectedDay) && "hover:bg-gray-200 dark:hover:bg-gray-800 dark:text-white",
                       (isEqual(day, selectedDay) || isToday(day)) &&
                         "font-semibold",
-                      "flex h-12 w-full items-center justify-center rounded  ring-1 ring-black",
+                      "flex h-12 w-full items-center justify-center rounded  ring-1 ring-black bg-transparent ",
                     )}
                   >
                     <time dateTime={format(day, "yyyy-MM-dd")}>
