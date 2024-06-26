@@ -34,7 +34,7 @@ export function BookButton2({
       <Credenza>
         <CredenzaTrigger asChild>
           <ButtonE
-            className="col-span-1 m-1 w-full bg-black text-white dark:border dark:border-white dark:bg-[#020817]"
+            className="col-span-1 h-9 min-w-full bg-black text-white dark:border dark:border-white dark:bg-[#020817] xl:h-10"
             variant="gooeyLeft"
           >
             Book

@@ -29,7 +29,7 @@ export default async function SkizzerrequestPage() {
         )
     }
     return (
-        <div className="mx-auto grid w-full max-w-7xl grid-cols-1 gap-4 md:grid-cols-2 2xl:grid-cols-3 px-3">
+        <div className="mx-auto grid w-full max-w-7xl grid-cols-1 gap-2 md:grid-cols-2 2xl:grid-cols-3 pl-1 md:pl-2 pr-4">
             {requests.map((request) => {
                 return (
                     <div key={request.id}>
