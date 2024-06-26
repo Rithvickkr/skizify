@@ -1,4 +1,3 @@
-import { Avatar } from "@repo/ui/avatar";
 import { GigsInterface } from "../../(dashboard)/explore/page";
 import {
   Credenza,
@@ -11,9 +10,7 @@ import {
   CredenzaTrigger,
 } from "../mygigs/Credenza";
 import { Button } from "../ui/button";
-import { ScrollArea } from "@radix-ui/react-scroll-area";
-import { ScrollBar } from "../../../@/components/ui/scroll-area";
-import { ArrowRightIcon, CheckCheck, Clock7 } from "lucide-react";
+import { ArrowRightIcon} from "lucide-react";
 import { Skizzer_acceptedGig } from "../../lib/actions/Skizzer-accept-gig";
 import SkizzerselectCard from "./SkizzerSelectCard";
 

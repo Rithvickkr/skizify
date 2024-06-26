@@ -30,7 +30,7 @@ export default function EditDeleteCard({ gig }: { gig: GigsInterface }) {
     <div className="flex self-center">
       <div className="m-1 self-center truncate p-1 text-xs text-gray-500 md:text-sm">
         Posted on{" "}
-        {`${formatTime(gig.createdAt)} ${Month(gig.createdAt)} ${gig.createdAt.getDay()}`}
+        {`${formatTime(gig.createdAt)} ${Month(gig.createdAt)} ${gig.createdAt.getDate()}`}
       </div>
       <div className="m-1 cursor-pointer rounded p-1 text-gray-500 shadow dark:border dark:border-gray-800">
         <Pencil

@@ -10,7 +10,7 @@ export async function Sidebar() {
     return <div>Loading .... </div>;
   }
   return (
-    <div className="flex min-h-screen flex-col border-r bg-[#fafbfb] dark:border-slate-700 dark:bg-gray-900">
+    <div className="flex min-h-screen flex-col border-r bg-[#fafbfb] z-2 dark:border-slate-700 dark:bg-gray-900">
       <div className="flex items-center">
         <div className="flex size-10 m-2 items-center justify-center rounded-full border border-white bg-[black] text-white focus:outline-0 dark:border-gray-900 dark:bg-white dark:text-black">
           <div>S</div>

@@ -140,10 +140,10 @@ export default function SkizzerRequestCard({
                 </ToolTip>
                 <ToolTip
                   name={request.status}
-                  className={`${request.status === GigStatus.CONFIRMED ? "bg-green-500 dark:bg-green-500" : "bg-yellow-500 dark:bg-yellow-500"} dark:text-white`}
+                  className={`${request.status === GigStatus.CONFIRMED ? "bg-green-500 dark:bg-green-500" : "bg-yellow-300 dark:bg-yellow-300"} dark:text-white`}
                 >
                   <div
-                    className={`ml-1 h-3 w-3 self-end rounded-full ${request.status === GigStatus.CONFIRMED ? "bg-green-500 dark:bg-green-500" : "bg-yellow-500 dark:bg-yellow-500"}`}
+                    className={`ml-1 h-3 w-3 self-end rounded-full ${request.status === GigStatus.CONFIRMED ? "bg-green-500 dark:bg-green-500" : "bg-yellow-300 dark:bg-yellow-300"}`}
                   ></div>
                 </ToolTip>
               </div>

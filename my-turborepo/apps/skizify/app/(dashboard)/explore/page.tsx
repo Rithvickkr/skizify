@@ -26,9 +26,9 @@ export default async function Page() {
   const gigs: GigsInterface[] = await getAllgigs();
 
   return (
-    <div className="flex flex-col items-center p-4 overflow-hidden w-full">
+    <div className="flex flex-col items-center overflow-hidden w-full">
     <div className="relative w-full max-w-lg">
-      <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+      <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground " />
       <input
         type="search"
         placeholder="Search..."
