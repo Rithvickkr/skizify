@@ -94,12 +94,19 @@ export default function SkizzerRequestCard({
           </CardContent>
           <CardFooter className="grid grid-cols-5 space-x-1">
             <div className="col-span-4 grid grid-cols-2 space-x-2">
+              {request.status === GigStatus.CONFIRMED ? 
               <ButtonE
                 className="col-span-1 max-w-md border bg-neutral-800 text-white shadow dark:border-white dark:bg-transparent"
                 variant="gooeyLeft"
               >
                 Join
-              </ButtonE>
+              </ButtonE>:<ButtonE
+                className="col-span-1 max-w-md border bg-neutral-800 text-white shadow dark:border-white dark:bg-transparent"
+                variant="gooeyLeft"
+              >
+                {request.status}
+              </ButtonE>}
+
               <ButtonE
                 className="col-span-1 max-w-md border-2 border-black bg-white text-black shadow hover:border-2 hover:border-black hover:bg-white hover:ring-2 hover:ring-white dark:bg-gray-200 hover:dark:border-white"
                 variant="ringHover"
@@ -108,19 +115,8 @@ export default function SkizzerRequestCard({
               </ButtonE>
             </div>
 
-            <div className="grid grid-cols-2">
-              <div className="col-span-1 ml-1 w-full">
-                {request.status === GigStatus.CONFIRMED ? (
-                  <ButtonE
-                    className="w-full border bg-neutral-800 text-white shadow dark:border-white dark:bg-transparent"
-                    variant="gooeyLeft"
-                  >
-                    Join
-                  </ButtonE>
-                ) : (
-                  <div></div>
-                )}
-              </div>
+           
+              
 
               <div className="col-span-1 flex justify-end">
                 <ToolTip name={"Edit"}>
@@ -154,7 +150,7 @@ export default function SkizzerRequestCard({
                   ></div>
                 </ToolTip>
               </div>
-            </div>
+            
           </CardFooter>
         </Card>
       </div>
