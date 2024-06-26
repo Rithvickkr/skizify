@@ -91,52 +91,62 @@ export default function SkizzerRequestCard({
               </ScrollArea>
             </div>
           </CardContent>
-          <CardFooter className="grid grid-cols-5 space-x-1">
-            <div className="col-span-4 grid grid-cols-2 space-x-2">
+          <CardFooter className="grid grid-cols-2 space-x-1">
+            <div className="col-span-1">
               <ButtonE
-                className="col-span-1 max-w-md border bg-neutral-800 text-white shadow dark:border-white dark:bg-transparent"
-                variant="gooeyLeft"
-              >
-                Join
-              </ButtonE>
-              <ButtonE
-                className="col-span-1 max-w-md border-2 border-black bg-white text-black shadow hover:border-2 hover:border-black hover:bg-white hover:ring-2 hover:ring-white dark:bg-gray-200 hover:dark:border-white"
+                className="col-span-1 w-full border-2 border-black bg-white text-black shadow hover:border-2 hover:border-black hover:bg-white hover:ring-2 hover:ring-white dark:bg-gray-200 hover:dark:border-white"
                 variant="ringHover"
               >
                 Message
               </ButtonE>
             </div>
-            <div className="col-span-1 flex justify-end">
-              <ToolTip name={"Edit"}>
-                <div className="mr-1 cursor-pointer self-end rounded p-1 text-gray-500 shadow dark:border dark:border-gray-800">
-                  <Pencil
-                    className="size-4 text-black dark:text-white"
-                    strokeWidth={1.3}
-                    absoluteStrokeWidth
-                  />
-                </div>
-              </ToolTip>
-              <ToolTip
-                name="Delete"
-                className="bg-red-500 dark:bg-red-500 dark:text-white"
-              >
-                <div className="cursor-pointer self-end rounded p-1 text-red-500 shadow dark:border dark:border-gray-800">
-                  <Trash
-                    className="size-4"
-                    color="#ff0000"
-                    strokeWidth={1.5}
-                    absoluteStrokeWidth
-                  />
-                </div>
-              </ToolTip>
-              <ToolTip
-                name={request.status}
-                className={`${request.status === GigStatus.CONFIRMED ? "bg-green-500 dark:bg-green-500" : "bg-yellow-400 dark:bg-yellow-400"} dark:text-white`}
-              >
-                <div
-                  className={`ml-1 h-3 w-3 self-end rounded-full ${request.status === GigStatus.CONFIRMED ? "bg-green-500 dark:bg-green-500" : "bg-yellow-400 dark:bg-yellow-400"}`}
-                ></div>
-              </ToolTip>
+
+            <div className="grid grid-cols-2">
+              <div className="col-span-1 ml-1 w-full">
+                {request.status === GigStatus.CONFIRMED ? (
+                  <ButtonE
+                    className="w-full border bg-neutral-800 text-white shadow dark:border-white dark:bg-transparent"
+                    variant="gooeyLeft"
+                  >
+                    Join
+                  </ButtonE>
+                ) : (
+                  <div></div>
+                )}
+              </div>
+
+              <div className="col-span-1 flex justify-end">
+                <ToolTip name={"Edit"}>
+                  <div className="mr-1 cursor-pointer self-end rounded p-1 text-gray-500 shadow dark:border dark:border-gray-800">
+                    <Pencil
+                      className="size-4 text-black dark:text-white"
+                      strokeWidth={1.3}
+                      absoluteStrokeWidth
+                    />
+                  </div>
+                </ToolTip>
+                <ToolTip
+                  name="Delete"
+                  className="bg-red-500 dark:bg-red-500 dark:text-white"
+                >
+                  <div className="cursor-pointer self-end rounded p-1 text-red-500 shadow dark:border dark:border-gray-800">
+                    <Trash
+                      className="size-4"
+                      color="#ff0000"
+                      strokeWidth={1.5}
+                      absoluteStrokeWidth
+                    />
+                  </div>
+                </ToolTip>
+                <ToolTip
+                  name={request.status}
+                  className={`${request.status === GigStatus.CONFIRMED ? "bg-green-500 dark:bg-green-500" : "bg-yellow-400 dark:bg-yellow-400"} dark:text-white`}
+                >
+                  <div
+                    className={`ml-1 h-3 w-3 self-end rounded-full ${request.status === GigStatus.CONFIRMED ? "bg-green-500 dark:bg-green-500" : "bg-yellow-400 dark:bg-yellow-400"}`}
+                  ></div>
+                </ToolTip>
+              </div>
             </div>
           </CardFooter>
         </Card>
