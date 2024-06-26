@@ -1,7 +1,7 @@
 import { cn } from "../../utils/cn";
 import { GigsInterface } from "../../(dashboard)/explore/page";
 import { Avatar } from "@repo/ui/avatar";
-import { Card, CardContent } from "../../../@/components/ui/card";
+import { Card, CardContent, CardFooter } from "../../../@/components/ui/card";
 import { ScrollArea, ScrollBar } from "../../../@/components/ui/scroll-area";
 import { Button as ButtonE } from "../ui/button";
 import { CalendarRange, Clock7 } from "lucide-react";
@@ -86,23 +86,23 @@ export const BentoGridItem = ({
       <div className="w-[90%] transition duration-200 group-hover/bento:translate-x-2">
         <Card className="mx-auto w-full max-w-md">
           <CardContent className="grid w-full">
-            <div className="flex justify-between">
-              <div className="flex space-x-1">
+            <div className="flex justify-between ">
+              <div className="grid grid-cols-6 space-x-1">
                 <Avatar
                   name={poster.name}
                   photo={poster.userImage}
-                  classname="size-8 text-sm"
+                  classname="size-8 text-sm col-span-1"
                 />
-                <div className="self-center">
-                  <h3 className="text-sm text-gray-500">{poster.name}</h3>
+                <div className="self-center col-span-4">
+                  <h3 className="text-sm text-gray-500 truncate max-w-30">{poster.name}</h3>
                 </div>
               </div>
 
-              <div className="mr-2 flex gap-2 text-sm text-gray-500 dark:text-gray-400">
+              <div className="mr-1 flex gap-1 text-xs text-gray-500 dark:text-gray-400 z-10">
                 <div className="self-center">
                   <Clock7 className="size-4" />
                 </div>
-                <div className="self-center">{sessionTime}</div>
+                <div className="self-center w-12">{sessionTime}</div>
               </div>
             </div>
 
@@ -111,39 +111,37 @@ export const BentoGridItem = ({
                 <div className="ml-2 h-7 justify-items-center font-display text-xl font-medium">
                   {gig.title || "Title"}
                 </div>
-                <ScrollArea className="w-full truncate text-wrap rounded-md border p-2 px-2 text-sm">
+                <ScrollArea className="w-full truncate text-wrap rounded-md border p-2 px-2 text-sm ">
                   {gig.content}
                   <ScrollBar orientation="horizontal" />
                 </ScrollArea>
               </div>
 
               <div className="my-4 flex items-center justify-between">
-                <div className="mr-3 flex gap-2 text-sm text-gray-500 dark:text-gray-400">
+                <div className="mr-3 flex gap-2 text-xs text-gray-500 dark:text-gray-400">
                   <div className="self-center">
                     <Clock7 className="size-4" />
                   </div>
                   <div className="self-center text-sm">{`${startTime} - ${endTime}`}</div>
                 </div>
                 <div className="flex items-center">
-                  <CalendarRange className="mr-1 h-5 w-5" />
+                  <CalendarRange className="mr-1 size-5 lg:size-4  xl:size-5" />
                   <span className="text-sm">{`${startDATEmonth} ${startDATEday} - ${endDATEmonth} ${endDATEday}`}</span>
                 </div>
               </div>
             </div>
-            
-            <div className="flex space-x-4">
-              <div className="flex-1">
-                <BookButton2
-                  gig={gig}
-                  poster={poster}
-                  Datetimepackage={datetimepackage}
-                />
-              </div>
-              <ButtonE className="col-span-1 m-1 flex-1 bg-white text-black shadow hover:bg-white">
+
+          </CardContent>
+          <CardFooter className="grid grid-cols-2 space-x-2">
+              <BookButton2
+                gig={gig}
+                poster={poster}
+                Datetimepackage={datetimepackage}
+              />
+              <ButtonE className="col-span-1 h-9 bg-gray-50 border text-black shadow hover:bg-white xl:h-10">
                 Message
               </ButtonE>
-            </div>
-          </CardContent>
+          </CardFooter>
         </Card>
       </div>
     </div>

@@ -21,7 +21,7 @@ export const SidebarItem = ({
         {icon}
       </div>
       <div
-        className={`m-1 hidden cursor-pointer truncate py-3 font-display text-lg sm:block`}
+        className={`m-1 hidden cursor-pointer truncate py-3 text-base   sm:block`}
         onClick={() => router.push(href)}
       >
         {title}

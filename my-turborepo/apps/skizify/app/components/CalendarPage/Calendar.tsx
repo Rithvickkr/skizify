@@ -164,7 +164,7 @@ export default function Example() {
                       !isEqual(day, selectedDay) && "hover:bg-gray-200 dark:hover:bg-gray-800 dark:text-white",
                       (isEqual(day, selectedDay) || isToday(day)) &&
                         "font-semibold",
-                      "mx-auto flex h-12 w-full items-center justify-center rounded",
+                      "flex h-12 w-full items-center justify-center rounded  ring-2 ring-black",
                     )}
                   >
                     <time dateTime={format(day, "yyyy-MM-dd")}>
@@ -176,7 +176,7 @@ export default function Example() {
                     {meetings.some((meeting) =>
                       isSameDay(parseISO(meeting.startDatetime), day),
                     ) && (
-                      <div className="h-1 w-1 rounded-full bg-sky-500"></div> //Display dot below calendar
+                      <div className="h-1 w-1 rounded-full bg-sky-500 mt-1"></div> //Display dot below calendar
                     )}
                   </div>
                 </div>

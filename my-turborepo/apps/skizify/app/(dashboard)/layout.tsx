@@ -10,11 +10,11 @@ export default function Layout({
 }): JSX.Element {
   return (
     <div className="flex w-screen">
-      <div className="fixed w-1/5">
+      <div className="fixed w-1/6"> {/*Because when you fix something on the screen it is occupying it's whole space*/}
         <Sidebar />
       </div>
-      <div className="w-1/5"></div>
-      <div className="w-4/5">
+      <div className="w-1/6"></div>
+      <div className="w-5/6">
         <AppbarClient />
         {children}
       </div>
