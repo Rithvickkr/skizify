@@ -100,7 +100,7 @@ export default function Example() {
     <div className="pt-16">
       <div className="mx-auto max-w-3xl px-4 sm:px-7 md:max-w-6xl md:px-6">
         <div className="md:grid md:grid-cols-2 md:divide-x md:divide-gray-200 ">
-          <div className=" py-5 pr-5 pl-3 w-full md:w-[97%] lg:w-[94%] bg-gray-50 rounded-md dark:bg-gray-900 border border-white">
+          <div className=" py-5 pr-5 pl-3 w-full md:w-[97%] lg:w-[94%] bg-gray-50 rounded-md dark:bg-gray-900 border border-gray-800">
             <div className="flex items-center ">
               <h2 className="flex-auto font-semibold text-gray-900 dark:text-white ml-0 md:ml-3">
                 {format(firstDayCurrentMonth, "MMMM yyyy")}
@@ -164,7 +164,7 @@ export default function Example() {
                       !isEqual(day, selectedDay) && "hover:bg-gray-200 dark:hover:bg-gray-800 dark:text-white",
                       (isEqual(day, selectedDay) || isToday(day)) &&
                         "font-semibold",
-                      "flex h-12 w-full items-center justify-center rounded  ring-2 ring-black",
+                      "flex h-12 w-full items-center justify-center rounded  ring-1 ring-black",
                     )}
                   >
                     <time dateTime={format(day, "yyyy-MM-dd")}>

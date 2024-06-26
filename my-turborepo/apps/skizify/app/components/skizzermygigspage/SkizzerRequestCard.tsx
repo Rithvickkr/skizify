@@ -27,7 +27,7 @@ export default function SkizzerRequestCard({
   return (
     <div
       className={cn(
-        "group/bento shadow-input row-span-1 flex w-full cursor-pointer items-center justify-center space-y-4 rounded-xl border-2 bg-white p-3 transition duration-200 hover:shadow-lg dark:border-gray-800 dark:bg-[#020817] dark:shadow-none",
+        "group/bento shadow-input row-span-1 flex w-full cursor-pointer items-center justify-center space-y-4 rounded-xl border bg-white p-3 transition duration-200 hover:shadow-lg dark:border-gray-800 dark:bg-[#020817] dark:shadow-none",
         className,
       )}
     >
@@ -35,12 +35,12 @@ export default function SkizzerRequestCard({
         <Card className="mx-auto w-full max-w-lg">
           <CardContent className="grid w-full grid-cols-2 space-x-2">
             <div className="mb-2 grid grid-rows-3">
-              <div className="row-span-1 mb-1 flex justify-between overflow-hidden truncate rounded border-2 border-black p-1">
+              <div className="row-span-1 mb-1 flex justify-between overflow-hidden truncate rounded border border-black p-1">
                 <div className="flex space-x-1">
                   <Avatar
                     name={request.user.name}
                     photo={request.user.userImage}
-                    classname="size-8 text-sm p-1 ring-2 ring-black "
+                    classname="size-8 text-sm p-1 "
                   />
                   <div className="self-center overflow-hidden truncate text-sm text-gray-500">
                     {request.user.name}
@@ -49,7 +49,7 @@ export default function SkizzerRequestCard({
               </div>
 
               <div className="mb-1 grid grid-cols-2 gap-x-1 text-xs">
-                <div className="flex items-center justify-center rounded border-2 border-black p-1 dark:border-gray-800">
+                <div className="flex items-center justify-center rounded border border-black p-1 dark:border-gray-800">
                   <div className="flex gap-1 text-gray-500 dark:text-gray-400">
                     <div className="self-center">
                       <Clock7 className="size-4" />
@@ -58,7 +58,7 @@ export default function SkizzerRequestCard({
                   </div>
                 </div>
 
-                <div className="flex items-center justify-center rounded border-2 border-black p-1 dark:border-gray-800">
+                <div className="flex items-center justify-center rounded border border-black p-1 dark:border-gray-800">
                   <div className="flex items-center">
                     <CalendarRange className="mr-1 h-5 w-5" />
                     <span className="font-medium">{`${finalDate} ${request.finalDateTime.getDate()}`}</span>
@@ -67,7 +67,7 @@ export default function SkizzerRequestCard({
               </div>
 
               <div className="grid grid-cols-2 gap-x-1 text-xs">
-                <div className="flex items-center justify-center rounded border-2 border-black p-1 dark:border-gray-800">
+                <div className="flex items-center justify-center rounded border border-black p-1 dark:border-gray-800">
                   <div className="mr-2 flex gap-2 text-gray-500 dark:text-gray-400">
                     <div className="self-center">
                       <Clock7 className="size-4" />
@@ -75,17 +75,17 @@ export default function SkizzerRequestCard({
                     <div className="self-center">{sessionTime}</div>
                   </div>
                 </div>
-                <div className="flex items-center justify-center rounded border-2 border-black p-1 font-medium dark:border-gray-800">
+                <div className="flex items-center justify-center rounded border border-black p-1 font-medium dark:border-gray-800">
                   $ {request.budget}
                 </div>
               </div>
             </div>
 
             <div className="mb-2 grid grid-rows-4 bg-white dark:bg-transparent">
-              <div className="text-md row-span-1 mb-2 justify-items-center truncate rounded border-2 border-black pl-1 pt-1 font-display font-medium dark:border-gray-800">
+              <div className="text-md row-span-1 mb-2 justify-items-center truncate rounded border border-black pl-1 pt-1 font-display font-medium dark:border-gray-800">
                 {request.gig.title || "Title"}
               </div>
-              <ScrollArea className="row-span-3 w-full truncate text-wrap rounded-md border-2 border-black p-2 px-2 text-sm dark:border-gray-800">
+              <ScrollArea className="row-span-3 w-full truncate text-wrap rounded-md border border-black p-2 px-2 text-sm dark:border-gray-800">
                 {request.gig.content}
                 <ScrollBar orientation="horizontal" />
               </ScrollArea>
@@ -94,7 +94,7 @@ export default function SkizzerRequestCard({
           <CardFooter className="grid grid-cols-2 space-x-1">
             <div className="col-span-1">
               <ButtonE
-                className="col-span-1 w-full border-2 border-black bg-white text-black shadow hover:border-2 hover:border-black hover:bg-white hover:ring-2 hover:ring-white dark:bg-gray-200 hover:dark:border-white"
+                className="col-span-1 w-full border border-black bg-white text-black shadow hover:border hover:border-black hover:bg-white hover:ring-2 hover:ring-white dark:bg-gray-200 hover:dark:border-white"
                 variant="ringHover"
               >
                 Message
