@@ -16,23 +16,27 @@ export async function confirmGig({
   finalDateTime: Date;
 }) {
   try {
+    // Validate finalDateTime
+    if (!(finalDateTime instanceof Date) || isNaN(finalDateTime.getTime())) {
+      throw new Error("Invalid finalDateTime provided. It must be a valid Date object.");
+    }
+
     // Update the gig with confirmation details
     const gig = await prisma.gigs.update({
       where: { id: gigId },
       data: {
-        finalDateTime,
         Budgetfinalised: budget,
         confirmUserId: skizzerid,
         status: GigStatus.CONFIRMED,
+        finalDateTime: finalDateTime,
       },
-    }); //No problem Works fine
+    });
 
     // If gig update is successful, update the gig user status
     if (gig) {
       const updatedRole = await prisma.gigUser.update({
         where: {
           gigId_skizzerId: {
-            //WHY ? Check the schema, they are uique constraints
             gigId,
             skizzerId: skizzerid,
           },
@@ -46,15 +50,15 @@ export async function confirmGig({
       if (updatedRole) {
         return { message: "Gig confirmed successfully" };
       } else {
-        throw new Error("Failed to make changes in GigUser Table");
+        throw new Error("Failed to update GigUser table.");
       }
     } else {
-      throw new Error("Failed to make changes in Gig Table");
+      throw new Error("Failed to update Gig table.");
     }
   } catch (error: any) {
     console.error("Error confirming gig:", error);
     throw new Error(
-      "Skizzer is not accepted right now, status of gig is still unconfirmed",
+      "An error occurred while confirming the gig. Please check the logs for more details."
     );
   }
 }

@@ -6,6 +6,9 @@ import {
   Settings,
   MoonIcon,
   WandSparkles,
+  Search,
+  Nut
+ 
 } from "lucide-react";
 
 import {
@@ -38,6 +41,15 @@ export const Appbar = ({ user, onSignout, onSignin, fn }: AppbarProps) => {
   const name = user?.name || "User";
   return (
     <div className="flex justify-end items-center p-3">
+       {/* {(window.location.href=="http://localhost:3000/explore"?<div className="relative ml-auto flex-1 md:grow-0">
+            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+            <input
+              type="search"
+              placeholder="Search..."
+              className="w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[336px]"
+            />
+          </div>:<div>{window.location.href}</div>)} */}
+
       <div>
         <DropdownMenu>
           <DropdownMenuTrigger>
