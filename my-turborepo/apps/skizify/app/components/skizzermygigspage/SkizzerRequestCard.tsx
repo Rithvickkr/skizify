@@ -24,7 +24,6 @@ export default function SkizzerRequestCard({
   const sessionTime = SessionTime(request.gig.timeneeded);
   const finalTime = formatTime(request.finalDateTime);
   const finalDate = Month(request.finalDateTime);
-  console.log(request);
   return (
     <div
       className={cn(
@@ -36,7 +35,7 @@ export default function SkizzerRequestCard({
         <Card className="mx-auto w-full max-w-lg">
           <CardContent className="grid w-full grid-cols-2 space-x-2">
             <div className="mb-2 grid grid-rows-3">
-              <div className="row-span-1 mb-1 flex justify-between overflow-hidden truncate rounded border border-black p-1">
+              <div className="row-span-1 mb-1 flex justify-between overflow-hidden truncate rounded  p-1">
                 <div className="flex space-x-1">
                   <Avatar
                     name={request.user.name}
@@ -82,41 +81,39 @@ export default function SkizzerRequestCard({
               </div>
             </div>
 
-            <div className="mb-2 grid grid-rows-4 bg-white dark:bg-transparent">
-              <div className="text-md row-span-1 mb-2 justify-items-center truncate rounded border border-black pl-1 pt-1 font-display font-medium dark:border-gray-800">
+            <div className="mb-2 grid grid-rows-3 bg-white dark:bg-transparent">
+              <div className="text-md row-span-1 mb-1 justify-items-center truncate rounded border border-black pl-1 pt-1 font-display font-medium dark:border-gray-800">
                 {request.gig.title || "Title"}
               </div>
-              <ScrollArea className="row-span-3 w-full truncate text-wrap rounded-md border border-black p-2 px-2 text-sm dark:border-gray-800">
+              <ScrollArea className="row-span-2 w-full truncate text-wrap rounded-md border border-black p-2 px-2 text-sm dark:border-gray-800">
                 {request.gig.content}
                 <ScrollBar orientation="horizontal" />
               </ScrollArea>
             </div>
           </CardContent>
-          <CardFooter className="grid grid-cols-5 space-x-1">
-            <div className="col-span-4 grid grid-cols-2 space-x-2">
-              {request.status === GigStatus.CONFIRMED ? 
+          <CardFooter className="grid grid-cols-2 space-x-1">
+            <div className="col-span-1">
               <ButtonE
-                className="col-span-1 max-w-md border bg-neutral-800 text-white shadow dark:border-white dark:bg-transparent"
-                variant="gooeyLeft"
-              >
-                Join
-              </ButtonE>:<ButtonE
-                className="col-span-1 max-w-md border bg-neutral-800 text-white shadow dark:border-white dark:bg-transparent"
-                variant="gooeyLeft"
-              >
-                {request.status}
-              </ButtonE>}
-
-              <ButtonE
-                className="col-span-1 max-w-md border-2 border-black bg-white text-black shadow hover:border-2 hover:border-black hover:bg-white hover:ring-2 hover:ring-white dark:bg-gray-200 hover:dark:border-white"
+                className="col-span-1 w-full border border-black bg-white text-black shadow hover:border hover:border-black hover:bg-white hover:ring-2 hover:ring-white dark:bg-gray-200 hover:dark:border-white"
                 variant="ringHover"
               >
                 Message
               </ButtonE>
             </div>
 
-           
-              
+            <div className="grid grid-cols-2">
+              <div className="col-span-1 ml-1 w-full">
+                {request.status === GigStatus.CONFIRMED ? (
+                  <ButtonE
+                    className="w-full border bg-neutral-800 text-white shadow dark:border-white dark:bg-transparent"
+                    variant="gooeyLeft"
+                  >
+                    Join
+                  </ButtonE>
+                ) : (
+                  <div></div>
+                )}
+              </div>
 
               <div className="col-span-1 flex justify-end">
                 <ToolTip name={"Edit"}>
@@ -143,17 +140,18 @@ export default function SkizzerRequestCard({
                 </ToolTip>
                 <ToolTip
                   name={request.status}
-                  className={`${request.status === GigStatus.CONFIRMED ? "bg-green-500 dark:bg-green-500" : "bg-yellow-400 dark:bg-yellow-400"} dark:text-white`}
+                  className={`${request.status === GigStatus.CONFIRMED ? "bg-green-500 dark:bg-green-500" : "bg-yellow-500 dark:bg-yellow-500"} dark:text-white`}
                 >
                   <div
-                    className={`ml-1 h-3 w-3 self-end rounded-full ${request.status === GigStatus.CONFIRMED ? "bg-green-500 dark:bg-green-500" : "bg-yellow-400 dark:bg-yellow-400"}`}
+                    className={`ml-1 h-3 w-3 self-end rounded-full ${request.status === GigStatus.CONFIRMED ? "bg-green-500 dark:bg-green-500" : "bg-yellow-500 dark:bg-yellow-500"}`}
                   ></div>
                 </ToolTip>
               </div>
-            
+            </div>
           </CardFooter>
         </Card>
       </div>
     </div>
   );
 }
+
