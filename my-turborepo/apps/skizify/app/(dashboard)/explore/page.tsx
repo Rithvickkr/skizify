@@ -7,6 +7,7 @@ import { UserRole } from "@prisma/client";
 import { GigStatus } from "@prisma/client";
 import { Search } from "lucide-react";
 import { Input } from "../../../@/components/ui/input";
+import filtergigs from "../../lib/actions/Filters";
 
 export interface GigsInterface {
   id: string;
@@ -24,6 +25,8 @@ export interface GigsInterface {
 
 export default async function Page() {
   const gigs: GigsInterface[] = await getAllgigs();
+  const filteredGigs = await filtergigs(gigs);
+  
 
   return (
     <div className="flex flex-col items-center overflow-hidden w-full">
@@ -37,7 +40,7 @@ export default async function Page() {
       />
     </div>
     <div className="mt-4 w-full overflow-hidden">
-      <GigStructure gigs={gigs} />
+      <GigStructure gigs={filteredGigs} />
     </div>
   </div>
 );

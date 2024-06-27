@@ -1,11 +1,9 @@
 // lib/searchGigs.ts
 
-import { GigsInterface } from "../../(dashboard)/explore/page";// Adjust the import path as necessary
-import { getAllgigs } from "./getgigs";
+import { GigsInterface } from "../../(dashboard)/explore/page"; // Adjust the import path as necessary
 
-export const searchGigs = async ( query: string): Promise<GigsInterface[]> => {
-    const gigs: GigsInterface[] = await getAllgigs();
-  return gigs.filter(gig =>
-    gig.title.toLowerCase().includes(query.toLowerCase())
-  );
-};
+export default function filtergigs(gigs: GigsInterface[]) {
+  const currentDate = new Date();
+
+  return gigs.filter((gig) => new Date(gig.endDateTime) >= currentDate);
+}
