@@ -1,3 +1,4 @@
+"use client"
 import { GiguserContent } from "./SkizzerrequestPage";
 import { Avatar } from "@repo/ui/avatar";
 import { cn } from "../../utils/cn";
@@ -12,6 +13,7 @@ import {
   formatTime,
 } from "../../lib/actions/ConvertgigInfo";
 import { ToolTip } from "../ui/Tooltip";
+import { useRouter } from "next/navigation";
 
 //name //title //content //
 export default function SkizzerRequestCard({
@@ -24,6 +26,7 @@ export default function SkizzerRequestCard({
   const sessionTime = SessionTime(request.gig.timeneeded);
   const finalTime = formatTime(request.finalDateTime);
   const finalDate = Month(request.finalDateTime);
+  const router = useRouter();
   return (
     <div
       className={cn(
@@ -107,6 +110,7 @@ export default function SkizzerRequestCard({
                   <ButtonE
                     className="w-full border bg-neutral-800 text-white shadow dark:border-white dark:bg-transparent"
                     variant="gooeyLeft"
+                    onClick={() => router.push(`/Meetingpage`)}
                   >
                     Join
                   </ButtonE>
