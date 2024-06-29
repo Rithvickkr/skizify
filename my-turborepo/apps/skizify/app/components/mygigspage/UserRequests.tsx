@@ -33,7 +33,7 @@ export default async function Userrequests() {
 
   return (
     <div>
-      <MygigCard gigs={gigs} />
+      <MygigCard gigs={gigs } session={session} />
     </div>
   );
 }
