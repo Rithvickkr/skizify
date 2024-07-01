@@ -181,28 +181,28 @@ export default function Example() {
 
   return (
     <div className="pt-16">
-      <div className="mx-auto max-w-3xl px-4 sm:px-7 md:max-w-6xl md:px-6">
-        <div className="md:grid md:grid-cols-2 md:divide-x md:divide-gray-200">
-          <div className="w-full rounded-md border border-gray-800 bg-gray-50 py-5 pl-3 pr-5 dark:bg-gray-900 md:w-[97%] lg:w-[94%]">
+      <div className="mx-auto max-w-3xl px-2 md:max-w-6xl md:px-6">
+        <div className="md:grid md:grid-cols-2 ">
+          <div className="w-full rounded-md borderpt-5 pl-0 md:pl-3 pr-5 dark:bg-gray-900 md:w-[97%] lg:w-[94%] h-400">
             <div className="flex items-center">
-              <h2 className="ml-0 flex-auto font-semibold text-gray-900 dark:text-white md:ml-3">
+              <div className="ml-0 flex-auto font-semibold text-gray-900 dark:text-white md:ml-3 text-2xl mt-4">
                 {format(firstDayCurrentMonth, "MMMM yyyy")}
-              </h2>
+              </div>
               <button
                 type="button"
                 onClick={previousMonth}
-                className="-my-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500"
+                className=" flex flex-none items-center justify-center p-1.5 mt-3 text-gray-400 hover:text-gray-500"
               >
                 <span className="sr-only">Previous month</span>
-                <ChevronLeftIcon className="size-7" aria-hidden="true" />
+                <ChevronLeftIcon className="size-6" aria-hidden="true" />
               </button>
               <button
                 onClick={nextMonth}
                 type="button"
-                className="-my-1.5 -mr-1.5 ml-2 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500"
+                className=" -mr-1.5 ml-2 flex flex-none items-center justify-center p-1.5 mt-3 text-gray-400 hover:text-gray-500"
               >
                 <span className="sr-only">Next month</span>
-                <ChevronRightIcon className="size-7" aria-hidden="true" />
+                <ChevronRightIcon className="size-6" aria-hidden="true" />
               </button>
             </div>
             <div className="mt-10 grid grid-cols-7 text-center text-xs font-semibold leading-6 dark:text-white">
@@ -277,28 +277,28 @@ export default function Example() {
               )}
             </div>
           </div>
-          <section className="mt-12 md:mt-0 md:pl-5 lg:pl-10">
-            <h2 className="font-semibold text-gray-900 dark:text-white">
+          <div className="md:mt-0 md:pl-3 lg:pl-5 rounded pt-10 md:pt-0 md:mb-0 mb-4">
+            <div className="font-semibold text-gray-900 dark:text-white text-2xl mt-3">
               Schedule for{" "}
               <time dateTime={format(selectedDay, "yyyy-MM-dd")}>
                 {format(selectedDay, "MMM dd, yyy")}
               </time>
-            </h2>
+            </div>
             <ol className="mt-4 cursor-pointer space-y-1 text-sm leading-6 text-gray-500">
               {selectedDayMeetings.length > 0 ? (
-                <div>
-                  <ScrollArea className="rounded">
-                    {selectedDayMeetings.map((meeting) => (
-                      <Meeting meeting={meeting} key={meeting.id} />
-                    ))}
-                    <ScrollBar orientation="vertical" />
-                  </ScrollArea>
+                <div className=" overflow-y-auto h-[450px] rounded-md  ">
+                  {/* <ScrollArea className="rounded"> */}
+                  {selectedDayMeetings.map((meeting) => (
+                    <Meeting meeting={meeting} key={meeting.id} />
+                  ))}
+                  {/* <ScrollBar orientation="vertical" />
+                  </ScrollArea> */}
                 </div>
               ) : (
                 <p>No meetings for today.</p>
               )}
             </ol>
-          </section>
+          </div>
         </div>
       </div>
     </div>
