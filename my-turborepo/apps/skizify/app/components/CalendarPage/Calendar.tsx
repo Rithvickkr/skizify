@@ -18,7 +18,7 @@ import {
 } from "date-fns";
 import { Fragment, useState } from "react";
 import { Button } from "../ui/button";
-import Meeting from "../skizzermygigspage/MeetingCalendar";
+import Meeting from "./MeetingCalendar";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 import { ScrollBar } from "../../../@/components/ui/scroll-area";
 
@@ -28,120 +28,120 @@ const meetings = [
     name: "Leslie Alexander",
     imageUrl:
       "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    startDatetime: "2024-06-11T13:00",
-    endDatetime: "2024-06-11T14:30",
+    startDatetime: "2024-07-11T13:00",
+    endDatetime: "2024-07-11T14:30",
   },
   {
     id: 10,
     name: "Leslie Alexander",
     imageUrl:
       "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    startDatetime: "2024-06-11T13:00",
-    endDatetime: "2024-06-11T14:30",
+    startDatetime: "2024-07-11T13:00",
+    endDatetime: "2024-07-11T14:30",
   },
   {
     id: 11,
     name: "Leslie Alexander",
     imageUrl:
       "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    startDatetime: "2024-06-11T13:00",
-    endDatetime: "2024-06-11T14:30",
+    startDatetime: "2024-07-11T13:00",
+    endDatetime: "2024-07-11T14:30",
   },
   {
     id: 12,
     name: "Leslie Alexander",
     imageUrl:
       "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    startDatetime: "2024-06-11T13:00",
-    endDatetime: "2024-06-11T14:30",
+    startDatetime: "2024-07-11T13:00",
+    endDatetime: "2024-07-11T14:30",
   },
   {
     id: 13,
     name: "Leslie Alexander",
     imageUrl:
       "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    startDatetime: "2024-06-11T13:00",
-    endDatetime: "2024-06-11T14:30",
+    startDatetime: "2024-07-11T13:00",
+    endDatetime: "2024-07-11T14:30",
   },
   {
     id: 14,
     name: "Leslie Alexander",
     imageUrl:
       "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    startDatetime: "2024-06-11T13:00",
-    endDatetime: "2024-06-11T14:30",
+    startDatetime: "2024-07-11T13:00",
+    endDatetime: "2024-07-11T14:30",
   },
   {
     id: 15,
     name: "Leslie Alexander",
     imageUrl:
       "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    startDatetime: "2024-06-11T13:00",
-    endDatetime: "2024-06-11T14:30",
+    startDatetime: "2024-07-11T13:00",
+    endDatetime: "2024-07-11T14:30",
   },
   {
     id: 15,
     name: "Leslie Alexander",
     imageUrl:
       "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    startDatetime: "2024-06-11T13:00",
-    endDatetime: "2024-06-11T14:30",
+    startDatetime: "2024-07-11T13:00",
+    endDatetime: "2024-07-11T14:30",
   },
   {
     id: 15,
     name: "Leslie Alexander",
     imageUrl:
       "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    startDatetime: "2024-06-11T13:00",
-    endDatetime: "2024-06-11T14:30",
+    startDatetime: "2024-07-11T13:00",
+    endDatetime: "2024-07-11T14:30",
   },
   {
     id: 15,
     name: "Leslie Alexander",
     imageUrl:
       "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    startDatetime: "2024-06-11T13:00",
-    endDatetime: "2024-06-11T14:30",
+    startDatetime: "2024-07-11T13:00",
+    endDatetime: "2024-07-11T14:30",
   },
   {
     id: 15,
     name: "Leslie Alexander",
     imageUrl:
       "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    startDatetime: "2024-06-11T13:00",
-    endDatetime: "2024-06-11T14:30",
+    startDatetime: "2024-07-11T13:00",
+    endDatetime: "2024-07-11T14:30",
   },
   {
     id: 2,
     name: "Michael Foster",
     imageUrl:
       "https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    startDatetime: "2024-06-20T09:00",
-    endDatetime: "2024-06-20T11:30",
+    startDatetime: "2024-07-20T09:00",
+    endDatetime: "2024-07-20T11:30",
   },
   {
     id: 3,
     name: "Dries Vincent",
     imageUrl:
       "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    startDatetime: "2024-06-20T17:00",
-    endDatetime: "2024-06-20T18:30",
+    startDatetime: "2024-07-20T17:00",
+    endDatetime: "2024-07-20T18:30",
   },
   {
     id: 5,
     name: "Michael Foster",
     imageUrl:
       "https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    startDatetime: "2024-06-13T14:00",
-    endDatetime: "2024-06-13T14:30",
+    startDatetime: "2024-07-13T14:00",
+    endDatetime: "2024-07-13T14:30",
   },
   {
     id: 4,
     name: "Leslie Alexander",
     imageUrl:
       "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    startDatetime: "2024-06-09T13:00",
-    endDatetime: "2024-06-09T14:30",
+    startDatetime: "2024-07-09T13:00",
+    endDatetime: "2024-07-09T14:30",
   },
 ];
 
@@ -181,9 +181,9 @@ export default function Example() {
 
   return (
     <div className="pt-16">
-      <div className="mx-auto max-w-3xl px-2 md:max-w-6xl md:px-6">
+      <div className="mx-auto max-w-3xl pl-1 pr-3 md:max-w-6xl md:px-6">
         <div className="md:grid md:grid-cols-2 ">
-          <div className="w-full rounded-md borderpt-5 pl-0 md:pl-3 pr-5 dark:bg-gray-900 md:w-[97%] lg:w-[94%] h-400">
+          <div className="w-full rounded-md borderpt-5 pl-2 md:pl-3 pr-5 dark:bg-gray-900 md:w-[97%] lg:w-[94%] h-400 border border-black mb-3 md:mb-0">
             <div className="flex items-center">
               <div className="ml-0 flex-auto font-semibold text-gray-900 dark:text-white md:ml-3 text-2xl mt-4">
                 {format(firstDayCurrentMonth, "MMMM yyyy")}
@@ -277,14 +277,14 @@ export default function Example() {
               )}
             </div>
           </div>
-          <div className="md:mt-0 md:pl-3 lg:pl-5 rounded pt-10 md:pt-0 md:mb-0 mb-4">
-            <div className="font-semibold text-gray-900 dark:text-white text-2xl mt-3">
-              Schedule for{" "}
+          <div className="md:mt-0 pl-2 md:pl-3 lg:pl-5 rounded pt-10 md:pt-0 md:mb-0 mb-4 border border-black">
+            <div className="font-semibold text-gray-900 dark:text-white text-2xl mt-3 truncate">
+              Meetings for{" "}
               <time dateTime={format(selectedDay, "yyyy-MM-dd")}>
                 {format(selectedDay, "MMM dd, yyy")}
               </time>
             </div>
-            <ol className="mt-4 cursor-pointer space-y-1 text-sm leading-6 text-gray-500">
+            <div className="mt-4 cursor-pointer space-y-1 text-sm leading-6 text-gray-500 ">
               {selectedDayMeetings.length > 0 ? (
                 <div className=" overflow-y-auto h-[450px] rounded-md  ">
                   {/* <ScrollArea className="rounded"> */}
@@ -297,7 +297,7 @@ export default function Example() {
               ) : (
                 <p>No meetings for today.</p>
               )}
-            </ol>
+            </div>
           </div>
         </div>
       </div>

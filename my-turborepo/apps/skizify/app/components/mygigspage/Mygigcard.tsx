@@ -41,7 +41,7 @@ interface MygigCardProps {
   gigs: GigsInterface[];
 }
 
-export default function MygigCard({ gigs }: { gigs: GigsInterface[] } , {session}: {session: any}) {
+export default function MygigCard({ gigs , session }: { gigs: GigsInterface[] , session: any}) {
   const router = useRouter();
   
   return (

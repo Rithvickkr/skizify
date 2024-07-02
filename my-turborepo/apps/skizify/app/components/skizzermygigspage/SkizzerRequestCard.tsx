@@ -38,7 +38,7 @@ export default function SkizzerRequestCard({
         <Card className="mx-auto w-full max-w-lg">
           <CardContent className="grid w-full grid-cols-2 space-x-2">
             <div className="mb-2 grid grid-rows-3">
-              <div className="row-span-1 mb-1 flex justify-between overflow-hidden truncate rounded  p-1">
+              <div className="row-span-1 mb-1 flex justify-between overflow-hidden truncate rounded border border-black dark:border-gray-800  p-1">
                 <div className="flex space-x-1">
                   <Avatar
                     name={request.user.name}
