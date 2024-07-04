@@ -6,6 +6,21 @@ import { GigStatus } from "@prisma/client";
 
 //details to Show tha past and Future meetings for calendar
 
+export interface meetingsInfo_interface{
+    id: string;
+    gigId: string;
+    skizzerId: string;
+    UserId: string;
+    status: GigStatus;
+    budget: number;
+    finalDateTime: Date;
+    user : {
+        id : string;
+        name: string | null;
+        userImage : string | null;
+    }
+}
+
 // we need
 export async function getUsercalendarMeetingsdetails(){  //Meetings which user want to resolve his doughtx
     const session = await getServerSession(authOptions);
@@ -13,8 +28,24 @@ export async function getUsercalendarMeetingsdetails(){  //Meetings which user w
         const meetings = await prisma.gigUser.findMany({
             where:{
                 UserId : session?.user.id || "",
-                status : GigStatus.CONFIRMED
+                status : GigStatus.CONFIRMED  //We want only the meetings which are confirmed
             },
+            select : {
+                id: true,
+                gigId: true,
+                skizzerId: true,
+                UserId: true,
+                status: true,
+                budget: true,
+                finalDateTime: true,
+                user : {
+                    select : {
+                        id : true,
+                        name : true, //name of the user
+                        userImage : true,
+                    }
+                }
+            }
         })
         if(meetings){
             return meetings;
@@ -35,6 +66,22 @@ export async function getSkizzercalendarMeetingsdetails(){ //Meetings in which U
                 skizzerId : session?.user.id || "",
                 status : GigStatus.CONFIRMED
             },
+            select : {
+                id: true,
+                gigId: true,
+                skizzerId: true,
+                UserId: true,
+                status: true,
+                budget: true,
+                finalDateTime: true,
+                user : {
+                    select : {
+                        id : true,
+                        name : true, //name of the user
+                        userImage : true,
+                    }
+                }
+            }
         })
         if(meetings){
             return meetings;

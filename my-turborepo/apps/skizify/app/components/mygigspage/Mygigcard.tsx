@@ -1,10 +1,9 @@
-"use client";
 import { Avatar } from "@repo/ui/avatar";
 import { deleteGig } from "../../lib/actions/deletegig";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../lib/auth";
 import { GigStatus } from "@prisma/client";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import {
   Tooltip,
   TooltipContent,
@@ -42,7 +41,7 @@ interface MygigCardProps {
 }
 
 export default function MygigCard({ gigs , session }: { gigs: GigsInterface[] , session: any}) {
-  const router = useRouter();
+  // const router = useRouter();
   
   return (
     <div className="group/mygiggs space-y-4 p-3 transition duration-200">
@@ -122,7 +121,7 @@ export default function MygigCard({ gigs , session }: { gigs: GigsInterface[] , 
                     Icon={ArrowRightIcon}
                     iconPlacement="right"
                     variant="gooeyLeft"
-                    onClick={() => router.push(`/Meetingpage`)}
+                    // onClick={() => router.push(`/Meetingpage`)}
                   >
                     Booked 🎉
                   </Button>

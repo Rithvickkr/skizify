@@ -6,37 +6,34 @@ import {
 } from "date-fns";
 import { Fragment, useState } from "react";
 import { Button } from "../ui/button";
+import { meetingsInfo_interface } from "../../lib/actions/getcalendarMeetings";
+import { Avatar } from "@repo/ui/avatar";
 
 function classNames(...classes: (string | boolean | undefined)[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Meeting({ meeting }: any) {
-  let startDateTime = parseISO(meeting.startDatetime); // convert String into Actual Date object watch bottom of the page
-  let endDateTime = parseISO(meeting.endDatetime);
+export default function Meeting({ meeting }: {meeting : meetingsInfo_interface}) {
+  let finalDateTime = parseISO(meeting.finalDateTime.toISOString()); // convert String into Actual Date object watch bottom of the page
 
   return (
-    <div className="group mx-1 my-3 flex min-h-20 items-center space-x-4 rounded-md py-2 pl-4 pr-1 pt-4 shadow-md transition-shadow duration-300 focus-within:bg-gray-100 hover:bg-neutral-100 hover:shadow-lg dark:border dark:border-gray-800 dark:text-white dark:hover:bg-gray-600 hover:border hover:border-black  ">
-      <img
-        src={meeting.imageUrl}
-        alt=""
-        className="h-10 w-10 flex-none self-start rounded-full" //Flex-none, this will not Grow
-      />
+    <div className="group mx-1 my-3 flex min-h-20 items-center space-x-4 rounded-md py-2 pl-4 pr-1 pt-4 shadow-md transition-shadow duration-300 focus-within:bg-gray-100 hover:bg-neutral-100 hover:shadow-lg dark:border dark:border-gray-800 dark:text-white dark:hover:bg-gray-600 bg-transparent dark:bg-transparent hover:border hover:border-black  ">
+      <Avatar name={meeting.user.name} photo={meeting.user.userImage} />
       <div className="flex-auto">
-        <p className="text-black dark:text-gray-300">{meeting.name}</p>
+        <p className="text-black dark:text-gray-300">{meeting.user.name}</p>
         <p className="mt-0.5">
-          <time dateTime={meeting.startDatetime}>
-            {format(startDateTime, "h:mm a")}
+          <time dateTime={meeting.finalDateTime.toISOString()}>
+            {format(finalDateTime, "h:mm a")}
           </time>{" "}
-          -{" "}
+          {/* -{" "}
           <time dateTime={meeting.endDatetime}>
             {format(endDateTime, "h:mm a")}
-          </time>
+          </time> */}
         </p>
       </div>
       <Menu
         as="div"
-        className="relative focus-within:opacity-100 group-hover:opacity-100"
+        className="relative focus-within:opacity-100 group-hover:opacity-100 bg-transparent"
       >
         <div>
           <Menu.Button className="-m-2 flex items-center rounded-full p-1.5 text-gray-600 dark:text-white">

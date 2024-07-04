@@ -31,7 +31,7 @@ export default function SkizzerselectCard({
   //aslo I will put a limit if the user selected someone , then there that gig will not be displayed on the main screen
   return (
     <div>
-      <div className="flex flex-col space-y-4 p-2 border border-white">
+      <div className="flex flex-col space-y-4 p-2 border border-white rounded">
         {SKizzersInfo.map((skizzer: any) => {
           return (
             <div

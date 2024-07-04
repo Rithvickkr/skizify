@@ -8,6 +8,7 @@ import { GigStatus } from "@prisma/client";
 import { Search } from "lucide-react";
 import { Input } from "../../../@/components/ui/input";
 import filtergigs from "../../lib/actions/Filters";
+import { getSkizzercalendarMeetingsdetails } from "../../lib/actions/getcalendarMeetings";
 
 export interface GigsInterface {
   id: string;
@@ -26,8 +27,6 @@ export interface GigsInterface {
 export default async function Page() {
   const gigs: GigsInterface[] = await getAllgigs();
   const filteredGigs = await filtergigs(gigs);
-  
-
   return (
     <div className="flex flex-col items-center overflow-hidden w-full">
     <div className="relative w-full max-w-lg">
