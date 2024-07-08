@@ -176,7 +176,6 @@ export default function Example({meetings} : {meetings : meetingsInfo_interface[
   let selectedDayMeetings = meetings.filter((meeting) =>
     isSameDay(parseISO(meeting.finalDateTime.toISOString()), selectedDay),
   );
-  console.log(meetings[1]?.finalDateTime.toISOString());
 
 
 
@@ -184,7 +183,7 @@ export default function Example({meetings} : {meetings : meetingsInfo_interface[
     <div className="pt-16">
       <div className="mx-auto max-w-3xl pl-1 pr-3 md:max-w-6xl md:px-6">
         <div className="md:grid md:grid-cols-2 ">
-          <div className="w-full rounded-md borderpt-5 pl-2 md:pl-3 pr-5 dark:bg-transparent  md:w-[97%] lg:w-[94%] h-400 border border-black dark:border-gray-600 mb-3 md:mb-0">
+          <div className="w-full rounded-md borderpt-5 pl-2 md:pl-3 pr-3 dark:bg-transparent  md:w-[97%] lg:w-[94%] h-400 border border-black dark:border-gray-600 mb-3 md:mb-0">
             <div className="flex items-center">
               <div className="ml-0 flex-auto font-semibold text-gray-900 dark:text-white md:ml-3 text-2xl mt-4">
                 {format(firstDayCurrentMonth, "MMMM yyyy")}
@@ -279,7 +278,7 @@ export default function Example({meetings} : {meetings : meetingsInfo_interface[
             </div>
           </div>
           <div className="md:mt-0 pl-2 p-3 md:pl-3 lg:pl-5 rounded pt-10 md:pt-0 md:mb-0 mb-4 border border-black dark:border-gray-600">
-            <div className="font-semibold text-gray-900 dark:text-white text-2xl mt-3 truncate">
+            <div className="font-semibold text-gray-900 text-2xl mt-3 truncate dark:text-gray-200">
               Meetings for{" "}
               <time dateTime={format(selectedDay, "yyyy-MM-dd")}>
                 {format(selectedDay, "MMM dd, yyy")}
@@ -287,7 +286,7 @@ export default function Example({meetings} : {meetings : meetingsInfo_interface[
             </div>
             <div className="mt-4 cursor-pointer space-y-1 text-sm leading-6 text-gray-500 ">
               {selectedDayMeetings.length > 0 ? (
-                <div className=" overflow-y-auto h-[450px] rounded-md  ">
+                <div className=" overflow-y-auto h-[330px] rounded-md  ">
                   {/* <ScrollArea className="rounded"> */}
                   {selectedDayMeetings.map((meeting) => (
                     <div key={meeting.id}>

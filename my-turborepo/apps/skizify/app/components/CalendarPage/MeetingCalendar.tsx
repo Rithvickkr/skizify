@@ -8,32 +8,43 @@ import { Fragment, useState } from "react";
 import { Button } from "../ui/button";
 import { meetingsInfo_interface } from "../../lib/actions/getcalendarMeetings";
 import { Avatar } from "@repo/ui/avatar";
+import { ToolTip } from "../ui/Tooltip";
 
 function classNames(...classes: (string | boolean | undefined)[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Meeting({ meeting }: {meeting : meetingsInfo_interface}) {
+export default function Meeting({
+  meeting,
+}: {
+  meeting: meetingsInfo_interface;
+}) {
   let finalDateTime = parseISO(meeting.finalDateTime.toISOString()); // convert String into Actual Date object watch bottom of the page
 
   return (
-    <div className="group mx-1 my-3 flex min-h-20 items-center space-x-4 rounded-md py-2 pl-4 pr-1 pt-4 shadow-md transition-shadow duration-300 focus-within:bg-gray-100 hover:bg-neutral-100 hover:shadow-lg dark:border dark:border-gray-800 dark:text-white dark:hover:bg-gray-600 bg-transparent dark:bg-transparent hover:border hover:border-black  ">
-      <Avatar name={meeting.user.name} photo={meeting.user.userImage} />
-      <div className="flex-auto">
-        <p className="text-black dark:text-gray-300">{meeting.user.name}</p>
-        <p className="mt-0.5">
-          <time dateTime={meeting.finalDateTime.toISOString()}>
-            {format(finalDateTime, "h:mm a")}
-          </time>{" "}
-          {/* -{" "}
-          <time dateTime={meeting.endDatetime}>
-            {format(endDateTime, "h:mm a")}
-          </time> */}
-        </p>
+    <div className="group mx-1 my-3 grid min-h-20 grid-cols-[auto_1fr_auto] items-center gap-1 space-x-4 rounded-md bg-transparent border py-2 pl-4 pr-1 shadow-md transition-shadow duration-300 focus-within:bg-neutral-50 hover:shadow-xl dark:border dark:border-gray-800 dark:bg-transparent dark:text-white dark:hover:bg-gray-900">
+      <div className="font-time text-shadow-sm rounded border dark:bg-[#020817] p-2 text-2xl font-medium text-black dark:border-gray-700 dark:text-gray-100">
+        <time dateTime={meeting.finalDateTime.toISOString()}>
+          {format(finalDateTime, "h:mm a")}
+        </time>
       </div>
-      <Menu
+      <div className="truncate">
+        <ToolTip name={meeting.gig.title}>
+          <div className="flex items-center">
+            <div className="font-time truncate font-medium dark:text-gray-200 text-sm ">
+              {meeting.gig.title}
+            </div>
+          </div>
+        </ToolTip>
+      </div>
+      <div className="p-2">
+      <Button variant="gooeyLeft" className="bg-black dark:bg-white dark:text-black">
+        Join
+      </Button>
+      </div>
+      {/* <Menu
         as="div"
-        className="relative focus-within:opacity-100 group-hover:opacity-100 bg-transparent"
+        className="relative bg-transparent focus-within:opacity-100 group-hover:opacity-100"
       >
         <div>
           <Menu.Button className="-m-2 flex items-center rounded-full p-1.5 text-gray-600 dark:text-white">
@@ -73,7 +84,7 @@ export default function Meeting({ meeting }: {meeting : meetingsInfo_interface})
                     href="#"
                     className={classNames(
                       active ? "bg-gray-100 text-gray-900" : "text-gray-700",
-                      "block rounded-md border border-black px-4 py-2 text-center text-sm font-medium text-red-600 shadow-sm hover:bg-red-500 dark:hover:bg-red-500 dark:text-white hover:text-white dark:border-gray-700 dark:bg-gray-800",
+                      "block rounded-md border border-black px-4 py-2 text-center text-sm font-medium text-red-600 shadow-sm hover:bg-red-500 hover:text-white dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:hover:bg-red-500",
                     )}
                   >
                     Cancel
@@ -83,7 +94,7 @@ export default function Meeting({ meeting }: {meeting : meetingsInfo_interface})
             </div>
           </Menu.Items>
         </Transition>
-      </Menu>
+      </Menu> */}
     </div>
   );
 }

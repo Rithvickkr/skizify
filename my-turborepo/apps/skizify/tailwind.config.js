@@ -15,13 +15,17 @@ module.exports = {
   ],
   theme: {
     fontFamily:{
-      'display': ['Archivo']
+      'display': ['Archivo'],
+      time : ['"Libre Franklin"', 'sans-serif'],
+
     },
 
     extend: {},
   },
   darkMode: "class",
-  plugins: [nextui(),flowbite.plugin()],
+  plugins: [nextui(),flowbite.plugin(),
+        require('tailwindcss-textshadow'),
+  ],
   extend: {
     keyframes: {
       "shine": {

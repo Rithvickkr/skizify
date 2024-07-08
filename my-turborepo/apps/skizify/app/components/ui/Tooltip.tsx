@@ -26,6 +26,7 @@ export function ToolTip({
             )}
           >
             {name}
+            <span className="sr-only">{name}</span>
           </p>
         </TooltipContent>
       </Tooltip>
