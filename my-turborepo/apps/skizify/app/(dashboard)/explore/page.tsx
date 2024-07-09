@@ -1,14 +1,9 @@
-import { getServerSession } from "next-auth/next";
 import GigStructure from "../../components/mygigs/Gig";
-import { authOptions } from "../../lib/auth";
-import prisma from "@repo/db/client";
-import getgigs, { getAllgigs } from "../../lib/actions/getgigs";
+import { getAllgigs } from "../../lib/actions/getgigs";
 import { UserRole } from "@prisma/client";
 import { GigStatus } from "@prisma/client";
 import { Search } from "lucide-react";
-import { Input } from "../../../@/components/ui/input";
 import filtergigs from "../../lib/actions/Filters";
-import { getSkizzercalendarMeetingsdetails } from "../../lib/actions/getcalendarMeetings";
 
 export interface GigsInterface {
   id: string;

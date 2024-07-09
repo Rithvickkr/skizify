@@ -111,7 +111,7 @@ export const BentoGridItem = ({
                 <div className="ml-2 h-7 justify-items-center font-display text-xl font-medium">
                   {gig.title || "Title"}
                 </div>
-                <ScrollArea className="w-full truncate text-wrap rounded-md border p-2 px-2 text-sm ">
+                <ScrollArea className="w-full truncate text-wrap rounded-md border p-2 px-2 text-sm h-20">
                   {gig.content}
                   <ScrollBar orientation="horizontal" />
                 </ScrollArea>

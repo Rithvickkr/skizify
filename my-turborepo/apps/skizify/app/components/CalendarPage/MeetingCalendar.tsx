@@ -9,12 +9,14 @@ import { Button } from "../ui/button";
 import { meetingsInfo_interface } from "../../lib/actions/getcalendarMeetings";
 import { Avatar } from "@repo/ui/avatar";
 import { ToolTip } from "../ui/Tooltip";
+import JoinMeetingPage from "./JoinMeetingPage";
+
 
 function classNames(...classes: (string | boolean | undefined)[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Meeting({
+export default  function Meeting({
   meeting,
 }: {
   meeting: meetingsInfo_interface;
@@ -38,9 +40,7 @@ export default function Meeting({
         </ToolTip>
       </div>
       <div className="p-2">
-      <Button variant="gooeyLeft" className="bg-black dark:bg-white dark:text-black">
-        Join
-      </Button>
+      <JoinMeetingPage meeting={meeting}/>
       </div>
       {/* <Menu
         as="div"

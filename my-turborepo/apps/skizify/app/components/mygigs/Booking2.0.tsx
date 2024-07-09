@@ -8,18 +8,14 @@ import {
   CredenzaHeader,
   CredenzaTitle,
   CredenzaTrigger,
-} from "./Credenza";
+} from "../ui/Credenza";
 import { Clock7 } from "lucide-react";
 import { GigsInterface } from "../../(dashboard)/explore/page";
 import { Datetimepackage } from "./Bentogrid";
-import { Button } from "../../../@/components/ui/button";
 import { Avatar } from "@repo/ui/avatar";
 import { ScrollArea, ScrollBar } from "../../../@/components/ui/scroll-area";
 import { Button as ButtonE } from "../ui/button";
-import { acceptGig } from "../../lib/actions/Skizzer-accept-gig";
 import { SelectDATE } from "./SelectDate";
-import { Content } from "@radix-ui/react-popover";
-import { Label } from "../../../@/components/ui/label";
 export function BookButton2({
   gig,
   poster,

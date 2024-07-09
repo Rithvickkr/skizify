@@ -8,7 +8,7 @@ import {
   CredenzaHeader,
   CredenzaTitle,
   CredenzaTrigger,
-} from "../mygigs/Credenza";
+} from "../ui/Credenza";
 import { Button } from "../ui/button";
 import { ArrowRightIcon} from "lucide-react";
 import { Skizzer_acceptedGig } from "../../lib/actions/Skizzer-accept-gig";

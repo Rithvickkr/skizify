@@ -19,8 +19,14 @@ export interface meetingsInfo_interface {
     name: string | null;
     userImage: string | null;
   };
+  Skizzer: {
+    id: string;
+    name: string | null;
+    userImage: string | null;
+  };
   gig: {
     title: string;
+    content: string;
   };
 }
 
@@ -49,9 +55,17 @@ export async function getUsercalendarMeetingsdetails() {
             userImage: true,
           },
         },
+        Skizzer: {
+          select: {
+            id: true,
+            name: true, //name of the user
+            userImage: true,
+          },
+        },
         gig: {
           select: {
             title: true,
+            content: true,
           },
         },
       },
@@ -91,9 +105,17 @@ export async function getSkizzercalendarMeetingsdetails() {
             userImage: true,
           },
         },
+        Skizzer: {
+          select: {
+            id: true,
+            name: true, //name of the user
+            userImage: true,
+          },
+        },
         gig: {
           select: {
             title: true,
+            content: true,
           },
         },
       },

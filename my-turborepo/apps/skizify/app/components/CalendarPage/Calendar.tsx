@@ -20,134 +20,16 @@ import { Fragment, useState } from "react";
 import { Button } from "../ui/button";
 import Meeting from "./MeetingCalendar";
 import { meetingsInfo_interface } from "../../lib/actions/getcalendarMeetings";
-// const meetings = [
-//   {
-//     id: 1,
-//     name: "Leslie Alexander",
-//     imageUrl:
-//       "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-//     startDatetime: "2024-07-11T13:00",
-
-//   },
-//   {
-//     id: 10,
-//     name: "Leslie Alexander",
-//     imageUrl:
-//       "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-//     startDatetime: "2024-07-11T13:00",
-
-//   },
-//   {
-//     id: 11,
-//     name: "Leslie Alexander",
-//     imageUrl:
-//       "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-//     startDatetime: "2024-07-11T13:00",
-
-//   },
-//   {
-//     id: 12,
-//     name: "Leslie Alexander",
-//     imageUrl:
-//       "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-//     startDatetime: "2024-07-11T13:00",
-
-//   },
-//   {
-//     id: 13,
-//     name: "Leslie Alexander",
-//     imageUrl:
-//       "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-//     startDatetime: "2024-07-11T13:00",
-
-//   },
-//   {
-//     id: 14,
-//     name: "Leslie Alexander",
-//     imageUrl:
-//       "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-//     startDatetime: "2024-07-11T13:00",
-
-//   },
-//   {
-//     id: 15,
-//     name: "Leslie Alexander",
-//     imageUrl:
-//       "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-//     startDatetime: "2024-07-11T13:00",
-
-//   },
-//   {
-//     id: 15,
-//     name: "Leslie Alexander",
-//     imageUrl:
-//       "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-//     startDatetime: "2024-07-11T13:00",
-
-//   },
-//   {
-//     id: 15,
-//     name: "Leslie Alexander",
-//     imageUrl:
-//       "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-//     startDatetime: "2024-07-11T13:00",
-
-//   },
-//   {
-//     id: 15,
-//     name: "Leslie Alexander",
-//     imageUrl:
-//       "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-//     startDatetime: "2024-07-11T13:00",
-
-//   },
-//   {
-//     id: 15,
-//     name: "Leslie Alexander",
-//     imageUrl:
-//       "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-//     startDatetime: "2024-07-11T13:00",
-
-//   },
-//   {
-//     id: 2,
-//     name: "Michael Foster",
-//     imageUrl:
-//       "https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-//     startDatetime: "2024-07-20T09:00",
-
-//   },
-//   {
-//     id: 3,
-//     name: "Dries Vincent",
-//     imageUrl:
-//       "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-//     startDatetime: "2024-07-20T17:00",
-
-//   },
-//   {
-//     id: 5,
-//     name: "Michael Foster",
-//     imageUrl:
-//       "https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-//     startDatetime: "2024-07-13T14:00",
-
-//   },
-//   {
-//     id: 4,
-//     name: "Leslie Alexander",
-//     imageUrl:
-//       "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-//     startDatetime: "2024-07-09T13:00",
-
-//   },
-// ];
 
 function classNames(...classes: (string | boolean | undefined)[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Example({meetings} : {meetings : meetingsInfo_interface[]}) {
+export default function Example({
+  meetings,
+}: {
+  meetings: meetingsInfo_interface[];
+}) {
   let today = startOfToday();
   let [selectedDay, setSelectedDay] = useState(today);
   let [currentMonth, setCurrentMonth] = useState(format(today, "MMM-yyyy"));
@@ -177,21 +59,19 @@ export default function Example({meetings} : {meetings : meetingsInfo_interface[
     isSameDay(parseISO(meeting.finalDateTime.toISOString()), selectedDay),
   );
 
-
-
   return (
     <div className="pt-16">
       <div className="mx-auto max-w-3xl pl-1 pr-3 md:max-w-6xl md:px-6">
-        <div className="md:grid md:grid-cols-2 ">
-          <div className="w-full rounded-md borderpt-5 pl-2 md:pl-3 pr-3 dark:bg-transparent  md:w-[97%] lg:w-[94%] h-400 border border-black dark:border-gray-600 mb-3 md:mb-0">
+        <div className="md:grid md:grid-cols-2">
+          <div className="borderpt-5 h-400 mb-3 w-full rounded-md border border-black pl-2 pr-3 dark:border-gray-600 dark:bg-transparent md:mb-0 md:w-[97%] md:pl-3 lg:w-[94%]">
             <div className="flex items-center">
-              <div className="ml-0 flex-auto font-semibold text-gray-900 dark:text-white md:ml-3 text-2xl mt-4">
+              <div className="ml-0 mt-4 flex-auto text-2xl font-semibold text-gray-900 dark:text-white md:ml-3">
                 {format(firstDayCurrentMonth, "MMMM yyyy")}
               </div>
               <button
                 type="button"
                 onClick={previousMonth}
-                className=" flex flex-none items-center justify-center p-1.5 mt-3 text-gray-400 hover:text-gray-500"
+                className="mt-3 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500"
               >
                 <span className="sr-only">Previous month</span>
                 <ChevronLeftIcon className="size-6" aria-hidden="true" />
@@ -199,7 +79,7 @@ export default function Example({meetings} : {meetings : meetingsInfo_interface[
               <button
                 onClick={nextMonth}
                 type="button"
-                className=" -mr-1.5 ml-2 flex flex-none items-center justify-center p-1.5 mt-3 text-gray-400 hover:text-gray-500"
+                className="-mr-1.5 ml-2 mt-3 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500"
               >
                 <span className="sr-only">Next month</span>
                 <ChevronRightIcon className="size-6" aria-hidden="true" />
@@ -267,7 +147,10 @@ export default function Example({meetings} : {meetings : meetingsInfo_interface[
 
                     <div className="mx-auto mb-1 h-1 w-1">
                       {meetings.some((meeting) =>
-                        isSameDay(parseISO(meeting.finalDateTime.toISOString()), day),
+                        isSameDay(
+                          parseISO(meeting.finalDateTime.toISOString()),
+                          day,
+                        ),
                       ) && (
                         <div className="mt-1 h-1 w-1 rounded-full bg-sky-500"></div> //Display dot below calendar
                       )}
@@ -277,16 +160,16 @@ export default function Example({meetings} : {meetings : meetingsInfo_interface[
               )}
             </div>
           </div>
-          <div className="md:mt-0 pl-2 p-3 md:pl-3 lg:pl-5 rounded pt-10 md:pt-0 md:mb-0 mb-4 border border-black dark:border-gray-600">
-            <div className="font-semibold text-gray-900 text-2xl mt-3 truncate dark:text-gray-200">
+          <div className="mb-4 rounded border border-black p-3 pl-2 pt-10 dark:border-gray-600 md:mb-0 md:mt-0 md:pl-3 md:pt-0 lg:pl-5">
+            <div className="mt-3 truncate text-2xl font-semibold text-gray-900 dark:text-gray-200">
               Meetings for{" "}
               <time dateTime={format(selectedDay, "yyyy-MM-dd")}>
                 {format(selectedDay, "MMM dd, yyy")}
               </time>
             </div>
-            <div className="mt-4 cursor-pointer space-y-1 text-sm leading-6 text-gray-500 ">
+            <div className="mt-4 cursor-pointer space-y-1 text-sm leading-6 text-gray-500">
               {selectedDayMeetings.length > 0 ? (
-                <div className=" overflow-y-auto h-[330px] rounded-md  ">
+                <div className="h-[330px] overflow-y-auto rounded-md">
                   {/* <ScrollArea className="rounded"> */}
                   {selectedDayMeetings.map((meeting) => (
                     <div key={meeting.id}>
