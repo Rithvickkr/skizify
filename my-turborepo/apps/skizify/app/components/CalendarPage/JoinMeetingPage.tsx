@@ -92,7 +92,8 @@ export default function JoinMeetingPage({
                       ? meeting.user.name
                       : meeting.Skizzer.name}
                   </div>
-                  <div className="cursor-pointer text-sm hover:underline dark:text-gray-500">
+                  <div className="cursor-pointer text-sm hover:underline dark:text-gray-500" onClick={ ()=>{session.data?.user.role ===UserRole.USER ? Router.push(`/About/${meeting.skizzerId}`) : Router.push(`/About/${meeting.UserId}`)}}>
+                  
                     View Profile {">"}
                   </div>
                 </div>
@@ -109,7 +110,7 @@ export default function JoinMeetingPage({
                   <Button
                     variant="gooeyLeft"
                     className="w-full bg-black ring-2 ring-black dark:ring-white"
-                    onClick={() => { UserRole.USER ? Router.push(`/Meetings/${meeting.skizzerId}`) : Router.push(`/meetings/${meeting.UserId}`)}}
+                    onClick={() => { session.data?.user.role ===UserRole.USER ? Router.push(`/Meetings/${meeting.skizzerId}`) : Router.push(`/meetings/${meeting.UserId}`)}}
                   >
                     Join
                   </Button>

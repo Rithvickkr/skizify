@@ -7,7 +7,7 @@ import { Button } from "../../../@/components/ui/button";
 import { setform } from "../../lib/actions/setform";
 import { useSession } from "next-auth/react";
 import { Avatar } from "@repo/ui/avatar";
-import { getImageSet } from "../../lib/actions/imageset";
+
 
 export default function Component() {
   const [name, setName] = useState<string>("");
@@ -21,6 +21,7 @@ export default function Component() {
     if (session) {
       const response = await setform(name, username, bio, education, session);
       if (response) {
+        
         window.alert("Profile created successfully");
 
         setName("");
