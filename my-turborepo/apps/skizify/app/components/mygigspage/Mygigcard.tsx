@@ -24,7 +24,6 @@ import {
 } from "../../lib/actions/ConvertgigInfo";
 import { Button } from "../ui/button";
 import { GigsInterface } from "../../(dashboard)/explore/page";
-import { useSession } from "next-auth/react";
 import AcceptedBy from "./AcceptedBy";
 import EditDeleteCard from "./EditDeletecard";
 

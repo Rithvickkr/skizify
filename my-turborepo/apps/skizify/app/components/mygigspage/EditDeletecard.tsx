@@ -4,7 +4,6 @@ import { Pencil, Trash } from "lucide-react";
 import { GigsInterface } from "../../(dashboard)/explore/page";
 import { Month, formatTime } from "../../lib/actions/ConvertgigInfo";
 import { useSession } from "next-auth/react";
-import prisma from "@repo/db/client";
 import { deleteGig } from "../../lib/actions/deletegig";
 
 export default function EditDeleteCard({ gig }: { gig: GigsInterface }) {

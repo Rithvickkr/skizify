@@ -23,7 +23,7 @@ export default async function Userrequests() {
   const session = await getServerSession(authOptions);
   const gigs: GigsInterface[] = await getgigs() as unknown as GigsInterface[];
   // Delete expired gigs from the database
-  // await deleteExpiredGigs();
+  await deleteExpiredGigs();
 
   // Filter out gigs whose end date has passed (just to be sure)
   const currentDate = new Date();
@@ -33,7 +33,7 @@ export default async function Userrequests() {
 
   return (
     <div>
-      <MygigCard gigs={gigs } session={session} />
+      <MygigCard gigs={ activeGigs } session={session} />
     </div>
   );
 }

@@ -17,4 +17,5 @@ export const deleteGig = async (gigId: string) => {
     console.error("Error deleting gig:", error);
     throw new Error("There was an error deleting the gig");
   }
+
 };

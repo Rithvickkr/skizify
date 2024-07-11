@@ -4,6 +4,7 @@ import { GigStatus } from "@prisma/client";
 import { Search } from "lucide-react";
 import filtergigs from "../../lib/actions/Filters";
 
+
 export interface GigsInterface {
   confirmUserId: string;
   id: string;
