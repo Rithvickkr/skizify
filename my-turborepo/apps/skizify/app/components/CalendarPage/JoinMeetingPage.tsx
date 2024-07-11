@@ -1,4 +1,6 @@
+"use client";
 import { Avatar } from "@repo/ui/avatar";
+
 import { Button } from "../ui/button";
 import {
   Credenza,
@@ -15,12 +17,14 @@ import { meetingsInfo_interface } from "../../lib/actions/getcalendarMeetings";
 import { UserRole } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { ScrollArea, ScrollBar } from "../../../@/components/ui/scroll-area";
+import  { useRouter } from "next/navigation";
 
 export default function JoinMeetingPage({
   meeting,
 }: {
   meeting: meetingsInfo_interface;
 }) {
+  const Router = useRouter(); 
   const session = useSession();
   return (
     <div className="">
@@ -30,6 +34,7 @@ export default function JoinMeetingPage({
             <Button
               variant="gooeyLeft"
               className="bg-black dark:bg-white dark:text-black"
+             
             >
               Join
             </Button>
@@ -104,6 +109,7 @@ export default function JoinMeetingPage({
                   <Button
                     variant="gooeyLeft"
                     className="w-full bg-black ring-2 ring-black dark:ring-white"
+                    onClick={() => { UserRole.USER ? Router.push(`/Meetings/${meeting.skizzerId}`) : Router.push(`/meetings/${meeting.UserId}`)}}
                   >
                     Join
                   </Button>

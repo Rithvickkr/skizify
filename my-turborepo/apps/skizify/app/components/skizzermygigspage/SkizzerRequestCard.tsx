@@ -110,7 +110,7 @@ export default function SkizzerRequestCard({
                   <ButtonE
                     className="w-full border bg-neutral-800 text-white shadow dark:border-white dark:bg-transparent"
                     variant="gooeyLeft"
-                    onClick={() => router.push(`/Meetingpage`)}
+                    onClick={() => router.push(`/Meetings/${request.UserId}`)}
                   >
                     Join
                   </ButtonE>

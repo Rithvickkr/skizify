@@ -1,5 +1,4 @@
 import { BentoGrid, BentoGridItem } from "./Bentogrid";
-import { Avatar } from "@repo/ui/avatar";
 import prisma from "@repo/db/client";
 
 //This will fetch Data from DB
@@ -31,7 +30,7 @@ export default async function GigStructure({
   return (
     <div>
       <div className="mx-auto grid w-full max-w-7xl grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 pl-1 md:pl-2 pr-3">
-        {gigs.map(async (gig) => {
+        {gigs.map(async (gig:GigsInterface) => {
           const user = await prisma.user.findUnique({
             where: {
               id: gig.authorId,

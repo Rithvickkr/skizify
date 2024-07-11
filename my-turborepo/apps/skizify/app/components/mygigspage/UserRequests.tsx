@@ -1,10 +1,10 @@
-import { Avatar } from "@repo/ui/avatar";
+
 import prisma from "@repo/db/client";
 import { GigsInterface } from "../../(dashboard)/explore/page";
 import MygigCard from "./Mygigcard";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../lib/auth";
-import getgigs, { getAllgigs } from "../../lib/actions/getgigs";
+import getgigs  from "../../lib/actions/getgigs";
 
 // Function to delete expired gigs
 const deleteExpiredGigs = async () => {
@@ -20,8 +20,8 @@ const deleteExpiredGigs = async () => {
 
 export default async function Userrequests() {
   // Fetch active gigs
-  const gigs: GigsInterface[] = await getgigs();
   const session = await getServerSession(authOptions);
+  const gigs: GigsInterface[] = await getgigs() as unknown as GigsInterface[];
   // Delete expired gigs from the database
   // await deleteExpiredGigs();
 

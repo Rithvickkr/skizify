@@ -1,11 +1,11 @@
 import GigStructure from "../../components/mygigs/Gig";
 import { getAllgigs } from "../../lib/actions/getgigs";
-import { UserRole } from "@prisma/client";
 import { GigStatus } from "@prisma/client";
 import { Search } from "lucide-react";
 import filtergigs from "../../lib/actions/Filters";
 
 export interface GigsInterface {
+  confirmUserId: string;
   id: string;
   title: string;
   content: string;
@@ -17,11 +17,12 @@ export interface GigsInterface {
   Interval: any; //as it is a JSON vlaue
   status: GigStatus;
   timeneeded: number;
+ 
 }
 
 export default async function Page() {
-  const gigs: GigsInterface[] = await getAllgigs();
-  const filteredGigs = await filtergigs(gigs);
+  const gigs: GigsInterface[] = await getAllgigs() as unknown as GigsInterface[];
+  const filteredGigs =  filtergigs(gigs);
   return (
     <div className="flex flex-col items-center overflow-hidden w-full">
     <div className="relative w-full max-w-lg">
