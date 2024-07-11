@@ -42,7 +42,7 @@ export default  function Meeting({
       <div className="p-2">
       <JoinMeetingPage meeting={meeting}/>
       </div>
-      {/* <Menu
+      <Menu
         as="div"
         className="relative bg-transparent focus-within:opacity-100 group-hover:opacity-100"
       >
@@ -94,7 +94,7 @@ export default  function Meeting({
             </div>
           </Menu.Items>
         </Transition>
-      </Menu> */}
+      </Menu>
     </div>
   );
 }
