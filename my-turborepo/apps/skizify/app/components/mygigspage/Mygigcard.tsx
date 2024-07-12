@@ -10,6 +10,7 @@ import {
 } from "../../../@/components/ui/tooltip"
 import {
   ArrowRightIcon,
+  CalendarClock,
   CalendarDays,
   Clock7,
   Hourglass,
@@ -90,7 +91,7 @@ export default function MygigCard({ gigs , session }: { gigs: GigsInterface[] , 
                   </div>
                 </div>
                 <div className="my-1 flex place-content-start items-center py-2 pl-2 sm:my-2 md:my-0">
-                  <Hourglass
+                  <CalendarClock
                     className="mr-3 size-5 cursor-pointer text-xl font-medium dark:text-white md:size-6"
                     strokeWidth={1.5}
                     absoluteStrokeWidth

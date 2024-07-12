@@ -27,6 +27,7 @@ export interface meetingsInfo_interface {
   gig: {
     title: string;
     content: string;
+    timeneeded : number
   };
 }
 
@@ -66,6 +67,7 @@ export async function getUsercalendarMeetingsdetails() {
           select: {
             title: true,
             content: true,
+            timeneeded: true
           },
         },
       },
@@ -116,6 +118,7 @@ export async function getSkizzercalendarMeetingsdetails() {
           select: {
             title: true,
             content: true,
+            timeneeded: true
           },
         },
       },
