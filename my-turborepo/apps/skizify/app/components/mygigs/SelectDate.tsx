@@ -250,7 +250,7 @@ export function SelectDATE({
           Propose Budget {`(in $)`}
         </Label>
 
-        <Button className="h-9 rounded border bg-transparent p-0 text-black hover:bg-transparent hover:shadow hover:ring-black dark:bg-transparent dark:text-white dark:hover:text-black dark:hover:ring-white">
+        <Button className="h-9 rounded border dark:border-0 dark:border-black bg-transparent p-0 text-black hover:bg-transparent hover:shadow hover:ring-black dark:bg-transparent dark:text-white dark:hover:text-black ">
           <input
             className="h-full w-full rounded border-0 text-sm text-black placeholder-black placeholder:text-sm placeholder:font-extralight focus:border-transparent focus:outline-none focus:ring-0 dark:border dark:border-white dark:bg-transparent dark:text-white placeholder:dark:text-white"
             type="text"

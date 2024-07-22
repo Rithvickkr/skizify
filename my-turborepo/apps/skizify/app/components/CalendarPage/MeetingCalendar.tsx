@@ -25,7 +25,7 @@ export default  function Meeting({
 
   return (
     <div className="group mx-1 my-3 grid min-h-20 grid-cols-[auto_1fr_auto] items-center gap-1 space-x-4 rounded-md bg-transparent border py-2 pl-4 pr-1 shadow-md transition-shadow duration-300 focus-within:bg-neutral-50 hover:shadow-xl dark:border dark:border-gray-800 dark:bg-transparent dark:text-white dark:hover:bg-gray-900">
-      <div className="font-time text-shadow-sm rounded border dark:bg-[#020817] p-2 text-2xl font-medium text-black dark:border-gray-700 dark:text-gray-100">
+      <div className="font-time text-shadow-sm rounded border dark:bg-[#020817] p-2 text-xl font-medium text-black dark:border-gray-700 dark:text-gray-100">
         <time dateTime={meeting.finalDateTime.toISOString()}>
           {format(finalDateTime, "h:mm a")}
         </time>

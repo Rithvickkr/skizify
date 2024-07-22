@@ -1,6 +1,7 @@
 import { JSX, SVGProps } from "react";
 import { AppbarClient } from "../components/AppbarClient";
 import { Sidebar } from "../components/SideBar/Sidebar";
+import { SidebarDemo } from "../components/SideBar/NewSidebar";
 
 //Use font-display for displaying special font
 export default function Layout({
@@ -9,16 +10,7 @@ export default function Layout({
   children: React.ReactNode;
 }): JSX.Element {
   return (
-    <div className="flex w-screen">
-      <div className="fixed w-1/6"> {/*Because when you fix something on the screen it is occupying it's whole space*/}
-        <Sidebar />
-      </div>
-      <div className="w-1/6"></div>
-      <div className="w-5/6">
-        <AppbarClient />
-        {children}
-      </div>
-    </div>
+      <SidebarDemo children={children} />
   );
 }
 

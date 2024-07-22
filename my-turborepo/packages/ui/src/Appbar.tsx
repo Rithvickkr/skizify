@@ -7,8 +7,8 @@ import {
   MoonIcon,
   WandSparkles,
   Search,
-  Nut
- 
+  Nut,
+  Cog
 } from "lucide-react";
 
 import {
@@ -40,7 +40,7 @@ interface AppbarProps {
 export const Appbar = ({ user, onSignout, onSignin, fn }: AppbarProps) => {
   const name = user?.name || "User";
   return (
-    <div className="flex justify-end items-center p-3">
+    <div className="flex justify-end items-center">
        {/* {(window.location.href=="http://localhost:3000/explore"?<div className="relative ml-auto flex-1 md:grow-0">
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
             <input
@@ -71,7 +71,7 @@ export const Appbar = ({ user, onSignout, onSignin, fn }: AppbarProps) => {
               <SwitchTheme />
             </DropdownMenuItem>
             <DropdownMenuItem className="p-1 focus:outline-0 hover:text-gray-500 cursor-pointer rounded-md shadow-md dark:bg-gray-800 dark:hover:bg-gray-900">
-              <Settings className="mr-2 size-4 m-2" />
+              <Cog className="mr-2 size-5 m-2" />
               <span>Settings</span>
             </DropdownMenuItem>
             <DropdownMenuSeparator />

@@ -10,9 +10,9 @@ export async function Sidebar() {
     return <div>Loading .... </div>;
   }
   return (
-    <div className="flex min-h-screen flex-col border-r bg-[#fafbfb] z-2 dark:border-slate-700 dark:bg-gray-900">
+    <div className="z-2 flex min-h-screen flex-col border-r bg-[#fafbfb] dark:border-slate-700 dark:bg-gray-900">
       <div className="flex items-center">
-        <div className="flex size-10 m-2 items-center justify-center rounded-full border border-white bg-[black] text-white focus:outline-0 dark:border-gray-900 dark:bg-white dark:text-black">
+        <div className="m-2 flex size-10 items-center justify-center rounded-full border border-white bg-[black] text-white focus:outline-0 dark:border-gray-900 dark:bg-white dark:text-black">
           <div>S</div>
         </div>
         <div className="m-4 cursor-pointer font-display text-3xl font-bold">
@@ -55,11 +55,11 @@ export async function Sidebar() {
           }
           icon={<CalendarIcon />}
         />
-        {session.user.role === UserRole.SKIZZER ? (
-          <SidebarItem href={"/profile"} title={"Profile"} icon={<UserIcon />} />
-        ) : (
-          ""
-        )}
+        <SidebarItem
+          href={"/profile"}
+          title={"Profile"}
+          icon={session.user.role === UserRole.SKIZZER ? <UserIcon /> : ""}
+        />
       </div>
     </div>
   );
