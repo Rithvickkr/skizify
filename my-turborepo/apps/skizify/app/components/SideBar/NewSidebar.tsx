@@ -14,11 +14,10 @@ import { cn } from "../../utils/cn";
 import { AppbarClient } from "../AppbarClient";
 import { useSession } from "next-auth/react";
 import { UserRole } from "@prisma/client";
-import { Codesandbox, Hash, SquareCheckBig, SquareUserRound } from "lucide-react";
+import { CalendarRange, Codesandbox, Hash, SquareCheckBig, SquareUserRound } from "lucide-react";
 
 export function SidebarDemo({ children }: { children: React.ReactNode }) {
   const session = useSession();
-  console.log(session);
   const links = [
     {
       label: session.data?.user.role === UserRole.USER ? "Post a Gig" : "",
@@ -37,9 +36,9 @@ export function SidebarDemo({ children }: { children: React.ReactNode }) {
       href: "/mygigs",
       icon:
         session.data?.user.role === UserRole.USER ? (
-          <BriefcaseIcon />
+          <BriefcaseIcon className="size-6 flex-shrink-0 text-neutral-700 dark:text-neutral-200" />
         ) : (
-          <SquareCheckBig />
+          <SquareCheckBig className="size-6 flex-shrink-0 text-neutral-700 dark:text-neutral-200" />
         ),
     },
     {
@@ -53,17 +52,18 @@ export function SidebarDemo({ children }: { children: React.ReactNode }) {
       label: "Calendar",
       href: "/schedule",
       icon: (
-        <CalendarIcon className="size-6 flex-shrink-0 text-neutral-700 dark:text-neutral-200" />
+        <CalendarRange className="size-6 flex-shrink-0 text-neutral-700 dark:text-neutral-200" />
       ),
     },
     {
       label: "Profile",
       href: "/profile",
       icon: (
-        <SquareUserRound strokeWidth={1.5} className="size-7 flex-shrink-0 text-neutral-700 dark:text-neutral-200" />
+        <SquareUserRound strokeWidth={1.5} className="size-6 flex-shrink-0 text-neutral-700 dark:text-neutral-200" />
       ),
     },
   ];
+  const filteredLinks = session.data?.user.role === UserRole.USER ? links : links.slice(1);
   const [open, setOpen] = useState(false);
   return (
     <div
@@ -73,11 +73,11 @@ export function SidebarDemo({ children }: { children: React.ReactNode }) {
       )}
     >
       <Sidebar open={open} setOpen={setOpen}>
-        <SidebarBody className="justify-between gap-20 dark:bg-[#020817]">
+        <SidebarBody className="justify-between gap-20 dark:bg-gray-900">
           <div className="flex flex-1 flex-col overflow-y-auto">
             {open ? <Logo /> : <LogoIcon />}
             <div className="mt-8 flex flex-col gap-2">
-              {links.map((link, idx) => (
+              {filteredLinks.map((link, idx) => (
                 <SidebarLink key={idx} link={link} />
               ))}
             </div>
