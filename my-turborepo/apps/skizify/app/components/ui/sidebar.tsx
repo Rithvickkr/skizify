@@ -3,7 +3,6 @@ import { cn } from "../../utils/cn";
 import Link, { LinkProps } from "next/link";
 import React, { useState, createContext, useContext } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { IconMenu2, IconX } from "@tabler/icons-react";
 import { usePathname } from "next/navigation";
 
 interface Links {
@@ -121,10 +120,10 @@ export const MobileSidebar = ({
         {...props}
       >
         <div className="z-20 flex w-full justify-end">
-          <IconMenu2
+          {/* <IconMenu2
             className="text-neutral-800 dark:text-neutral-200"
             onClick={() => setOpen(!open)}
-          />
+          /> */}
         </div>
         <AnimatePresence>
           {open && (
@@ -145,7 +144,7 @@ export const MobileSidebar = ({
                 className="absolute right-10 top-10 z-50 text-neutral-800 dark:text-neutral-200"
                 onClick={() => setOpen(!open)}
               >
-                <IconX />
+                {/* <IconX /> */}
               </div>
               {children}
             </motion.div>
