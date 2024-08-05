@@ -1,46 +1,28 @@
-import { WebSocket, WebSocketServer } from "ws";
+import { Socket } from "socket.io";
+import http from "http";
 
-const wss = new WebSocketServer({ port: 8080 });
+import { Server } from 'socket.io';
+import { UserManager } from "./managers/UserManager";
 
-let senderSocket: WebSocket | null = null;
-let receiverSocket: WebSocket | null = null;
+const server = http.createServer(http);
 
-wss.on("connection", function connection(ws) {        
-//iweboiewug
+const io = new Server(server , {
+  cors : {
+    origin : "*"
+  }
+});
 
-  ws.on("error", console.error); 
-  ws.on("message", function (data: any) {
-    //data in the form of String
-    //Hello I am Testing something in github1
-    const message = JSON.parse(data);
-    if (message.type === "sender") {
-      senderSocket = ws;
-    } else if (message.type === "receiver") {
-      receiverSocket = ws;
-    } else if (message.type === "createOffer") {
-      if (ws !== senderSocket) {
-        return; 
-      } 
-      receiverSocket?.send(
-        JSON.stringify({ type: "createOffer", sdp: message.sdp })
-      );
-    } else if (message.type === "createAnswer") {
-      if (ws !== receiverSocket) {
-        return;
-      }
-      senderSocket?.send(
-        JSON.stringify({ type: "createAnswer", sdp: message.sdp })
-      );
-    } else if (message.type === "iceCandidate") {
-      if (ws === receiverSocket) {
-        senderSocket?.send(
-          JSON.stringify({ type: "iceCandidate", candidate: message.candidate })
-        );
-      } else if (ws === senderSocket) {
-        receiverSocket?.send(
-          JSON.stringify({ type: "iceCandidate", candidate: message.candidate })
-        );
-      }
-    }
-  });
+const userManager = new UserManager();
+
+io.on('connection' , (socket : Socket) =>{
+  console.log("Connection Established");
+  userManager.createRoom('RandomName',socket);
+  socket.on("disconnect", () =>{
+    console.log("user disconnected");
+    userManager.removeUser(socket.id);
+  })
+})
+
+server.listen(3003, () => {
+  console.log('listening on *:3003');
 });

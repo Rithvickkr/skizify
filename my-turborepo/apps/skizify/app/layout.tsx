@@ -18,7 +18,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }): JSX.Element {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" >
       <body className={inter.className}>
       <Providers >
         {/* <NextUIProvider> */}
@@ -29,6 +29,7 @@ export default function RootLayout({
     </html>
   );
 }
+//(Removed it)
 //suppressHydrationWarning When there is a Mismatch of components 
 // like Component is not adaptable to Dark mode then HydrationWarning will be there
 //Added Recoil Root 

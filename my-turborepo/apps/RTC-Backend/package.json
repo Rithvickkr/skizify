@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build" : "npx tsc -b",
+    "start" : "node dist/index.js",
+    "dev"   : "npm run build && npm run start"
   },
   "keywords": [],
   "author": "",
@@ -11,6 +13,7 @@
   "description": "",
   "dependencies": {
     "@types/ws": "^8.5.11",
+    "socket.io": "^4.7.5",
     "ws": "^8.18.0"
   }
 }

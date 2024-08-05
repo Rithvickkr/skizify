@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { cn } from "../utils/cn";
@@ -18,6 +18,9 @@ export function SignupFormDemo() {
     e.preventDefault();
     console.log("Form submitted");
   };
+  useEffect(() => {
+    console.log("Here is the SignUP FORM");
+  },[]);
 
   return (
     <div className="shadow-input mx-auto w-full max-w-md rounded-none bg-white p-4 dark:bg-black md:rounded-2xl md:p-8">
