@@ -1,4 +1,4 @@
-const {nextui} = require('@nextui-org/theme');
+const {nextui, colors} = require('@nextui-org/theme');
 const flowbite = require("flowbite-react/tailwind");
 
 /** @type {import('tailwindcss').Config} */
@@ -20,7 +20,14 @@ module.exports = {
 
     },
 
-    extend: {},
+    extend: {
+      colors : {
+        themeblue : '#020817'
+      },
+      backgroundImage: {
+        'custom-gradient': 'linear-gradient(to right, themeblue 10%, #111827)',
+      },
+    },
   },
   darkMode: "class",
   plugins: [nextui(),flowbite.plugin(),
@@ -35,7 +42,7 @@ module.exports = {
     },
     animation: {
       "shine": "shine 8s ease-in-out infinite",
-    },
+    }
 },
 
 }

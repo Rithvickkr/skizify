@@ -137,6 +137,7 @@ const currentCall = useRef<MediaConnection | null>(null);
   };
 
   return (
+    <div className="">
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white p-4">
       <h1 className="text-2xl mb-4">Current user id is {peerId}</h1>
       <div className="flex-col items-center justify-center">
@@ -152,6 +153,7 @@ const currentCall = useRef<MediaConnection | null>(null);
         <button onClick={shareScreen} className="bg-green-500 px-4 py-2 rounded">Share Screen</button>
         <button onClick={disconnect} className="bg-red-500 px-4 py-2 rounded">Disconnect</button>
       </div>
+    </div>
     </div>
   );
 }
