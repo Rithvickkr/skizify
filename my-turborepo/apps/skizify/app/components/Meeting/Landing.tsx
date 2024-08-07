@@ -18,6 +18,9 @@ export default function Landing() {
   const [join, setJoin] = useState(false);
   const [permissionDenied, setPermissionDenied] = useState(false);
   const [isVideoInitialized, setIsVideoInitialized] = useState(true);
+  const [isAudioEnabled, setIsAudioEnabled] = useState(true);
+  const [isVideoEnabled, setIsVideoEnabled] = useState(true);
+
   async function getPermissionEnableStream() {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
@@ -78,6 +81,31 @@ export default function Landing() {
     }
   }, [permissionDenied]);
 
+  const handleToggleAudio = () => {
+    if (localAudioTrack) {
+      if (isAudioEnabled) {
+        localAudioTrack.stop();
+      } else {
+        getPermissionEnableStream();
+      }
+      setIsAudioEnabled(!isAudioEnabled);
+    }
+  };
+
+  const handleToggleVideo = () => {
+    if (localVideoTrack) {
+      if (isVideoEnabled) {
+        localVideoTrack.stop();
+        if (videoRef.current) {
+          videoRef.current.srcObject = null;
+        }
+      } else {
+        getPermissionEnableStream();
+      }
+      setIsVideoEnabled(!isVideoEnabled);
+    }
+  };
+
   if (!session) {
     return <div>You are not Signed In</div>;
   }
@@ -85,42 +113,48 @@ export default function Landing() {
   if (!join) {
     return (
       <div className="flex h-full justify-center md:items-center">
-        <div className="mx-auto grid md:h-[60%] h-[86%] w-[90%] rounded-xl p-2 shadow-2xl dark:bg-spotlight dark:ring-2 dark:ring-gray-500 md:w-[60%] md:grid-cols-2">
-        <div className="relative my-auto flex h-full w-full grid-cols-1 items-center justify-center rounded-2xl bg-themeblue dark:border-2 dark:border-gray-600">
-      {isVideoInitialized ? (
-          <video
-            ref={videoRef}
-            autoPlay
-            className="size-[95%] rounded-xl bg-themeblue object-cover ring-2 ring-white dark:ring-gray-600 cursor-pointer"
-          ></video>
-      ) : (
-        <CameraOff className="size-20 text-white" />
-      )}
-      {
-        isVideoInitialized ? (
-          <div className="absolute flex justify-center gap-32 md:gap-16 bottom-4">
-            <div className="rounded-full cursor-pointer hover:-translate-y-0.5    bg-[#EA4335] hover:shadow-xl  flex justify-center items-center size-12   text-white">
-        <Mic size={28} strokeWidth={1.3}/>
-      </div>
-      <div className="rounded-full cursor-pointer hover:-translate-y-0.5    bg-[#EA4335] hover:shadow-xl  flex justify-center items-center size-12  text-white">
-        <Video size={28} strokeWidth={1.3}/>
-      </div>
+        <div className="mx-auto grid h-[86%] w-[90%] rounded-xl p-2 shadow-2xl dark:bg-spotlight dark:ring-2 dark:ring-gray-500 md:h-[60%] md:w-[60%] md:grid-cols-2">
+          <div className="relative my-auto flex h-full w-full grid-cols-1 items-center justify-center rounded-2xl bg-themeblue dark:border-2 dark:border-gray-600">
+            {isVideoInitialized ? (
+              <video
+                ref={videoRef}
+                autoPlay
+                className="size-[95%] cursor-pointer rounded-xl bg-themeblue object-cover ring-2 ring-white dark:ring-gray-600"
+              ></video>
+            ) : (
+              <CameraOff className="size-20 text-white" />
+            )}
+            {isVideoInitialized ? (
+              <div className="absolute bottom-4 flex justify-center gap-32 md:gap-8">
+                <div
+                  className="flex size-12 cursor-pointer items-center justify-center rounded-full bg-[#EA4335] text-white hover:-translate-y-0.5 hover:shadow-xl"
+                  onClick={handleToggleAudio}
+                >
+                  <Mic size={28} strokeWidth={1.3} />
+                </div>
+                <div
+                  className="flex size-12 cursor-pointer items-center justify-center rounded-full bg-[#EA4335] text-white hover:-translate-y-0.5 hover:shadow-xl"
+                  onClick={handleToggleVideo}
+                >
+                  <Video size={28} strokeWidth={1.3} />
+                </div>
+              </div>
+            ) : (
+              <div></div>
+            )}
           </div>
-        ) : (
-          <div></div>
-        )
-      }
-    </div>
           <div className="flex flex-col items-center justify-evenly space-y-2">
             <div className="mx-auto from-blue-900 from-40% to-gray-100 text-center text-3xl font-light dark:bg-gradient-to-r dark:bg-clip-text dark:text-transparent md:text-4xl lg:text-5xl">
               Ready to join?
             </div>
             <div className="flex flex-col flex-wrap items-center justify-center text-xl font-medium">
-              <span className="font-display from-blue-800 from-5% to-gray-100 dark:bg-gradient-to-r dark:bg-clip-text dark:text-transparent">Join meeting as</span>
+              <span className="from-blue-800 from-5% to-gray-100 font-display dark:bg-gradient-to-r dark:bg-clip-text dark:text-transparent">
+                Join meeting as
+              </span>
               <input
                 type="text"
                 onChange={(e) => setName(e.target.value)}
-                className="m-2 h-8 dark:bg-[#202757] w-40 rounded border text-center text-lg focus:border-none focus:outline-none focus:ring-2 focus:ring-neutral-500 dark:ring-gray-500"
+                className="m-2 h-8 w-40 rounded border text-center text-lg focus:border-none focus:outline-none focus:ring-2 focus:ring-neutral-500 dark:bg-[#202757] dark:ring-gray-500"
               />
             </div>
             <Button
