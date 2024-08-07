@@ -25,7 +25,8 @@ module.exports = {
         themeblue : '#020817'
       },
       backgroundImage: {
-        "trail-blue" : "radial-gradient(circle, rgba(7,0,38,0.929030987394958) 36%, rgba(0,0,0,1) 88%)"
+        "trail-blue" : "radial-gradient(circle, rgba(7,0,38,0.929030987394958) 36%, rgba(0,0,0,1) 88%)",
+        "spotlight" : "linear-gradient(270deg, rgba(32,39,87,1) 31%, rgba(0,0,0,1) 88%)"
       },
     },
   },

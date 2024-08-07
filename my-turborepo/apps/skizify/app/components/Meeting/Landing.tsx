@@ -2,7 +2,7 @@
 import { useEffect, useState, useRef } from "react";
 import Room from "./Room";
 import { Button } from "../ui/button";
-import { CameraOff } from "lucide-react";
+import { CameraOff, Mic, Video } from "lucide-react";
 import { useSession } from "next-auth/react";
 
 export default function Landing() {
@@ -10,8 +10,10 @@ export default function Landing() {
   const session = useSession();
 
   const [name, setName] = useState("");
-  const [localAudioTrack, setLocalAudioTrack] = useState<MediaStreamTrack | null>();
-  const [localVideoTrack, setlocalVideoTrack] = useState<MediaStreamTrack | null>();
+  const [localAudioTrack, setLocalAudioTrack] =
+    useState<MediaStreamTrack | null>();
+  const [localVideoTrack, setlocalVideoTrack] =
+    useState<MediaStreamTrack | null>();
   const videoRef = useRef<HTMLVideoElement>(null);
   const [join, setJoin] = useState(false);
   const [permissionDenied, setPermissionDenied] = useState(false);
@@ -70,7 +72,7 @@ export default function Landing() {
     if (permissionDenied) {
       const retryInterval = setInterval(() => {
         getCam();
-      }, 5000); // Retry every 5 seconds
+      }, 8000); // Retry every 8 seconds
 
       return () => clearInterval(retryInterval); // Clear interval after cleanup
     }
@@ -82,34 +84,51 @@ export default function Landing() {
 
   if (!join) {
     return (
-      <div className="flex h-full md:items-center justify-center">
-        <div className="mx-auto grid h-[60%] md:w-[60%] w-[90%] rounded-xl bg-neutral-100 p-2 shadow-2xl dark:ring-2 dark:ring-gray-500 md:grid-cols-2">
-          <div className="my-auto flex h-full w-full cursor-pointer grid-cols-1 items-center justify-center rounded-2xl bg-themeblue dark:border-2 dark:border-gray-600">
-            {isVideoInitialized ? (
-              <video
-                ref={videoRef}
-                autoPlay
-                className=" object-cover size-[95%] rounded-xl bg-themeblue ring-2 ring-white dark:ring-gray-600"
-              ></video>
-            ): (
-                <CameraOff className="size-20 text-white" />
-            )}
+      <div className="flex h-full justify-center md:items-center">
+        <div className="mx-auto grid md:h-[60%] h-[86%] w-[90%] rounded-xl p-2 shadow-2xl dark:bg-spotlight dark:ring-2 dark:ring-gray-500 md:w-[60%] md:grid-cols-2">
+        <div className="relative my-auto flex h-full w-full grid-cols-1 items-center justify-center rounded-2xl bg-themeblue dark:border-2 dark:border-gray-600">
+      {isVideoInitialized ? (
+          <video
+            ref={videoRef}
+            autoPlay
+            className="size-[95%] rounded-xl bg-themeblue object-cover ring-2 ring-white dark:ring-gray-600 cursor-pointer"
+          ></video>
+      ) : (
+        <CameraOff className="size-20 text-white" />
+      )}
+      {
+        isVideoInitialized ? (
+          <div className="absolute flex justify-center gap-32 md:gap-16 bottom-4">
+            <div className="rounded-full cursor-pointer hover:-translate-y-0.5    bg-[#EA4335] hover:shadow-xl  flex justify-center items-center size-12   text-white">
+        <Mic size={28} strokeWidth={1.3}/>
+      </div>
+      <div className="rounded-full cursor-pointer hover:-translate-y-0.5    bg-[#EA4335] hover:shadow-xl  flex justify-center items-center size-12  text-white">
+        <Video size={28} strokeWidth={1.3}/>
+      </div>
           </div>
-          <div className="flex flex-col items-center space-y-2">
-            <div className="mx-auto font-light dark:text-black text-2xl md:text-3xl">
+        ) : (
+          <div></div>
+        )
+      }
+    </div>
+          <div className="flex flex-col items-center justify-evenly space-y-2">
+            <div className="mx-auto from-blue-900 from-40% to-gray-100 text-center text-3xl font-light dark:bg-gradient-to-r dark:bg-clip-text dark:text-transparent md:text-4xl lg:text-5xl">
               Ready to join?
             </div>
-            <input
-              type="text"
-              onChange={(e) => setName(e.target.value)}
-              className="h-10 rounded"
-            />
+            <div className="flex flex-col flex-wrap items-center justify-center text-xl font-medium">
+              <span className="font-display from-blue-800 from-5% to-gray-100 dark:bg-gradient-to-r dark:bg-clip-text dark:text-transparent">Join meeting as</span>
+              <input
+                type="text"
+                onChange={(e) => setName(e.target.value)}
+                className="m-2 h-8 dark:bg-[#202757] w-40 rounded border text-center text-lg focus:border-none focus:outline-none focus:ring-2 focus:ring-neutral-500 dark:ring-gray-500"
+              />
+            </div>
             <Button
-              className="h-12 w-44 rounded-3xl bg-black text-white ring-1 ring-black border border-white dark:bg-[#020817] xl:h-12"
+              className="h-12 w-44 rounded-3xl border border-white bg-black text-white ring-1 ring-black dark:bg-[#020817] xl:h-12"
               variant="gooeyLeft"
               onClick={() => setJoin(true)}
             >
-              Join
+              Join now
             </Button>
           </div>
         </div>

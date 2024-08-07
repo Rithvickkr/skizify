@@ -119,7 +119,7 @@ export default function Room({
           pc?.setRemoteDescription(remotesdp);
           return pc;
         });
-        console.log("Cycle Ho gayi Sir Answer and Offer complete");
+        console.log("Cycle Completes");
       },
     );
 
@@ -187,6 +187,7 @@ export default function Room({
         height={300}
         src=""
         ref={localVideoref}
+        className="m-1 rounded-xl bg-themeblue object-cover ring-2 ring-white dark:ring-gray-600"
       ></video>
       <video
         autoPlay
@@ -194,6 +195,7 @@ export default function Room({
         height={300}
         src=""
         ref={remoteVideoref}
+        className="m-1 rounded-xl bg-themeblue object-cover ring-2 ring-white dark:ring-gray-600"
       ></video>
       </div>
     </div>
