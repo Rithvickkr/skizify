@@ -2,7 +2,7 @@
 import { useEffect, useState, useRef } from "react";
 import Room from "./Room";
 import { Button } from "../ui/button";
-import { CameraOff, Mic, Video } from "lucide-react";
+import { CameraOff, Mic, MicOff, Video, VideoOff } from "lucide-react";
 import { useSession } from "next-auth/react";
 
 export default function Landing() {
@@ -11,15 +11,17 @@ export default function Landing() {
 
   const [name, setName] = useState("");
   const [localAudioTrack, setLocalAudioTrack] =
-    useState<MediaStreamTrack | null>();
+    useState<MediaStreamTrack | null | undefined>(null);
   const [localVideoTrack, setlocalVideoTrack] =
-    useState<MediaStreamTrack | null>();
+    useState<MediaStreamTrack | null | undefined>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [join, setJoin] = useState(false);
   const [permissionDenied, setPermissionDenied] = useState(false);
   const [isVideoInitialized, setIsVideoInitialized] = useState(true);
   const [isAudioEnabled, setIsAudioEnabled] = useState(true);
   const [isVideoEnabled, setIsVideoEnabled] = useState(true);
+
+
 
   async function getPermissionEnableStream() {
     try {
@@ -28,18 +30,15 @@ export default function Landing() {
         audio: true,
       });
       // Do something with the stream
-      console.log("Media stream acquired:", stream);
       const videotrack = stream.getVideoTracks()[0];
       const audiotrack = stream.getAudioTracks()[0];
       setlocalVideoTrack(videotrack);
       setLocalAudioTrack(audiotrack);
 
       if (videotrack && videoRef && videoRef.current) {
-        // Ensure valid values are passed inside the VideoRef
         videoRef.current.srcObject = new MediaStream([videotrack]);
         videoRef.current.play();
       }
-      setIsVideoInitialized(true);
       // Reset permission denied state
       setPermissionDenied(false);
     } catch (err) {
@@ -47,9 +46,26 @@ export default function Landing() {
       setIsVideoInitialized(true);
       setPermissionDenied(true);
       alert(
-        "We need access to your camera and microphone. Please enable them in your browser settings.",
+        "We need access to your camera and microphone. Please enable them in your browser settings."
       );
       setIsVideoInitialized(false);
+    }
+  }
+
+  async function getAudioPermissionEnableStream() {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        audio: true,
+      });
+      const audiotrack = stream.getAudioTracks()[0];
+      setLocalAudioTrack(audiotrack);
+      setPermissionDenied(false);
+    } catch (err) {
+      console.error("Permissions Denied:", err);
+      setPermissionDenied(true);
+      alert(
+        "We need access to your microphone. Please enable it in your browser settings."
+      );
     }
   }
 
@@ -60,7 +76,7 @@ export default function Landing() {
       console.error("Error accessing media devices:", error);
       setIsVideoInitialized(false);
       alert(
-        "We need access to your camera and microphone. Please enable them in your browser settings.",
+        "We need access to your camera and microphone. Please enable them in your browser settings."
       );
     }
   };
@@ -81,18 +97,20 @@ export default function Landing() {
     }
   }, [permissionDenied]);
 
-  const handleToggleAudio = () => {
+  const handleToggleAudio = async () => {
     if (localAudioTrack) {
       if (isAudioEnabled) {
         localAudioTrack.stop();
       } else {
-        getPermissionEnableStream();
+        await getAudioPermissionEnableStream();
       }
       setIsAudioEnabled(!isAudioEnabled);
+    } else {
+      await getAudioPermissionEnableStream();
     }
   };
 
-  const handleToggleVideo = () => {
+  const handleToggleVideo = async () => {
     if (localVideoTrack) {
       if (isVideoEnabled) {
         localVideoTrack.stop();
@@ -100,9 +118,11 @@ export default function Landing() {
           videoRef.current.srcObject = null;
         }
       } else {
-        getPermissionEnableStream();
+        await getPermissionEnableStream();
       }
       setIsVideoEnabled(!isVideoEnabled);
+    } else {
+      console.log("VideoTracks are not here");
     }
   };
 
@@ -125,18 +145,26 @@ export default function Landing() {
               <CameraOff className="size-20 text-white" />
             )}
             {isVideoInitialized ? (
-              <div className="absolute bottom-4 flex justify-center gap-32 md:gap-8">
+              <div className="absolute bottom-5 flex justify-center gap-32 md:gap-8">
                 <div
                   className="flex size-12 cursor-pointer items-center justify-center rounded-full bg-[#EA4335] text-white hover:-translate-y-0.5 hover:shadow-xl"
                   onClick={handleToggleAudio}
                 >
-                  <Mic size={28} strokeWidth={1.3} />
+                  {isAudioEnabled ? (
+                    <Mic size={24} strokeWidth={1.3} />
+                  ) : (
+                    <MicOff size={24} strokeWidth={1.3} />
+                  )}
                 </div>
                 <div
                   className="flex size-12 cursor-pointer items-center justify-center rounded-full bg-[#EA4335] text-white hover:-translate-y-0.5 hover:shadow-xl"
                   onClick={handleToggleVideo}
                 >
-                  <Video size={28} strokeWidth={1.3} />
+                  {isVideoEnabled ? (
+                    <Video size={28} strokeWidth={1.3} />
+                  ) : (
+                    <VideoOff size={28} strokeWidth={1.3} />
+                  )}
                 </div>
               </div>
             ) : (
