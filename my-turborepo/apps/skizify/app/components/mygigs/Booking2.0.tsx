@@ -36,7 +36,7 @@ export function BookButton2({
             Book
           </ButtonE>
         </CredenzaTrigger>
-        <CredenzaContent className="border-2 border-black dark:border dark:border-neutral-600">
+        <CredenzaContent className="border-2 border-black dark:border dark:border-neutral-600 to-gray-900 from-40% from-themeblue dark:bg-gradient-to-r">
           <CredenzaHeader>
             <CredenzaTitle>
               <div className="flex justify-between">

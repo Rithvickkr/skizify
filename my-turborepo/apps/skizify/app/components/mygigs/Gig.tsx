@@ -28,7 +28,7 @@ export default async function GigStructure({
   gigs: GigsInterface[];
 }) {
   return (
-    <div>
+    <div className="">
       <div className="mx-auto grid w-full max-w-7xl grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 pl-1 md:pl-2 pr-3">
         {gigs.map(async (gig:GigsInterface) => {
           const user = await prisma.user.findUnique({

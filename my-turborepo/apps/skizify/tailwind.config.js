@@ -25,7 +25,7 @@ module.exports = {
         themeblue : '#020817'
       },
       backgroundImage: {
-        'custom-gradient': 'linear-gradient(to right, themeblue 10%, #111827)',
+        "trail-blue" : "radial-gradient(circle, rgba(7,0,38,0.929030987394958) 36%, rgba(0,0,0,1) 88%)"
       },
     },
   },

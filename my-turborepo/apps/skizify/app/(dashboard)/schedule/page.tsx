@@ -13,7 +13,7 @@ export default async function Home(){
     meetings = await getUsercalendarMeetingsdetails();
   }
     return (
-        <div className="h-screen">
+        <div className="h-screen dark:bg-trail-blue ">
             <Example meetings={meetings}/>
         </div>
     )

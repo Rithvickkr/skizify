@@ -25,7 +25,7 @@ export default async function Page() {
   const gigs: GigsInterface[] = await getAllgigs() as unknown as GigsInterface[];
   const filteredGigs =  filtergigs(gigs);
   return (
-    <div className="flex flex-col items-center overflow-hidden w-full">
+    <div className="flex flex-col items-center overflow-hidden rounded-lg w-full h-screen">
     <div className="relative w-full max-w-lg">
       <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground " />
       <input

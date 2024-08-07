@@ -236,7 +236,7 @@ export function SelectDATE({
             {daysArray.map((date) => (
               <SelectItem
                 key={date.toISOString()}
-                className="cursor-pointer"
+                className="cursor-pointer hover:bg-neutral-300 rounded bg-neutral-100 mb-1 hover:shadow-md"
                 value={`${date.toISOString().split("T")[0]}`}
               >
                 {`${Month(date)} ${date.getDate()}, ${date.getFullYear()}`}
