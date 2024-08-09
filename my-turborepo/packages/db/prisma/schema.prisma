@@ -27,6 +27,8 @@ model User {
   confirmedGigs   Gigs[]    @relation(name: "ConfirmedUser")
   bio             String?
   education       String?
+  UserMeetings    meeting[] @relation(name: "UserCreatedGig")
+  SkizzerMeetings meeting[] @relation(name: "UserAccptedGig")
 }
 
 model Gigs {
@@ -72,10 +74,24 @@ model GigUser {
   status        GigStatus @default(PENDING)
   budget        Int
   finalDateTime DateTime
+
   //@@unique([skizzerId, UserId]) This means they can never build realtion in future
   @@unique([gigId, skizzerId])
 }
 
+model meeting {
+  id        String @id @default(uuid())
+  user      User   @relation(name: "UserCreatedGig", fields: [UserId], references: [id])
+  Skizzer   User   @relation(name: "UserAccptedGig", fields: [skizzerId], references: [id])
+  skizzerId String
+  UserId    String
+  status    MeetingStatus @default(PENDING)
+}
+enum MeetingStatus {
+  PENDING  
+  ONGOING //When the meeting Time is Ongoing Then Before 30Minutes we will send the Notification
+  ENDED
+}
 
 enum AuthType {
   GOOGLE

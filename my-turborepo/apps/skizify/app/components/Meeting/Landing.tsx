@@ -8,7 +8,6 @@ import { useSession } from "next-auth/react";
 export default function Landing() {
   // User can see the Hair-Setting Screen
   const session = useSession();
-
   const [name, setName] = useState("");
   const [localAudioTrack, setLocalAudioTrack] =
     useState<MediaStreamTrack | null | undefined>(null);
@@ -126,14 +125,14 @@ export default function Landing() {
     }
   };
 
-  if (!session) {
+  if (session.status ==='unauthenticated' ) {
     return <div>You are not Signed In</div>;
   }
 
   if (!join) {
     return (
       <div className="flex h-full justify-center md:items-center">
-        <div className="mx-auto grid h-[86%] w-[90%] rounded-xl p-2 shadow-2xl dark:bg-spotlight dark:ring-2 dark:ring-gray-500 md:h-[60%] md:w-[60%] md:grid-cols-2">
+        <div className="mx-auto grid h-[86%] w-[90%] rounded-xl p-2 shadow-2xl dark:bg-spotlight dark:ring-2 dark:ring-gray-500 md:h-[60%] lg:w-[60%] md:grid-cols-2">
           <div className="relative my-auto flex h-full w-full grid-cols-1 items-center justify-center rounded-2xl bg-themeblue dark:border-2 dark:border-gray-600">
             {isVideoInitialized ? (
               <video
@@ -145,7 +144,7 @@ export default function Landing() {
               <CameraOff className="size-20 text-white" />
             )}
             {isVideoInitialized ? (
-              <div className="absolute bottom-5 flex justify-center gap-32 md:gap-8">
+              <div className="absolute bottom-4 flex justify-center gap-32 md:gap-8">
                 <div
                   className="flex size-12 cursor-pointer items-center justify-center rounded-full bg-[#EA4335] text-white hover:-translate-y-0.5 hover:shadow-xl"
                   onClick={handleToggleAudio}
@@ -176,13 +175,13 @@ export default function Landing() {
               Ready to join?
             </div>
             <div className="flex flex-col flex-wrap items-center justify-center text-xl font-medium">
-              <span className="from-blue-800 from-5% to-gray-100 font-display dark:bg-gradient-to-r dark:bg-clip-text dark:text-transparent">
+              <span className="text-2xl font-display ">
                 Join meeting as
               </span>
               <input
                 type="text"
                 onChange={(e) => setName(e.target.value)}
-                className="m-2 h-8 w-40 rounded border text-center text-lg focus:border-none focus:outline-none focus:ring-2 focus:ring-neutral-500 dark:bg-[#202757] dark:ring-gray-500"
+                className="m-2 h-8 w-48 rounded border text-center text-lg focus:border-none focus:outline-none focus:ring-2 focus:ring-neutral-500 dark:bg-[#202757] dark:ring-gray-500"
               />
             </div>
             <Button

@@ -8,6 +8,7 @@ import { AppbarClient } from "../AppbarClient";
 import { useSession } from "next-auth/react";
 import { UserRole } from "@prisma/client";
 import { CalendarRange, Codesandbox, SquareCheckBig, SquareUserRound } from "lucide-react";
+import { ScrollArea } from "../../../@/components/ui/scroll-area";
 
 export function SidebarDemo({ children }: { children: React.ReactNode }) {
   const session = useSession();
@@ -62,7 +63,7 @@ export function SidebarDemo({ children }: { children: React.ReactNode }) {
     <div
       className={cn(
         "flex w-full flex-1 flex-col overflow-hidden rounded-md border border-neutral-200 bg-gray-100 dark:border-gray-700 dark:bg-[#020817] md:flex-row",
-        "h-screen", // for your use case, use `h-screen` instead of `h-[60vh]`
+        "h-screen" // for your use case, use `h-screen` instead of `h-[60vh]`
       )}
     >
       <Sidebar open={open} setOpen={setOpen}>
@@ -112,11 +113,11 @@ export const LogoIcon = () => {
 // Dummy dashboard component with content
 const Dashboard = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="flex flex-1">
-      <div className="flex h-full w-full flex-1 flex-col gap-2 rounded-tl-2xl border border-neutral-200 bg-white p-2 dark:border-gray-700 to-gray-900 from-40% from-themeblue dark:bg-gradient-to-r">
-        <AppbarClient />
-        {children}
-      </div>
+    <div className="flex flex-1 flex-col gap-2 rounded-tl-2xl border border-neutral-200 bg-white p-2 dark:border-gray-700 to-gray-900 from-40% from-themeblue dark:bg-gradient-to-r overflow-y-auto">
+      <AppbarClient />
+      <ScrollArea className="flex-1">
+      {children}
+      </ScrollArea>
     </div>
   );
 };
