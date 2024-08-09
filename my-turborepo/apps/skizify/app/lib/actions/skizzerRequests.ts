@@ -3,6 +3,7 @@ import prisma from "@repo/db/client";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth";
 
+//This page is giving the Information to the Skizzer in which meeting He has Applied in the mygigs Page
 export async function skizzerRequests(){
     const session = await getServerSession(authOptions);
     if(!session){

@@ -4,6 +4,7 @@ import Link, { LinkProps } from "next/link";
 import React, { useState, createContext, useContext } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { usePathname } from "next/navigation";
+import { Menu } from "lucide-react";
 
 interface Links {
   label: string;
@@ -120,10 +121,10 @@ export const MobileSidebar = ({
         {...props}
       >
         <div className="z-20 flex w-full justify-end">
-          {/* <IconMenu2
+          <Menu
             className="text-neutral-800 dark:text-neutral-200"
             onClick={() => setOpen(!open)}
-          /> */}
+          />
         </div>
         <AnimatePresence>
           {open && (
@@ -144,7 +145,7 @@ export const MobileSidebar = ({
                 className="absolute right-10 top-10 z-50 text-neutral-800 dark:text-neutral-200"
                 onClick={() => setOpen(!open)}
               >
-                {/* <IconX /> */}
+                <Menu />
               </div>
               {children}
             </motion.div>

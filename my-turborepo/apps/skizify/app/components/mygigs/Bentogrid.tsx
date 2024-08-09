@@ -11,6 +11,8 @@ import {
   SessionTime,
   formatTime,
 } from "../../lib/actions/ConvertgigInfo";
+import { GigStatus, UserRole } from "@prisma/client";
+import { Button } from "../../../@/components/ui/button";
 
 export interface Datetimepackage {
   startDATEmonth: string | undefined; //contains start day month
@@ -48,10 +50,12 @@ export const BentoGridItem = ({
   className,
   gig,
   poster,
+  status,
 }: {
   className?: string;
   gig: GigsInterface;
   poster: any;
+  status: UserRole | undefined;
 }) => {
   const startDATEmonth = Month(gig.startDateTime);
   const startDATEday = gig.startDateTime.getDate();
@@ -79,30 +83,32 @@ export const BentoGridItem = ({
   return (
     <div
       className={cn(
-        "group/bento shadow-input row-span-1 flex w-full cursor-pointer items-center justify-center space-y-4 rounded-xl border border-[#d1d5d8] bg-white p-3 transition duration-200 hover:shadow-lg dark:border-gray-800 to-gray-900 from-80% from-themeblue dark:bg-gradient-to-r    dark:shadow-none",
+        "group/bento shadow-input row-span-1 flex w-full cursor-pointer items-center justify-center space-y-4 rounded-xl border border-[#d1d5d8] bg-white from-themeblue from-80% to-gray-900 p-3 transition duration-200 hover:shadow-lg dark:border-gray-800 dark:bg-gradient-to-r dark:shadow-none",
         className,
       )}
     >
       <div className="w-[90%] transition duration-200 group-hover/bento:translate-x-2">
         <Card className="mx-auto w-full max-w-md">
           <CardContent className="grid w-full">
-            <div className="flex justify-between ">
+            <div className="flex justify-between">
               <div className="grid grid-cols-6 space-x-1">
                 <Avatar
                   name={poster.name}
                   photo={poster.userImage}
                   classname="size-8 text-sm col-span-1"
                 />
-                <div className="self-center col-span-4">
-                  <h3 className="text-sm text-gray-500 truncate max-w-30">{poster.name}</h3>
+                <div className="col-span-4 self-center">
+                  <h3 className="max-w-30 truncate text-sm text-gray-500">
+                    {poster.name}
+                  </h3>
                 </div>
               </div>
 
-              <div className="mr-1 flex gap-1 text-xs text-gray-500 dark:text-gray-400 z-10">
+              <div className="z-10 mr-1 flex gap-1 text-xs text-gray-500 dark:text-gray-400">
                 <div className="self-center">
                   <Clock7 className="size-4" />
                 </div>
-                <div className="self-center w-12">{sessionTime}</div>
+                <div className="w-12 self-center">{sessionTime}</div>
               </div>
             </div>
 
@@ -111,7 +117,7 @@ export const BentoGridItem = ({
                 <div className="ml-2 h-7 justify-items-center font-display text-xl font-medium">
                   {gig.title || "Title"}
                 </div>
-                <ScrollArea className="w-full truncate text-wrap rounded-md border p-2 px-2 text-sm h-20">
+                <ScrollArea className="h-20 w-full truncate text-wrap rounded-md border p-2 px-2 text-sm">
                   {gig.content}
                   <ScrollBar orientation="horizontal" />
                 </ScrollArea>
@@ -125,22 +131,30 @@ export const BentoGridItem = ({
                   <div className="self-center text-sm">{`${startTime} - ${endTime}`}</div>
                 </div>
                 <div className="flex items-center">
-                  <CalendarRange className="mr-1 size-5 lg:size-4  xl:size-5" />
+                  <CalendarRange className="mr-1 size-5 lg:size-4 xl:size-5" />
                   <span className="text-sm">{`${startDATEmonth} ${startDATEday} - ${endDATEmonth} ${endDATEday}`}</span>
                 </div>
               </div>
             </div>
-
           </CardContent>
-          <CardFooter className="grid grid-cols-2 space-x-2">
+          <CardFooter
+            className={`grid ${status === UserRole.SKIZZER ? "grid-cols-2" : "grid-cols-1"} space-x-2`}
+          >
+            {status === UserRole.SKIZZER ? (
               <BookButton2
                 gig={gig}
                 poster={poster}
                 Datetimepackage={datetimepackage}
               />
-              <ButtonE className="col-span-1 h-9 bg-gray-50 border text-black shadow hover:bg-white xl:h-10">
-                Message
-              </ButtonE>
+            ) : (
+              ""
+            )}
+            <ButtonE
+          className="m-1 flex-1 bg-white text-black shadow hover:bg-white hover:ring-black dark:bg-gray-200 dark:text-black dark:hover:bg-white dark:hover:text-black dark:hover:ring-white"
+          variant="ringHover"
+        >
+          Message
+        </ButtonE>
           </CardFooter>
         </Card>
       </div>

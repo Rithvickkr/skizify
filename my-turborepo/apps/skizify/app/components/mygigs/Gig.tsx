@@ -22,11 +22,15 @@ import prisma from "@repo/db/client";
 // },....]
 
 import { GigsInterface } from "../../(dashboard)/explore/page";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../../lib/auth";
 export default async function GigStructure({
   gigs,
 }: {
   gigs: GigsInterface[];
 }) {
+  const session = await getServerSession(authOptions);
+//If the session don't exist an Error will come on Screen which is due to getAllgigs which is used in parent of this
   return (
     <div className="">
       <div className="mx-auto grid w-full max-w-7xl grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 pl-1 md:pl-2 pr-3">
@@ -36,7 +40,7 @@ export default async function GigStructure({
               id: gig.authorId,
             },
           });
-          return <BentoGridItem gig={gig} poster={user} />;
+          return <BentoGridItem gig={gig} poster={user} status={session?.user.role} />;
         })}
       </div>
     </div>

@@ -27,8 +27,6 @@ model User {
   confirmedGigs   Gigs[]    @relation(name: "ConfirmedUser")
   bio             String?
   education       String?
-  UserMeetings    meeting[] @relation(name: "UserCreatedGig")
-  SkizzerMeetings meeting[] @relation(name: "UserAccptedGig")
 }
 
 model Gigs {
@@ -66,7 +64,7 @@ model Reviews {
 model GigUser {
   id            String    @id @default(uuid())
   gig           Gigs      @relation(fields: [gigId], references: [id], onDelete: Cascade)
-  gigId         String
+  gigId         String    @unique
   user          User      @relation(name: "UserCreatedGig", fields: [UserId], references: [id])
   Skizzer       User      @relation(name: "UserAccptedGig", fields: [skizzerId], references: [id])
   skizzerId     String
@@ -74,21 +72,24 @@ model GigUser {
   status        GigStatus @default(PENDING)
   budget        Int
   finalDateTime DateTime
+  meeting       meeting?
 
   //@@unique([skizzerId, UserId]) This means they can never build realtion in future
-  @@unique([gigId, skizzerId])
+  @@unique([gigId, skizzerId]) //There will be Unique relation B/w gigid and Skizer
 }
 
 model meeting {
-  id        String @id @default(uuid())
-  user      User   @relation(name: "UserCreatedGig", fields: [UserId], references: [id])
-  Skizzer   User   @relation(name: "UserAccptedGig", fields: [skizzerId], references: [id])
-  skizzerId String
-  UserId    String
-  status    MeetingStatus @default(PENDING)
+  id      String        @id @default(uuid())
+  gigUser String        @unique
+  status  MeetingStatus @default(UNBOOKED_PENDING) //This is the Status of the Meeting, If it is Pending or Ended
+  GigUser GigUser       @relation(fields: [gigUser], references: [id])
+
+  @@index([gigUser])
 }
+
 enum MeetingStatus {
-  PENDING  
+  UNBOOKED_PENDING
+  BOOKED_PENDING
   ONGOING //When the meeting Time is Ongoing Then Before 30Minutes we will send the Notification
   ENDED
 }

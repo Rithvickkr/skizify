@@ -1,5 +1,7 @@
 import { Socket } from "socket.io";
 import { User } from "./UserManager";
+import prisma from "@repo/db/index"
+
 export interface Room {
   User1: User;
   User2: User;
@@ -13,8 +15,9 @@ export class RoomManager {
     this.rooms = new Map();
   }
 
-  createRoom(User1: User, User2: User) {
+  async createRoom(User1: User, User2: User) {
     const roomId = this.generateRoomId().toString();
+    // const RoomId = await prisma.meeting
     this.rooms.set(roomId.toString(), {
       User1,
       User2,

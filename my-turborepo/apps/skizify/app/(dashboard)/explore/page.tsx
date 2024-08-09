@@ -3,6 +3,8 @@ import { getAllgigs } from "../../lib/actions/getgigs";
 import { GigStatus } from "@prisma/client";
 import { Search } from "lucide-react";
 import filtergigs from "../../lib/actions/Filters";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../../lib/auth";
 
 
 export interface GigsInterface {
@@ -23,7 +25,8 @@ export interface GigsInterface {
 
 export default async function Page() {
   const gigs: GigsInterface[] = await getAllgigs() as unknown as GigsInterface[];
-  const filteredGigs =  filtergigs(gigs);
+  const session = await getServerSession(authOptions);
+  const filteredGigs =  filtergigs(gigs,session);  
   return (
     <div className="flex flex-col items-center overflow-hidden rounded-lg w-full h-screen">
     <div className="relative w-full max-w-lg">

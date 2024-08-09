@@ -9,10 +9,8 @@ export default function Landing() {
   // User can see the Hair-Setting Screen
   const session = useSession();
   const [name, setName] = useState("");
-  const [localAudioTrack, setLocalAudioTrack] =
-    useState<MediaStreamTrack | null | undefined>(null);
-  const [localVideoTrack, setlocalVideoTrack] =
-    useState<MediaStreamTrack | null | undefined>(null);
+  const [localAudioTrack, setLocalAudioTrack] = useState<MediaStreamTrack | null | undefined>(null);
+  const [localVideoTrack, setlocalVideoTrack] = useState<MediaStreamTrack | null | undefined>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [join, setJoin] = useState(false);
   const [permissionDenied, setPermissionDenied] = useState(false);
