@@ -9,16 +9,18 @@ export default function Landing() {
   // User can see the Hair-Setting Screen
   const session = useSession();
   const [name, setName] = useState("");
-  const [localAudioTrack, setLocalAudioTrack] = useState<MediaStreamTrack | null | undefined>(null);
-  const [localVideoTrack, setlocalVideoTrack] = useState<MediaStreamTrack | null | undefined>(null);
+  const [localAudioTrack, setLocalAudioTrack] = useState<
+    MediaStreamTrack | null | undefined
+  >(null);
+  const [localVideoTrack, setlocalVideoTrack] = useState<
+    MediaStreamTrack | null | undefined
+  >(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [join, setJoin] = useState(false);
   const [permissionDenied, setPermissionDenied] = useState(false);
   const [isVideoInitialized, setIsVideoInitialized] = useState(true);
   const [isAudioEnabled, setIsAudioEnabled] = useState(true);
   const [isVideoEnabled, setIsVideoEnabled] = useState(true);
-
-
 
   async function getPermissionEnableStream() {
     try {
@@ -43,7 +45,7 @@ export default function Landing() {
       setIsVideoInitialized(true);
       setPermissionDenied(true);
       alert(
-        "We need access to your camera and microphone. Please enable them in your browser settings."
+        "We need access to your camera and microphone. Please enable them in your browser settings.",
       );
       setIsVideoInitialized(false);
     }
@@ -61,7 +63,7 @@ export default function Landing() {
       console.error("Permissions Denied:", err);
       setPermissionDenied(true);
       alert(
-        "We need access to your microphone. Please enable it in your browser settings."
+        "We need access to your microphone. Please enable it in your browser settings.",
       );
     }
   }
@@ -73,7 +75,7 @@ export default function Landing() {
       console.error("Error accessing media devices:", error);
       setIsVideoInitialized(false);
       alert(
-        "We need access to your camera and microphone. Please enable them in your browser settings."
+        "We need access to your camera and microphone. Please enable them in your browser settings.",
       );
     }
   };
@@ -88,7 +90,7 @@ export default function Landing() {
     if (permissionDenied) {
       const retryInterval = setInterval(() => {
         getCam();
-      }, 8000); // Retry every 8 seconds
+      }, 10000); // Retry every 10 seconds
 
       return () => clearInterval(retryInterval); // Clear interval after cleanup
     }
@@ -123,14 +125,14 @@ export default function Landing() {
     }
   };
 
-  if (session.status ==='unauthenticated' ) {
+  if (session.status === "unauthenticated") {
     return <div>You are not Signed In</div>;
   }
 
   if (!join) {
     return (
       <div className="flex h-full justify-center md:items-center">
-        <div className="mx-auto grid h-[86%] w-[90%] rounded-xl p-2 shadow-2xl dark:bg-spotlight dark:ring-2 dark:ring-gray-500 md:h-[60%] lg:w-[60%] md:grid-cols-2">
+        <div className="mx-auto grid h-[86%] w-[90%] rounded-xl p-2 shadow-2xl dark:bg-spotlight dark:ring-2 dark:ring-gray-500 md:h-[60%] md:grid-cols-2 lg:w-[60%]">
           <div className="relative my-auto flex h-full w-full grid-cols-1 items-center justify-center rounded-2xl bg-themeblue dark:border-2 dark:border-gray-600">
             {isVideoInitialized ? (
               <video
@@ -139,12 +141,17 @@ export default function Landing() {
                 className="size-[95%] cursor-pointer rounded-xl bg-themeblue object-cover ring-2 ring-white dark:ring-gray-600"
               ></video>
             ) : (
-              <CameraOff className="size-20 text-white" />
+              <div className="flex flex-col items-center gap-2">
+                <CameraOff className="size-20 text-white" />
+                <span className="text-lg text-white">
+                  Allow the permissions
+                </span>
+              </div>
             )}
             {isVideoInitialized ? (
               <div className="absolute bottom-4 flex justify-center gap-32 md:gap-8">
                 <div
-                  className="flex size-12 cursor-pointer items-center justify-center rounded-full bg-[#EA4335] text-white hover:-translate-y-0.5 hover:shadow-xl"
+                  className={`flex size-12 cursor-pointer items-center justify-center rounded-full ${isAudioEnabled ? "bg-transparent ring-2 ring-white" : "bg-[#EA4335]"} text-white hover:-translate-y-0.5 hover:shadow-xl`}
                   onClick={handleToggleAudio}
                 >
                   {isAudioEnabled ? (
@@ -154,7 +161,7 @@ export default function Landing() {
                   )}
                 </div>
                 <div
-                  className="flex size-12 cursor-pointer items-center justify-center rounded-full bg-[#EA4335] text-white hover:-translate-y-0.5 hover:shadow-xl"
+                  className={`flex size-12 cursor-pointer items-center justify-center rounded-full ${isVideoEnabled ? "bg-transparent ring-2 ring-white" : "bg-[#EA4335]"} text-white hover:-translate-y-0.5 hover:shadow-xl`}
                   onClick={handleToggleVideo}
                 >
                   {isVideoEnabled ? (
@@ -173,9 +180,7 @@ export default function Landing() {
               Ready to join?
             </div>
             <div className="flex flex-col flex-wrap items-center justify-center text-xl font-medium">
-              <span className="text-2xl font-display ">
-                Join meeting as
-              </span>
+              <span className="font-display text-2xl">Join meeting as</span>
               <input
                 type="text"
                 onChange={(e) => setName(e.target.value)}
@@ -201,6 +206,8 @@ export default function Landing() {
         name={name}
         localAudioTrack={localAudioTrack}
         localVideoTrack={localVideoTrack}
+        userId={session.data?.user.id || ""}
+        meetingId={"1"}
       />
     </div>
   );

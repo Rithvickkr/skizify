@@ -115,9 +115,12 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="flex flex-1 flex-col gap-2 rounded-tl-2xl border border-neutral-200 bg-white p-2 dark:border-gray-700 to-gray-900 from-40% from-themeblue dark:bg-gradient-to-r overflow-y-auto">
       <AppbarClient />
-      <ScrollArea className="flex-1">
+      {/* <ScrollArea className="flex-1"> */}
+      {/* <div className="-1"> */}
       {children}
-      </ScrollArea>
+
+      {/* </div> */}
+      {/* </ScrollArea> */}
     </div>
   );
 };

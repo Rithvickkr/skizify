@@ -1,24 +1,20 @@
 import { Socket } from "socket.io";
 import { User } from "./UserManager";
-import prisma from "@repo/db/index"
-
+import prisma from "@repo/db/index";
 export interface Room {
   User1: User;
   User2: User;
 }
-let GLOBAL_ROOM_ID = 1;
-
 export class RoomManager {
   private rooms: Map<String, Room>;
-
   constructor() {
     this.rooms = new Map();
   }
 
-  async createRoom(User1: User, User2: User) {
-    const roomId = this.generateRoomId().toString();
+  async createRoom(User1: User, User2: User , meetingId : string) {
+    const roomId = meetingId;
     // const RoomId = await prisma.meeting
-    this.rooms.set(roomId.toString(), {
+    this.rooms.set(roomId, {
       User1,
       User2,
     });
@@ -30,27 +26,35 @@ export class RoomManager {
     const room = this.rooms.get(roomId);
     const User1 = room?.User1;
     const User2 = room?.User2;
-    const ReceivingUser = (UserSocketId === User1?.socket.id) ? User2 : User1;
+    const ReceivingUser = UserSocketId === User1?.socket.id ? User2 : User1;
     ReceivingUser?.socket.emit("offer", { roomId, sdp });
   }
   onAnswer(roomId: string, sdp: any, UserSocketId: string) {
     const room = this.rooms.get(roomId);
     const User1 = room?.User1;
     const User2 = room?.User2;
-    const ReceivingUser = (UserSocketId === User1?.socket.id) ? User2 : User1;
+    const ReceivingUser = UserSocketId === User1?.socket.id ? User2 : User1;
     ReceivingUser?.socket.emit("answer", { roomId, sdp });
   }
 
-  onAddIceCandidate(roomId: string, candidate: any, type : 'sender' | 'receiver', UserSocketId: string ) {
+  onAddIceCandidate(
+    roomId: string,
+    candidate: any,
+    type: "sender" | "receiver",
+    UserSocketId: string
+  ) {
     const room = this.rooms.get(roomId);
     const User1 = room?.User1;
     const User2 = room?.User1;
-    const ReceivingUser = (UserSocketId === User1?.socket.id) ? User2 : User1;
-    ReceivingUser?.socket.emit("addIceCandidate", { candidate, type});
-
+    const ReceivingUser = UserSocketId === User1?.socket.id ? User2 : User1;
+    ReceivingUser?.socket.emit("addIceCandidate", { candidate, type });
   }
 
-  generateRoomId() {
-    return GLOBAL_ROOM_ID++;
-  }
+  // getSession(session:ClientSessionInterface){
+  //   const room = this.rooms.get(session);
+  // }
+
+  // generateRoomId() {
+  //   return GLOBAL_ROOM_ID++;
+  // }
 }

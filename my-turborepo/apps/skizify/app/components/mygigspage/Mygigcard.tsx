@@ -1,7 +1,6 @@
-"use client";
 import { Avatar } from "@repo/ui/avatar";
 import { GigStatus } from "@prisma/client";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import {
   Tooltip,
   TooltipContent,
@@ -13,9 +12,6 @@ import {
   CalendarClock,
   CalendarDays,
   Clock7,
-  Hourglass,
-  Pencil,
-  Trash,
 } from "lucide-react";
 import { ScrollArea, ScrollBar } from "../../../@/components/ui/scroll-area";
 import {
@@ -27,6 +23,7 @@ import { Button } from "../ui/button";
 import { GigsInterface } from "../../(dashboard)/explore/page";
 import AcceptedBy from "./AcceptedBy";
 import EditDeleteCard from "./EditDeletecard";
+import RedirectToMeetingPage from "./RedirectingMeetingButton";
 
 interface User {
   userImage: string;
@@ -39,7 +36,7 @@ interface MygigCardProps {
 }
 
 export default function MygigCard({ gigs , session }: { gigs: GigsInterface[] , session: any}) {
-  const router = useRouter();
+  // const router = useRouter();
   
   return (
     <div className="group/mygiggs space-y-4 p-3 transition duration-200">
@@ -111,24 +108,7 @@ export default function MygigCard({ gigs , session }: { gigs: GigsInterface[] , 
                   </div>
                 </div>
                 {gig.status === GigStatus.CONFIRMED ? (
-                  <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger>
-                  <Button
-                    className="w-full bg-black text-white hover:bg-black dark:bg-white dark:text-black hover:dark:bg-white"
-                    Icon={ArrowRightIcon}
-                    iconPlacement="right"
-                    variant="gooeyLeft"
-                    onClick={() => router.push(`/Meetings/${gig.confirmUserId}`)}
-                  >
-                    Booked 🎉
-                  </Button>
-                    </TooltipTrigger>
-                    <TooltipContent className="bg-black text-white dark:bg-white dark:text-black">
-                      <p>Check out Calendar</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
+                  <RedirectToMeetingPage confirmId={gig.confirmUserId} />
                 ) : (
                   <AcceptedBy gig={gig} />
                 )}

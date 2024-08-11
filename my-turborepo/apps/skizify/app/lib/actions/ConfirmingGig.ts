@@ -48,7 +48,7 @@ export async function confirmGig({
 
       const meeting = await prisma.meeting.create({
         data: {
-          gigUser: updatedRole.id, // Use updatedRole.id from the previous update
+          gigUserId: updatedRole.id, // Use updatedRole.id from the previous update
           status: MeetingStatus.BOOKED_PENDING,
         },
       });

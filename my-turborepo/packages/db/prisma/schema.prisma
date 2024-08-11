@@ -79,12 +79,12 @@ model GigUser {
 }
 
 model meeting {
-  id      String        @id @default(uuid())
-  gigUser String        @unique
-  status  MeetingStatus @default(UNBOOKED_PENDING) //This is the Status of the Meeting, If it is Pending or Ended
-  GigUser GigUser       @relation(fields: [gigUser], references: [id])
+  id        String        @id @default(uuid())
+  gigUserId String        @unique
+  status    MeetingStatus @default(UNBOOKED_PENDING) //This is the Status of the Meeting, If it is Pending or Ended
+  GigUser   GigUser       @relation(fields: [gigUserId], references: [id])
 
-  @@index([gigUser])
+  @@index([gigUserId])
 }
 
 enum MeetingStatus {
