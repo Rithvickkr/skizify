@@ -33,7 +33,7 @@ export default async function GigStructure({
 //If the session don't exist an Error will come on Screen which is due to getAllgigs which is used in parent of this
   return (
     <div className="">
-      <div className="mx-auto grid w-full max-w-7xl grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 pl-1 md:pl-2 pr-3">
+      <div className=" mx-auto  grid w-full max-w-7xl grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 pl-1 md:pl-2 pr-3">
         {gigs.map(async (gig:GigsInterface) => {
           const user = await prisma.user.findUnique({
             where: {
