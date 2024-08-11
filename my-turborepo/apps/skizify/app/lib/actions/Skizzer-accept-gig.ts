@@ -61,6 +61,7 @@ export async function Skizzer_acceptedGig(gigId: string){
         Skizzer : {
           select :{
             name : true,
+            email : true,
             userImage : true,
             reviewsReceived : true,
             
