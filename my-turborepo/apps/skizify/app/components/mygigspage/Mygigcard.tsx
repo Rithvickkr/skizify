@@ -37,7 +37,7 @@ interface MygigCardProps {
 
 export default function MygigCard({ gigs , session }: { gigs: GigsInterface[] , session: any}) {
   // const router = useRouter();
-  
+  //HELLO PR KAB BHEJEGA KAMINE
   return (
     <div className="group/mygiggs space-y-4 p-3 transition duration-200">
       {Array.isArray(gigs) && gigs.length > 0 ? (
