@@ -7,6 +7,8 @@ import { CalendarDays, CheckCheck, Star } from "lucide-react";
 import { Month, formatTime } from "../../lib/actions/ConvertgigInfo";
 import { Button } from "../ui/button";
 import { confirmGig } from "../../lib/actions/ConfirmingGig";
+import SendingEmails from "../../lib/actions/Sendingemails";
+import { useSession } from "next-auth/react";
 
 // SKizzersInfo  this is an array
 // [
@@ -27,6 +29,7 @@ export default function SkizzerselectCard({
 }: {
   SKizzersInfo: any;
 }) {
+  const  { data: session } = useSession();
   const [selectedCard, setselectedCard] = useState(""); // (This will store the Skizzer Id) and will update it into gig and will confirm and also confirm the Status of the Gig User
   //aslo I will put a limit if the user selected someone , then there that gig will not be displayed on the main screen
   return (
@@ -84,6 +87,7 @@ export default function SkizzerselectCard({
               return x.id === selectedCard;
             })
             console.log(selectedCard)
+            console.log(info)
             //This is info
             // {
             //   id: '406422c6-2e1c-4e86-bd2b-c2b189e3aecf',
@@ -106,14 +110,26 @@ export default function SkizzerselectCard({
                 budget: info.budget,
               });
               if (change) {
+                SendingEmails({
+                  to:info.Skizzer.email || "rithvickkumar27@gmail.com",
+                  to2:session?.user.email || " ",
+                  name:info.Skizzer.name || "Rithvick",
+                  subject: "Gig Confirmation",
+                  body: "Congratulations! Your gig has been confirmed. You can now view the details in your dashboard.",
+                });
+                
                 console.log("Gig confirmed successfully");
                 window.alert("The meeting is now booked.");
+                 //This will send the email to the Skizzer
               } else {
                 throw new Error("Confirming gig server action failed");
               }
             } catch (error) {
+              
               console.error(error);
               window.alert("Failed to confirm. Please choose one and try again.");
+              
+              
             }
           } }
         >

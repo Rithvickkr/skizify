@@ -28,9 +28,9 @@ export default async function Page() {
   const session = await getServerSession(authOptions);
   const filteredGigs =  filtergigs(gigs,session);  
   return (
-    <div className="flex flex-col items-center overflow-hidden rounded-lg w-full h-screen">
+    <div className="flex flex-col items-center  rounded-lg w-full h-screen">
     <div className="relative w-full max-w-lg">
-      <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground " />
+      <Search className=" absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground " />
       <input
         type="search"
         placeholder="Search..."
@@ -38,7 +38,7 @@ export default async function Page() {
         className="w-full rounded-lg bg-background pl-8"
       />
     </div>
-    <div className="mt-4 w-full overflow-hidden">
+    <div className="mt-4 w-full ">
       <GigStructure gigs={filteredGigs} />
     </div>
   </div>
