@@ -22,6 +22,7 @@ io.on("connection", (socket: Socket) => {
     "sessiondetails",
     ({ userId, meetingId }: { userId: string; meetingId: string }) => {
       console.log("we are creating room");
+      console.log("User Joined the RoomId", meetingId);
       userManager.createRoom(userId, meetingId, socket);
       socket.on("disconnect", () => {
         console.log("user disconnected");

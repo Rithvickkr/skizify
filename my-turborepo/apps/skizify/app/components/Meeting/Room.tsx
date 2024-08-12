@@ -1,4 +1,19 @@
 "use client";
+import { Avatar } from "@repo/ui/avatar";
+import { Textarea } from "../../../@/components/ui/textarea";
+import { Button } from "../ui/button";
+import {
+  CameraIcon,
+  MicIcon,
+  PhoneIcon,
+  ScreenShare,
+  Send,
+  SettingsIcon,
+  ShareIcon,
+  Smile,
+  SmilePlus,
+  X,
+} from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 import { Socket, io } from "socket.io-client";
@@ -34,7 +49,7 @@ export default function Room({
   localAudioTrack: MediaStreamTrack | null | undefined;
   localVideoTrack: MediaStreamTrack | null | undefined;
   meetingId: string;
-  userId : string
+  userId: string;
 }) {
   const [socket, setSocket] = useState<Socket | null>(null);
   const [sendingPC, setSendingPC] = useState<RTCPeerConnection | null>(null);
@@ -49,11 +64,14 @@ export default function Room({
     useState<MediaStream | null>(null);
   const localVideoref = useRef<HTMLVideoElement>(null);
   const remoteVideoref = useRef<HTMLVideoElement>(null);
+  const [message, setMessage] = useState("");
+  const [messages, setMessages] = useState<string[]>([]);
 
   useEffect(() => {
     const socket = io(URL);
     // socket.emit("getSession",)
-    socket.emit("sessiondetails", {userId, meetingId});
+    socket.emit("sessiondetails", { userId, meetingId });
+
     socket.on("send-offer", async ({ roomId }: { roomId: string }) => {
       console.log("Send-offer Sir wait Sir");
       //Now we will make Peer Connection
@@ -132,7 +150,6 @@ export default function Room({
 
         console.log("Wait a Minute Sir Sending Answer ----");
 
-
         socket.emit("answer", { roomId, sdp });
       },
     );
@@ -181,6 +198,11 @@ export default function Room({
       },
     );
 
+    socket.on("receive-message", (data: any) => {
+      console.log("Bro I got something from the Backend",data);
+      setMessages((messages) => [...messages, data]);
+    });
+
     setSocket(socket);
 
     return () => {
@@ -204,27 +226,182 @@ export default function Room({
     }
   }, [localVideoref]);
 
+  const messageHandler = (e: any) => {
+    e.preventDefault();
+    console.log(message);
+    socket?.emit("send-message", { message });
+    setMessage("");
+  };
+
+  // return (
+  //   <div>
+  //     Hello You are in the Room
+  //     <div className="text-3xl text-blue-700">{name}</div>
+  //     <div className="flex">
+  //       <video
+  //         autoPlay
+  //         width={300}
+  //         height={300}
+  //         src=""
+  //         ref={localVideoref}
+  //         className="m-1 rounded-xl bg-themeblue object-cover ring-2 ring-white dark:ring-gray-600"
+  //       ></video>
+  //       <video
+  //         autoPlay
+  //         width={300}
+  //         height={300}
+  //         src=""
+  //         ref={remoteVideoref}
+  //         className="m-1 rounded-xl bg-themeblue object-cover ring-2 ring-white dark:ring-gray-600"
+  //       ></video>
+  //     </div>
+  //   </div>
+  // );
   return (
-    <div>
-      Hello You are in the Room
-      <div className="text-3xl text-blue-700">{name}</div>
-      <div className="flex">
-        <video
-          autoPlay
-          width={300}
-          height={300}
-          src=""
-          ref={localVideoref}
-          className="m-1 rounded-xl bg-themeblue object-cover ring-2 ring-white dark:ring-gray-600"
-        ></video>
-        <video
-          autoPlay
-          width={300}
-          height={300}
-          src=""
-          ref={remoteVideoref}
-          className="m-1 rounded-xl bg-themeblue object-cover ring-2 ring-white dark:ring-gray-600"
-        ></video>
+    <div className="flex h-full w-full">
+      <div className="relative flex flex-1 items-center justify-center p-3">
+        <div className="grid w-full max-w-4xl grid-cols-2 gap-6">
+          <div className="overflow-hidden rounded-xl border border-white ring-2 ring-black dark:border-gray-700">
+            <video
+              autoPlay
+              width={300}
+              height={300}
+              src=""
+              ref={localVideoref}
+              className="h-full w-full rounded-lg bg-black object-cover"
+              style={{ aspectRatio: "450/600", objectFit: "cover" }}
+            />
+          </div>
+          <div className="overflow-hidden rounded-xl border border-white ring-2 ring-black dark:border-gray-700">
+            <video
+              autoPlay
+              width={300}
+              height={300}
+              src=""
+              ref={remoteVideoref}
+              className="h-full w-full rounded-lg bg-black object-cover"
+              style={{ aspectRatio: "450/600", objectFit: "cover" }}
+            />
+          </div>
+        </div>
+        <div className="absolute bottom-2 flex w-full items-center justify-center gap-2">
+          <Button
+            variant="ghost"
+            className="hover:bg-neutral-700 dark:hover:bg-gray-500"
+            size="icon"
+          >
+            <MicIcon className="size-5" />
+            <span className="sr-only">Mute</span>
+          </Button>
+          <Button
+            variant="ghost"
+            className="hover:bg-neutral-700 dark:hover:bg-gray-500"
+            size="icon"
+          >
+            <CameraIcon className="size-5" />
+            <span className="sr-only">Camera</span>
+          </Button>
+          <Button
+            variant="destructive"
+            className="bg-red-600 text-white hover:bg-neutral-700 dark:hover:bg-gray-500"
+            size="icon"
+          >
+            <PhoneIcon className="size-5" />
+            <span className="sr-only">End Call</span>
+          </Button>
+          <Button
+            variant="ghost"
+            className="hover:bg-neutral-700 dark:hover:bg-gray-500"
+            size="icon"
+          >
+            <ScreenShare className="size-5" />
+            <span className="sr-only">Share</span>
+          </Button>
+          <Button
+            variant="ghost"
+            className="hover:bg-neutral-700 dark:hover:bg-gray-500"
+            size="icon"
+          >
+            <SettingsIcon className="size-5" />
+            <span className="sr-only">Settings</span>
+          </Button>
+        </div>
+      </div>
+      <div className="flex w-[320px] flex-col rounded-md border bg-black ring-2 ring-black dark:border-1 dark:border-gray-800 dark:bg-themeblue dark:ring-0">
+        <div className="flex items-center justify-between border-b border-[#334155] px-4 py-3 dark:border-gray-700">
+          <div className="text-lg font-medium text-[#e2e8f0]">Chat</div>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="rounded-md text-[#94a3b8] hover:bg-gray-500"
+          >
+            <X className="size-5" />
+          </Button>
+        </div>
+        <div className="flex-1 space-y-4 overflow-auto p-4">
+          <div className="flex items-start gap-3">
+            <Avatar
+              name={"SM"}
+              classname="size-8 shadow-sm mr-3 bg-gray-200 text-sm  text-black border border-black"
+            />
+            <div className="rounded-lg bg-[#334155] p-3 text-sm text-[#e2e8f0]">
+              <p>Hey, how's the video quality?</p>
+              <div className="mt-1 text-xs text-[#94a3b8]">2:34 PM</div>
+            </div>
+          </div>
+          <div className="flex items-start justify-end gap-3">
+            <div className="rounded-lg bg-neutral-200 p-3 text-sm text-black dark:bg-[#25306c] dark:text-[#e2e8f0]">
+              <p>It's looking great! Can you hear me okay?</p>
+              <div className="mt-1 text-xs text-[#58595a] dark:text-gray-400">
+                2:35 PM
+              </div>
+            </div>
+            <Avatar
+              name={"UP"}
+              classname="size-8 shadow-sm mr-3 bg-gray-200 text-sm  text-black border border-black"
+            />
+          </div>
+          <div className="flex items-start gap-3">
+            <Avatar
+              name={"SM"}
+              classname="size-8 shadow-sm mr-3 bg-gray-200 text-sm  text-black border border-black"
+            />
+            <div className="rounded-lg bg-[#334155] p-3 text-sm text-[#e2e8f0]">
+              <p>Yep, the audio is perfect. Let's get started!</p>
+              <div className="mt-1 text-xs text-[#94a3b8]">2:36 PM</div>
+            </div>
+          </div>
+          <div className="flex flex-col">
+            {messages.map((msg, index) => (
+              <div key={index} className="message">
+                {msg}
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="flex items-center gap-2 border-t p-4 dark:border-gray-700">
+          <Textarea
+            placeholder="Type your message..."
+            className="flex-1 resize-none text-white focus:border-none focus:outline-none focus:ring-2 focus:ring-neutral-500"
+            onChange={(e) => setMessage(e.target.value)}
+          />
+          <Button
+            variant="ghost"
+            size="icon"
+            className="hover:bg-neutral-700 dark:hover:bg-gray-500"
+          >
+            <Send className="size-5 text-white" onClick={messageHandler} />
+            <span className="sr-only">Send</span>
+          </Button>
+          {/* <Button variant="ghost" size="icon">
+            <SmilePlus className="size-5 hover:bg-gray-500" />
+            <span className="sr-only">Emoji</span>
+          </Button> */}
+          {/* <Button variant="ghost" size="icon">
+            <PaperclipIcon className="w-5 h-5" />
+            <span className="sr-only">Attach</span>
+          </Button> */}
+        </div>
       </div>
     </div>
   );

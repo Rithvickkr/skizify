@@ -26,9 +26,9 @@ export class UserManager {
     } else {
       this.meeting.set(meetingId, [user]);
     }
-    console.log(this.meeting)
+    console.log(this.meeting);
     // this.queue.push(user.socket.id);
-    this.initHandlers(user.socket);
+    this.initHandlers(user.socket, user.meetingId);
     this.clearQueue(user.meetingId);
   }
 
@@ -51,6 +51,9 @@ export class UserManager {
       const user2 = room.shift(); // Remove the second user
 
       if (user1 && user2 && user1.meetingId === user2.meetingId) {
+        user1.socket.join(meetingId); //User Joined the Room
+        user2.socket.join(meetingId); //User Joined the Room
+        console.log("Both user Joined the meeting")
         this.roomManager.createRoom(user1, user2, meetingId);
       }
     }
@@ -74,7 +77,7 @@ export class UserManager {
     }
   }
 
-  initHandlers(UserSocket: Socket) {
+  initHandlers(UserSocket: Socket, meetingId: string) {
     if (!UserSocket) {
       console.error("Socket instance is not available.");
       return;
@@ -104,6 +107,11 @@ export class UserManager {
         );
       }
     );
+    UserSocket.on("send-message", ({ message }: { message: string }) => {
+      console.log("Yeah GOT the message, Sending on Particular Room Id");
+      console.log("Broadcasting to room:", meetingId);
+      UserSocket.to(meetingId).emit("receive-message", message);
+    });
     // UserSocket.on("onsession", ( session : ClientSessionInterface ) => {
     //   this.roomManager.getSession(session);
     // } )
