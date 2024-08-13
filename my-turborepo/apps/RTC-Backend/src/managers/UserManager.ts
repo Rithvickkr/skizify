@@ -1,10 +1,16 @@
-import { Socket } from "socket.io";
+import { Server, Socket } from "socket.io";
 import { RoomManager } from "./RoomManager";
 import prisma from "@repo/db/index";
 export interface User {
   socket: Socket;
   userId: string;
   meetingId: string;
+}
+export interface Chat {
+  message : string,
+  name : string,
+  userId : string ,
+  userImage? :string,
 }
 
 export class UserManager {
@@ -18,7 +24,7 @@ export class UserManager {
     this.roomManager = new RoomManager();
   }
 
-  createRoom(userId: string, meetingId: string, socket: Socket) {
+  createRoom(userId: string, meetingId: string, socket: Socket, io: Server) {
     console.log("Room is creating");
     const user: User = { userId, meetingId, socket };
     if (this.meeting.get(meetingId)) {
@@ -30,6 +36,7 @@ export class UserManager {
     // this.queue.push(user.socket.id);
     this.initHandlers(user.socket, user.meetingId);
     this.clearQueue(user.meetingId);
+    this.messageHandler(io, user.meetingId, user.socket);
   }
 
   clearQueue(meetingId: string) {
@@ -53,7 +60,7 @@ export class UserManager {
       if (user1 && user2 && user1.meetingId === user2.meetingId) {
         user1.socket.join(meetingId); //User Joined the Room
         user2.socket.join(meetingId); //User Joined the Room
-        console.log("Both user Joined the meeting")
+        console.log("Both user Joined the meeting");
         this.roomManager.createRoom(user1, user2, meetingId);
       }
     }
@@ -108,16 +115,30 @@ export class UserManager {
       }
     );
 
-    
-
-
-    UserSocket.on("send-message", ({ message }: { message: string }) => {
-      console.log("Yeah GOT the message, Sending on Particular Room Id");
-      console.log("Broadcasting to room:", meetingId);
-      UserSocket.to(meetingId).emit("receive-message", message);
-    });
     // UserSocket.on("onsession", ( session : ClientSessionInterface ) => {
     //   this.roomManager.getSession(session);
     // } )
+  }
+
+  messageHandler(UserIO: Server, meetingId: string, UserSocket: Socket) {
+    UserSocket.on(
+      "send-message",
+      ({
+        message,
+        name,
+        userId,
+        userImage,
+      }:Chat) => {
+        console.log("Yeah GOT the message, Sending on Particular Room Id");
+        console.log("Broadcasting to room:", meetingId);
+        console.log("Message is this ====>", message);
+        UserIO.to(meetingId).emit("receive-message", {
+          message,
+          name,
+          userId,
+          userImage,
+        });
+      }
+    );
   }
 }

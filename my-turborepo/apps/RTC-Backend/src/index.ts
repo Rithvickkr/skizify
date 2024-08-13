@@ -23,7 +23,7 @@ io.on("connection", (socket: Socket) => {
     ({ userId, meetingId }: { userId: string; meetingId: string }) => {
       console.log("we are creating room");
       console.log("User Joined the RoomId", meetingId);
-      userManager.createRoom(userId, meetingId, socket);
+      userManager.createRoom(userId, meetingId, socket ,io);
       socket.on("disconnect", () => {
         console.log("user disconnected");
         userManager.removeUser(meetingId, userId);

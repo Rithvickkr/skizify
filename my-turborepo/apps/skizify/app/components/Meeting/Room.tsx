@@ -9,33 +9,19 @@ import {
   ScreenShare,
   Send,
   SettingsIcon,
-  ShareIcon,
-  Smile,
-  SmilePlus,
   X,
 } from "lucide-react";
-import { useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 import { Socket, io } from "socket.io-client";
+import { useSession } from "next-auth/react";
 
 const URL = "http://localhost:3003";
 
-interface User {
+export interface Chat {
+  message: string;
   name: string;
-  email: string;
-  id: string;
-  role: string;
-  userImage: string;
-}
-
-interface Data {
-  user: User;
-  expires: string;
-}
-
-export interface ClientSessionInterface {
-  data: Data;
-  status: string;
+  userId: string;
+  userImage?: string;
 }
 
 export default function Room({
@@ -65,8 +51,8 @@ export default function Room({
   const localVideoref = useRef<HTMLVideoElement>(null);
   const remoteVideoref = useRef<HTMLVideoElement>(null);
   const [message, setMessage] = useState("");
-  const [messages, setMessages] = useState<string[]>([]);
-
+  const [messages, setMessages] = useState<Chat[]>([]);
+  const session = useSession();
   useEffect(() => {
     const socket = io(URL);
     // socket.emit("getSession",)
@@ -198,9 +184,10 @@ export default function Room({
       },
     );
 
-    socket.on("receive-message", (data: any) => {
-      console.log("Bro I got something from the Backend",data);
-      setMessages((messages) => [...messages, data]);
+    socket.on("receive-message", (data: Chat) => {
+      console.log("Bro I got something from the Backend", data);
+      setMessages((messages: Chat[]) => [...messages, data]);
+      console.log("Data is not become", messages);
     });
 
     setSocket(socket);
@@ -226,12 +213,24 @@ export default function Room({
     }
   }, [localVideoref]);
 
-  const messageHandler = (e: any) => {
+  const messageHandler = (
+    e: any,
+    name: string,
+    userId: string,
+    userImage?: string,
+  ) => {
     e.preventDefault();
     console.log(message);
-    socket?.emit("send-message", { message });
-    setMessage("");
+    //Here we have to implement Zod
+    if (message === "") {
+      return;
+    }
+    socket?.emit("send-message", { message, name, userImage, userId });
   };
+
+  // useEffect(() => {
+  //   console.log("Messages updated:", messages);
+  // }, [messages]);
 
   // return (
   //   <div>
@@ -327,7 +326,7 @@ export default function Room({
           </Button>
         </div>
       </div>
-      <div className="flex w-[320px] flex-col rounded-md border bg-black ring-2 ring-black dark:border-1 dark:border-gray-800 dark:bg-themeblue dark:ring-0">
+      <div className="flex flex-col w-[320px] rounded-md border bg-black ring-2 ring-black dark:border-1 dark:border-gray-800 dark:bg-themeblue dark:ring-0">
         <div className="flex items-center justify-between border-b border-[#334155] px-4 py-3 dark:border-gray-700">
           <div className="text-lg font-medium text-[#e2e8f0]">Chat</div>
           <Button
@@ -338,43 +337,11 @@ export default function Room({
             <X className="size-5" />
           </Button>
         </div>
-        <div className="flex-1 space-y-4 overflow-auto p-4">
-          <div className="flex items-start gap-3">
-            <Avatar
-              name={"SM"}
-              classname="size-8 shadow-sm mr-3 bg-gray-200 text-sm  text-black border border-black"
-            />
-            <div className="rounded-lg bg-[#334155] p-3 text-sm text-[#e2e8f0]">
-              <p>Hey, how's the video quality?</p>
-              <div className="mt-1 text-xs text-[#94a3b8]">2:34 PM</div>
-            </div>
-          </div>
-          <div className="flex items-start justify-end gap-3">
-            <div className="rounded-lg bg-neutral-200 p-3 text-sm text-black dark:bg-[#25306c] dark:text-[#e2e8f0]">
-              <p>It's looking great! Can you hear me okay?</p>
-              <div className="mt-1 text-xs text-[#58595a] dark:text-gray-400">
-                2:35 PM
-              </div>
-            </div>
-            <Avatar
-              name={"UP"}
-              classname="size-8 shadow-sm mr-3 bg-gray-200 text-sm  text-black border border-black"
-            />
-          </div>
-          <div className="flex items-start gap-3">
-            <Avatar
-              name={"SM"}
-              classname="size-8 shadow-sm mr-3 bg-gray-200 text-sm  text-black border border-black"
-            />
-            <div className="rounded-lg bg-[#334155] p-3 text-sm text-[#e2e8f0]">
-              <p>Yep, the audio is perfect. Let's get started!</p>
-              <div className="mt-1 text-xs text-[#94a3b8]">2:36 PM</div>
-            </div>
-          </div>
-          <div className="flex flex-col">
-            {messages.map((msg, index) => (
-              <div key={index} className="message">
-                {msg}
+        <div className="flex-1 overflow-auto p-4">{/*Change added here*/}
+          <div className="space-y-4">
+            {messages.map((data: Chat, index: any) => (
+              <div key={index}>
+                <ChatStructure data={data} />
               </div>
             ))}
           </div>
@@ -390,19 +357,57 @@ export default function Room({
             size="icon"
             className="hover:bg-neutral-700 dark:hover:bg-gray-500"
           >
-            <Send className="size-5 text-white" onClick={messageHandler} />
+            <Send
+              className="size-5 text-white"
+              onClick={(e) =>
+                messageHandler(
+                  e,
+                  session.data?.user.name || "",
+                  session.data?.user.id || "",
+                  session.data?.user.userImage,
+                )
+              }
+            />
             <span className="sr-only">Send</span>
           </Button>
-          {/* <Button variant="ghost" size="icon">
-            <SmilePlus className="size-5 hover:bg-gray-500" />
-            <span className="sr-only">Emoji</span>
-          </Button> */}
-          {/* <Button variant="ghost" size="icon">
-            <PaperclipIcon className="w-5 h-5" />
-            <span className="sr-only">Attach</span>
-          </Button> */}
         </div>
       </div>
     </div>
   );
+  
 }
+
+const ChatStructure: React.FC<{ data: Chat }> = ({ data }) => {
+  const session = useSession();
+  return (
+    <div className="">
+      {data.userId === session.data?.user.id ? (
+        <div className="flex items-start justify-end gap-3">
+          <div className="rounded-md bg-neutral-200 p-3 text-sm text-black dark:bg-[#25306c] dark:text-[#e2e8f0] ">
+            <p className="break-words break-all">{data.message}</p>
+            <div className="mt-1 text-xs text-[#58595a] dark:text-gray-400">
+              2:35 PM
+            </div>
+          </div>
+          <Avatar
+            name={data.name}
+            classname="size-8 shadow-sm mr-3 bg-gray-200 text-sm  text-black border border-black"
+            photo={data.userImage}
+          />
+        </div>
+      ) : (
+        <div className="flex items-start gap-3">
+          <Avatar
+            name={data.name}
+            classname="size-8 shadow-sm bg-gray-200 text-sm  text-black border border-black"
+            photo={data.userImage}
+          />
+          <div className="rounded-lg bg-[#334155] p-3 text-sm text-[#e2e8f0]">
+            <p className="break-words break-all">{data.message}</p>
+            <div className="mt-1 text-xs text-[#94a3b8]">2:36 PM</div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
