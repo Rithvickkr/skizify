@@ -4,16 +4,23 @@ import { Textarea } from "../../../@/components/ui/textarea";
 import { Button } from "../ui/button";
 import {
   CameraIcon,
+  ChevronLeft,
+  ChevronRight,
+  MessageSquare,
+  MessageSquareOff,
   MicIcon,
+  PanelRightOpen,
   PhoneIcon,
   ScreenShare,
   Send,
   SettingsIcon,
+  Video,
   X,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Socket, io } from "socket.io-client";
 import { useSession } from "next-auth/react";
+import { ScrollArea } from "@radix-ui/react-scroll-area";
 
 const URL = "http://localhost:3003";
 
@@ -50,6 +57,8 @@ export default function Room({
     useState<MediaStream | null>(null);
   const localVideoref = useRef<HTMLVideoElement>(null);
   const remoteVideoref = useRef<HTMLVideoElement>(null);
+  const messagesEndRef = useRef<HTMLDivElement | null>(null); // for Automatic sroll at the bottom od the screen
+  const [isChatBarVisible, setIsChatBarVisible] = useState(false);
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState<Chat[]>([]);
   const session = useSession();
@@ -213,6 +222,10 @@ export default function Room({
     }
   }, [localVideoref]);
 
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
   const messageHandler = (
     e: any,
     name: string,
@@ -258,92 +271,95 @@ export default function Room({
   // );
   return (
     <div className="flex h-full w-full">
-      <div className="relative flex flex-1 items-center justify-center p-3">
-        <div className="grid w-full max-w-4xl grid-cols-2 gap-6">
-          <div className="overflow-hidden rounded-xl border border-white ring-2 ring-black dark:border-gray-700">
+      <div className="relative flex h-full flex-1 flex-col items-center justify-between p-3">
+        <div className="grid w-full h-full grid-cols-1 gap-6 md:grid-cols-2">
+          <div className="relative h-full w-full overflow-hidden rounded-xl border border-white ring-2 ring-black dark:border-gray-700 dark:ring-white">
             <video
               autoPlay
-              width={300}
-              height={300}
-              src=""
               ref={localVideoref}
-              className="h-full w-full rounded-lg bg-black object-cover"
-              style={{ aspectRatio: "450/600", objectFit: "cover" }}
+              className="absolute inset-0 h-full w-full object-cover"
             />
           </div>
-          <div className="overflow-hidden rounded-xl border border-white ring-2 ring-black dark:border-gray-700">
+          <div className="relative h-full w-full overflow-hidden rounded-xl border border-white ring-2 ring-black dark:border-gray-700 dark:ring-white">
             <video
               autoPlay
-              width={300}
-              height={300}
-              src=""
               ref={remoteVideoref}
-              className="h-full w-full rounded-lg bg-black object-cover"
-              style={{ aspectRatio: "450/600", objectFit: "cover" }}
+              className="absolute inset-0 h-full w-full object-cover"
             />
           </div>
         </div>
-        <div className="absolute bottom-2 flex w-full items-center justify-center gap-2">
+        <div className="m-1 space-x-1 md:space-x-2 xl:space-x-3 flex w-full items-center justify-center gap-2 rounded-lg p-2">
           <Button
             variant="ghost"
-            className="hover:bg-neutral-700 dark:hover:bg-gray-500"
+            className="bg-gray-800 hover:bg-neutral-200 dark:hover:bg-gray-500 xl:size-11 lg:size-9 md:size-8 size-7"
             size="icon"
           >
-            <MicIcon className="size-5" />
+            <MicIcon className="lg:size-5 md:size-4 size-3" />
             <span className="sr-only">Mute</span>
           </Button>
           <Button
             variant="ghost"
-            className="hover:bg-neutral-700 dark:hover:bg-gray-500"
+            className="bg-gray-800 hover:bg-neutral-200 dark:hover:bg-gray-500 xl:size-11 lg:size-9 md:size-8 size-7"
             size="icon"
           >
-            <CameraIcon className="size-5" />
-            <span className="sr-only">Camera</span>
+            <Video className="lg:size-5 md:size-4 size-3" />
+            <span className="sr-only">Video</span>
           </Button>
           <Button
             variant="destructive"
-            className="bg-red-600 text-white hover:bg-neutral-700 dark:hover:bg-gray-500"
+            className="bg-red-600 text-white hover:bg-neutral-200 dark:hover:bg-gray-500 xl:size-11 lg:size-9 md:size-8 size-7"
             size="icon"
           >
-            <PhoneIcon className="size-5" />
+            <PhoneIcon className="lg:size-5 md:size-4 size-3" />
             <span className="sr-only">End Call</span>
           </Button>
           <Button
             variant="ghost"
-            className="hover:bg-neutral-700 dark:hover:bg-gray-500"
+            className="bg-gray-800 hover:bg-neutral-200 dark:hover:bg-gray-500 xl:size-11 lg:size-9 md:size-8 size-7"
             size="icon"
           >
-            <ScreenShare className="size-5" />
+            <ScreenShare className="lg:size-5 md:size-4 size-3" />
             <span className="sr-only">Share</span>
           </Button>
           <Button
             variant="ghost"
-            className="hover:bg-neutral-700 dark:hover:bg-gray-500"
+            className="bg-gray-800 hover:bg-neutral-200 dark:hover:bg-gray-500 xl:size-11 lg:size-9 md:size-8 size-7"
             size="icon"
+            onClick={() => setIsChatBarVisible(!isChatBarVisible)}
           >
-            <SettingsIcon className="size-5" />
-            <span className="sr-only">Settings</span>
+            {isChatBarVisible ? (
+              <MessageSquareOff className="lg:size-5 md:size-4 size-3" />
+            ) : (
+              <MessageSquare className="lg:size-5 md:size-4 size-3" />
+            )}
+            <span className="sr-only">Chat</span>
           </Button>
         </div>
       </div>
-      <div className="flex flex-col w-[320px] rounded-md border bg-black ring-2 ring-black dark:border-1 dark:border-gray-800 dark:bg-themeblue dark:ring-0">
+      <div
+        className={`${
+          isChatBarVisible ? "block" : "hidden"
+        } flex h-full w-5/12 lg:w-3/12 flex-col rounded-md border bg-black ring-2 ring-black dark:border-1 dark:border-gray-800 dark:bg-themeblue dark:ring-0`}
+      >
         <div className="flex items-center justify-between border-b border-[#334155] px-4 py-3 dark:border-gray-700">
           <div className="text-lg font-medium text-[#e2e8f0]">Chat</div>
           <Button
             variant="ghost"
             size="icon"
             className="rounded-md text-[#94a3b8] hover:bg-gray-500"
+            onClick={() => setIsChatBarVisible(false)}
           >
             <X className="size-5" />
           </Button>
         </div>
-        <div className="flex-1 overflow-auto p-4">{/*Change added here*/}
+        <div className="no-scrollbar h-64 flex-1 overflow-y-auto p-2 pt-4">
           <div className="space-y-4">
             {messages.map((data: Chat, index: any) => (
               <div key={index}>
                 <ChatStructure data={data} />
               </div>
             ))}
+            <div ref={messagesEndRef} />
           </div>
         </div>
         <div className="flex items-center gap-2 border-t p-4 dark:border-gray-700">
@@ -383,7 +399,7 @@ const ChatStructure: React.FC<{ data: Chat }> = ({ data }) => {
     <div className="">
       {data.userId === session.data?.user.id ? (
         <div className="flex items-start justify-end gap-3">
-          <div className="rounded-md bg-neutral-200 p-3 text-sm text-black dark:bg-[#25306c] dark:text-[#e2e8f0] ">
+          <div className="rounded-md bg-neutral-200 p-2 text-sm text-black dark:bg-[#25306c] dark:text-[#e2e8f0]">
             <p className="break-words break-all">{data.message}</p>
             <div className="mt-1 text-xs text-[#58595a] dark:text-gray-400">
               2:35 PM
@@ -391,7 +407,7 @@ const ChatStructure: React.FC<{ data: Chat }> = ({ data }) => {
           </div>
           <Avatar
             name={data.name}
-            classname="size-8 shadow-sm mr-3 bg-gray-200 text-sm  text-black border border-black"
+            classname="size-8 shadow-sm mr-1 md:mr-2 bg-gray-200 text-sm  text-black border border-black"
             photo={data.userImage}
           />
         </div>

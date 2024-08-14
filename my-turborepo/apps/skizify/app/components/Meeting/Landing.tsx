@@ -201,7 +201,6 @@ export default function Landing() {
   }
 
   return (
-    <div className="">
       <Room
         name={name}
         localAudioTrack={localAudioTrack}
@@ -209,6 +208,5 @@ export default function Landing() {
         userId={session.data?.user.id || ""}
         meetingId={"1"}
       />
-    </div>
   );
 }
