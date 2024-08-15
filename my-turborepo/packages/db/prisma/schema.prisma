@@ -21,8 +21,8 @@ model User {
   gigSkizzerTable GigUser[] @relation(name: "UserAccptedGig")
   authType        AuthType?
   languages       String[]
-  reviewsGiven    Reviews[] @relation(name: "GiventoUser")
-  reviewsReceived Reviews[] @relation(name: "GivenbyUser")
+  reviewsGiven    Reviews[] @relation(name: "GivenbyUser")
+  reviewsReceived Reviews[] @relation(name: "GiventoUser")
   role            UserRole  @default(USER)
   confirmedGigs   Gigs[]    @relation(name: "ConfirmedUser")
   bio             String?

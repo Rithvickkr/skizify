@@ -22,7 +22,7 @@ export default function SwitchTheme() {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild className="">
+      <DropdownMenuTrigger asChild className="p-1">
         <span className="p-1">Theme</span>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-36 border bg-white dark:border-gray-700 dark:bg-gray-900">
