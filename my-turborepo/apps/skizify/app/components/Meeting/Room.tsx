@@ -44,11 +44,16 @@ export default function Room({
   meetingId: string;
   userId: string;
 }) {
+  const session = useSession();
   const [socket, setSocket] = useState<Socket | null>(null);
   const [sendingPC, setSendingPC] = useState<RTCPeerConnection | null>(null);
   const [receivingPC, setReceivingPC] = useState<RTCPeerConnection | null>(
     null,
   );
+  const [permissionToChat, setPermissionToChat] = useState<boolean>(false);
+  const [message, setMessage] = useState("");
+  const [messages, setMessages] = useState<Chat[]>([]);
+  const [isChatBarVisible, setIsChatBarVisible] = useState(false);
   const [remoteAudioTrack, setRemoteAudioTrack] =
     useState<MediaStreamTrack | null>();
   const [remoteVideoTrack, setRemoteVideoTrack] =
@@ -58,10 +63,6 @@ export default function Room({
   const localVideoref = useRef<HTMLVideoElement>(null);
   const remoteVideoref = useRef<HTMLVideoElement>(null);
   const messagesEndRef = useRef<HTMLDivElement | null>(null); // for Automatic sroll at the bottom od the screen
-  const [isChatBarVisible, setIsChatBarVisible] = useState(false);
-  const [message, setMessage] = useState("");
-  const [messages, setMessages] = useState<Chat[]>([]);
-  const session = useSession();
   useEffect(() => {
     const socket = io(URL);
     // socket.emit("getSession",)
@@ -160,6 +161,8 @@ export default function Room({
           return pc;
         });
         console.log("Cycle Completes");
+        //AFTER THE CYCLE COMPLETES THEN ALLOWING USER PERMISSION TO CHAT
+        setPermissionToChat(true);
       },
     );
 
@@ -272,7 +275,7 @@ export default function Room({
   return (
     <div className="flex h-full w-full">
       <div className="relative flex h-full flex-1 flex-col items-center justify-between p-3">
-        <div className="grid w-full h-full grid-cols-1 gap-6 md:grid-cols-2">
+        <div className="grid h-full w-full grid-cols-1 gap-3 md:gap-4 lg:grid-cols-2 lg:gap-6">
           <div className="relative h-full w-full overflow-hidden rounded-xl border border-white ring-2 ring-black dark:border-gray-700 dark:ring-white">
             <video
               autoPlay
@@ -288,49 +291,49 @@ export default function Room({
             />
           </div>
         </div>
-        <div className="m-1 space-x-1 md:space-x-2 xl:space-x-3 flex w-full items-center justify-center gap-2 rounded-lg p-2">
+        <div className="m-1 flex w-full items-center justify-center gap-2 space-x-1 rounded-lg p-2 md:space-x-2 xl:space-x-3">
           <Button
             variant="ghost"
-            className="bg-gray-800 hover:bg-neutral-200 dark:hover:bg-gray-500 xl:size-11 lg:size-9 md:size-8 size-7"
+            className="size-7 bg-neutral-200 hover:bg-neutral-200 dark:bg-gray-800 dark:hover:bg-gray-500 md:size-8 lg:size-9 xl:size-11"
             size="icon"
           >
-            <MicIcon className="lg:size-5 md:size-4 size-3" />
+            <MicIcon className="size-3 md:size-4 lg:size-5" />
             <span className="sr-only">Mute</span>
           </Button>
           <Button
             variant="ghost"
-            className="bg-gray-800 hover:bg-neutral-200 dark:hover:bg-gray-500 xl:size-11 lg:size-9 md:size-8 size-7"
+            className="size-7 bg-neutral-200 hover:bg-neutral-200 dark:bg-gray-800 dark:hover:bg-gray-500 md:size-8 lg:size-9 xl:size-11"
             size="icon"
           >
-            <Video className="lg:size-5 md:size-4 size-3" />
+            <Video className="size-3 md:size-4 lg:size-5" />
             <span className="sr-only">Video</span>
           </Button>
           <Button
             variant="destructive"
-            className="bg-red-600 text-white hover:bg-neutral-200 dark:hover:bg-gray-500 xl:size-11 lg:size-9 md:size-8 size-7"
+            className="size-7 bg-red-600 text-white hover:bg-neutral-200 dark:hover:bg-gray-500 md:size-8 lg:size-9 xl:size-11"
             size="icon"
           >
-            <PhoneIcon className="lg:size-5 md:size-4 size-3" />
+            <PhoneIcon className="size-3 md:size-4 lg:size-5" />
             <span className="sr-only">End Call</span>
           </Button>
           <Button
             variant="ghost"
-            className="bg-gray-800 hover:bg-neutral-200 dark:hover:bg-gray-500 xl:size-11 lg:size-9 md:size-8 size-7"
+            className="size-7 bg-neutral-200 hover:bg-neutral-200 dark:bg-gray-800 dark:hover:bg-gray-500 md:size-8 lg:size-9 xl:size-11"
             size="icon"
           >
-            <ScreenShare className="lg:size-5 md:size-4 size-3" />
+            <ScreenShare className="size-3 md:size-4 lg:size-5" />
             <span className="sr-only">Share</span>
           </Button>
           <Button
             variant="ghost"
-            className="bg-gray-800 hover:bg-neutral-200 dark:hover:bg-gray-500 xl:size-11 lg:size-9 md:size-8 size-7"
+            className="size-7 bg-neutral-200 hover:bg-neutral-200 dark:bg-gray-800 dark:hover:bg-gray-500 md:size-8 lg:size-9 xl:size-11"
             size="icon"
             onClick={() => setIsChatBarVisible(!isChatBarVisible)}
           >
             {isChatBarVisible ? (
-              <MessageSquareOff className="lg:size-5 md:size-4 size-3" />
+              <MessageSquareOff className="size-3 md:size-4 lg:size-5" />
             ) : (
-              <MessageSquare className="lg:size-5 md:size-4 size-3" />
+              <MessageSquare className="size-3 md:size-4 lg:size-5" />
             )}
             <span className="sr-only">Chat</span>
           </Button>
@@ -339,7 +342,7 @@ export default function Room({
       <div
         className={`${
           isChatBarVisible ? "block" : "hidden"
-        } flex h-full w-5/12 lg:w-3/12 flex-col rounded-md border bg-black ring-2 ring-black dark:border-1 dark:border-gray-800 dark:bg-themeblue dark:ring-0`}
+        } flex h-full w-5/12 flex-col rounded-md border bg-black ring-2 ring-black dark:border-1 dark:border-gray-800 dark:bg-themeblue dark:ring-0 lg:w-3/12`}
       >
         <div className="flex items-center justify-between border-b border-[#334155] px-4 py-3 dark:border-gray-700">
           <div className="text-lg font-medium text-[#e2e8f0]">Chat</div>
@@ -364,9 +367,15 @@ export default function Room({
         </div>
         <div className="flex items-center gap-2 border-t p-4 dark:border-gray-700">
           <Textarea
-            placeholder="Type your message..."
-            className="flex-1 resize-none text-white focus:border-none focus:outline-none focus:ring-2 focus:ring-neutral-500"
-            onChange={(e) => setMessage(e.target.value)}
+            placeholder={`${!permissionToChat ? "Chat is diabled, Let the person Join" : "Type your message..."}`}
+            className={`${!permissionToChat ? "cursor-not-allowed opacity-60" : ""} flex-1 resize-none text-white focus:border-none focus:outline-none focus:ring-2 focus:ring-neutral-500`}
+            onChange={(e) => {
+              if (permissionToChat) {
+                setMessage(e.target.value);
+              }
+            }}
+            value={message}
+            readOnly={!permissionToChat}
           />
           <Button
             variant="ghost"
@@ -390,7 +399,6 @@ export default function Room({
       </div>
     </div>
   );
-  
 }
 
 const ChatStructure: React.FC<{ data: Chat }> = ({ data }) => {

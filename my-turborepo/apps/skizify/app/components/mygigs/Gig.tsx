@@ -30,17 +30,23 @@ export default async function GigStructure({
   gigs: GigsInterface[];
 }) {
   const session = await getServerSession(authOptions);
-//If the session don't exist an Error will come on Screen which is due to getAllgigs which is used in parent of this
+  //If the session don't exist an Error will come on Screen which is due to getAllgigs which is used in parent of this
   return (
     <div className="">
-      <div className=" mx-auto  grid w-full max-w-7xl grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 pl-1 md:pl-2 pr-3">
-        {gigs.map(async (gig:GigsInterface) => {
+      <div className="mx-auto grid w-full grid-cols-1 gap-2 pl-1 pr-3 md:grid-cols-2 md:pl-2 lg:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5 4xl:grid-cols-6">
+        {gigs.map(async (gig: GigsInterface) => {
           const user = await prisma.user.findUnique({
             where: {
               id: gig.authorId,
             },
           });
-          return <BentoGridItem gig={gig} poster={user} status={session?.user.role} />;
+          return (
+            <BentoGridItem
+              gig={gig}
+              poster={user}
+              status={session?.user.role}
+            />
+          );
         })}
       </div>
     </div>

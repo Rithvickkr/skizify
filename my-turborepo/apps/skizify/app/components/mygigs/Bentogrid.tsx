@@ -83,12 +83,12 @@ export const BentoGridItem = ({
   return (
     <div
       className={cn(
-        "group/bento shadow-input row-span-1 flex w-full cursor-pointer items-center justify-center space-y-4 rounded-xl border border-[#d1d5d8] bg-white from-themeblue from-80% to-gray-900 p-3 transition duration-200 hover:shadow-lg dark:border-gray-800 dark:bg-gradient-to-r dark:shadow-none",
+        "group/bento max-w-3xl min-w-xl shadow-input row-span-1 flex-1 flex w-full cursor-pointer items-center justify-center space-y-4 rounded-xl border border-[#d1d5d8] bg-white from-themeblue from-80% to-gray-900 p-3 transition duration-200 hover:shadow-lg dark:border-gray-800 dark:bg-gradient-to-r dark:shadow-none",
         className,
       )}
     >
-      <div className="w-[90%] transition duration-200 group-hover/bento:translate-x-2">
-        <Card className="mx-auto w-full max-w-md">
+      <div className="w-[90%] flex-1 transition duration-200 group-hover/bento:translate-x-2">
+        <Card className="mx-auto w-full ">
           <CardContent className="grid w-full">
             <div className="flex justify-between">
               <div className="grid grid-cols-6 space-x-1">
@@ -114,7 +114,7 @@ export const BentoGridItem = ({
 
             <div className="w-full">
               <div className="my-2 flex flex-col">
-                <div className="ml-2 h-7 max-w-64 justify-items-center truncate font-display text-xl font-medium overflow-hidden">
+                <div className="ml-2 h-7 max-w-64 justify-items-center overflow-hidden truncate font-display text-xl font-medium">
                   {gig.title || "Title"}
                 </div>
                 <ScrollArea className="h-20 w-full truncate text-wrap rounded-md border p-2 px-2 text-sm">
@@ -150,11 +150,11 @@ export const BentoGridItem = ({
               ""
             )}
             <ButtonE
-          className="m-1 flex-1 bg-white text-black shadow hover:bg-white hover:ring-black dark:bg-gray-200 dark:text-black dark:hover:bg-white dark:hover:text-black dark:hover:ring-white"
-          variant="ringHover"
-        >
-          Message
-        </ButtonE>
+              className="m-1 flex-1 bg-white text-black shadow hover:bg-white hover:ring-black dark:bg-gray-200 dark:text-black dark:hover:bg-white dark:hover:text-black dark:hover:ring-white"
+              variant="ringHover"
+            >
+              Message
+            </ButtonE>
           </CardFooter>
         </Card>
       </div>
