@@ -27,6 +27,9 @@ model User {
   confirmedGigs   Gigs[]    @relation(name: "ConfirmedUser")
   bio             String?
   education       String?
+  skills          String[]
+  achievements    String[]
+
 }
 
 model Gigs {

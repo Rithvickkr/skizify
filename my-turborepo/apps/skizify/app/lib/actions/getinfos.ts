@@ -21,6 +21,7 @@ export default async function getInfos(UserId: string) {
             bio: true,
             education: true,
             username: true,
+            skills: true,
             reviewsReceived: {
                 select: {
                     content: true,
