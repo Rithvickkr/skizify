@@ -1,6 +1,6 @@
 // lib/searchGigs.ts
 
-import { GigsInterface } from "../../(dashboard)/explore/page"; // Adjust the import path as necessary
+import { GigsInterface } from "@repo/store/types";
 
 export default function filtergigs(gigs: GigsInterface[], session: any) {
   const currentDate = new Date();

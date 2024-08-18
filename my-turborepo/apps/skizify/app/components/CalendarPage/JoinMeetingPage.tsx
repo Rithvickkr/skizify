@@ -18,7 +18,7 @@ import {
 } from "date-fns";
 
 import { SessionTime } from "../../lib/actions/ConvertgigInfo";
-import { meetingsInfo_interface } from "../../lib/actions/getcalendarMeetings";
+import { meetingsInfo_interface } from "@repo/store/types";
 import { UserRole } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { ScrollArea, ScrollBar } from "../../../@/components/ui/scroll-area";

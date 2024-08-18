@@ -8,7 +8,7 @@ import {
   WandSparkles,
   Search,
   Nut,
-  Cog
+  Cog,
 } from "lucide-react";
 
 import {
@@ -22,26 +22,14 @@ import {
 
 import SwitchTheme from "../../../apps/skizify/app/components/SwitchTheme";
 import { Button } from "../../../apps/skizify/@/components/ui/button";
-import { UserRole } from "@prisma/client";
-
-interface AppbarProps {
-  user?: {
-    name?: string | null;
-    photo?: any;
-    email?: string | null;
-    role?: UserRole;
-  };
-  onSignin: any;
-  onSignout: any;
-  altname: string;
-  fn: any;
-}
+import { AppbarProps } from "@repo/store/types";
+import { GigStatus, UserRole } from "@prisma/client";
 
 export const Appbar = ({ user, onSignout, onSignin, fn }: AppbarProps) => {
   const name = user?.name || "User";
   return (
-    <div className="flex justify-end items-center">
-       {/* {(window.location.href=="http://localhost:3000/explore"?<div className="relative ml-auto flex-1 md:grow-0">
+    <div className="flex items-center justify-end">
+      {/* {(window.location.href=="http://localhost:3000/explore"?<div className="relative ml-auto flex-1 md:grow-0">
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
             <input
               type="search"
@@ -53,34 +41,38 @@ export const Appbar = ({ user, onSignout, onSignin, fn }: AppbarProps) => {
       <div>
         <DropdownMenu>
           <DropdownMenuTrigger>
-            <Avatar photo={user?.photo} name={name} classname="ring-2 ring-black dark:ring-slate-50 "/>
+            <Avatar
+              photo={user?.photo}
+              name={name}
+              classname="ring-2 ring-black dark:ring-slate-50 "
+            />
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-60 mr-3 mt-2 shadow-2xl bg-white dark:bg-[#020817] dark:border-gray-700 p-3">
+          <DropdownMenuContent className="mr-3 mt-2 w-60 bg-white p-3 shadow-2xl dark:border-gray-700 dark:bg-[#020817]">
             {/* <DropdownMenuLabel>My Account</DropdownMenuLabel> */}
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="focus:outline-0 x">
+            <DropdownMenuItem className="x focus:outline-0">
               <div className="flex flex-col dark:text-slate-50">
                 <div className="my-1 font-semibold">{user?.name}</div>
-                <div className="text-xs truncate">{user?.email}</div>
+                <div className="truncate text-xs">{user?.email}</div>
               </div>
             </DropdownMenuItem>
             <hr className="dark:border-gray-700" />
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="p-1 mb-2 focus:outline-0 hover:text-gray-500 dark:bg-gray-800 dark:hover:bg-gray-900 rounded-md shadow-md  cursor-pointer ">
-              <MoonIcon className="mr-2 size-4 m-2" />
+            <DropdownMenuItem className="mb-2 cursor-pointer rounded-md p-1 shadow-md hover:text-gray-500 focus:outline-0 dark:bg-gray-800 dark:hover:bg-gray-900">
+              <MoonIcon className="m-2 mr-2 size-4" />
               <SwitchTheme />
             </DropdownMenuItem>
-            <DropdownMenuItem className="p-1 focus:outline-0 hover:text-gray-500 cursor-pointer rounded-md shadow-md dark:bg-gray-800 dark:hover:bg-gray-900">
-              <Cog className="mr-2 size-5 m-2" />
+            <DropdownMenuItem className="cursor-pointer rounded-md p-1 shadow-md hover:text-gray-500 focus:outline-0 dark:bg-gray-800 dark:hover:bg-gray-900">
+              <Cog className="m-2 mr-2 size-5" />
               <span>Settings</span>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <hr className="dark:border-gray-700" />
             <DropdownMenuItem
               onClick={fn}
-              className="p-1 focus:outline-0 hover:text-gray-500 cursor-pointer rounded-md shadow-md dark:bg-gray-800 dark:hover:bg-gray-900"
+              className="cursor-pointer rounded-md p-1 shadow-md hover:text-gray-500 focus:outline-0 dark:bg-gray-800 dark:hover:bg-gray-900"
             >
-              <WandSparkles className="mr-2 size-4 m-2" />
+              <WandSparkles className="m-2 mr-2 size-4" />
               <span>
                 Become a {user?.role === UserRole.SKIZZER ? "User" : "Skizzer"}
               </span>
@@ -89,10 +81,10 @@ export const Appbar = ({ user, onSignout, onSignin, fn }: AppbarProps) => {
             <hr className="dark:border-gray-700" />
             <DropdownMenuItem
               onClick={user ? onSignout : onSignin}
-              className="p-1 my-2 focus:outline-0 hover:text-gray-500 dark:bg-gray-800 dark:hover:bg-gray-900 rounded-md shadow-md  cursor-pointer "
+              className="my-2 cursor-pointer rounded-md p-1 shadow-md hover:text-gray-500 focus:outline-0 dark:bg-gray-800 dark:hover:bg-gray-900"
             >
-              <LogOutIcon className="mr-2 size-4 m-2" />
-              <span className=" p-1 ">{user ? "Logout" : "Login"}</span>
+              <LogOutIcon className="m-2 mr-2 size-4" />
+              <span className="p-1">{user ? "Logout" : "Login"}</span>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

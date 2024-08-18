@@ -1,5 +1,5 @@
 "use client"
-import { GiguserContent } from "./SkizzerrequestPage";
+import { GiguserContent } from "@repo/store/types";
 import { Avatar } from "@repo/ui/avatar";
 import { cn } from "../../utils/cn";
 import { Card, CardContent, CardFooter } from "../../../@/components/ui/card";

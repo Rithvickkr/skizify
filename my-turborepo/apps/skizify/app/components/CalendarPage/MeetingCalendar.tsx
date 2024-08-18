@@ -6,7 +6,7 @@ import {
 } from "date-fns";
 import { Fragment, useState } from "react";
 import { Button } from "../ui/button";
-import { meetingsInfo_interface } from "../../lib/actions/getcalendarMeetings";
+import { meetingsInfo_interface } from "@repo/store/types";
 import { Avatar } from "@repo/ui/avatar";
 import { ToolTip } from "../ui/Tooltip";
 import JoinMeetingPage from "./JoinMeetingPage";
@@ -24,7 +24,7 @@ export default  function Meeting({
   let finalDateTime = parseISO(meeting.finalDateTime.toISOString()); // convert String into Actual Date object watch bottom of the page
 
   return (
-    <div className="group mx-1 my-3 grid min-h-20 grid-cols-[auto_1fr_auto] items-center gap-1 space-x-4 rounded-md bg-transparent border py-2 pl-4 pr-1 shadow-md transition-shadow duration-300 focus-within:bg-neutral-50 hover:shadow-xl dark:border dark:border-gray-800 dark:bg-transparent dark:text-white dark:hover:bg-gray-900">
+    <div className=" group mx-1 my-3 grid min-h-20 grid-cols-[auto_1fr_auto] items-center gap-1 space-x-4 rounded-md bg-transparent border py-2 pl-4 pr-1 shadow-md transition-shadow duration-300 focus-within:bg-neutral-50 hover:shadow-xl dark:border dark:border-gray-800 dark:bg-transparent dark:text-white dark:hover:bg-gray-900">
       <div className="font-time text-shadow-sm rounded border dark:bg-[#020817] p-2 text-xl font-medium text-black dark:border-gray-700 dark:text-gray-100">
         <time dateTime={meeting.finalDateTime.toISOString()}>
           {format(finalDateTime, "h:mm a")}

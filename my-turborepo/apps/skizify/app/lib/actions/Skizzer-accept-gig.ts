@@ -1,6 +1,6 @@
 "use server";
 import prisma from "@repo/db/client";
-import { GigsInterface } from "../../(dashboard)/explore/page";
+import { GigsInterface } from "@repo/store/types";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth";
 

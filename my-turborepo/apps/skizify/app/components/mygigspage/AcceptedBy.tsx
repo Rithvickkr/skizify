@@ -1,4 +1,4 @@
-import { GigsInterface } from "../../(dashboard)/explore/page";
+import { GigsInterface } from "@repo/store/types";
 import {
   Credenza,
   CredenzaBody,

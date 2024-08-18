@@ -1,5 +1,5 @@
 import { cn } from "../../utils/cn";
-import { GigsInterface } from "../../(dashboard)/explore/page";
+import { GigsInterface } from "@repo/store/types";
 import { Avatar } from "@repo/ui/avatar";
 import { Card, CardContent, CardFooter } from "../../../@/components/ui/card";
 import { ScrollArea, ScrollBar } from "../../../@/components/ui/scroll-area";
@@ -13,19 +13,7 @@ import {
 } from "../../lib/actions/ConvertgigInfo";
 import { GigStatus, UserRole } from "@prisma/client";
 import { Button } from "../../../@/components/ui/button";
-
-export interface Datetimepackage {
-  startDATEmonth: string | undefined; //contains start day month
-  startDATEday: number; //conatins start date date
-  endDATEmonth: string | undefined;
-  endDATEday: number;
-  sessionTime: string; // will be a String Convert timeneeded into 30min | 45min | 1Hr
-  startTime: string; // has start time
-  endTime: string;
-  timeneeded: number; // this is Duration of the meeting
-  startDateTime: Date; //has original Date and Time
-  endDateTime: Date;
-}
+import { Datetimepackage } from "@repo/store/types";
 
 export const BentoGrid = ({
   className,
@@ -83,12 +71,12 @@ export const BentoGridItem = ({
   return (
     <div
       className={cn(
-        "group/bento max-w-3xl min-w-xl shadow-input row-span-1 flex-1 flex w-full cursor-pointer items-center justify-center space-y-4 rounded-xl border border-[#d1d5d8] bg-white from-themeblue from-80% to-gray-900 p-3 transition duration-200 hover:shadow-lg dark:border-gray-800 dark:bg-gradient-to-r dark:shadow-none",
+        "group/bento min-w-xl shadow-input row-span-1 flex w-full max-w-3xl flex-1 cursor-pointer items-center justify-center space-y-4 rounded-xl border border-[#d1d5d8] bg-white from-themeblue from-80% to-gray-900 p-3 transition duration-200 hover:shadow-lg dark:border-gray-800 dark:bg-gradient-to-r dark:shadow-none",
         className,
       )}
     >
       <div className="w-[90%] flex-1 transition duration-200 group-hover/bento:translate-x-2">
-        <Card className="mx-auto w-full ">
+        <Card className="mx-auto w-full">
           <CardContent className="grid w-full">
             <div className="flex justify-between">
               <div className="grid grid-cols-6 space-x-1">
@@ -149,9 +137,10 @@ export const BentoGridItem = ({
             ) : (
               ""
             )}
+
             <ButtonE
-              className="m-1 flex-1 bg-white text-black shadow hover:bg-white hover:ring-black dark:bg-gray-200 dark:text-black dark:hover:bg-white dark:hover:text-black dark:hover:ring-white"
-              variant="ringHover"
+              className={`m-1 flex-1 ${(status === UserRole.SKIZZER) ? "bg-white text-black shadow hover:bg-white hover:ring-black" : "bg-black text-white"}  dark:bg-gray-200 dark:text-black dark:hover:bg-white dark:hover:text-black dark:hover:ring-white`}
+              variant={`${(status === UserRole.SKIZZER) ? "ringHover" : "gooeyLeft"}`}
             >
               Message
             </ButtonE>

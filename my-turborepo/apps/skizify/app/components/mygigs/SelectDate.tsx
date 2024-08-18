@@ -10,14 +10,14 @@ import {
 import { Label } from "../../../@/components/ui/label";
 import { Month } from "../../lib/actions/ConvertgigInfo";
 import { Button } from "../ui/button";
-import { Datetimepackage } from "./Bentogrid";
+import { Datetimepackage } from "@repo/store/types";
 import Slider from "rc-slider";
 import Tooltip from "rc-tooltip";
 import "rc-slider/assets/index.css";
 import "rc-tooltip/assets/bootstrap.css";
 import { CheckCheck } from "lucide-react";
 import { acceptGig } from "../../lib/actions/Skizzer-accept-gig";
-import { GigsInterface } from "../../(dashboard)/explore/page";
+import { GigsInterface } from "@repo/store/types";
 
 function getDatesBetweenDates(startDate: Date, endDate: Date): Date[] {
   const days: Date[] = [];
@@ -252,7 +252,7 @@ export function SelectDATE({
 
         <Button className="h-9 rounded border dark:border-0 dark:border-black bg-transparent p-0 text-black hover:bg-transparent hover:shadow hover:ring-black dark:bg-transparent dark:text-white dark:hover:text-black ">
           <input
-            className="h-full w-full rounded border-0 text-sm text-black placeholder-black placeholder:text-sm placeholder:font-extralight focus:border-transparent focus:outline-none focus:ring-0 dark:border dark:border-white dark:bg-transparent dark:text-white placeholder:dark:text-white"
+            className="h-full w-full rounded border-0 text-sm text-black placeholder-black placeholder:text-sm placeholder:font-light     focus:border-transparent focus:outline-none focus:ring-0 dark:border dark:border-white dark:bg-transparent dark:text-white placeholder:dark:text-white"
             type="text"
             placeholder="Budget"
             required

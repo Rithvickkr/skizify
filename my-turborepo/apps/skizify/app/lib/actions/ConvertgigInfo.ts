@@ -1,16 +1,3 @@
-import { GigsInterface } from "../../(dashboard)/explore/page";
-
-export interface Datetimepackage {
-  startDATEmonth: string | undefined;
-  startDATEday: number | undefined;
-  endDATEmonth: string | undefined;
-  endDATEday: number | undefined;
-  sessionTime: string;
-  startTime: string;
-  endTime: string;
-  timeneeded: number | undefined;
-}
-
 //BEFORE UPDATING FUNCTION or DB UPDATE GigsInterface and Datetimepackage
 
 export function Month(date: Date) {

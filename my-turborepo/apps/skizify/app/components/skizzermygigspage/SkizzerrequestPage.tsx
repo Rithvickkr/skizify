@@ -1,25 +1,8 @@
 import { skizzerRequests } from "../../lib/actions/skizzerRequests"
 import { GigStatus } from "@prisma/client";
 import SkizzerRequestCard from "./SkizzerRequestCard";
+import { GiguserContent } from "@repo/store/types";
 
-export interface GiguserContent {
-id: string,
-gigId: string,
-skizzerId:string,
-UserId:string,
-status: GigStatus,
-budget: number,
-finalDateTime: Date,
-gig: {
-    title: string;
-    content: string;
-    timeneeded : number;
-};
-user: {
-    name : string | null,
-    userImage : string | null
-};
-}
 
 export default async function SkizzerrequestPage() {
     const requests = await skizzerRequests();

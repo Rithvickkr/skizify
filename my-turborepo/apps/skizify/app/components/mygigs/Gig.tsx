@@ -21,7 +21,7 @@ import prisma from "@repo/db/client";
 //   status: 'PENDING'
 // },....]
 
-import { GigsInterface } from "../../(dashboard)/explore/page";
+import { GigsInterface } from "@repo/store/types";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../lib/auth";
 export default async function GigStructure({

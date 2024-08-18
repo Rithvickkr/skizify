@@ -1,6 +1,7 @@
 import { getServerSession } from "next-auth";
 import Example from "../../components/CalendarPage/Calendar";
-import { getSkizzercalendarMeetingsdetails, getUsercalendarMeetingsdetails, meetingsInfo_interface } from "../../lib/actions/getcalendarMeetings";
+import { getSkizzercalendarMeetingsdetails, getUsercalendarMeetingsdetails } from "../../lib/actions/getcalendarMeetings";
+import { meetingsInfo_interface } from "@repo/store/types";
 import { GigStatus , UserRole } from "@prisma/client";
 import { authOptions } from "../../lib/auth";
 
@@ -13,6 +14,7 @@ export default async function Home(){
     meetings = await getUsercalendarMeetingsdetails();
   }
     return (
+      
         <div className="h-screen dark:bg-trail-blue ">
             <Example meetings={meetings}/>
         </div>

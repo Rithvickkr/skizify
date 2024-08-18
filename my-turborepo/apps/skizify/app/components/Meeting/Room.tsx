@@ -296,6 +296,7 @@ export default function Room({
             variant="ghost"
             className="size-7 bg-neutral-200 hover:bg-neutral-200 dark:bg-gray-800 dark:hover:bg-gray-500 md:size-8 lg:size-9 xl:size-11"
             size="icon"
+            // onClick={handleAuddi}
           >
             <MicIcon className="size-3 md:size-4 lg:size-5" />
             <span className="sr-only">Mute</span>

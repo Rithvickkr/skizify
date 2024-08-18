@@ -5,23 +5,8 @@ import { Search } from "lucide-react";
 import filtergigs from "../../lib/actions/Filters";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../lib/auth";
+import { GigsInterface } from "@repo/store/types";
 
-
-export interface GigsInterface {
-  confirmUserId: string;
-  id: string;
-  title: string;
-  content: string;
-  startDateTime: Date;
-  endDateTime: Date;
-  createdAt: Date;
-  updatedAt: Date;
-  authorId: string;
-  Interval: any; //as it is a JSON vlaue
-  status: GigStatus;
-  timeneeded: number;
- 
-}
 
 export default async function Page() {
   const gigs: GigsInterface[] = await getAllgigs() as unknown as GigsInterface[];

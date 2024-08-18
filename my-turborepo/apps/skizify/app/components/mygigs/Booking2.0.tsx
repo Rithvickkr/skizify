@@ -10,8 +10,8 @@ import {
   CredenzaTrigger,
 } from "../ui/Credenza";
 import { Clock7 } from "lucide-react";
-import { GigsInterface } from "../../(dashboard)/explore/page";
-import { Datetimepackage } from "./Bentogrid";
+import { GigsInterface } from "@repo/store/types";
+import { Datetimepackage } from "@repo/store/types";
 import { Avatar } from "@repo/ui/avatar";
 import { ScrollArea, ScrollBar } from "../../../@/components/ui/scroll-area";
 import { Button as ButtonE } from "../ui/button";

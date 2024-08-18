@@ -1,7 +1,7 @@
 "use client";
 
 import { Pencil, Trash } from "lucide-react";
-import { GigsInterface } from "../../(dashboard)/explore/page";
+import { GigsInterface } from "@repo/store/types";
 import { Month, formatTime } from "../../lib/actions/ConvertgigInfo";
 import { useSession } from "next-auth/react";
 import { deleteGig } from "../../lib/actions/deletegig";
