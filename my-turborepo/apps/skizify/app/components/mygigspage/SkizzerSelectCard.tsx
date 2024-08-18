@@ -9,6 +9,7 @@ import { Button } from "../ui/button";
 import { confirmGig } from "../../lib/actions/ConfirmingGig";
 import SendingEmails from "../../lib/actions/Sendingemails";
 import { useSession } from "next-auth/react";
+import toast, { Toaster } from "react-hot-toast";
 
 // SKizzersInfo  this is an array
 // [
@@ -29,16 +30,16 @@ export default function SkizzerselectCard({
 }: {
   SKizzersInfo: any;
 }) {
-  const  { data: session } = useSession();
+  const { data: session } = useSession();
   const [selectedCard, setselectedCard] = useState(""); // (This will store the Skizzer Id) and will update it into gig and will confirm and also confirm the Status of the Gig User
   //aslo I will put a limit if the user selected someone , then there that gig will not be displayed on the main screen
   return (
     <div>
-      <div className="flex flex-col space-y-4 p-2 border border-white rounded">
+      <div className="flex flex-col space-y-4 rounded border border-white p-2">
         {SKizzersInfo.map((skizzer: any) => {
           return (
             <div
-              className={`flex cursor-pointer justify-between rounded-md p-4 shadow-md hover:border hover:border-black dark:hover:border-white ${selectedCard === skizzer.id ? "border border-black bg-neutral-100 dark:bg-transparent dark:border-white" : ""}`}
+              className={`flex cursor-pointer justify-between rounded-md p-4 shadow-md hover:border hover:border-black dark:hover:border-white ${selectedCard === skizzer.id ? "border border-black bg-neutral-100 dark:border-white dark:bg-transparent" : ""}`}
               key={skizzer.id}
               onClick={() => setselectedCard(skizzer.id)}
             >
@@ -50,14 +51,14 @@ export default function SkizzerselectCard({
                   />
                 </div>
                 <div className="flex flex-col self-center truncate">
-                  <div className="text-md truncate font-semibold mb-1">
+                  <div className="text-md mb-1 truncate font-semibold">
                     {skizzer.Skizzer.name}
                   </div>
                   <div className="mt-1 flex text-sm">
                     <div className="mr-1 self-center">
                       <Star strokeWidth={2} className="size-4" />
                     </div>
-                    <div className="font-display ">{`5.0 (10 reviews)`}</div>
+                    <div className="font-display">{`5.0 (10 reviews)`}</div>
                   </div>
                 </div>
               </div>
@@ -72,7 +73,7 @@ export default function SkizzerselectCard({
           );
         })}
       </div>
-      <div className="flex justify-between space-x-4 mt-4">
+      <div className="mt-4 flex justify-between space-x-4">
         <Button
           className="m-1 flex-1 border border-white bg-white text-black shadow hover:bg-white hover:ring-black dark:bg-white dark:text-black dark:hover:bg-white dark:hover:text-black dark:hover:ring-white"
           variant="ringHover"
@@ -82,12 +83,12 @@ export default function SkizzerselectCard({
         <Button
           className="col-span-1 m-1 w-full flex-1 bg-black text-white dark:border dark:border-white dark:bg-[#020817]"
           variant="gooeyLeft"
-          onClick={async() =>{
-            const info = SKizzersInfo.find((x : any) => { //This will return that Item
+          onClick={async () => {
+            const info = SKizzersInfo.find((x: any) => {
+              //This will return that Item
               return x.id === selectedCard;
-            })
-            console.log(selectedCard)
-            console.log(info)
+            });
+
             //This is info
             // {
             //   id: '406422c6-2e1c-4e86-bd2b-c2b189e3aecf',
@@ -101,37 +102,35 @@ export default function SkizzerselectCard({
             //     reviewsReceived: []
             //   }
             // }
-            console.log(info)
+
             try {
               const change = await confirmGig({
-                skizzerid: info.skizzerId || "", //selected Id 
+                skizzerid: info.skizzerId || "", //selected Id
                 gigId: info.gigId,
                 finalDateTime: info.finalDateTime,
                 budget: info.budget,
               });
               if (change) {
                 SendingEmails({
-                  to:info.Skizzer.email || "rithvickkumar27@gmail.com",
-                  to2:session?.user.email || " ",
-                  name:info.Skizzer.name || "Rithvick",
+                  to: info.Skizzer.email || "rithvickkumar27@gmail.com",
+                  to2: session?.user.email || " ",
+                  name: info.Skizzer.name || "Rithvick",
                   subject: "Gig Confirmation",
                   body: "Congratulations! Your gig has been confirmed. You can now view the details in your dashboard.",
                 });
-                
+
                 console.log("Gig confirmed successfully");
-                window.alert("The meeting is now booked.");
-                 //This will send the email to the Skizzer
+                toast.success("Gig confirmed successfully");
+                //This will send the email to the Skizzer
               } else {
-                throw new Error("Confirming gig server action failed");
+                toast.error("Error confirming gig");
               }
             } catch (error) {
-              
               console.error(error);
-              window.alert("Failed to confirm. Please choose one and try again.");
-              
-              
+
+              toast.error("Error confirming gig");
             }
-          } }
+          }}
         >
           <CheckCheck className="mr-2 size-4" />
           Accept
