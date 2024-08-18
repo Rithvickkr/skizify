@@ -14,16 +14,38 @@ export default async function getInfos(UserId: string) {
             id: UserId
         },
         select: {
+            
             name: true,
             userImage: true,
-            reviewsReceived: true,
+            
             bio: true,
             education: true,
+            username: true,
+            skills: true,
+            reviewsReceived: {
+                select: {
+                    content: true,
+                    rating: true,
+                    createdAt: true,
+                    updatedAt: true,
+                    givento: true,
+                    givenby: true,
+                    givenbyUser: {
+                        select: {
+                            name: true,
+                            userImage: true,
+                            username: true,
+                        }
+                    }
+                }
+            },
+            
         }
     });
     if (!users) {
         console.log("User doesn't exist");
         return null;
     }
+    console.log(users.reviewsReceived);
     return users;
     }

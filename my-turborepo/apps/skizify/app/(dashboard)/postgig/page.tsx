@@ -1,4 +1,5 @@
 import { GigForm } from "../../components/Gigform";
+import Reviewpage from "../../components/reviewpage/review";
 
 export default function Home() {
   return (
@@ -11,6 +12,7 @@ export default function Home() {
           </div>
         </div>
       </div>
+    // <Reviewpage/>
     
   );
 }

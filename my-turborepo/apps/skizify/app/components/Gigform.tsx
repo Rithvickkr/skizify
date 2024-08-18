@@ -13,7 +13,7 @@ import {
   PopoverTrigger,
   PopoverContent,
 } from "../../@/components/ui/popover";
-
+import toast, { Toaster } from 'react-hot-toast';
 import {
   Select,
   SelectContent,
@@ -115,6 +115,7 @@ export function GigForm() {
       const startDateTime = new Date(`${date}T${time}:00`).toISOString();
       const endDateTime = new Date(`${endDate}T${endTime}:00`).toISOString();
       try {
+        
         await GigSet(
           title,
           description,
@@ -130,10 +131,12 @@ export function GigForm() {
         setTime("");
         setEndDate("");
         setEndTime("");
-        window.alert("Gig posted successfully");
+        setTimeneed(0);
+        setSelectedTime(null);
+        toast.success("Event posted successfully");
       } catch (error) {
         console.error("Error posting gig:", error);
-        window.alert("Failed to post gig. Please try again.");
+        toast.error("Error posting gig");
       }
     }
   };
@@ -144,6 +147,7 @@ export function GigForm() {
 
   return (
     <div className="shadow-input mx-auto w-full max-w-md rounded-none bg-white p-4 dark:bg-[#020817] md:rounded-2xl md:p-8 ">
+      <Toaster />
       <h2 className="text-xl font-bold text-neutral-800 dark:text-neutral-200">
         Create Event
       </h2>
