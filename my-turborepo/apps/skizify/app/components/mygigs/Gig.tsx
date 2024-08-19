@@ -24,17 +24,27 @@ import prisma from "@repo/db/client";
 import { GigsInterface } from "@repo/store/types";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../lib/auth";
+import PaginationControls from "./PaginationControlsExplore";
 export default async function GigStructure({
   gigs,
+  page,
+  per_page
 }: {
   gigs: GigsInterface[];
+  page: string | string[] | undefined,
+  per_page: string | string[] | undefined
 }) {
   const session = await getServerSession(authOptions);
+  const start = (Number(page) - 1) * Number(per_page)
+  const end = start + Number(per_page)
+
+  const entries = gigs.slice(start, end)
+
   //If the session don't exist an Error will come on Screen which is due to getAllgigs which is used in parent of this
   return (
     <div className="">
       <div className="mx-auto grid w-full grid-cols-1 gap-2 pl-1 pr-3 md:grid-cols-2 md:pl-2 lg:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5 4xl:grid-cols-6">
-        {gigs.map(async (gig: GigsInterface) => {
+        {entries.map(async (gig: GigsInterface) => {
           const user = await prisma.user.findUnique({
             where: {
               id: gig.authorId,
@@ -48,6 +58,13 @@ export default async function GigStructure({
             />
           );
         })}
+      </div>
+      <div className="mt-6">
+        <PaginationControls
+          hasNextPage={end < gigs.length}
+          hasPrevPage={start > 0}
+          length = {gigs.length}
+        />
       </div>
     </div>
   );

@@ -87,7 +87,7 @@ export default function MygigCard({ gigs , session }: { gigs: GigsInterface[] , 
                     {`${Month(gig.startDateTime)} ${gig.startDateTime.getDate()} - ${Month(gig.endDateTime)} ${gig.endDateTime.getDate()}`}
                   </div>
                 </div>
-                <div className="my-1 flex place-content-start items-center py-2 pl-2 sm:my-2 md:my-0">
+                <div className="my-1 flex place-content-center  items-center py-2 pl-2 sm:my-2 md:my-0">
                   <CalendarClock
                     className="mr-3 size-5 cursor-pointer text-xl font-medium dark:text-white md:size-6"
                     strokeWidth={1.5}
