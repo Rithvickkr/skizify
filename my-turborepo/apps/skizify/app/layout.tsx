@@ -2,6 +2,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Providers } from "./providers";
+import { Toaster } from "../@/components/ui/toaster";
 
 // import {NextUIProvider} from "@nextui-org/react";
 
@@ -22,7 +23,9 @@ export default function RootLayout({
       <body className={inter.className} suppressHydrationWarning={true}>
       <Providers >
         {/* <NextUIProvider> */}
+        
           {children}
+          <Toaster />
         {/* </NextUIProvider> */}
       </Providers>
       </body>

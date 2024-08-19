@@ -13,7 +13,6 @@ import {
   PopoverTrigger,
   PopoverContent,
 } from "../../@/components/ui/popover";
-import toast, { Toaster } from 'react-hot-toast';
 import {
   Select,
   SelectContent,
@@ -24,6 +23,8 @@ import {
   SelectLabel,
 } from "../../@/components/ui/select";
 import { ChevronDownIcon } from "lucide-react";
+import { useToast } from "../../@/components/ui/use-toast";
+import { ToastAction } from "@radix-ui/react-toast";
 
 const LabelInputContainer = ({
   children,
@@ -50,6 +51,7 @@ export function GigForm() {
   const [endTime, setEndTime] = useState<string>("");
   const [Timeneed, setTimeneed] = useState<number>(0);
   const [selectedTime, setSelectedTime] = useState<number | null>(null);
+  const { toast } = useToast();
 
   function calculateTimeInterval(startTime: string, endTime: string) {
     const date = new Date().toISOString().split("T")[0];
@@ -133,10 +135,19 @@ export function GigForm() {
         setEndTime("");
         setTimeneed(0);
         setSelectedTime(null);
-        toast.success("Event posted successfully");
+        toast({
+          title: "Event created successfully",
+          description: "Your event has been created successfully.",
+          
+        });
       } catch (error) {
         console.error("Error posting gig:", error);
-        toast.error("Error posting gig");
+        toast({
+          variant: "destructive",
+          title: "Uh oh! Something went wrong.",
+          description: "There was a problem with your request.",
+          action: <ToastAction altText="Try again">Try again</ToastAction>,
+        })
       }
     }
   };
@@ -147,7 +158,7 @@ export function GigForm() {
 
   return (
     <div className="shadow-input mx-auto w-full max-w-md rounded-none bg-white p-4 dark:bg-[#020817] md:rounded-2xl md:p-8 ">
-      <Toaster />
+      
       <h2 className="text-xl font-bold text-neutral-800 dark:text-neutral-200">
         Create Event
       </h2>
