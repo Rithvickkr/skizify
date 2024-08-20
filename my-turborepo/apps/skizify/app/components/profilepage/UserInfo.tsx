@@ -147,26 +147,27 @@ export default function UserInfo({
             <div className="grid gap-6">
               <div className="grid gap-4">
                 <h2 className="text-2xl font-bold">Skills</h2>
+                
                 <div className="grid grid-cols-2 gap-4">
-                  {skills.map((skill, index) => (
+                  {   skills.length!=0?skills.map((skill, index) => (
                     <div
                       key={index}
-                      className="bg-muted rounded-lg p-4 dark:bg-slate-800"
+                      className="bg-muted rounded-lg p-4 bg-stone-400  dark:bg-slate-800 text-center"
                     >
                       <h3 className="text-lg font-semibold">{skill}</h3>
                     </div>
-                  ))}
+                  )):<div className=" bg-muted rounded-lg p-4 text-muted-foreground  bg-stone-400 dark:bg-slate-800 text-center  "> <h3 className="text-lg font-semibold">No Skill yet</h3></div>}
                 </div>
               </div>
 
               <div className="grid gap-4">
                 <h2 className="text-2xl font-bold">Details</h2>
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="bg-muted rounded-lg p-4 dark:bg-slate-800">
+                  <div className="bg-muted rounded-lg p-4 text-muted-foreground  bg-stone-400 dark:bg-slate-800 text-center">
                     <h3 className="text-lg font-semibold">Eductaion</h3>
                     <p>{education}</p>
                   </div>
-                  <div className="bg-muted rounded-lg p-4 dark:bg-slate-800">
+                  <div className="bg-muted rounded-lg p-4 text-muted-foreground  bg-stone-400 dark:bg-slate-800 text-center">
                     <h3 className="text-lg font-semibold">Qualification</h3>
                     <p>Undergraduate</p>
                   </div>
@@ -176,55 +177,10 @@ export default function UserInfo({
           </div>
         </section>
         <section className="bg-muted w-full py-12 md:py-24 lg:py-32">
-          <div className="container grid gap-10 px-4 md:px-6 lg:grid-cols-2 lg:gap-16">
-            <div className="grid gap-6">
-              <h2 className="text-2xl font-bold">Reviews</h2>
-              {reviewsToShow.length === 0 ? (
-                <div className="text-muted-foreground">No reviews yet.</div>
-              ) : (
-                reviewsToShow.map((review) => (
-                  <div key={review.id} className="grid gap-6">
-                    <div className="flex gap-4">
-                      <Avatar
-                        name={review.givenbyUser.name}
-                        photo={review.givenbyUser.userImage}
-                        classname="size-16 text-2xl  "
-                      />
-                      <div className="grid gap-1">
-                        <div className="flex items-center gap-2 text-sm font-medium">
-                          {review.givenbyUser.name}
-                          <div className="text-muted-foreground flex items-center gap-1 text-xs font-semibold">
-                            {[...Array(review.rating)].map((_, index) => (
-                              <StarIcon
-                                key={index}
-                                className="h-4 w-4 fill-yellow-300"
-                              />
-                            ))}
-                            {[...Array(5 - review.rating)].map((_, index) => (
-                              <StarIcon
-                                key={index}
-                                className="fill-muted h-4 w-4"
-                              />
-                            ))}
-                          </div>
-                        </div>
-                        <p className="text-muted-foreground text-sm">
-                          "{review.content}"
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                ))
-              )}
-              {visibleReviewsCount < reviewsReceived.length && (
-                <Button onClick={loadMoreReviews} variant="outline">
-                  Show More
-                </Button>
-              )}
-            </div>
-            <div>
+          <div className="container row gap-10 px-4 md:px-6 lg:grid-cols-2 lg:gap-16 ">
+          <div className="flex items-center justify-center">
               <Card className="w-full max-w-2xl">
-                <CardHeader className="flex flex-col items-center gap-4 p-6">
+                <CardHeader className="flex flex-col items-center justify-center gap-4 p-6">
                   <div className="flex h-20 w-20 items-center justify-center rounded-full bg-black text-4xl font-bold text-primary-foreground dark:bg-white dark:text-black">
                     {averageRating}
                   </div>
@@ -305,6 +261,52 @@ export default function UserInfo({
                 </CardFooter>
               </Card>
             </div>
+            <div className="grid gap-6 pb-4">
+              <h2 className="text-2xl font-bold">Reviews</h2>
+              {reviewsToShow.length === 0 ? (
+                <div className="text-muted-foreground">No reviews yet.</div>
+              ) : (
+                reviewsToShow.map((review) => (
+                  <div key={review.id} className="grid gap-6">
+                    <div className="flex gap-4 p-2 ">
+                      <Avatar
+                        name={review.givenbyUser.name}
+                        photo={review.givenbyUser.userImage}
+                        classname="size-16 text-2xl  "
+                      />
+                      <div className="grid gap-1  ">
+                        <div className="flex items-center gap-2 text-sm font-medium">
+                          {review.givenbyUser.name}
+                          <div className="text-muted-foreground flex items-center gap-1 text-xs font-semibold">
+                            {[...Array(review.rating)].map((_, index) => (
+                              <StarIcon
+                                key={index}
+                                className="h-4 w-4 fill-yellow-300"
+                              />
+                            ))}
+                            {[...Array(5 - review.rating)].map((_, index) => (
+                              <StarIcon
+                                key={index}
+                                className="fill-muted h-4 w-4"
+                              />
+                            ))}
+                          </div>
+                        </div>
+                        <p className="text-muted-foreground text-sm">
+                          "{review.content}"
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                ))
+              )}
+              {visibleReviewsCount < reviewsReceived.length && (
+                <Button onClick={loadMoreReviews} variant="outline">
+                  Show More
+                </Button>
+              )}
+            </div>
+            
           </div>
         </section>
       </main>

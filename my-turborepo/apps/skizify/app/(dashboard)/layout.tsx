@@ -10,6 +10,7 @@ export default function Layout({
   children: React.ReactNode;
 }): JSX.Element {
   return (
+    
       <SidebarDemo children={children} />
   );
 }

@@ -9,7 +9,8 @@ import { Button } from "../ui/button";
 import { confirmGig } from "../../lib/actions/ConfirmingGig";
 import SendingEmails from "../../lib/actions/Sendingemails";
 import { useSession } from "next-auth/react";
-import toast, { Toaster } from "react-hot-toast";
+import { toast, useToast } from "../../../@/components/ui/use-toast";
+import { ToastAction } from "@radix-ui/react-toast";
 
 // SKizzersInfo  this is an array
 // [
@@ -30,6 +31,7 @@ export default function SkizzerselectCard({
 }: {
   SKizzersInfo: any;
 }) {
+  const {toast} = useToast();
   const { data: session } = useSession();
   const [selectedCard, setselectedCard] = useState(""); // (This will store the Skizzer Id) and will update it into gig and will confirm and also confirm the Status of the Gig User
   //aslo I will put a limit if the user selected someone , then there that gig will not be displayed on the main screen
@@ -120,15 +122,31 @@ export default function SkizzerselectCard({
                 });
 
                 console.log("Gig confirmed successfully");
-                toast.success("Gig confirmed successfully");
+                toast({
+                  title: "Gig confirmed successfully",
+                  description: `You have successfully confirmed the gig with ${info.Skizzer.name} 
+                  on ${Month(info.finalDateTime)} ${info.finalDateTime.getDate()} at ${formatTime(info.finalDateTime)}`,
+                })
+                
                 //This will send the email to the Skizzer
               } else {
-                toast.error("Error confirming gig");
+                toast({
+                  className: "bg-red-600",
+                  title: "Uh oh! Something went wrong.",
+                  description: "There was a problem with your request.",
+                  action: <ToastAction altText="Try again">Try again</ToastAction>,
+                  
+                })
               }
             } catch (error) {
               console.error(error);
 
-              toast.error("Error confirming gig");
+              toast({
+                className: "bg-red-600",
+                title: "Uh oh! Something went wrong.",
+                description: "There was a problem with your request.",
+                action: <ToastAction altText="Try again">Try again</ToastAction>,
+              })
             }
           }}
         >
