@@ -30,13 +30,13 @@ export function BookButton2({
       <Credenza>
         <CredenzaTrigger asChild>
           <ButtonE
-            className="col-span-1 h-9 min-w-full bg-black text-white dark:border dark:border-white dark:bg-[#020817] xl:h-10"
+            className="col-span-1 h-9 min-w-full bg-black text-white dark:border dark:border-white dark:bg-black xl:h-10"
             variant="gooeyLeft"
           >
             Book
           </ButtonE>
         </CredenzaTrigger>
-        <CredenzaContent className="border-2 border-black dark:border dark:border-neutral-600 to-gray-900 from-40% from-themeblue dark:bg-gradient-to-r">
+        <CredenzaContent className="border-2 border-black dark:border dark:border-neutral-600 dark:bg-black">
           <CredenzaHeader>
             <CredenzaTitle>
               <div className="flex justify-between">

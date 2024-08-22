@@ -8,7 +8,7 @@ import { AppbarClient } from "../AppbarClient";
 import { useSession } from "next-auth/react";
 import { UserRole } from "@prisma/client";
 import { CalendarRange, Codesandbox, SquareCheckBig, SquareUserRound } from "lucide-react";
-import { ScrollArea } from "../../../@/components/ui/scroll-area";
+import Footer from "../footer/Footer";
 
 export function SidebarDemo({ children }: { children: React.ReactNode }) {
   const session = useSession();
@@ -62,12 +62,14 @@ export function SidebarDemo({ children }: { children: React.ReactNode }) {
   return (
     <div
       className={cn(
-        "flex w-full flex-1 flex-col overflow-hidden rounded-md border border-neutral-200 bg-gray-100 dark:border-gray-700 dark:bg-[#020817] md:flex-row",
-        "h-screen" // for your use case, use `h-screen` instead of `h-[60vh]`
+        "flex w-full flex-1 flex-col overflow-hidden rounded-md border border-neutral-200 bg-gray-100 dark:border-gray-700 dark:bg-black md:flex-row",
+        "h-full"
+         // for your use case, use `h-screen` instead of `h-[60vh]`❌
+         //we should Use h-full here , as h-screen was causing issues
       )}
     >
       <Sidebar open={open} setOpen={setOpen}>
-        <SidebarBody className="justify-between gap-20 dark:bg-gray-900">
+        <SidebarBody className="justify-between gap-20 dark:bg-black">
           <div className="flex flex-1 flex-col overflow-y-auto">
             {open ? <Logo /> : <LogoIcon />}
             <div className="mt-8 flex flex-col gap-2">
@@ -113,15 +115,21 @@ export const LogoIcon = () => {
 // Dummy dashboard component with content
 const Dashboard = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="flex flex-1 flex-col gap-2 rounded-tl-2xl border border-neutral-200 bg-white p-2 dark:border-gray-700 to-gray-900 from-40% from-themeblue dark:bg-gradient-to-r overflow-y-auto">
-      <AppbarClient />
-      {/* <ScrollArea className="flex-1"> */}
-      {/* <div className="-1"> */}
-      {children}
+   
+    <div className="flex flex-col flex-1 gap-2 rounded-tl-2xl border border-neutral-200 bg-white p-2 dark:border-gray-700 dark:bg-black">
+    {/* AppBar at the top */}
+    <AppbarClient />
 
-      {/* </div> */}
-      {/* </ScrollArea> */}
+    {/* Main content */}
+    <div className="flex-1 p-4 overflow-y-auto no-scrollbar">
+      {children}
+    <div>
+      <hr className="my-12"/>
+    <Footer/>
     </div>
+    </div>
+    {/* Footer */}
+  </div>
   );
 };
 

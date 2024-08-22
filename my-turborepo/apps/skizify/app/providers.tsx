@@ -8,7 +8,7 @@ export const Providers = ({ children }: { children: React.ReactNode }) => {
     return (
       <SessionProvider>
         <ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
-        <div className='dark:bg-[#020817] w-full'>
+        <div className='dark:bg-black w-full'>
         <RecoilRoot>
           {children}
         </RecoilRoot>

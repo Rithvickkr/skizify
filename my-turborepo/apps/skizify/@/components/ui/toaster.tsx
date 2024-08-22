@@ -8,11 +8,7 @@ import {
   ToastTitle,
   ToastViewport,
 } from "./toast"
-<<<<<<< HEAD
-import { useToast } from "./toast"
-=======
 import { useToast } from "./use-toast"
->>>>>>> 12fb168305579cc9e75e40d64cdb506e18cbdce7
 
 export function Toaster() {
   const { toasts } = useToast()

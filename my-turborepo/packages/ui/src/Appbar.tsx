@@ -47,30 +47,30 @@ export const Appbar = ({ user, onSignout, onSignin, fn }: AppbarProps) => {
               classname="ring-2 ring-black dark:ring-slate-50 "
             />
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="mr-3 mt-2 w-60 bg-white p-3 shadow-2xl dark:border-gray-700 dark:bg-[#020817]">
+          <DropdownMenuContent className="mr-3 mt-2 w-60 bg-white p-3 shadow-2xl dark:border-neutral-700 dark:bg-black">
             {/* <DropdownMenuLabel>My Account</DropdownMenuLabel> */}
             <DropdownMenuSeparator />
             <DropdownMenuItem className="x focus:outline-0">
               <div className="flex flex-col dark:text-slate-50">
-                <div className="my-1 font-semibold">{user?.name}</div>
-                <div className="truncate text-xs">{user?.email}</div>
+                <div className="my-1 font-semibold break-all break-words">{user?.name}</div>
+                <div className="truncate text-xs break-all break-words">{user?.email}</div>
               </div>
             </DropdownMenuItem>
-            <hr className="dark:border-gray-700" />
+            <hr className="dark:border-neutral-700" />
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="mb-2 cursor-pointer rounded-md p-1 shadow-md hover:text-gray-500 focus:outline-0 dark:bg-gray-800 dark:hover:bg-gray-900">
-              <MoonIcon className="m-2 mr-2 size-4" />
+            <DropdownMenuItem className="mb-2 cursor-pointer rounded-md p-1 shadow-md focus:outline-0 hover:dark:bg-lightdark dark:bg-neutral-900">
+              {/* <MoonIcon className="m-2 mr-2 size-4" /> */}
               <SwitchTheme />
             </DropdownMenuItem>
-            <DropdownMenuItem className="cursor-pointer rounded-md p-1 shadow-md hover:text-gray-500 focus:outline-0 dark:bg-gray-800 dark:hover:bg-gray-900">
+            <DropdownMenuItem className="cursor-pointer rounded-md p-1 shadow-md focus:outline-0 hover:dark:bg-lightdark dark:bg-neutral-900">
               <Cog className="m-2 mr-2 size-5" />
               <span>Settings</span>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <hr className="dark:border-gray-700" />
+            <hr className="dark:border-neutral-700 mb-2" />
             <DropdownMenuItem
               onClick={fn}
-              className="cursor-pointer rounded-md p-1 shadow-md hover:text-gray-500 focus:outline-0 dark:bg-gray-800 dark:hover:bg-gray-900"
+              className="cursor-pointer rounded-md p-1 shadow-md focus:outline-0 hover:dark:bg-lightdark dark:bg-neutral-900"
             >
               <WandSparkles className="m-2 mr-2 size-4" />
               <span>
@@ -78,10 +78,10 @@ export const Appbar = ({ user, onSignout, onSignin, fn }: AppbarProps) => {
               </span>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <hr className="dark:border-gray-700" />
+            <hr className="dark:border-neutral-700" />
             <DropdownMenuItem
               onClick={user ? onSignout : onSignin}
-              className="my-2 cursor-pointer rounded-md p-1 shadow-md hover:text-gray-500 focus:outline-0 dark:bg-gray-800 dark:hover:bg-gray-900"
+              className="my-2 cursor-pointer rounded-md p-1 shadow-md focus:outline-0 hover:dark:bg-lightdark dark:bg-neutral-900"
             >
               <LogOutIcon className="m-2 mr-2 size-4" />
               <span className="p-1">{user ? "Logout" : "Login"}</span>

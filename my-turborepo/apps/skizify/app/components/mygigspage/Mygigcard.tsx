@@ -44,7 +44,7 @@ export default function MygigCard({ gigs , session }: { gigs: GigsInterface[] , 
         gigs.map((gig) => (
           <div
             key={gig.id}
-            className="flex w-full flex-col rounded-lg border border-gray-300 dark:border-2 dark:border-gray-800 p-3 shadow-md transition duration-200 hover/mygiggs:translate-x-2 dark:bg-[#020817]"
+            className="flex w-full flex-col rounded-lg border border-gray-300 dark:border-2 dark:border-neutral-600 -800 p-3 shadow-md transition duration-200 hover/mygiggs:translate-x-2 dark:bg-black"
           >
             <div className="flex w-full justify-between">
               <div className="flex space-x-1">
@@ -63,7 +63,7 @@ export default function MygigCard({ gigs , session }: { gigs: GigsInterface[] , 
                 <EditDeleteCard gig={gig} />
               </div>
             </div>
-            <hr className="my-1 dark:border-gray-800" />
+            <hr className="my-1 dark:border-neutral-600" />
             <div className="my-3 flex">
               <div className="flex flex-1 flex-col shadow-sm-light">
                 <div className="ml-2 font-display text-lg md:text-xl">

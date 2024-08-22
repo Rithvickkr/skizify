@@ -2,7 +2,10 @@
 
 import * as React from "react";
 import { useTheme } from "next-themes";
+import { Moon, Sun } from "lucide-react";
 import { Button } from "../../@/components/ui/button";
+import { Switch } from "../../@/components/ui/switch";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,30 +18,32 @@ import {
 
 export default function SwitchTheme() {
   const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = React.useState(false);
 
-  const toggleTheme = () => {
-    setTheme(theme === "dark" ? "light" : "dark");
-  };
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
+
+  const isDarkMode =
+    theme === "dark" ||
+    (theme === "system" &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches);
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild className="p-1">
-        <span className="p-1">Theme</span>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-36 border bg-white dark:border-gray-700 dark:bg-gray-900">
-        <DropdownMenuLabel>
-          <span className="dark:bg-gray-800">Appeareance</span>
-        </DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuRadioGroup value={theme} onValueChange={toggleTheme}>
-          <DropdownMenuRadioItem value="dark">
-            <span className="ml-3 cursor-pointer self-center p-1">Dark</span>
-          </DropdownMenuRadioItem>
-          <DropdownMenuRadioItem value="light">
-            <span className="ml-3 cursor-pointer self-center p-1">Light</span>
-          </DropdownMenuRadioItem>
-        </DropdownMenuRadioGroup>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <div className="flex items-center gap-2">
+      <Sun
+        className={`m-2 mr-2 size-5  ${isDarkMode ? "text-lightwhite" : "text-black"}`}
+      />
+      <Switch
+      className="bg-black dark:bg-white"
+        checked={isDarkMode}
+        onCheckedChange={(checked: any) => setTheme(checked ? "dark" : "light")}
+      />
+      <Moon
+        className={`m-2 mr-2 size-5 ${isDarkMode ? "text-lightwhite" : "text-black"}`}
+      />
+    </div>
   );
 }

@@ -83,7 +83,7 @@ export default function SkizzerselectCard({
           Messages
         </Button>
         <Button
-          className="col-span-1 m-1 w-full flex-1 bg-black text-white dark:border dark:border-white dark:bg-[#020817]"
+          className="col-span-1 m-1 w-full flex-1 bg-black text-white dark:border dark:border-white dark:bg-black"
           variant="gooeyLeft"
           onClick={async () => {
             const info = SKizzersInfo.find((x: any) => {

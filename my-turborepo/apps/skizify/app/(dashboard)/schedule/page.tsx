@@ -15,7 +15,7 @@ export default async function Home(){
   }
     return (
       
-        <div className="h-screen dark:bg-trail-blue ">
+        <div className="h-screen dark:bg-black  ">
             <Example meetings={meetings}/>
         </div>
     )

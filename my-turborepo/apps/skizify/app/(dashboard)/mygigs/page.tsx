@@ -12,7 +12,7 @@ export default async function Page() {
   // await deleteExpiredGigs();
   const session = await getServerSession(authOptions);
   return (
-    <div className="h-screen">
+    <div className="">
       
       {session?.user.role === UserRole.USER ? (
         <Userrequests />

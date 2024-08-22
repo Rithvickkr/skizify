@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Providers } from "./providers";
 import { Toaster } from "../@/components/ui/toaster";
+import Footer from "./components/footer/Footer";
 
 // import {NextUIProvider} from "@nextui-org/react";
 
@@ -19,11 +20,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }): JSX.Element {
   return (
-    <html lang="en" >
+    <html lang="en" className="no-scrollbar bg-black">
       <body className={inter.className} suppressHydrationWarning={true}>
       <Providers >
         {/* <NextUIProvider> */}
-        
           {children}
           <Toaster />
         {/* </NextUIProvider> */}
