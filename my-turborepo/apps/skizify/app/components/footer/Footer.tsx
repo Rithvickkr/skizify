@@ -42,7 +42,7 @@ export default function Footer() {
     console.log(values);
   }
   return (
-    <Section className="mt-4 rounded-md p-4 dark:bg-black">
+    <Section className="mt-4  p-4 border-t border-black dark:border-white dark:bg-black">
       <div className="grid gap-6">
         <div className="not-prose flex flex-col gap-6">
           <Link href="/">
@@ -51,8 +51,8 @@ export default function Footer() {
           </Link>
           <p>
             <Balancer>
-              brijr/components is a collection of Next.js, React, Typescript
-              components for building landing pages and websites.
+              Solve your Doughts using One on One Interaction
+              Learn from Experts
             </Balancer>
           </p>
           <div className="flex gap-2">
@@ -79,7 +79,7 @@ export default function Footer() {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="md:text-xl text-lg">
+                  <FormLabel className="md:text-2xl font-semibold text-lg">
                     Contact us, If you like this project
                   </FormLabel>
                   <FormControl>
@@ -98,7 +98,7 @@ export default function Footer() {
             />
             <Button
               variant="gooeyLeft"
-              className="bg-black dark:bg-white dark:text-black"
+              className="bg-black dark:bg-lightwhite  dark:text-black"
             >
               Submit
             </Button>
@@ -106,15 +106,15 @@ export default function Footer() {
         </Form>
         </div>
       </div>
-      <hr className="mt-2 mb-2"/>
-      <div className="not-prose items-center justify-between text-sm md:flex mb-3">
-        <div className="decoration-muted mb-6 flex flex-col gap-4 underline underline-offset-4 md:mb-0 md:flex-row">
+      <hr className="mt-2 mb-2 "/>
+      <div className="not-prose items-center justify-between text-xs md:text-sm md:flex md:mb-3">
+        <div className="decoration-muted mb-6 flex flex-col gap-2 md:gap-4  underline underline-offset-4 md:mb-0 md:flex-row">
           <Link href="/privacy-policy">Privacy Policy</Link>
           <Link href="/terms-of-service">Terms of Service</Link>
           <Link href="/cookie-policy">Cookie Policy</Link>
         </div>
         <p className="text-muted-foreground">
-          © <a href="https://github.com/brijr/components" className="hover:underline">brijr/components</a>.
+          © <a href="https://github.com/Rithvickkr/skizify" className="hover:underline">Skizify</a>.
           All rights reserved. 2024-present.
         </p>
       </div>

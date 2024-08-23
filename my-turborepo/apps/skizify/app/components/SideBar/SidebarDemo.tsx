@@ -115,21 +115,18 @@ export const LogoIcon = () => {
 // Dummy dashboard component with content
 const Dashboard = ({ children }: { children: React.ReactNode }) => {
   return (
-   
-    <div className="flex flex-col flex-1 gap-2 rounded-tl-2xl border border-neutral-200 bg-white p-2 dark:border-gray-700 dark:bg-black">
-    {/* AppBar at the top */}
-    <AppbarClient />
+    <div className="flex flex-col w-full min-h-screen gap-2 rounded-tl-2xl border border-neutral-200 bg-white p-2 dark:border-gray-700 dark:bg-black">
+      {/* AppBar at the top */}
+      <AppbarClient />
 
-    {/* Main content */}
-    <div className="flex-1 p-4 overflow-y-auto no-scrollbar">
-      {children}
-    <div>
-      <hr className="my-12"/>
-    <Footer/>
+      {/* Main content */}
+      <div className="flex-1 p-4 overflow-y-auto no-scrollbar">
+        {children}
+      </div>
+
+      {/* Footer */}
+      <Footer />
     </div>
-    </div>
-    {/* Footer */}
-  </div>
   );
 };
 
