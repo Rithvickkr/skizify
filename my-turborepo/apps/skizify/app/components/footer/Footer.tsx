@@ -122,7 +122,7 @@ export default function Footer() {
   }
 
   return (
-    <Section className=" rounded-tl-lg rounded-tr-lg border-black px-2 pb-2 pl-4 pt-5 dark:border-white dark:bg-mediumdark md:pb-0">
+    <Section className=" rounded-tl-lg rounded-tr-lg border-black px-2 pb-2 pl-4 pt-5 dark:border-white dark:bg-black opacity-95 md:pb-0">
       <div className=" gap-2 md:gap-4">
         <Form {...form}>
           <form
