@@ -20,7 +20,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }): JSX.Element {
   return (
-    <html lang="en" className="no-scrollbar bg-black">
+    <html lang="en" className="no-scrollbar" suppressHydrationWarning>
       <body className={inter.className} suppressHydrationWarning={true}>
       <Providers >
         {/* <NextUIProvider> */}

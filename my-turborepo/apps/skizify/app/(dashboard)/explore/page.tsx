@@ -19,7 +19,7 @@ export default async function Page({
   const session = await getServerSession(authOptions);
   const filteredGigs =  filtergigs(gigs,session);  
   return (
-    <div className="flex flex-col h-screen items-center  rounded-lg w-full pb-4">
+    <div className="flex flex-col h-fit items-center  rounded-lg w-full pb-4">
     <div className="relative w-full max-w-lg ">
       <Search className=" absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground " />
       <input

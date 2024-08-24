@@ -6,7 +6,7 @@ import {
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "../../../@/components/ui/tooltip"
+} from "../../../@/components/ui/tooltip";
 import {
   ArrowRightIcon,
   CalendarClock,
@@ -28,23 +28,28 @@ import RedirectToMeetingPage from "./RedirectingMeetingButton";
 interface User {
   userImage: string;
   name: string;
-  
 }
 
 interface MygigCardProps {
   gigs: GigsInterface[];
 }
 
-export default function MygigCard({ gigs , session }: { gigs: GigsInterface[] , session: any}) {
+export default function MygigCard({
+  gigs,
+  session,
+}: {
+  gigs: GigsInterface[];
+  session: any;
+}) {
   // const router = useRouter();
   //HELLO PR KAB BHEJEGA KAMINE
   return (
-    <div className="group/mygiggs space-y-4 p-3 transition duration-200">
+    <div className="group/mygiggs space-y-4 pl-3 transition duration-200">
       {Array.isArray(gigs) && gigs.length > 0 ? (
         gigs.map((gig) => (
           <div
             key={gig.id}
-            className="flex w-full flex-col rounded-lg border border-gray-300 dark:border-2 dark:border-neutral-600 -800 p-3 shadow-md transition duration-200 hover/mygiggs:translate-x-2 dark:bg-black"
+            className="-800 flex w-full flex-col rounded-md rounded-tl-3xl border border-gray-300 p-3 shadow-md transition duration-200 hover/mygiggs:translate-x-2 dark:border-2 dark:border-neutral-600 dark:bg-black"
           >
             <div className="flex w-full justify-between">
               <div className="flex space-x-1">
@@ -54,7 +59,7 @@ export default function MygigCard({ gigs , session }: { gigs: GigsInterface[] , 
                   classname="size-10 text-sm mr-3"
                 />
                 <div className="self-center">
-                  <span className="md:text-md text-sm text-gray-500">
+                  <span className="text-sm md:text-base  text-gray-500">
                     {session?.user.name}
                   </span>
                 </div>
@@ -77,8 +82,8 @@ export default function MygigCard({ gigs , session }: { gigs: GigsInterface[] , 
                 </div>
               </div>
               <div className="grid flex-1 grid-cols-1 py-2 pl-2 md:grid-cols-2">
-                <div className="my-1 flex place-content-start items-center p-2 sm:my-2 md:my-0">
-                <Clock7
+                <div className="hover:dark:bg-v0dark rounded-lg cursor-pointer my-1 flex place-content-start items-center p-2 sm:my-2 md:my-0">
+                  <Clock7
                     className="mr-3 size-5 cursor-pointer text-xl font-medium text-gray-400 dark:text-white md:size-6"
                     strokeWidth={1.5}
                     absoluteStrokeWidth
@@ -87,7 +92,7 @@ export default function MygigCard({ gigs , session }: { gigs: GigsInterface[] , 
                     {`${Month(gig.startDateTime)} ${gig.startDateTime.getDate()} - ${Month(gig.endDateTime)} ${gig.endDateTime.getDate()}`}
                   </div>
                 </div>
-                <div className="my-1 flex place-content-center  items-center py-2 pl-2 sm:my-2 md:my-0">
+                <div className="hover:dark:bg-v0dark rounded-lg cursor-pointer my-1 flex place-content-center items-center py-2 pl-2 sm:my-2 md:my-0">
                   <CalendarClock
                     className="mr-3 size-5 cursor-pointer text-xl font-medium dark:text-white md:size-6"
                     strokeWidth={1.5}
@@ -97,8 +102,8 @@ export default function MygigCard({ gigs , session }: { gigs: GigsInterface[] , 
                     {`${formatTime(gig.startDateTime)} - ${formatTime(gig.endDateTime)}`}
                   </div>
                 </div>
-                <div className="my-1 flex place-content-start items-center p-2 sm:my-2 md:my-0">
-                <CalendarDays
+                <div className="hover:dark:bg-v0dark rounded-lg cursor-pointer my-1 flex place-content-start items-center p-2 sm:my-2 md:my-0">
+                  <CalendarDays
                     className="mr-3 size-5 cursor-pointer text-xl font-medium text-gray-400 dark:text-white md:size-6"
                     strokeWidth={1.5}
                     absoluteStrokeWidth

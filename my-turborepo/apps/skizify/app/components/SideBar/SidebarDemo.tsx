@@ -1,14 +1,20 @@
 "use client";
-import React, { SVGProps, useState } from "react";
-import { Sidebar, SidebarBody, SidebarLink } from "../ui/sidebar";
-import Link from "next/link";
+import { UserRole } from "@prisma/client";
 import { motion } from "framer-motion";
+import {
+  CalendarRange,
+  Codesandbox,
+  LayoutGrid,
+  SquareCheckBig,
+  SquareUserRound,
+} from "lucide-react";
+import { useSession } from "next-auth/react";
+import Link from "next/link";
+import React, { SVGProps, useState } from "react";
 import { cn } from "../../utils/cn";
 import { AppbarClient } from "../AppbarClient";
-import { useSession } from "next-auth/react";
-import { UserRole } from "@prisma/client";
-import { CalendarRange, Codesandbox, SquareCheckBig, SquareUserRound } from "lucide-react";
 import Footer from "../footer/Footer";
+import { Sidebar, SidebarBody, SidebarLink } from "../ui/sidebar";
 
 export function SidebarDemo({ children }: { children: React.ReactNode }) {
   const session = useSession();
@@ -30,7 +36,7 @@ export function SidebarDemo({ children }: { children: React.ReactNode }) {
       href: "/mygigs",
       icon:
         session.data?.user.role === UserRole.USER ? (
-          <BriefcaseIcon className="size-6 flex-shrink-0 text-neutral-700 dark:text-neutral-200" />
+          <LayoutGrid className="size-6 flex-shrink-0 text-neutral-700 dark:text-neutral-200" />
         ) : (
           <SquareCheckBig className="size-6 flex-shrink-0 text-neutral-700 dark:text-neutral-200" />
         ),
@@ -53,19 +59,23 @@ export function SidebarDemo({ children }: { children: React.ReactNode }) {
       label: "Profile",
       href: "/profile",
       icon: (
-        <SquareUserRound strokeWidth={1.5} className="size-6 flex-shrink-0 text-neutral-700 dark:text-neutral-200" />
+        <SquareUserRound
+          strokeWidth={1.5}
+          className="size-6 flex-shrink-0 text-neutral-700 dark:text-neutral-200"
+        />
       ),
     },
   ];
-  const filteredLinks = session.data?.user.role === UserRole.USER ? links : links.slice(1);
+  const filteredLinks =
+    session.data?.user.role === UserRole.USER ? links : links.slice(1);
   const [open, setOpen] = useState(false);
   return (
     <div
       className={cn(
-        "flex w-full flex-1 flex-col overflow-hidden rounded-md border border-neutral-200 bg-gray-100 dark:border-gray-700 dark:bg-black md:flex-row",
-        "h-full"
-         // for your use case, use `h-screen` instead of `h-[60vh]`❌
-         //we should Use h-full here , as h-screen was causing issues
+        "flex w-full flex-1 flex-col overflow-hidden rounded-md border border-neutral-200 bg-gray-100 dark:border-neutral-700 dark:bg-black md:flex-row",
+        "h-full",
+        // for your use case, use `h-screen` instead of `h-[60vh]`❌
+        //we should Use h-full here , as h-screen was causing issues
       )}
     >
       <Sidebar open={open} setOpen={setOpen}>
@@ -115,23 +125,18 @@ export const LogoIcon = () => {
 // Dummy dashboard component with content
 const Dashboard = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="flex flex-col w-full min-h-screen gap-2 rounded-tl-2xl border border-neutral-200 bg-white p-2 dark:border-gray-700 dark:bg-black">
+    <div className="flex min-h-screen w-full flex-col gap-2 rounded-tl-2xl border border-neutral-200 bg-white p-2 dark:border-neutral-700 dark:bg-black">
       {/* AppBar at the top */}
       <AppbarClient />
 
       {/* Main content */}
-      <div className="flex-1 p-4 overflow-y-auto no-scrollbar">
-        {children}
-      </div>
+      <div className="no-scrollbar flex-1 overflow-y-auto p-4">{children}</div>
 
       {/* Footer */}
       <Footer />
     </div>
   );
 };
-
-
-
 
 function BriefcaseIcon(
   props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>,

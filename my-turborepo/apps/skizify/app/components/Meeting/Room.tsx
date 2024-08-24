@@ -272,7 +272,6 @@ export default function Room({
     }
   };
 
-
   const stopScreenShare = () => {
     if (screenTrack) {
       screenTrack.stop();

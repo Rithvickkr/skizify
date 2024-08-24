@@ -177,7 +177,7 @@ export const SidebarLink = ({
       )}
       {...props}
     >
-      <div className={`${selected ? "border-2 border-black dark:border dark:border-white rounded" :""}`}>{link.icon}</div>
+      <div className={`${selected ? "border-2 border-black dark:border-2 dark:border-white rounded" :""}`}>{link.icon}</div>
 
       <motion.span
         animate={{
