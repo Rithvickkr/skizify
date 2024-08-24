@@ -122,82 +122,65 @@ export default function Footer() {
   }
 
   return (
-    <Section className="dark:bg-mediumdark   mt-4 rounded-tl-lg rounded-tr-lg border-t border-black px-2 pl-4 pt-5 dark:border-white">
-      <div className="grid gap-2 md:gap-4">
-        <div className="not-prose flex flex-col gap-3">
-          {/* <Link href="/">
-            <h3 className="sr-only">brijr/components</h3>
-            <div className="dark:bg-white bg-black ring-1 border-2 ring-black dark:ring-white h-5 w-6 flex-shrink-0 rounded-bl-sm rounded-br-lg rounded-tl-lg rounded-tr-sm" />
-          </Link> */}
-          <p className="text-sm dark:text-neutral-300 md:text-base">
-            <Balancer>
-              Solve your Doughts using One on One Interaction Learn from Experts
-            </Balancer>
-          </p>
-          <div className="flex gap-2">
-            {renderDropdown("github", Icons.github)}
-            {renderDropdown("linkedin", Icons.linkedin)}
-            {renderDropdown("x", Icons.x)}
-          </div>
-        </div>
-
-        <div className="">
-          <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(onSubmit)}
-              className="not-prose space-y-4"
-            >
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-lg font-semibold md:text-2xl">
-                      Contact us, If you like this project
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        className="my-4 bg-black md:w-96"
-                        placeholder="example@fjord.dev"
-                        {...field}
-                      />
-                    </FormControl>
-                    {/* <FormDescription>
+    <Section className=" rounded-tl-lg rounded-tr-lg border-black px-2 pb-2 pl-4 pt-5 dark:border-white dark:bg-mediumdark md:pb-0">
+      <div className=" gap-2 md:gap-4">
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="not-prose space-y-2"
+          >
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-lg font-semibold md:text-2xl opacity-75">
+                    Contact us, If you like this project
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      className="my-2 bg-black md:w-96"
+                      placeholder="example@fjord.dev"
+                      {...field}
+                    />
+                  </FormControl>
+                  {/* <FormDescription>
                       Lorem ipsum dolor sit amet.
                     </FormDescription> */}
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <Button
-                variant="gooeyLeft"
-                className="group/btn relative bg-black dark:bg-lightwhite dark:text-black dark:shadow-[0px_0px_1px_1px_var(--neutral-800)] md:h-10 md:px-4 md:py-2"
-                size={"sm"}
-              >
-                Submit
-                <BottomGradient />
-              </Button>
-            </form>
-          </Form>
-        </div>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button
+              variant="gooeyLeft"
+              className="group/btn relative bg-black dark:bg-lightwhite dark:text-black dark:shadow-[0px_0px_1px_1px_var(--neutral-800)] md:h-10 md:px-4 md:py-2"
+              size={"sm"}
+            >
+              Submit
+              <BottomGradient />
+            </Button>
+          </form>
+        </Form>
       </div>
       <hr className="mb-2 mt-2" />
-      <div className="not-prose items-center justify-between text-xs dark:text-neutral-300 md:mb-3 md:flex md:text-sm">
-        <div className="decoration-muted mb-6 flex flex-col gap-2 underline underline-offset-4 md:mb-0 md:flex-row md:gap-4">
-          <Link href="/privacy-policy">Privacy Policy</Link>
-          <Link href="/terms-of-service">Terms of Service</Link>
-          <Link href="/cookie-policy">Cookie Policy</Link>
+      <div className="not-prose flex items-center justify-between text-xs dark:text-neutral-300 md:mb-3 md:flex md:text-sm">
+        <div>
+          <p className="text-muted-foreground">
+            ©{" "}
+            <a
+              href="https://github.com/Rithvickkr/skizify"
+              className="hover:underline"
+            >
+              Skizify
+            </a>
+            . All rights reserved. 2024-present.
+          </p>
         </div>
-        <p className="text-muted-foreground">
-          ©{" "}
-          <a
-            href="https://github.com/Rithvickkr/skizify"
-            className="hover:underline"
-          >
-            Skizify
-          </a>
-          . All rights reserved. 2024-present.
-        </p>
+        <div className="flex gap-2">
+          {renderDropdown("github", Icons.github)}
+          {renderDropdown("linkedin", Icons.linkedin)}
+          {renderDropdown("x", Icons.x)}
+        </div>
       </div>
     </Section>
   );
@@ -212,9 +195,9 @@ const renderDropdown = (
       <Button
         variant="outline"
         size="icon"
-        className="group/btn relative size-7 bg-transparent transition-shadow duration-300 hover:shadow-md dark:bg-black dark:shadow-[0px_0px_1px_1px_var(--neutral-800)] md:size-10"
+        className="group/btn relative size-7 bg-transparent opacity-70 transition-shadow duration-300 hover:opacity-100 hover:shadow-md dark:border-0 dark:bg-black dark:shadow-[0px_0px_1px_1px_var(--neutral-800)] md:size-10"
       >
-        <Icon className="h-6 w-6" />
+        <Icon className="size-4 md:size-6" />
         <BottomGradient />
       </Button>
     </DropdownMenuTrigger>

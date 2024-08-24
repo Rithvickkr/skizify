@@ -105,7 +105,7 @@ export const BentoGridItem = ({
                 <div className="ml-2 h-7 max-w-64 justify-items-center overflow-hidden truncate font-display text-xl font-medium">
                   {gig.title || "Title"}
                 </div>
-                <ScrollArea className="h-20 w-full truncate text-wrap rounded-md border p-2 px-2 text-sm">
+                <ScrollArea className="h-20 w-full truncate text-wrap rounded-md border p-2 px-2 text-sm opacity-60 ">
                   {gig.content}
                   <ScrollBar orientation="horizontal" />
                 </ScrollArea>
@@ -139,7 +139,7 @@ export const BentoGridItem = ({
             )}
 
             <ButtonE
-              className={`m-1 flex-1 ${(status === UserRole.SKIZZER) ? "bg-white text-black shadow hover:bg-white hover:ring-black" : "bg-black text-white"}  dark:bg-gray-200 dark:text-black dark:hover:bg-white dark:hover:text-black dark:hover:ring-white`}
+              className={`m-1 flex-1 ${(status === UserRole.SKIZZER) ? "bg-white  text-black shadow hover:bg-white hover:ring-black" : "bg-black text-white"}  dark:bg-gray-200 dark:text-black dark:hover:bg-white dark:hover:text-black dark:hover:ring-white dark:bg-opacity-95`}
               variant={`${(status === UserRole.SKIZZER) ? "ringHover" : "gooeyLeft"}`}
             >
               Message
