@@ -94,7 +94,7 @@ model meeting {
 enum MeetingStatus {
   UNBOOKED_PENDING
   BOOKED_PENDING
-  ONGOING //When the meeting Time is Ongoing Then Before 30Minutes we will send the Notification
+  ONGOING //When the meeting Time is Ongoing Then Before 30 Minutes we will send the Notification
   ENDED
 }
 
@@ -103,6 +103,7 @@ enum AuthType {
   FACEBOOK
   GITHUB
   PENDING
+  LINKEDIN
 }
 
 enum GigStatus {
