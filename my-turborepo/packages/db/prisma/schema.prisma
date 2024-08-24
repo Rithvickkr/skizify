@@ -50,6 +50,7 @@ model Gigs {
   author          User      @relation(name: "Author", fields: [authorId], references: [id])
   acceptedUsers   GigUser[] ///WHAT THIS MEANS IS THAT IT CONTAINS ALL THE ELEMENTS WHICH HAS GIGid equal to the original id
   Interval        Json
+  category        String
 }
 
 model Reviews {

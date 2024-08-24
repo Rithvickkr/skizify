@@ -1,117 +1,273 @@
-import { Avatar } from "@repo/ui/avatar";
-import { Textarea } from "../../../@/components/ui/textarea";
+"use client";
+import React, { useState, useRef, useEffect } from "react";
 import { Button } from "../ui/button";
-import { CameraIcon, MicIcon, PhoneIcon, ScreenShare, Send, SettingsIcon, ShareIcon, Smile, SmilePlus, X } from "lucide-react";
+import { Switch } from "../../../@/components/ui/switch";
+import { Slider } from "../../../@/components/ui/slider";
+import {
+  Camera,
+  Mic,
+  VideoOff,
+  MicOff,
+  Sparkles,
+  Image as ImageIcon,
+} from "lucide-react";
+import { useSession } from "next-auth/react";
+import Room from "./Room";
 
 export default function Component() {
-  return (
-    <div className="flex h-full w-full">
-      <div className="relative flex flex-1 items-center justify-center p-3">
-        <div className="grid w-full max-w-4xl grid-cols-2 gap-6">
-          <div className="overflow-hidden rounded-xl border border-white ring-2 ring-black dark:border-gray-700">
-            <div
-              className="h-full w-full rounded-lg bg-black object-cover"
-              style={{ aspectRatio: "450/600", objectFit: "cover" }}
-            />
-          </div>
-          <div className="overflow-hidden rounded-xl border border-white ring-2 ring-black dark:border-gray-700">
-            <div
-              className="h-full w-full rounded-lg bg-black object-cover"
-              style={{ aspectRatio: "450/600", objectFit: "cover" }}
-            />
-          </div>
-        </div>
-        <div className="absolute flex items-center justify-center gap-2 bottom-2 w-full">
-        <Button variant="ghost" className="hover:bg-neutral-700 dark:hover:bg-gray-500" size="icon">
-          <MicIcon className="size-5 " />
-          <span className="sr-only">Mute</span>
-        </Button>
-        <Button variant="ghost" className="hover:bg-neutral-700 dark:hover:bg-gray-500" size="icon">
-          <CameraIcon className="size-5 " />
-          <span className="sr-only">Camera</span>
-        </Button>
-        <Button variant="destructive" className="hover:bg-neutral-700 dark:hover:bg-gray-500 bg-red-600 text-white"  size="icon">
-          <PhoneIcon className="size-5 " />
-          <span className="sr-only">End Call</span>
-        </Button>
-        <Button variant="ghost" className="hover:bg-neutral-700 dark:hover:bg-gray-500" size="icon">
-          <ScreenShare className="size-5 " />
-          <span className="sr-only">Share</span>
-        </Button>
-        <Button variant="ghost" className="hover:bg-neutral-700 dark:hover:bg-gray-500" size="icon">
-          <SettingsIcon className="size-5 " />
-          <span className="sr-only">Settings</span>
-        </Button>
-        </div>
-      </div>
-      <div className="flex w-[320px] flex-col rounded-md border bg-black ring-2 ring-black dark:border-1 dark:border-gray-800 dark:bg-themeblue dark:ring-0">
-        <div className="flex items-center justify-between border-b border-[#334155] px-4 py-3 dark:border-gray-700">
-          <div className="text-lg font-medium text-[#e2e8f0]">Chat</div>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="rounded-md text-[#94a3b8] hover:bg-gray-500"
-          >
-            <X className="size-5" />
-          </Button>
-        </div>
-        <div className="flex-1 space-y-4 overflow-auto p-4">
-          <div className="flex items-start gap-3">
-            <Avatar
-              name={"SM"}
-              classname="size-8 shadow-sm mr-3 bg-gray-200 text-sm  text-black border border-black"
-            />
-            <div className="rounded-lg bg-[#334155] p-3 text-sm text-[#e2e8f0]">
-              <p>Hey, how's the video quality?</p>
-              <div className="mt-1 text-xs text-[#94a3b8]">2:34 PM</div>
-            </div>
-          </div>
-          <div className="flex items-start justify-end gap-3">
-            <div className="rounded-lg bg-neutral-200 p-3 text-sm text-black dark:bg-[#25306c] dark:text-[#e2e8f0]">
-              <p>It's looking great! Can you hear me okay?</p>
-              <div className="mt-1 text-xs text-[#58595a] dark:text-gray-400">
-                2:35 PM
+  const session = useSession();
+  const [isCameraOn, setIsCameraOn] = useState(true);
+  const [isBackgroundBlur, setIsBackgroundBlur] = useState(false);
+  const [touchUpLevel, setTouchUpLevel] = useState(0);
+  const [localAudioTrack, setLocalAudioTrack] = useState<
+    MediaStreamTrack | null | undefined
+  >(null);
+  const [localVideoTrack, setlocalVideoTrack] = useState<
+    MediaStreamTrack | null | undefined
+  >(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [join, setJoin] = useState(false);
+  const [permissionDenied, setPermissionDenied] = useState(false);
+  const [isVideoInitialized, setIsVideoInitialized] = useState(true);
+  const [isAudioEnabled, setIsAudioEnabled] = useState(true);
+  const [isVideoEnabled, setIsVideoEnabled] = useState(true);
+
+  async function getPermissionEnableStream() {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: true,
+        audio: true,
+      });
+      // Do something with the stream
+      const videotrack = stream.getVideoTracks()[0];
+      const audiotrack = stream.getAudioTracks()[0];
+      setlocalVideoTrack(videotrack);
+      setLocalAudioTrack(audiotrack);
+
+      if (videotrack && videoRef && videoRef.current) {
+        videoRef.current.srcObject = new MediaStream([videotrack]);
+        videoRef.current.play();
+      }
+      // Reset permission denied state
+      setPermissionDenied(false);
+    } catch (err) {
+      console.error("Permissions Denied:", err);
+      setIsVideoInitialized(true);
+      setPermissionDenied(true);
+      alert(
+        "We need access to your camera and microphone. Please enable them in your browser settings.",
+      );
+      setIsVideoInitialized(false);
+    }
+  }
+
+  async function getAudioPermissionEnableStream() {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        audio: true,
+      });
+      const audiotrack = stream.getAudioTracks()[0];
+      setLocalAudioTrack(audiotrack);
+      setPermissionDenied(false);
+    } catch (err) {
+      console.error("Permissions Denied:", err);
+      setPermissionDenied(true);
+      alert(
+        "We need access to your microphone. Please enable it in your browser settings.",
+      );
+    }
+  }
+
+  const getCam = async () => {
+    try {
+      await getPermissionEnableStream();
+    } catch (error) {
+      console.error("Error accessing media devices:", error);
+      setIsVideoInitialized(false);
+      alert(
+        "We need access to your camera and microphone. Please enable them in your browser settings.",
+      );
+    }
+  };
+
+  useEffect(() => {
+    if (videoRef && videoRef.current) {
+      getCam();
+    }
+  }, [videoRef]);
+
+  useEffect(() => {
+    if (permissionDenied) {
+      const retryInterval = setInterval(() => {
+        getCam();
+      }, 15000); // Retry every 15 seconds
+
+      return () => clearInterval(retryInterval); // Clear interval after cleanup
+    }
+  }, [permissionDenied]);
+
+  const handleToggleAudio = async () => {
+    if (localAudioTrack) {
+      if (isAudioEnabled) {
+        localAudioTrack.stop();
+      } else {
+        await getAudioPermissionEnableStream();
+      }
+      setIsAudioEnabled(!isAudioEnabled);
+    } else {
+      await getAudioPermissionEnableStream();
+    }
+  };
+
+  const handleToggleVideo = async () => {
+    if (localVideoTrack) {
+      if (isVideoEnabled) {
+        localVideoTrack.stop();
+        if (videoRef.current) {
+          videoRef.current.srcObject = null;
+        }
+      } else {
+        await getPermissionEnableStream();
+      }
+      setIsCameraOn(!isCameraOn);
+      setIsVideoEnabled(!isVideoEnabled);
+    } else {
+      console.log("VideoTracks are not here");
+    }
+  };
+
+  if (session.status === "unauthenticated") {
+    return <div>You are not Signed In</div>;
+  }
+
+  if (!join) {
+    return (
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-black to-mediumdark p-4">
+      <div className="w-full max-w-4xl rounded-xl bg-white bg-opacity-10 p-8 shadow-2xl backdrop-blur-lg">
+        <h1 className="mb-8 text-center text-3xl font-bold text-white">
+          ⎯⎯ Ready to join the Meeting ⎯⎯
+        </h1>
+
+        <div className="flex flex-col gap-8 lg:flex-row">
+          <div className="flex-1">
+            <div className="relative mb-4 aspect-video overflow-hidden rounded-2xl bg-black">
+              {isVideoInitialized ? (
+                <video
+                  ref={videoRef}
+                  autoPlay
+                  muted
+                  className={`h-full w-full object-cover ${isBackgroundBlur ? "backdrop-blur-sm" : ""}`}
+                />
+              ) : (
+                <div className="flex h-full w-full items-center justify-center bg-v0dark">
+                  <VideoOff className="h-16 w-16 text-gray-500" />
+                </div>
+              )}
+              <div className="absolute bottom-4 left-4 flex gap-2">
+                <Button
+                  variant="secondary"
+                  size="icon"
+                  className="border border-neutral-700 bg-black opacity-70 hover:bg-black hover:opacity-80"
+                  onClick={handleToggleVideo}
+                  aria-label={
+                    isVideoEnabled ? "Turn camera off" : "Turn camera on"
+                  }
+                >
+                  {isVideoEnabled ? (
+                    <Camera className="size-4" />
+                  ) : (
+                    <VideoOff className="size-4" />
+                  )}
+                </Button>
+                <Button
+                  variant="secondary"
+                  size="icon"
+                  className="border border-neutral-700 bg-black opacity-70 hover:bg-black hover:opacity-80"
+                  onClick={handleToggleAudio}
+                  aria-label={
+                    isAudioEnabled
+                      ? "Turn microphone off"
+                      : "Turn microphone on"
+                  }
+                >
+                  {isAudioEnabled ? (
+                    <Mic className="size-4" />
+                  ) : (
+                    <MicOff className="size-4" />
+                  )}
+                </Button>
               </div>
             </div>
-            <Avatar
-              name={"UP"}
-              classname="size-8 shadow-sm mr-3 bg-gray-200 text-sm  text-black border border-black"
-            />
+            <Button
+              className="w-full border border-neutral-500 bg-black py-6 text-lg"
+              size="lg"
+              variant={"gooeyLeft"}
+              onClick={() => setJoin(true)}
+            >
+              Join Meeting
+            </Button>
           </div>
-          <div className="flex items-start gap-3">
-            <Avatar
-              name={"SM"}
-              classname="size-8 shadow-sm mr-3 bg-gray-200 text-sm  text-black border border-black"
-            />
-            <div className="rounded-lg bg-[#334155] p-3 text-sm text-[#e2e8f0]">
-              <p>Yep, the audio is perfect. Let's get started!</p>
-              <div className="mt-1 text-xs text-[#94a3b8]">2:36 PM</div>
+
+          <div className="flex-1 space-y-6">
+            {/* <div className="flex items-center justify-between">
+              <label
+                htmlFor="background-blur"
+                className="flex items-center gap-2 text-white"
+              >
+                <ImageIcon className="h-5 w-5" />
+                Background blur
+              </label>
+              <Switch
+                id="background-blur"
+                checked={isBackgroundBlur}
+                onCheckedChange={setIsBackgroundBlur}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label
+                htmlFor="touch-up"
+                className="flex items-center gap-2 text-white"
+              >
+                <Sparkles className="h-5 w-5" />
+                Touch up my appearance
+              </label>
+              <Slider
+                id="touch-up"
+                max={100}
+                step={1}
+                value={[touchUpLevel]}
+                onValueChange={(value) => {
+                  if (value[0] !== undefined) {
+                    setTouchUpLevel(value[0]);
+                  }
+                }}
+                className="w-full"
+              />
+            </div> */}
+
+            <div className="h-full rounded-xl bg-white bg-opacity-5 p-4">
+              <h2 className="mb-2 font-semibold text-white">Meeting Tips</h2>
+              <ul className="space-y-1 text-sm text-gray-300">
+                <li>• Ensure you're in a well-lit area</li>
+                <li>• Use a neutral background if possible</li>
+                <li>• Test your audio before joining</li>
+                <li>• Keep your microphone muted when not speaking</li>
+              </ul>
             </div>
           </div>
-        </div>
-        <div className="flex items-center gap-2 border-t p-4 dark:border-gray-700">
-          <Textarea
-            placeholder="Type your message..."
-            className="flex-1 resize-none text-white focus:border-none focus:outline-none focus:ring-2 focus:ring-neutral-500"
-          />
-          <Button
-            variant="ghost"
-            size="icon"
-            className="hover:bg-neutral-700 dark:hover:bg-gray-500"
-          >
-            <Send className="size-5 text-white" />
-            <span className="sr-only">Send</span>
-          </Button>
-          {/* <Button variant="ghost" size="icon">
-            <SmilePlus className="size-5 hover:bg-gray-500" />
-            <span className="sr-only">Emoji</span>
-          </Button> */}
-          {/* <Button variant="ghost" size="icon">
-            <PaperclipIcon className="w-5 h-5" />
-            <span className="sr-only">Attach</span>
-          </Button> */}
         </div>
       </div>
     </div>
   );
+}
+return (
+  <Room
+    name={session.data?.user.name || "User"}
+    localAudioTrack={localAudioTrack}
+    localVideoTrack={localVideoTrack}
+    userId={session.data?.user.id || ""}
+    meetingId={"1"}
+  />
+);
 }

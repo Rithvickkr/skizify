@@ -118,12 +118,11 @@ export default function Footer() {
   function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log(values);
   }
 
   return (
     <Section className=" rounded-tl-lg rounded-tr-lg border-black px-2 pb-2 pl-4 pt-5 dark:border-white dark:bg-black opacity-95 md:pb-0">
-      <div className=" gap-2 md:gap-4">
+      <div className=" gap-2 md:gap-4 border dark:border-0 inline-block p-3 rounded-lg shadow-md">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
@@ -134,7 +133,7 @@ export default function Footer() {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-lg font-semibold md:text-2xl opacity-75">
+                  <FormLabel className="text-lg font-semibold md:text-2xl opacity-85">
                     Contact us, If you like this project
                   </FormLabel>
                   <FormControl>
@@ -201,10 +200,9 @@ const renderDropdown = (
         <BottomGradient />
       </Button>
     </DropdownMenuTrigger>
-    <DropdownMenuContent className="w-56 bg-white dark:bg-black">
+    <DropdownMenuContent className="w-36 bg-white dark:bg-black">
       <DropdownMenuGroup className="">
         {SocialMedia[platform]?.map((profile) => {
-          console.log(profile);
           return (
             <DropdownMenuItem
               className="m-1 cursor-pointer rounded-md bg-mediumdark text-white hover:bg-lightdark"

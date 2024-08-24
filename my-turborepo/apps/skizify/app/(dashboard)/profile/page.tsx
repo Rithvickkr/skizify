@@ -46,7 +46,6 @@ export default function Component() {
       if (response) {
         
         window.alert("Profile created successfully");
-        console.log(skills)
 
         setName("");
         setUsername("");
