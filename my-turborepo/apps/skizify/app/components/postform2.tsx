@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import { Button } from "../../@/components/ui/button";
+import { Button } from "./ui/button";
 import { Input } from "../../@/components/ui/input";
 import { Textarea } from "../../@/components/ui/textarea";
 import { Label } from "../../@/components/ui/label";
@@ -307,11 +307,15 @@ const darktheme = createTheme({
                                   <SelectTrigger>
                                     <SelectValue placeholder="Select a category" />
                                   </SelectTrigger>
-                                  <SelectContent>
-                                    <SelectItem value={"Entertainment"}>
+                                  <SelectContent className="bg-white dark:bg-black dark:border-0 pr-2">
+                                    <SelectItem
+                                      className="m-1 rounded-md border bg-neutral-300 dark:text-white hover:shadow-sm  text-black opacity-80 hover:opacity-100   dark:opacity-60 dark:border-neutral-700 dark:bg-black hover:dark:opacity-90"
+                                      value={"Entertainment"}
+                                    >
                                       Entertainment
                                     </SelectItem>
                                     <SelectItem
+                                      className="m-1 rounded-md border bg-neutral-300 dark:text-white hover:shadow-sm  text-black opacity-80 hover:opacity-100   dark:opacity-60 dark:border-neutral-700 dark:bg-black hover:dark:opacity-90"
                                       onClick={() => {
                                         setFormData({
                                           ...formData,
@@ -323,6 +327,7 @@ const darktheme = createTheme({
                                       Education
                                     </SelectItem>
                                     <SelectItem
+                                      className="m-1 rounded-md border bg-neutral-300 dark:text-white hover:shadow-sm  text-black opacity-80 hover:opacity-100   dark:opacity-60 dark:border-neutral-700 dark:bg-black hover:dark:opacity-90"
                                       onClick={() => {
                                         setFormData({
                                           ...formData,
@@ -334,6 +339,7 @@ const darktheme = createTheme({
                                       Art
                                     </SelectItem>
                                     <SelectItem
+                                      className="m-1 rounded-md border bg-neutral-300 dark:text-white hover:shadow-sm  text-black opacity-80 hover:opacity-100   dark:opacity-60 dark:border-neutral-700 dark:bg-black hover:dark:opacity-90"
                                       onClick={() => {
                                         setFormData({
                                           ...formData,
@@ -410,7 +416,7 @@ const darktheme = createTheme({
                                         value={formData[field]}
                                         onChange={handleChange}
                                         placeholder={`Enter event ${field}`}
-                                        className={`mt-3 border-white bg-white bg-opacity-20 text-white placeholder-white ${errors[field] ? "border-red-500" : ""}`}
+                                        className={`mt-3 border-neutral-300 bg-white bg-opacity-20 pl-10 text-white placeholder-neutral-200 focus:border-transparent focus:outline-none ${errors[field] ? "border-red-500" : ""} `}
                                       />
                                     )}
                                   </>
@@ -433,28 +439,34 @@ const darktheme = createTheme({
             </AnimatePresence>
 
             <div className="flex justify-between">
-              {currentStep > 0 && (
+            {currentStep > 0 && (
                 <Button
                   type="button"
-                  variant="secondary"
+                  variant="gooeyLeft"
+                  className=" bg-white text-black opacity-80 hover:opacity-100"
                   onClick={() => setCurrentStep(currentStep - 1)}
                 >
-                  <ChevronLeftIcon className="mr-2 h-5 w-5" />
+                  <ChevronLeftIcon className="mr-2 size-5" />
                   Previous
                 </Button>
               )}
               {currentStep < formSteps.length - 1 ? (
                 <Button
                   type="button"
-                  variant="secondary"
-                  onClick={() => {; 
-                    setCurrentStep(currentStep + 1)}}
+                  variant="gooeyLeft"
+                  className=" bg-white text-black opacity-80 hover:opacity-100"
+                  onClick={() => setCurrentStep(currentStep + 1)}
                 >
                   Next
-                  <ChevronRightIcon className="ml-2 h-5 w-5" />
+                  <ChevronRightIcon className="ml-2 size-5" />
                 </Button>
               ) : (
-                <Button type="button" onClick={handleSubmit}>
+                <Button
+                  type="button"
+                  variant="gooeyLeft"
+                  className="min-w-28  bg-white text-black opacity-80 hover:opacity-100"
+                  onClick={handleSubmit}
+                >
                   Submit
                 </Button>
               )}
