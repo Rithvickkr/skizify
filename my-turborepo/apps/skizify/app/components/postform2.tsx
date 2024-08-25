@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import { Button } from "../../@/components/ui/button";
+import { Button } from "./ui/button";
 import { Input } from "../../@/components/ui/input";
 import { Textarea } from "../../@/components/ui/textarea";
 import { Label } from "../../@/components/ui/label";
@@ -225,8 +225,8 @@ export default function Postform() {
                 }`}
               >
                 <div
-                  className={`mr-2 flex h-8 w-8 items-center justify-center rounded-full ${
-                    index <= currentStep ? "bg-purple-500" : "bg-gray-300"
+                  className={`mr-2 flex h-8 w-8 items-center justify-center rounded-md   ${
+                    index <= currentStep ? "bg-neutral-500    " : "bg-neutral-300 text-white"
                   }`}
                 >
                   {index + 1}
@@ -263,7 +263,7 @@ export default function Postform() {
                             value={formData[field]}
                             onChange={handleChange}
                             placeholder={`Enter event ${field}`}
-                            className={`mt-3  border-purple-300 bg-white bg-opacity-20 text-white placeholder-purple-200 ${errors[field] ? "border-red-500" : ""}`}
+                            className={`mt-3 bg-white bg-opacity-20 text-white placeholder-neutral-400 ${errors[field] ? "border-red-500" : ""} focus:outline-none focus:ring-0 focus:border-none dark:border border-white`}
                             rows={4}
                           />
                         )
@@ -293,11 +293,13 @@ export default function Postform() {
                                 <SelectTrigger>
                                   <SelectValue placeholder="Select a category" />
                                 </SelectTrigger>
-                                <SelectContent>
-                                  <SelectItem value={"Entertainment"}>
+                                <SelectContent className="dark:border-0 bg-black">
+                                  <SelectItem
+                                  className="bg-lightwhite dark:bg-black border dark:border-neutral-700 hover:dark:opacity-90 opacity-60 m-1  rounded-md" value={"Entertainment"}>
                                     Entertainment
                                   </SelectItem>
                                   <SelectItem
+                                  className="bg-lightwhite dark:bg-black border dark:border-neutral-700 hover:dark:opacity-90 opacity-60 m-1  rounded-md"
                                     onClick={() => {
                                       setFormData({
                                         ...formData,
@@ -309,6 +311,7 @@ export default function Postform() {
                                     Education
                                   </SelectItem>
                                   <SelectItem
+                                  className="bg-lightwhite dark:bg-black border dark:border-neutral-700 hover:dark:opacity-90 opacity-60 m-1  rounded-md"
                                     onClick={() => {
                                       setFormData({
                                         ...formData,
@@ -320,6 +323,7 @@ export default function Postform() {
                                     Art
                                   </SelectItem>
                                   <SelectItem
+                                  className="bg-lightwhite dark:bg-black border dark:border-neutral-700 hover:dark:opacity-90 opacity-60 m-1  rounded-md"
                                     onClick={() => {
                                       setFormData({
                                         ...formData,
@@ -348,7 +352,7 @@ export default function Postform() {
                                 value={formData[field]}
                                 onChange={handleChange}
                                 placeholder={`Enter event ${field}`}
-                                className={`mt-3  border-purple-300 bg-white bg-opacity-20 pl-10 text-white placeholder-purple-200  ${errors[field] ? "border-red-500" : ""}`}
+                                className={`mt-3  border-neutral-300 bg-white bg-opacity-20 pl-10 text-white placeholder-neutral-200 focus:outline-none focus:border-transparent ${errors[field] ? "border-red-500" : ""} `}
                               />
                             )}
                           </div>
@@ -369,24 +373,29 @@ export default function Postform() {
               {currentStep > 0 && (
                 <Button
                   type="button"
-                  variant="secondary"
+                  variant= "gooeyLeft"
+                  className="bg-black dark:bg-white dark:text-black text-white"
                   onClick={() => setCurrentStep(currentStep - 1)}
                 >
-                  <ChevronLeftIcon className="mr-2 h-5 w-5" />
+                  <ChevronLeftIcon className="mr-2 size-5" />
                   Previous
                 </Button>
               )}
               {currentStep < formSteps.length - 1 ? (
                 <Button
                   type="button"
-                  variant= "secondary"
+                  variant= "gooeyLeft"
+                  className="bg-black dark:bg-white dark:text-black text-white"
                   onClick={() => setCurrentStep(currentStep + 1)}
                 >
                   Next
-                  <ChevronRightIcon className="ml-2 h-5 w-5" />
+                  <ChevronRightIcon className="ml-2 size-5" />
                 </Button>
               ) : (
-                <Button type="button" onClick={handleSubmit}>
+                <Button type="button"
+                variant= "gooeyLeft"
+                className="bg-black dark:bg-white dark:text-black text-white min-w-28"
+                onClick={handleSubmit}>
                   Submit
                 </Button>
               )}
@@ -400,7 +409,7 @@ export default function Postform() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
-          className="fixed bottom-4 right-4 rounded-lg bg-purple-600 px-4 py-2 text-white shadow-lg"
+          className="fixed bottom-4 right-4 rounded-lg bg-neutral-600 px-4 py-2 text-white shadow-lg"
         >
           Form submitted successfully!
         </motion.div>
