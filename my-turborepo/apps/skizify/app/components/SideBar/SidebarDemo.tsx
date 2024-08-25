@@ -60,7 +60,6 @@ export function SidebarDemo({ children }: { children: React.ReactNode }) {
       href: "/profile",
       icon: (
         <SquareUserRound
-          strokeWidth={1.5}
           className="size-6 flex-shrink-0 text-neutral-700 dark:text-neutral-200"
         />
       ),
@@ -133,7 +132,7 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
       <div className="no-scrollbar flex-1 overflow-y-auto p-4">{children}</div>
 
       {/* Footer */}
-      <hr className="opacity-50 " />
+      <hr className="dark:opacity-50 " />
       <Footer />
     </div>
   );

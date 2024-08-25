@@ -20,7 +20,7 @@ module.exports = {
 
     },
 
-    extend: {
+  extend: {
       colors : {
         themeblue : '#020817',
         lightwhite : "#cfcfcf",

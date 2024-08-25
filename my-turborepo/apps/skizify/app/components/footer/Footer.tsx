@@ -121,7 +121,7 @@ export default function Footer() {
   }
 
   return (
-    <Section className=" rounded-tl-lg rounded-tr-lg border-black px-2 pb-2 pl-4 pt-5 dark:border-white dark:bg-black opacity-95 md:pb-0">
+    <Section className=" rounded-tl-lg rounded-tr-lg border-black px-2 pb-2 pl-4 pt-2 dark:border-white dark:bg-black opacity-95 md:pb-0">
       <div className=" gap-2 md:gap-4 border dark:border-0 inline-block p-3 rounded-lg shadow-md">
         <Form {...form}>
           <form
@@ -133,12 +133,12 @@ export default function Footer() {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-lg font-semibold md:text-2xl opacity-85">
+                  <FormLabel className="text-sm font-semibold md:text-base opacity-85">
                     Contact us, If you like this project
                   </FormLabel>
                   <FormControl>
                     <Input
-                      className="my-2 bg-black md:w-96"
+                      className="my-2  md:w-96"
                       placeholder="example@fjord.dev"
                       {...field}
                     />
@@ -152,7 +152,7 @@ export default function Footer() {
             />
             <Button
               variant="gooeyLeft"
-              className="group/btn relative bg-black dark:bg-lightwhite dark:text-black dark:shadow-[0px_0px_1px_1px_var(--neutral-800)] md:h-10 md:px-4 md:py-2"
+              className="group/btn relative bg-black dark:bg-white dark:text-black text-white dark:shadow-[0px_0px_1px_1px_var(--neutral-800)] md:h-10 md:px-4 md:py-2"
               size={"sm"}
             >
               Submit
