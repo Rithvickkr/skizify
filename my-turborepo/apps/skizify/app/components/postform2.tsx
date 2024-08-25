@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import { Button } from "../../@/components/ui/button";
+import { Button } from "./ui/button";
 import { Input } from "../../@/components/ui/input";
 import { Textarea } from "../../@/components/ui/textarea";
 import { Label } from "../../@/components/ui/label";
@@ -239,8 +239,8 @@ const darktheme = createTheme({
                 }`}
               >
                 <div
-                  className={`mr-2 flex h-8 w-8 items-center justify-center rounded-full ${
-                    index <= currentStep ? "bg-purple-500" : "bg-gray-300"
+                  className={`mr-2 flex h-8 w-8 items-center justify-center rounded-md   ${
+                    index <= currentStep ? "bg-neutral-500    " : "bg-neutral-300 text-white"
                   }`}
                 >
                   {index + 1}
@@ -277,7 +277,7 @@ const darktheme = createTheme({
                             value={formData[field]}
                             onChange={handleChange}
                             placeholder={`Enter event ${field}`}
-                            className={`mt-3 border-white bg-white bg-opacity-20 text-white placeholder-white ${errors[field] ? "border-red-500" : ""}`}
+                            className={`mt-3  border-purple-300 bg-white bg-opacity-20 text-white placeholder-purple-200 ${errors[field] ? "border-red-500" : ""}`}
                             rows={4}
                           />
                         )
@@ -295,127 +295,75 @@ const darktheme = createTheme({
                           <div>
                             {field === "category" ? (
                               <div className="mt-3">
-                                <Select
-                                  onValueChange={(value) => {
-                                    setFormData((prevData) => ({
-                                      ...prevData,
-                                      category: value,
-                                    }));
-                                    console.log(value); // This will log the selected category
-                                  }}
-                                >
-                                  <SelectTrigger>
-                                    <SelectValue placeholder="Select a category" />
-                                  </SelectTrigger>
-                                  <SelectContent>
-                                    <SelectItem value={"Entertainment"}>
-                                      Entertainment
-                                    </SelectItem>
-                                    <SelectItem
-                                      onClick={() => {
-                                        setFormData({
-                                          ...formData,
-                                          category: "Education",
-                                        });
-                                      }}
-                                      value={"Education"}
-                                    >
-                                      Education
-                                    </SelectItem>
-                                    <SelectItem
-                                      onClick={() => {
-                                        setFormData({
-                                          ...formData,
-                                          category: "Art",
-                                        });
-                                      }}
-                                      value={"Art"}
-                                    >
-                                      Art
-                                    </SelectItem>
-                                    <SelectItem
-                                      onClick={() => {
-                                        setFormData({
-                                          ...formData,
-                                          category: "Tech",
-                                        });
-                                      }}
-                                      value={"Tech"}
-                                    >
-                                      Tech
-                                    </SelectItem>
-                                  </SelectContent>
-                                </Select>
+                              <Select
+                                onValueChange={(value) => {
+                                  setFormData((prevData) => ({
+                                    ...prevData,
+                                    category: value,
+                                  }));
+                                  console.log(value); // This will log the selected category
+                                }}
+                              >
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Select a category" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value={"Entertainment"}>
+                                    Entertainment
+                                  </SelectItem>
+                                  <SelectItem
+                                    onClick={() => {
+                                      setFormData({
+                                        ...formData,
+                                        category: "Education",
+                                      });
+                                    }}
+                                    value={"Education"}
+                                  >
+                                    Education
+                                  </SelectItem>
+                                  <SelectItem
+                                    onClick={() => {
+                                      setFormData({
+                                        ...formData,
+                                        category: "Art",
+                                      });
+                                    }}
+                                    value={"Art"}
+                                  >
+                                    Art
+                                  </SelectItem>
+                                  <SelectItem
+                                    onClick={() => {
+                                      setFormData({
+                                        ...formData,
+                                        category: "Tech",
+                                      });
+                                    }}
+                                    value={"Tech"}
+                                  >
+                                    Tech
+                                  </SelectItem>
+                                </SelectContent>
+                              </Select>
                               </div>
                             ) : (
-                              <>
-                                {field === "startdate" ||
-                                field === "enddate" ? (
-                                  <div >
-                                   
-                                    <DatePicker
-                                    sx={{color: 'white', backgroundColor: 'white',borderRadius: '10px',outline: 'black',border: 'none',width: '100%',cursor:'pointer'}}
-                                    slotProps={{
-                                      textField: {
-                                        size: "small",
-                                        error: false,
-                                      },
-                                    }}
-                                      value={
-                                        formData[field] as unknown as
-                                          | PickerValidDate
-                                          | null
-                                          | undefined
-                                      }
-                                      onChange={(date) => {
-                                        setFormData({
-                                          ...formData,
-                                          [field]: (date || "").toString(),
-                                        });
-                                      }}
-                                    />
-                                   
-                                  </div>
-                                ) : (
-                                  <>
-                                    {field === "starttime" ||
-                                    field === "endtime" ? (
-                                      <TimePicker 
-                                      sx={{color: 'white', backgroundColor: 'white',borderRadius: '10px',outline: 'black',border: 'none',width: '100%'}}
-                                    slotProps={{
-                                      textField: {
-                                        size: "small",
-                                        error: false,
-                                      },
-                                    }}
-                                      value={
-                                        formData[field] as unknown as
-                                          | PickerValidDate
-                                          | null
-                                          | undefined
-                                      }
-                                      onChange={(time) => {
-                                        setFormData({
-                                          ...formData,
-                                          [field]: (time || "").toString(),
-                                        });
-                                      }
-                                    }
-                                       />
-                                    ) : (
-                                      <Input
-                                        type="text"
-                                        id={field}
-                                        name={field}
-                                        value={formData[field]}
-                                        onChange={handleChange}
-                                        placeholder={`Enter event ${field}`}
-                                        className={`mt-3 border-white bg-white bg-opacity-20 text-white placeholder-white ${errors[field] ? "border-red-500" : ""}`}
-                                      />
-                                    )}
-                                  </>
-                                )}
-                              </>
+                              <Input
+                                id={field}
+                                name={field}
+                                type={
+                                  field === "startdate" || field === "enddate"
+                                    ? "date"
+                                    : field === "starttime" ||
+                                        field === "endtime"
+                                      ? "time"
+                                      : "text"
+                                }
+                                value={formData[field]}
+                                onChange={handleChange}
+                                placeholder={`Enter event ${field}`}
+                                className={`mt-3  border-purple-300 bg-white bg-opacity-20 pl-10 text-white placeholder-purple-200  ${errors[field] ? "border-red-500" : ""}`}
+                              />
                             )}
                           </div>
                         </div>
@@ -436,24 +384,28 @@ const darktheme = createTheme({
               {currentStep > 0 && (
                 <Button
                   type="button"
-                  variant="secondary"
+                  variant= "gooeyLeft"
+                  className="bg-black dark:bg-white dark:text-black text-white"
                   onClick={() => setCurrentStep(currentStep - 1)}
                 >
-                  <ChevronLeftIcon className="mr-2 h-5 w-5" />
+                  <ChevronLeftIcon className="mr-2 size-5" />
                   Previous
                 </Button>
               )}
               {currentStep < formSteps.length - 1 ? (
                 <Button
                   type="button"
-                  variant="secondary"
-                  onClick={() => { setCurrentStep(currentStep + 1)}}
+                  variant= "secondary"
+                  onClick={() => setCurrentStep(currentStep + 1)}
                 >
                   Next
-                  <ChevronRightIcon className="ml-2 h-5 w-5" />
+                  <ChevronRightIcon className="ml-2 size-5" />
                 </Button>
               ) : (
-                <Button type="button" onClick={handleSubmit}>
+                <Button type="button"
+                variant= "gooeyLeft"
+                className="bg-black dark:bg-white dark:text-black text-white min-w-28"
+                onClick={handleSubmit}>
                   Submit
                 </Button>
               )}
@@ -467,7 +419,7 @@ const darktheme = createTheme({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
-          className="fixed bottom-4 right-4 rounded-lg bg-purple-600 px-4 py-2 text-white shadow-lg"
+          className="fixed bottom-4 right-4 rounded-lg bg-neutral-600 px-4 py-2 text-white shadow-lg"
         >
           Form submitted successfully!
         </motion.div>
