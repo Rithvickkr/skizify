@@ -51,7 +51,9 @@ export default function Room({
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState<Chat[]>([]);
   const [isChatBarVisible, setIsChatBarVisible] = useState(false);
-  const [screenTrack, setScreenTrack] = useState<MediaStreamTrack | null | undefined>(null);
+  const [screenTrack, setScreenTrack] = useState<
+    MediaStreamTrack | null | undefined
+  >(null);
   const [remoteMediaStream, setRemoteMediaStream] =
     useState<MediaStream | null>(null);
   const localVideoref = useRef<HTMLVideoElement>(null);
@@ -203,7 +205,7 @@ export default function Room({
         if (pc) pc.close();
         return null;
       });
-      
+
       setReceivingPC((pc) => {
         if (pc) pc.close();
         return null;
@@ -248,17 +250,17 @@ export default function Room({
       });
       const screenTrack = stream.getVideoTracks()[0];
       setScreenTrack(screenTrack);
-      
-      if(screenTrack == undefined) {
-        throw new Error("ScreenTrack is Undefined")
+
+      if (screenTrack == undefined) {
+        throw new Error("ScreenTrack is Undefined");
       }
       // sendingPC?.addTrack(screenTrack);  As new Tracks we want to add then we have to force them , add willn't work
-      sendingPC?.getSenders().forEach(sender => {
-        if (sender.track?.kind === 'video') {
+      sendingPC?.getSenders().forEach((sender) => {
+        if (sender.track?.kind === "video") {
           sender.replaceTrack(screenTrack);
         }
       });
-  
+
       if (localVideoref.current) {
         localVideoref.current.srcObject = stream;
       }
@@ -277,14 +279,14 @@ export default function Room({
       screenTrack.stop();
       setScreenTrack(null);
 
-      if (localVideoTrack && sendingPC) {  
+      if (localVideoTrack && sendingPC) {
         //Here we will force our orginal Tracks back again, Same as Previous,
-        sendingPC.getSenders().forEach(sender => {
-          if (sender.track?.kind === 'video') {
+        sendingPC.getSenders().forEach((sender) => {
+          if (sender.track?.kind === "video") {
             sender.replaceTrack(localVideoTrack);
           }
         });
-  
+
         if (localVideoref.current) {
           localVideoref.current.srcObject = new MediaStream([localVideoTrack]);
         }
@@ -304,20 +306,19 @@ export default function Room({
 
   const renegotiateConnection = async () => {
     if (!sendingPC) return;
-  
+
     try {
       // Create a new offer after replacing the track
       const sdp = await sendingPC.createOffer();
       await sendingPC.setLocalDescription(sdp);
-  
+
       // Send the new offer to the remote peer
       socket?.emit("offer", { roomId: meetingId, sdp });
     } catch (error) {
       console.error("Error renegotiating the connection:", error);
     }
   };
-  
- 
+
   return (
     <div className="flex h-[85%] w-full md:h-[92%]">
       <div className="relative flex h-full flex-1 flex-col items-center justify-between p-3">
@@ -405,7 +406,7 @@ export default function Room({
       <div
         className={`${
           isChatBarVisible ? "block" : "hidden"
-        } flex h-full w-5/12 flex-col rounded-md border bg-black ring-2 ring-black dark:border-1 dark:border-neutral-800 dark:bg-mediumdark dark:ring-0 lg:w-3/12`}
+        } flex h-full flex-col overflow-hidden rounded-md border bg-black ring-2 ring-black transition-all duration-500 ease-in-out dark:border-1 dark:border-neutral-800 dark:bg-mediumdark dark:ring-0 lg:w-3/12`}
       >
         <div className="flex items-center justify-between border-b border-[#334155] px-4 py-3 dark:border-neutral-700">
           <div className="text-lg font-medium text-[#e2e8f0]">Chat</div>
@@ -470,7 +471,7 @@ const ChatStructure: React.FC<{ data: Chat }> = ({ data }) => {
     <div className="">
       {data.userId === session.data?.user.id ? (
         <div className="flex items-start justify-end gap-3">
-          <div className="rounded-md bg-neutral-200 p-2 text-sm text-black dark:bg-[#25306c] dark:text-[#e2e8f0]">
+          <div className="min-w-32 rounded-md bg-neutral-200 p-2 text-sm text-black">
             <p className="break-words break-all">{data.message}</p>
             <div className="mt-1 text-xs text-[#58595a] dark:text-neutral-400">
               2:35 PM
@@ -489,9 +490,9 @@ const ChatStructure: React.FC<{ data: Chat }> = ({ data }) => {
             classname="size-8 shadow-sm bg-neutral-200 text-sm  text-black border border-black"
             photo={data.userImage}
           />
-          <div className="rounded-lg bg-[#334155] p-3 text-sm text-[#e2e8f0]">
+          <div className="min-w-32 rounded-md bg-lightdark p-2 text-sm text-[#e2e8f0]">
             <p className="break-words break-all">{data.message}</p>
-            <div className="mt-1 text-xs text-[#94a3b8]">2:36 PM</div>
+            <div className="mt-1 text-xs text-neutral-200">2:36 PM</div>
           </div>
         </div>
       )}

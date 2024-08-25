@@ -1,5 +1,5 @@
 import Landing from "../../components/Meeting/Landing";
-import Room1 from "../../components/Meeting/Room1";
+import Room1 from "../../components/Meeting/Landing2";
 
 export default function Meeting() {
   return (

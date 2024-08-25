@@ -47,7 +47,7 @@ export const Appbar = ({ user, onSignout, onSignin, fn }: AppbarProps) => {
               classname="ring-2 ring-black dark:ring-slate-50 "
             />
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="mr-3 mt-2 w-60 bg-white p-3 shadow-2xl dark:border-neutral-700 dark:bg-black">
+          <DropdownMenuContent className="mr-3 mt-2 z-30 w-60 bg-white p-3 shadow-2xl dark:border-neutral-700 dark:bg-black">
             {/* <DropdownMenuLabel>My Account</DropdownMenuLabel> */}
             <DropdownMenuSeparator />
             <DropdownMenuItem className="x focus:outline-0">
