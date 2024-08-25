@@ -4,6 +4,9 @@ import { Button } from "../../@/components/ui/button";
 import { Input } from "../../@/components/ui/input";
 import { Textarea } from "../../@/components/ui/textarea";
 import { Label } from "../../@/components/ui/label";
+import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
+
+import { DatePicker, PickerValidDate, TimePicker } from "@mui/x-date-pickers";
 import {
   CalendarIcon,
   ClockIcon,
@@ -20,7 +23,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../@/components/ui/select";
-import { set } from "date-fns";
+
 
 // Particle background component
 const ParticleBackground = () => {
@@ -130,7 +133,14 @@ export default function Postform() {
     description: "",
     category: "",
   });
+const darktheme = createTheme({
+  palette: {
+    mode:"dark"
+  },
 
+});
+  
+  
   interface FormErrors {
     eventName?: string;
     date?: string;
@@ -156,19 +166,23 @@ export default function Postform() {
 
   const validateForm = () => {
     let newErrors: FormErrors = {};
-    if (!formData.eventName.trim())
-      newErrors.eventName = "gig name is required";
-    if (!formData.date) newErrors.date = "Date is required";
-    if (!formData.time) newErrors.time = "Time is required";
-    if (!formData.category.trim()) newErrors.location = "category is required";
+    if (!formData.eventName.trim()) newErrors.eventName = "gig name is required";
+    if (!formData.startdate) newErrors.date = "Date is required";
+    if (!formData.starttime) newErrors.time = "Time is required";
+    if (!formData.enddate) newErrors.date = "Date is required"
+    if (!formData.endtime) newErrors.time = "Time is required";
+    if (!formData.description.trim()) newErrors.description = "description is required";
+    if (!formData.category.trim()) newErrors.category = "category is required";
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    if (Object.keys(newErrors).length > 0) return false;
+    else return true;
   };
 
   const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    if (true) {
+    if (validateForm()) {
       console.log("Form submitted:", formData);
+      
       setIsSubmitted(true);
       setTimeout(() => {
         setIsSubmitted(false);
@@ -216,7 +230,7 @@ export default function Postform() {
         </motion.section>
 
         <div className="mx-auto max-w-4xl rounded-lg bg-[#000000e0] p-8 shadow-lg backdrop-blur-lg dark:bg-white dark:bg-opacity-10">
-          <div className="mb-8 flex items-center justify-between ">
+          <div className="mb-8 flex items-center justify-between">
             {formSteps.map((step, index) => (
               <div
                 key={index}
@@ -252,7 +266,7 @@ export default function Postform() {
                       ""
                     )}
                     <div key={field}>
-                      <Label htmlFor={field} className="  text-white ">
+                      <Label htmlFor={field} className="text-white">
                         {field.charAt(0).toUpperCase() + field.slice(1)}
                       </Label>
                       {field === "description" ? (
@@ -263,7 +277,7 @@ export default function Postform() {
                             value={formData[field]}
                             onChange={handleChange}
                             placeholder={`Enter event ${field}`}
-                            className={`mt-3  border-purple-300 bg-white bg-opacity-20 text-white placeholder-purple-200 ${errors[field] ? "border-red-500" : ""}`}
+                            className={`mt-3 border-white bg-white bg-opacity-20 text-white placeholder-white ${errors[field] ? "border-red-500" : ""}`}
                             rows={4}
                           />
                         )
@@ -274,86 +288,139 @@ export default function Postform() {
                           ) : field === "starttime" || field === "endtime" ? (
                             <ClockIcon className="absolute left-3 top-1/2 -translate-y-1/2 transform text-white" />
                           ) : (
-                            field === "Title" && (
+                            field === "edit" && (
                               <Pencil className="absolute left-3 top-1/2 -translate-y-1/2 transform text-white" />
                             )
                           )}
-                          <div >
+                          <div>
                             {field === "category" ? (
                               <div className="mt-3">
-                              <Select
-                                onValueChange={(value) => {
-                                  setFormData((prevData) => ({
-                                    ...prevData,
-                                    category: value,
-                                  }));
-                                  console.log(value); // This will log the selected category
-                                }}
-                              >
-                                <SelectTrigger>
-                                  <SelectValue placeholder="Select a category" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  <SelectItem value={"Entertainment"}>
-                                    Entertainment
-                                  </SelectItem>
-                                  <SelectItem
-                                    onClick={() => {
-                                      setFormData({
-                                        ...formData,
-                                        category: "Education",
-                                      });
-                                    }}
-                                    value={"Education"}
-                                  >
-                                    Education
-                                  </SelectItem>
-                                  <SelectItem
-                                    onClick={() => {
-                                      setFormData({
-                                        ...formData,
-                                        category: "Art",
-                                      });
-                                    }}
-                                    value={"Art"}
-                                  >
-                                    Art
-                                  </SelectItem>
-                                  <SelectItem
-                                    onClick={() => {
-                                      setFormData({
-                                        ...formData,
-                                        category: "Tech",
-                                      });
-                                    }}
-                                    value={"Tech"}
-                                  >
-                                    Tech
-                                  </SelectItem>
-                                </SelectContent>
-                              </Select>
+                                <Select
+                                  onValueChange={(value) => {
+                                    setFormData((prevData) => ({
+                                      ...prevData,
+                                      category: value,
+                                    }));
+                                    console.log(value); // This will log the selected category
+                                  }}
+                                >
+                                  <SelectTrigger>
+                                    <SelectValue placeholder="Select a category" />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    <SelectItem value={"Entertainment"}>
+                                      Entertainment
+                                    </SelectItem>
+                                    <SelectItem
+                                      onClick={() => {
+                                        setFormData({
+                                          ...formData,
+                                          category: "Education",
+                                        });
+                                      }}
+                                      value={"Education"}
+                                    >
+                                      Education
+                                    </SelectItem>
+                                    <SelectItem
+                                      onClick={() => {
+                                        setFormData({
+                                          ...formData,
+                                          category: "Art",
+                                        });
+                                      }}
+                                      value={"Art"}
+                                    >
+                                      Art
+                                    </SelectItem>
+                                    <SelectItem
+                                      onClick={() => {
+                                        setFormData({
+                                          ...formData,
+                                          category: "Tech",
+                                        });
+                                      }}
+                                      value={"Tech"}
+                                    >
+                                      Tech
+                                    </SelectItem>
+                                  </SelectContent>
+                                </Select>
                               </div>
                             ) : (
-                              <Input
-                                id={field}
-                                name={field}
-                                type={
-                                  field === "startdate" || field === "enddate"
-                                    ? "date"
-                                    : field === "starttime" ||
-                                        field === "endtime"
-                                      ? "time"
-                                      : "text"
-                                }
-                                value={formData[field]}
-                                onChange={handleChange}
-                                placeholder={`Enter event ${field}`}
-                                className={`mt-3  border-purple-300 bg-white bg-opacity-20 pl-10 text-white placeholder-purple-200  ${errors[field] ? "border-red-500" : ""}`}
-                              />
+                              <>
+                                {field === "startdate" ||
+                                field === "enddate" ? (
+                                  <div >
+                                   
+                                    <DatePicker
+                                    sx={{color: 'white', backgroundColor: 'white',borderRadius: '10px',outline: 'black',border: 'none',width: '100%',cursor:'pointer'}}
+                                    slotProps={{
+                                      textField: {
+                                        size: "small",
+                                        error: false,
+                                      },
+                                    }}
+                                      value={
+                                        formData[field] as unknown as
+                                          | PickerValidDate
+                                          | null
+                                          | undefined
+                                      }
+                                      onChange={(date) => {
+                                        setFormData({
+                                          ...formData,
+                                          [field]: (date || "").toString(),
+                                        });
+                                      }}
+                                    />
+                                   
+                                  </div>
+                                ) : (
+                                  <>
+                                    {field === "starttime" ||
+                                    field === "endtime" ? (
+                                      <TimePicker 
+                                      sx={{color: 'white', backgroundColor: 'white',borderRadius: '10px',outline: 'black',border: 'none',width: '100%'}}
+                                    slotProps={{
+                                      textField: {
+                                        size: "small",
+                                        error: false,
+                                      },
+                                    }}
+                                      value={
+                                        formData[field] as unknown as
+                                          | PickerValidDate
+                                          | null
+                                          | undefined
+                                      }
+                                      onChange={(time) => {
+                                        setFormData({
+                                          ...formData,
+                                          [field]: (time || "").toString(),
+                                        });
+                                      }
+                                    }
+                                       />
+                                    ) : (
+                                      <Input
+                                        type="text"
+                                        id={field}
+                                        name={field}
+                                        value={formData[field]}
+                                        onChange={handleChange}
+                                        placeholder={`Enter event ${field}`}
+                                        className={`mt-3 border-white bg-white bg-opacity-20 text-white placeholder-white ${errors[field] ? "border-red-500" : ""}`}
+                                      />
+                                    )}
+                                  </>
+                                )}
+                              </>
                             )}
                           </div>
                         </div>
                       )}
+
                       {errors[field] && (
                         <p className="mt-1 text-sm text-red-300">
                           {errors[field]}
@@ -379,8 +446,8 @@ export default function Postform() {
               {currentStep < formSteps.length - 1 ? (
                 <Button
                   type="button"
-                  variant= "secondary"
-                  onClick={() => setCurrentStep(currentStep + 1)}
+                  variant="secondary"
+                  onClick={() => { setCurrentStep(currentStep + 1)}}
                 >
                   Next
                   <ChevronRightIcon className="ml-2 h-5 w-5" />

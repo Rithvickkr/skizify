@@ -4,6 +4,9 @@ import { Inter } from "next/font/google";
 import { Providers } from "./providers";
 import { Toaster } from "../@/components/ui/toaster";
 import Footer from "./components/footer/Footer";
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+
 
 // import {NextUIProvider} from "@nextui-org/react";
 
