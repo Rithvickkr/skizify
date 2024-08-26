@@ -202,11 +202,12 @@ const renderDropdown = (
     </DropdownMenuTrigger>
     <DropdownMenuContent className="w-36 bg-white dark:bg-black">
       <DropdownMenuGroup className="">
-        {SocialMedia[platform]?.map((profile) => {
+        {SocialMedia[platform]?.map((profile,index) => {
           return (
             <DropdownMenuItem
               className="m-1 cursor-pointer rounded-md bg-mediumdark text-white hover:bg-lightdark"
               onClick={() => window.open(profile.url, "_blank")}
+              key={index}
             >
               <Icon className="mr-2 h-5 w-5" />
               <DropdownMenuShortcut>{profile.name}</DropdownMenuShortcut>

@@ -129,7 +129,7 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
       <AppbarClient />
 
       {/* Main content */}
-      <div className="no-scrollbar flex-1 overflow-y-auto p-4">{children}</div>
+      <div className="no-scrollbar flex-1 overflow-y-auto p-2">{children}</div>
 
       {/* Footer */}
       <hr className="dark:opacity-50 " />

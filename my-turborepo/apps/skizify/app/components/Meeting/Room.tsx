@@ -1,13 +1,17 @@
 "use client";
 import { Avatar } from "@repo/ui/avatar";
 import {
+  EllipsisVertical,
   MessageSquare,
   MessageSquareOff,
   MicIcon,
+  MicOffIcon,
   PhoneIcon,
+  Pin,
   ScreenShare,
   Send,
   Video,
+  VideoOff,
   X,
 } from "lucide-react";
 import { useSession } from "next-auth/react";
@@ -17,6 +21,7 @@ import { Dock, DockIcon } from "../../../@/components/magicui/dock";
 import { Textarea } from "../../../@/components/ui/textarea";
 import { Button } from "../ui/button";
 import ButtonsDock from "./Buttons-dock";
+import { useRouter } from "next/navigation";
 
 const URL = "http://localhost:3003";
 
@@ -41,6 +46,7 @@ export default function Room({
   userId: string;
 }) {
   const session = useSession();
+  const router = useRouter();
   const [socket, setSocket] = useState<Socket | null>(null);
   const [sendingPC, setSendingPC] = useState<RTCPeerConnection | null>(null);
   const [receivingPC, setReceivingPC] = useState<RTCPeerConnection | null>(
@@ -54,11 +60,39 @@ export default function Room({
   const [screenTrack, setScreenTrack] = useState<
     MediaStreamTrack | null | undefined
   >(null);
+  const [isAudioMuted, setIsAudioMuted] = useState(false);
+  const [isVideoMuted, setIsVideoMuted] = useState(false);
   const [remoteMediaStream, setRemoteMediaStream] =
     useState<MediaStream | null>(null);
   const localVideoref = useRef<HTMLVideoElement>(null);
   const remoteVideoref = useRef<HTMLVideoElement>(null);
   const messagesEndRef = useRef<HTMLDivElement | null>(null); // for Automatic sroll at the bottom od the screen
+
+  //UNINPORTANT STATES
+  const [SelectPintab, setSelectPintab] = useState<boolean>(false);
+  const [remoteUserJoined, setRemoteUserJoined] = useState(false);
+  const [state, setState] = useState(1);
+
+  //This is for Re-Establishing the connection under 5Sec IF error came First time
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setState((prevState) => prevState + 1);
+    }, 5000);
+
+    return () => clearTimeout(timer);
+  }, [remoteUserJoined]);
+
+  useEffect(() => {
+    if (SelectPintab) {
+      const timer = setTimeout(() => {
+        setSelectPintab(false);
+      }, 4000);
+
+      // Cleanup to clear the timeout if component unmounts or state changes
+      return () => clearTimeout(timer);
+    }
+  }, [SelectPintab]);
+
   useEffect(() => {
     const socket = io(URL);
     // socket.emit("getSession",)
@@ -109,19 +143,21 @@ export default function Room({
         }
 
         setRemoteMediaStream(stream);
-
-        setReceivingPC(pc);
-        pc.setRemoteDescription(remotesdp);
         pc.ontrack = (e) => {
           console.log(e);
+          console.log("This is it , check the Screenshare Track");
           const { track } = e;
           if (track.kind === "video") {
             stream.addTrack(track);
-          } else if (track.kind === "audio") {
+          }
+          if (track.kind === "audio") {
             stream.addTrack(track);
           }
+          setRemoteUserJoined(true);
           remoteVideoref.current?.play();
         };
+        setReceivingPC(pc);
+        pc.setRemoteDescription(remotesdp);
 
         // pc.ontrack()
         pc.onicecandidate = async (e) => {
@@ -215,14 +251,14 @@ export default function Room({
         screenTrack.stop();
       }
     };
-  }, [name]);
+  }, [remoteUserJoined, state]);
 
   useEffect(() => {
     if (localVideoref.current && localVideoTrack) {
       localVideoref.current.srcObject = new MediaStream([localVideoTrack]);
       localVideoref.current.play();
     }
-  }, [localVideoref]);
+  }, [localVideoref, remoteUserJoined]);
 
   // useEffect(() => {
   //   messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -319,101 +355,215 @@ export default function Room({
     }
   };
 
+  function TogglePintab() {
+    setSelectPintab((prevState) => !prevState);
+  }
+
+  const endMeeting = () => {
+    if (socket) {
+      socket?.emit("leave-meeting", { userId, meetingId });
+      socket?.disconnect();
+    }
+    setSendingPC((pc) => {
+      if (pc) pc.close();
+      return null;
+    });
+
+    setReceivingPC((pc) => {
+      if (pc) pc.close();
+      return null;
+    });
+
+    if (localAudioTrack) {
+      localAudioTrack.stop();
+    }
+    if (localVideoTrack) {
+      localVideoTrack.stop();
+    }
+    if (screenTrack) {
+      screenTrack.stop();
+    }
+    router.push("./meeting/end");
+  };
+
+  const toggleAudio = () => {
+    if (localAudioTrack) {
+      localAudioTrack.enabled = !localAudioTrack.enabled;
+      setIsAudioMuted(!localAudioTrack.enabled);
+    }
+  };
+
+  const toggleVideo = () => {
+    if (localVideoTrack) {
+      localVideoTrack.enabled = !localVideoTrack.enabled;
+      setIsVideoMuted(!localVideoTrack.enabled);
+
+      if (localVideoref.current) {
+        //Is the Now Video Available then we will make a Stream to display to user
+        if (localVideoTrack.enabled) {
+          localVideoref.current.srcObject = new MediaStream([localVideoTrack]);
+          localVideoref.current.play();
+        } else {
+          //if the localVideoTrack.enabled is now set to fasle then we wll remove the the Videotrack
+          localVideoref.current.srcObject = null;
+        }
+      }
+    }
+  };
+
   return (
-    <div className="flex h-[85%] w-full md:h-[92%]">
-      <div className="relative flex h-full flex-1 flex-col items-center justify-between p-3">
-        <div className="grid h-full w-full grid-cols-1 gap-3 md:gap-4 lg:grid-cols-2 lg:gap-6">
-          <div className="relative h-full w-full overflow-hidden rounded-xl border border-white ring-2 ring-black dark:border-neutral-700 dark:ring-white">
+    <div className="flex h-[85%] w-full rounded-xl from-neutral-900 via-black to-neutral-900 dark:bg-gradient-to-r md:h-[92%]">
+      <div className="flex h-full w-full flex-1 flex-col items-center justify-between p-1 pb-2 md:p-3">
+        {remoteUserJoined ? (
+          <div className="grid h-full w-full grid-cols-1 gap-3 md:gap-4 lg:grid-cols-2 lg:gap-6">
+            <div
+              className="relative h-full w-full overflow-hidden rounded-xl border border-white dark:border-neutral-700"
+              onClick={() => TogglePintab()}
+            >
+              <video
+                autoPlay
+                ref={localVideoref}
+                className="absolute inset-0 h-full w-full object-cover"
+              />
+              {SelectPintab && (
+                <div className="absolute left-1/2 top-1/2 flex min-w-28 -translate-x-1/2 -translate-y-1/2 transform items-center justify-between rounded-e-full rounded-s-full bg-black p-2 opacity-60 transition-opacity duration-300">
+                  <div className="cursor-pointer rounded-full text-white hover:bg-v0dark">
+                    <Pin className="m-2 size-5 md:size-6" />
+                  </div>
+                  <div className="cursor-pointer rounded-full text-white hover:bg-v0dark">
+                    <EllipsisVertical className="m-2 size-5 md:size-6" />
+                  </div>
+                </div>
+              )}
+            </div>
+            <div
+              className="relative h-full w-full overflow-hidden rounded-xl border border-white dark:border-neutral-700"
+              onClick={() => TogglePintab()}
+            >
+              <video
+                autoPlay
+                ref={remoteVideoref}
+                className="absolute inset-0 h-full w-full object-cover"
+              />
+              {SelectPintab && (
+                <div className="absolute left-1/2 top-1/2 flex min-w-28 -translate-x-1/2 -translate-y-1/2 transform items-center justify-between rounded-e-full rounded-s-full bg-black p-2 opacity-60 transition-opacity duration-300">
+                  <div className="cursor-pointer rounded-full text-white hover:bg-v0dark">
+                    <Pin className="m-2 size-5 md:size-6" />
+                  </div>
+                  <div className="cursor-pointer rounded-full text-white hover:bg-v0dark">
+                    <EllipsisVertical className="m-2 size-5 md:size-6" />
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        ) : (
+          <div className="relative h-full w-full overflow-hidden rounded-xl border border-white dark:border-neutral-700">
             <video
               autoPlay
               ref={localVideoref}
               className="absolute inset-0 h-full w-full object-cover"
             />
           </div>
-          <div className="relative h-full w-full overflow-hidden rounded-xl border border-white ring-2 ring-black dark:border-neutral-700 dark:ring-white">
-            <video
-              autoPlay
-              ref={remoteVideoref}
-              className="absolute inset-0 h-full w-full object-cover"
-            />
-          </div>
-        </div>
-        <div className="m-1 flex w-full items-center justify-center gap-2 space-x-1 rounded-lg p-2 md:space-x-2 xl:space-x-3"></div>
-        <div>
-          <div className="relative">
-            <Dock
-              direction="middle"
-              className="gap-7 rounded-md dark:border-neutral-600"
-            >
-              <DockIcon>
-                <ButtonsDock name="Mute">
+        )}
+
+        <div className="">
+          <Dock
+            direction="middle"
+            className="gap-7 rounded-md dark:border-neutral-800"
+          >
+            <DockIcon>
+              <ButtonsDock
+                name={isAudioMuted ? "Unmute" : "Mute"}
+                onClick={toggleAudio}
+              >
+                {isAudioMuted ? (
+                  <MicOffIcon
+                    strokeWidth={1.7}
+                    className="size-4 lg:size-5 xl:size-6"
+                  />
+                ) : (
                   <MicIcon
                     strokeWidth={1.7}
                     className="size-4 lg:size-5 xl:size-6"
                   />
-                </ButtonsDock>
-              </DockIcon>
-              <DockIcon>
-                <ButtonsDock name="Video">
+                )}
+              </ButtonsDock>
+            </DockIcon>
+            <DockIcon>
+              <ButtonsDock
+                name={isVideoMuted ? "Start Video" : "Stop Video"}
+                onClick={toggleVideo}
+              >
+                {isVideoMuted ? (
+                  <VideoOff
+                    strokeWidth={1.7}
+                    className="size-4 lg:size-5 xl:size-6"
+                  />
+                ) : (
                   <Video
                     strokeWidth={1.7}
                     className="size-4 lg:size-5 xl:size-6"
                   />
-                </ButtonsDock>
-              </DockIcon>
-              <DockIcon>
-                <ButtonsDock
-                  name="Call-End"
-                  className="bg-red-600 text-white hover:bg-red-600 dark:bg-red-600 hover:dark:bg-red-600"
-                >
-                  <PhoneIcon
+                )}
+              </ButtonsDock>
+            </DockIcon>
+            <DockIcon>
+              <ButtonsDock
+                name="Call-End"
+                className="bg-red-600 text-white hover:bg-red-600 dark:bg-red-600 hover:dark:bg-red-600"
+                onClick={endMeeting}
+              >
+                <PhoneIcon
+                  strokeWidth={1.7}
+                  className="size-4 lg:size-5 xl:size-6"
+                />
+              </ButtonsDock>
+            </DockIcon>
+            <DockIcon>
+              <ButtonsDock name="ScreenShare">
+                <ScreenShare
+                  strokeWidth={1.7}
+                  className="size-4 lg:size-5 xl:size-6"
+                  onClick={toggleScreenShare}
+                />
+              </ButtonsDock>
+            </DockIcon>
+            <DockIcon>
+              <ButtonsDock
+                name="Chat"
+                onClick={() => setIsChatBarVisible(!isChatBarVisible)}
+              >
+                {isChatBarVisible ? (
+                  <MessageSquareOff
                     strokeWidth={1.7}
                     className="size-4 lg:size-5 xl:size-6"
                   />
-                </ButtonsDock>
-              </DockIcon>
-              <DockIcon>
-                <ButtonsDock name="ScreenShare">
-                  <ScreenShare
+                ) : (
+                  <MessageSquare
                     strokeWidth={1.7}
                     className="size-4 lg:size-5 xl:size-6"
-                    onClick={toggleScreenShare}
                   />
-                </ButtonsDock>
-              </DockIcon>
-              <DockIcon>
-                <ButtonsDock
-                  name="Chat"
-                  onClick={() => setIsChatBarVisible(!isChatBarVisible)}
-                >
-                  {isChatBarVisible ? (
-                    <MessageSquareOff
-                      strokeWidth={1.7}
-                      className="size-4 lg:size-5 xl:size-6"
-                    />
-                  ) : (
-                    <MessageSquare
-                      strokeWidth={1.7}
-                      className="size-4 lg:size-5 xl:size-6"
-                    />
-                  )}
-                </ButtonsDock>
-              </DockIcon>
-            </Dock>
-          </div>
+                )}
+              </ButtonsDock>
+            </DockIcon>
+          </Dock>
         </div>
       </div>
+
       <div
         className={`${
           isChatBarVisible ? "block" : "hidden"
-        } flex h-full flex-col overflow-hidden rounded-md border bg-black ring-2 ring-black transition-all duration-500 ease-in-out dark:border-1 dark:border-neutral-800 dark:bg-mediumdark dark:ring-0 lg:w-3/12`}
+        } flex h-full flex-col overflow-hidden rounded-xl border bg-mediumdark transition-all duration-500 ease-in-out dark:border-1 dark:border-neutral-800 dark:bg-white lg:w-3/12`}
       >
-        <div className="flex items-center justify-between border-b border-[#334155] px-4 py-3 dark:border-neutral-700">
-          <div className="text-lg font-medium text-[#e2e8f0]">Chat</div>
+        <div className="flex items-center justify-between px-4 py-3 dark:border-neutral-700">
+          <div className="text-lg font-medium text-white opacity-70 dark:text-v0dark">
+            Chat
+          </div>
           <Button
             variant="ghost"
             size="icon"
-            className="rounded-md text-[#94a3b8] hover:bg-neutral-500"
+            className="rounded-full text-neutral-200 hover:bg-neutral-500 dark:text-mediumdark dark:hover:bg-neutral-300"
             onClick={() => setIsChatBarVisible(false)}
           >
             <X className="size-5" />
@@ -432,7 +582,7 @@ export default function Room({
         <div className="flex items-center gap-2 border-t p-4 dark:border-neutral-700">
           <Textarea
             placeholder={`${!permissionToChat ? "Chat is diabled, Let the person Join" : "Type your message..."}`}
-            className={`${!permissionToChat ? "cursor-not-allowed opacity-60" : ""} flex-1 resize-none text-white focus:border-none focus:outline-none focus:ring-2 focus:ring-neutral-500`}
+            className={`${!permissionToChat ? "cursor-not-allowed opacity-60" : ""} flex-1 resize-none rounded-lg text-white focus:border-none focus:outline-none focus:ring-2 focus:ring-neutral-500`}
             onChange={(e) => {
               if (permissionToChat) {
                 setMessage(e.target.value);

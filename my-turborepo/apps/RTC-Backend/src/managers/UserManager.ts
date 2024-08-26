@@ -34,7 +34,7 @@ export class UserManager {
     }
     console.log(this.meeting);
     // this.queue.push(user.socket.id);
-    this.initHandlers(user.socket, user.meetingId);
+    this.initHandlers(user.socket, user.meetingId , userId);
     this.clearQueue(user.meetingId);
     this.messageHandler(io, user.meetingId, user.socket);
   }
@@ -58,8 +58,8 @@ export class UserManager {
       const user2 = room.shift(); // Remove the second user
 
       if (user1 && user2 && user1.meetingId === user2.meetingId) {
-        user1.socket.join(meetingId); //User Joined the Room
-        user2.socket.join(meetingId); //User Joined the Room
+        user1.socket.join(meetingId); //User1 Joined the Room
+        user2.socket.join(meetingId); //User2 Joined the Room
         console.log("Both user Joined the meeting");
         this.roomManager.createRoom(user1, user2, meetingId);
       }
@@ -67,9 +67,12 @@ export class UserManager {
     // this.clearQueue(meetingId); //again recalling the Function
   }
 
+
+  //user will be removed Surely First from initHandlers & and when User disconnects Check index.ts , there we also have written this
   removeUser(meetingId: string, userId: string) {
     // this.meeting = this.meeting.filter((x) => x.socket.id !== socketId);
     // this.queue = this.queue.filter((x) => x !== socketId);
+    console.log(userId);
     const users = this.meeting.get(meetingId);
     if (!users) return;
 
@@ -84,7 +87,7 @@ export class UserManager {
     }
   }
 
-  initHandlers(UserSocket: Socket, meetingId: string) {
+  initHandlers(UserSocket: Socket, meetingId: string , userId : string) {
     if (!UserSocket) {
       console.error("Socket instance is not available.");
       return;
@@ -114,6 +117,10 @@ export class UserManager {
         );
       }
     );
+    // socket?.emit('leave-meeting', { userId, meetingId });
+    UserSocket.on('leave-meeting' , ({userId , meetingId} : {userId : string ,  meetingId : string}) => {
+      this.removeUser(meetingId , userId);
+    })
 
     // UserSocket.on("onsession", ( session : ClientSessionInterface ) => {
     //   this.roomManager.getSession(session);
@@ -129,9 +136,9 @@ export class UserManager {
         userId,
         userImage,
       }:Chat) => {
-        console.log("Yeah GOT the message, Sending on Particular Room Id");
-        console.log("Broadcasting to room:", meetingId);
-        console.log("Message is this ====>", message);
+        // console.log("Yeah GOT the message, Sending on Particular Room Id");
+        // console.log("Broadcasting to room:", meetingId);
+        // console.log("Message is this ====>", message);
         UserIO.to(meetingId).emit("receive-message", {
           message,
           name,
