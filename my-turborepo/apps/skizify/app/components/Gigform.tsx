@@ -125,7 +125,8 @@ export function GigForm() {
           endDateTime,
           session,
           interval,
-          Timeneed
+          Timeneed,
+          "education" // Add the missing argument here
         );
         setTitle("");
         setDescription("");

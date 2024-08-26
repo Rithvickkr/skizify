@@ -1,22 +1,14 @@
 "use client";
 
-import * as React from "react";
-import { useTheme } from "next-themes";
 import { Moon, Sun } from "lucide-react";
-import { Button } from "../../@/components/ui/button";
+import { useTheme } from "next-themes";
+import * as React from "react";
 import { Switch } from "../../@/components/ui/switch";
+import { useRecoilState } from "recoil";
 
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "../../@/components/ui/dropdown-menu";
 
 export default function SwitchTheme() {
+  
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = React.useState(false);
 
@@ -34,10 +26,10 @@ export default function SwitchTheme() {
   return (
     <div className="flex items-center gap-2">
       <Sun
-        className={`m-2 mr-2 size-5  ${isDarkMode ? "text-lightwhite" : "text-black"}`}
+        className={`m-2 mr-2 size-5 ${isDarkMode ? "text-lightwhite" : "text-black"}`}
       />
       <Switch
-      className="bg-black dark:bg-white"
+        className="bg-black dark:bg-white"
         checked={isDarkMode}
         onCheckedChange={(checked: any) => setTheme(checked ? "dark" : "light")}
       />

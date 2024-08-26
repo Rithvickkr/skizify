@@ -8,6 +8,7 @@ export async function GigSet(
   session: any,
   interval: any,
   timeneed: number,
+  category: String
 ) {
   const user = await prisma.user.findUnique({
     where: { email: session.user.email },
@@ -31,6 +32,8 @@ export async function GigSet(
             hours: number;
           },
           timeneeded: timeneed as number,
+          category: category as string,
+          
         },
       });
       console.log(gig);

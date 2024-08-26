@@ -1,21 +1,23 @@
 "use client";
-import { useState, useEffect } from "react";
-import { Button } from "./ui/button";
+import { useSession } from "next-auth/react";
+import { useTheme } from "next-themes";
+import { useState } from "react";
 import { Input } from "../../@/components/ui/input";
-import { Textarea } from "../../@/components/ui/textarea";
 import { Label } from "../../@/components/ui/label";
-import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
-
+import { Textarea } from "../../@/components/ui/textarea";
+import { Button } from "./ui/button";
 import { DatePicker, PickerValidDate, TimePicker } from "@mui/x-date-pickers";
+import { AnimatePresence, motion } from "framer-motion";
 import {
-  CalendarIcon,
-  ClockIcon,
-  MapPinIcon,
-  ChevronRightIcon,
+  ChevronDownIcon,
   ChevronLeftIcon,
-  Pencil,
+  ChevronRightIcon,
 } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "../../@/components/ui/popover";
 import {
   Select,
   SelectContent,
@@ -23,98 +25,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../@/components/ui/select";
-
+import { GigSet } from "../lib/actions/setgig";
 
 // Particle background component
-const ParticleBackground = () => {
-  useEffect(() => {
-    const canvas = document.getElementById(
-      "particle-canvas",
-    ) as HTMLCanvasElement;
-    const ctx = canvas.getContext("2d");
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    class Particle {
-      x: number;
-      y: number;
-      size: number;
-      speedX: number;
-      speedY: number;
-
-      constructor() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
-        this.size = Math.random() * 5 + 1;
-        this.speedX = Math.random() * 3 - 1.5;
-        this.speedY = Math.random() * 3 - 1.5;
-      }
-
-      update() {
-        this.x += this.speedX;
-        this.y += this.speedY;
-
-        if (this.size > 0.2) this.size -= 0.1;
-      }
-
-      draw() {
-        if (ctx) {
-          ctx.fillStyle = "rgba(255, 255, 255, 0.8)";
-          ctx.strokeStyle = "rgba(255, 255, 255, 0.8)";
-          ctx.lineWidth = 2;
-          ctx.beginPath();
-          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-          ctx.closePath();
-          ctx.fill();
-        }
-      }
-    }
-
-    let particleArray: Particle[] = [];
-
-    const init = () => {
-      particleArray = [];
-      for (let i = 0; i < 100; i++) {
-        particleArray.push(new Particle());
-      }
-    };
-
-    const animate = () => {
-      ctx?.clearRect(0, 0, canvas.width, canvas.height);
-      for (let i = 0; i < particleArray.length; i++) {
-        particleArray[i]?.update();
-        particleArray[i]?.draw();
-      }
-      requestAnimationFrame(animate);
-    };
-
-    init();
-    animate();
-
-    const handleResize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      init();
-    };
-
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
-
-  return (
-    <canvas
-      id="particle-canvas"
-      className="fixed left-0 top-0 -z-10 h-full w-full"
-    />
-  );
-};
 
 export default function Postform() {
   interface FormData {
-    eventName: string;
+    Title: string;
     startdate: string;
     starttime: string;
     enddate: string;
@@ -123,9 +40,12 @@ export default function Postform() {
     category: string;
     [key: string]: string; // Add index signature
   }
+  const { data: session } = useSession();
+  const [timeneed, setTimeneed] = useState<number>(0);
+  const theme = useTheme();
 
   const [formData, setFormData] = useState<FormData>({
-    eventName: "",
+    Title: "",
     startdate: "",
     starttime: "",
     enddate: "",
@@ -133,16 +53,9 @@ export default function Postform() {
     description: "",
     category: "",
   });
-const darktheme = createTheme({
-  palette: {
-    mode:"dark"
-  },
 
-});
-  
-  
   interface FormErrors {
-    eventName?: string;
+    Title?: string;
     date?: string;
     time?: string;
     location?: string;
@@ -164,31 +77,81 @@ const darktheme = createTheme({
     }));
   };
 
+  const [selectedTime, setSelectedTime] = useState<number | null>(null);
+
   const validateForm = () => {
     let newErrors: FormErrors = {};
-    if (!formData.eventName.trim()) newErrors.eventName = "gig name is required";
+    if (!formData.Title.trim()) newErrors.Title = "gig name is required";
     if (!formData.startdate) newErrors.date = "Date is required";
     if (!formData.starttime) newErrors.time = "Time is required";
-    if (!formData.enddate) newErrors.date = "Date is required"
+    if (!formData.enddate) newErrors.date = "Date is required";
     if (!formData.endtime) newErrors.time = "Time is required";
-    if (!formData.description.trim()) newErrors.description = "description is required";
+    if (!formData.description.trim())
+      newErrors.description = "description is required";
     if (!formData.category.trim()) newErrors.category = "category is required";
     setErrors(newErrors);
     if (Object.keys(newErrors).length > 0) return false;
     else return true;
   };
+  function calculateTimeInterval(startTime: string, endTime: string) {
+    const date = new Date().toISOString().split("T")[0];
+    const startDateTime1 = new Date(`${date}T${startTime}:00`);
+    const endDateTime1 = new Date(`${date}T${endTime}:00`);
 
-  const handleSubmit = (e: { preventDefault: () => void }) => {
+    const differenceInMilliseconds =
+      endDateTime1.getTime() - startDateTime1.getTime();
+    const differenceInSeconds = differenceInMilliseconds / 1000;
+    const differenceInMinutes = differenceInSeconds / 60;
+    const differenceInHours = differenceInMinutes / 60;
+
+    return {
+      milliseconds: differenceInMilliseconds,
+      seconds: differenceInSeconds,
+      minutes: differenceInMinutes,
+      hours: differenceInHours,
+    };
+  }
+  const interval = calculateTimeInterval(formData.starttime, formData.endtime);
+
+  const startdateonly = formData.startdate.slice(0, 15);
+  const enddateonly = formData.enddate.slice(0, 15);
+  const starttimeonly = formData.starttime.slice(16);
+  const endtimeonly = formData.endtime.slice(16);
+  function compileToISO(dateStr: string, timeStr: string) {
+    const combinedStr = `${dateStr} ${timeStr}`;
+
+    const dateObj = new Date(combinedStr);
+
+    if (isNaN(dateObj.getTime())) {
+      return "Invalid date or time value";
+    }
+
+    return dateObj.toISOString();
+  }
+
+  const startisodate = compileToISO(startdateonly, starttimeonly);
+  const endisodate = compileToISO(enddateonly, endtimeonly);
+
+  const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    if (validateForm()) {
+    if (true) {
+      await GigSet(
+        formData.Title,
+        formData.description,
+        startisodate,
+        endisodate,
+        session,
+        interval,
+        timeneed,
+        formData.category,
+      );
       console.log("Form submitted:", formData);
-      
       setIsSubmitted(true);
       setTimeout(() => {
         setIsSubmitted(false);
       }, 3000);
       setFormData({
-        eventName: "",
+        Title: "",
         startdate: "",
         starttime: "",
         enddate: "",
@@ -201,18 +164,16 @@ const darktheme = createTheme({
   };
 
   const formSteps = [
-    { title: "Gig Details", fields: ["Title", "description"] },
+    { Title: "Gig Details", fields: ["Title", "description"] },
     {
-      title: "Date & Time",
+      Title: "Date & Time",
       fields: ["startdate", "starttime", "enddate", "endtime"],
     },
-    { title: "category", fields: ["category"] },
+    { Title: "category", fields: ["category"] },
   ];
 
   return (
     <div className="flex min-h-screen flex-col bg-white text-white dark:bg-black">
-      <ParticleBackground />
-
       <main className="container mx-auto flex-grow px-4 py-10">
         <motion.section
           initial={{ opacity: 0, y: 20 }}
@@ -245,7 +206,7 @@ const darktheme = createTheme({
                 >
                   {index + 1}
                 </div>
-                <span className="hidden sm:inline">{step.title}</span>
+                <span className="hidden sm:inline">{step.Title}</span>
               </div>
             ))}
           </div>
@@ -283,7 +244,7 @@ const darktheme = createTheme({
                         )
                       ) : (
                         <div className="relative">
-                          {field === "startdate" || field === "enddate" ? (
+                          {/* {field === "startdate" || field === "enddate" ? (
                             <CalendarIcon className="absolute left-3 top-1/2 -translate-y-1/2 transform text-white" />
                           ) : field === "starttime" || field === "endtime" ? (
                             <ClockIcon className="absolute left-3 top-1/2 -translate-y-1/2 transform text-white" />
@@ -291,82 +252,165 @@ const darktheme = createTheme({
                             field === "edit" && (
                               <Pencil className="absolute left-3 top-1/2 -translate-y-1/2 transform text-white" />
                             )
-                          )}
+                          )} */}
                           <div>
                             {field === "category" ? (
-                              <div className="mt-3">
-                                <Select
-                                  onValueChange={(value) => {
-                                    setFormData((prevData) => ({
-                                      ...prevData,
-                                      category: value,
-                                    }));
-                                    console.log(value); // This will log the selected category
-                                  }}
-                                >
-                                  <SelectTrigger>
-                                    <SelectValue placeholder="Select a category" />
-                                  </SelectTrigger>
-                                  <SelectContent className="bg-white dark:bg-black dark:border-0 pr-2">
-                                    <SelectItem
-                                      className="m-1 rounded-md border bg-neutral-300 dark:text-white hover:shadow-sm  text-black opacity-80 hover:opacity-100   dark:opacity-60 dark:border-neutral-700 dark:bg-black hover:dark:opacity-90"
-                                      value={"Entertainment"}
-                                    >
-                                      Entertainment
-                                    </SelectItem>
-                                    <SelectItem
-                                      className="m-1 rounded-md border bg-neutral-300 dark:text-white hover:shadow-sm  text-black opacity-80 hover:opacity-100   dark:opacity-60 dark:border-neutral-700 dark:bg-black hover:dark:opacity-90"
-                                      onClick={() => {
-                                        setFormData({
-                                          ...formData,
-                                          category: "Education",
-                                        });
-                                      }}
-                                      value={"Education"}
-                                    >
-                                      Education
-                                    </SelectItem>
-                                    <SelectItem
-                                      className="m-1 rounded-md border bg-neutral-300 dark:text-white hover:shadow-sm  text-black opacity-80 hover:opacity-100   dark:opacity-60 dark:border-neutral-700 dark:bg-black hover:dark:opacity-90"
-                                      onClick={() => {
-                                        setFormData({
-                                          ...formData,
-                                          category: "Art",
-                                        });
-                                      }}
-                                      value={"Art"}
-                                    >
-                                      Art
-                                    </SelectItem>
-                                    <SelectItem
-                                      className="m-1 rounded-md border bg-neutral-300 dark:text-white hover:shadow-sm  text-black opacity-80 hover:opacity-100   dark:opacity-60 dark:border-neutral-700 dark:bg-black hover:dark:opacity-90"
-                                      onClick={() => {
-                                        setFormData({
-                                          ...formData,
-                                          category: "Tech",
-                                        });
-                                      }}
-                                      value={"Tech"}
-                                    >
-                                      Tech
-                                    </SelectItem>
-                                  </SelectContent>
-                                </Select>
-                              </div>
+                              <>
+                                <div className="mt-3">
+                                  <Select
+                                    onValueChange={(value) => {
+                                      setFormData((prevData) => ({
+                                        ...prevData,
+                                        category: value,
+                                      }));
+                                    }}
+                                  >
+                                    <SelectTrigger>
+                                      <SelectValue placeholder="Select a category" />
+                                    </SelectTrigger>
+                                    <SelectContent className="bg-white pr-2 dark:border-0 dark:bg-black">
+                                      <SelectItem
+                                        className="m-1 rounded-md border bg-neutral-300 text-black opacity-80 hover:opacity-100 hover:shadow-sm dark:border-neutral-700 dark:bg-black dark:text-white dark:opacity-60 hover:dark:opacity-90"
+                                        value={"Entertainment"}
+                                      >
+                                        Entertainment
+                                      </SelectItem>
+                                      <SelectItem
+                                        className="m-1 rounded-md border bg-neutral-300 text-black opacity-80 hover:opacity-100 hover:shadow-sm dark:border-neutral-700 dark:bg-black dark:text-white dark:opacity-60 hover:dark:opacity-90"
+                                        onClick={() => {
+                                          setFormData({
+                                            ...formData,
+                                            category: "Education",
+                                          });
+                                        }}
+                                        value={"Education"}
+                                      >
+                                        Education
+                                      </SelectItem>
+                                      <SelectItem
+                                        className="m-1 rounded-md border bg-neutral-300 text-black opacity-80 hover:opacity-100 hover:shadow-sm dark:border-neutral-700 dark:bg-black dark:text-white dark:opacity-60 hover:dark:opacity-90"
+                                        onClick={() => {
+                                          setFormData({
+                                            ...formData,
+                                            category: "Art",
+                                          });
+                                        }}
+                                        value={"Art"}
+                                      >
+                                        Art
+                                      </SelectItem>
+                                      <SelectItem
+                                        className="m-1 rounded-md border bg-neutral-300 text-black opacity-80 hover:opacity-100 hover:shadow-sm dark:border-neutral-700 dark:bg-black dark:text-white dark:opacity-60 hover:dark:opacity-90"
+                                        onClick={() => {
+                                          setFormData({
+                                            ...formData,
+                                            category: "Tech",
+                                          });
+                                        }}
+                                        value={"Tech"}
+                                      >
+                                        Tech
+                                      </SelectItem>
+                                    </SelectContent>
+                                  </Select>
+                                </div>
+                                <div className="pt-2">
+                                  <Label htmlFor="timeneeded">Slot</Label>
+                                  <Popover>
+                                    <PopoverTrigger asChild>
+                                      <Button
+                                        variant="outline"
+                                        className="mt-2 w-full bg-transparent"
+                                      >
+                                        <div className="flex items-center justify-between">
+                                          <span>
+                                            {selectedTime
+                                              ? `${selectedTime} mins selected`
+                                              : "Select a time"}
+                                          </span>
+                                          <ChevronDownIcon className="h-4 w-4" />
+                                        </div>
+                                      </Button>
+                                    </PopoverTrigger>
+                                    <PopoverContent className="space-y-4 border border-[#d1d5d8] bg-[#484848] p-4 transition duration-200 hover:shadow-xl dark:border-gray-800 dark:bg-[#020817] dark:shadow-none">
+                                      <div className="grid grid-cols-3 gap-2">
+                                        {[30, 45, 60].map((time) => (
+                                          <Button
+                                            key={time}
+                                            variant="default"
+                                            className={`border-[#d1d5d8] px-2 py-1 text-xs ${
+                                              selectedTime === time
+                                                ? "bg-black text-white dark:bg-white dark:text-black"
+                                                : "bg-white text-black dark:bg-gray-800 dark:text-white"
+                                            }`}
+                                            onClick={() => {
+                                              setTimeneed(time);
+                                              setSelectedTime(time);
+                                            }}
+                                          >
+                                            {time} mins
+                                          </Button>
+                                        ))}
+                                      </div>
+                                    </PopoverContent>
+                                  </Popover>
+                                </div>
+                              </>
                             ) : (
                               <>
                                 {field === "startdate" ||
                                 field === "enddate" ? (
-                                  <div >
-                                   
+                                  <div>
                                     <DatePicker
-                                    sx={{color: 'white', backgroundColor: 'white',borderRadius: '10px',outline: 'black',border: 'none',width: '100%',cursor:'pointer'}}
-                                    slotProps={{
-                                      textField: {
-                                        size: "small",
-                                        error: false,
-                                      },
-                                    }}
+                                      slotProps={{
+                                        popper: {
+                                          sx: {
+                                            ...{
+                                              "& .MuiPickersDay-root.Mui-selected":
+                                                { backgroundColor: "#484848" },
+                                              "& .MuiPickersDay-root.Mui-selected:hover":
+                                                { backgroundColor: "#484848" },
+
+                                              "& .MuiPickersDay-root:hover": {
+                                                backgroundColor: "#484848",
+                                                color: "#ffffff",
+                                              },
+                                              borderRadius: "20px",
+                                            },
+                                          },
+                                        },
+                                        textField: {
+                                          placeholder: `Enter event ${field}`,
+
+                                          variant: "outlined",
+
+                                          size: "small",
+                                          error: false,
+                                        },
+                                        layout: {
+                                          sx: {
+                                            color:
+                                              theme.toString() === "dark"
+                                                ? "#ffffff"
+                                                : "#000000",
+                                            borderRadius: "2px",
+                                            borderWidth: "1px",
+                                            borderColor: "#2196f3",
+                                            border: "1px solid",
+                                            backgroundColor:
+                                              theme.toString() === "dark"
+                                                ? "#484848"
+                                                : "#ffffff",
+                                          },
+                                        },
+                                      }}
+                                      sx={{
+                                        backgroundColor: "#484848",
+
+                                        borderRadius: "10px",
+
+                                        width: "100%",
+                                      }}
                                       value={
                                         formData[field] as unknown as
                                           | PickerValidDate
@@ -380,34 +424,59 @@ const darktheme = createTheme({
                                         });
                                       }}
                                     />
-                                   
                                   </div>
                                 ) : (
                                   <>
                                     {field === "starttime" ||
                                     field === "endtime" ? (
-                                      <TimePicker 
-                                      sx={{color: 'white', backgroundColor: 'white',borderRadius: '10px',outline: 'black',border: 'none',width: '100%'}}
-                                    slotProps={{
-                                      textField: {
-                                        size: "small",
-                                        error: false,
-                                      },
-                                    }}
-                                      value={
-                                        formData[field] as unknown as
-                                          | PickerValidDate
-                                          | null
-                                          | undefined
-                                      }
-                                      onChange={(time) => {
-                                        setFormData({
-                                          ...formData,
-                                          [field]: (time || "").toString(),
-                                        });
-                                      }
-                                    }
-                                       />
+                                      <TimePicker
+                                        sx={{
+                                          backgroundColor: "#484848",
+                                          color: "white",
+                                          borderRadius: "10px",
+                                          borderColor: "white",
+
+                                          width: "100%",
+                                        }}
+                                        slotProps={{
+                                          popper: {
+                                            sx: {
+                                              ...{
+                                                "& .MuiPickersDay-root.Mui-selected":
+                                                  {
+                                                    backgroundColor: "#484848",
+                                                  },
+                                                "& .MuiPickersDay-root.Mui-selected:hover":
+                                                  {
+                                                    backgroundColor: "#484848",
+                                                  },
+
+                                                "& .MuiPickersDay-root:hover": {
+                                                  backgroundColor: "#484848",
+                                                  color: "white",
+                                                },
+                                              },
+                                            },
+                                          },
+                                          textField: {
+                                            variant: "outlined",
+                                            size: "small",
+                                            error: false,
+                                          },
+                                        }}
+                                        value={
+                                          formData[field] as unknown as
+                                            | PickerValidDate
+                                            | null
+                                            | undefined
+                                        }
+                                        onChange={(time) => {
+                                          setFormData({
+                                            ...formData,
+                                            [field]: (time || "").toString(),
+                                          });
+                                        }}
+                                      />
                                     ) : (
                                       <Input
                                         type="text"
@@ -439,11 +508,11 @@ const darktheme = createTheme({
             </AnimatePresence>
 
             <div className="flex justify-between">
-            {currentStep > 0 && (
+              {currentStep > 0 && (
                 <Button
                   type="button"
                   variant="gooeyLeft"
-                  className=" bg-white text-black opacity-80 hover:opacity-100"
+                  className="bg-white text-black opacity-80 hover:opacity-100"
                   onClick={() => setCurrentStep(currentStep - 1)}
                 >
                   <ChevronLeftIcon className="mr-2 size-5" />
@@ -454,7 +523,7 @@ const darktheme = createTheme({
                 <Button
                   type="button"
                   variant="gooeyLeft"
-                  className=" bg-white text-black opacity-80 hover:opacity-100"
+                  className="bg-white text-black opacity-80 hover:opacity-100"
                   onClick={() => setCurrentStep(currentStep + 1)}
                 >
                   Next
@@ -464,7 +533,7 @@ const darktheme = createTheme({
                 <Button
                   type="button"
                   variant="gooeyLeft"
-                  className="min-w-28  bg-white text-black opacity-80 hover:opacity-100"
+                  className="min-w-28 bg-white text-black opacity-80 hover:opacity-100"
                   onClick={handleSubmit}
                 >
                   Submit
