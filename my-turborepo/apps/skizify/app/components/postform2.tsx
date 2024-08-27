@@ -201,12 +201,12 @@ const darktheme = createTheme({
   };
 
   const formSteps = [
-    { title: "Gig Details", fields: ["Title", "description"] },
+    { title: "Details", fields: ["Title", "description"] },
     {
       title: "Date & Time",
       fields: ["startdate", "starttime", "enddate", "endtime"],
     },
-    { title: "category", fields: ["category"] },
+    { title: "Category", fields: ["category"] },
   ];
 
   return (
@@ -229,7 +229,7 @@ const darktheme = createTheme({
           </p>
         </motion.section>
 
-        <div className="mx-auto max-w-4xl rounded-lg bg-[#000000e0] p-8 shadow-lg backdrop-blur-lg dark:bg-white dark:bg-opacity-10">
+        <div className="mx-auto max-w-4xl rounded-lg bg-v0dark p-8 shadow-lg backdrop-blur-lg dark:bg-white dark:bg-opacity-10">
           <div className="mb-8 flex items-center justify-between">
             {formSteps.map((step, index) => (
               <div
@@ -239,8 +239,8 @@ const darktheme = createTheme({
                 }`}
               >
                 <div
-                  className={`mr-2 flex h-8 w-8 items-center justify-center rounded-full ${
-                    index <= currentStep ? "bg-purple-500" : "bg-gray-300"
+                  className={`mr-2 flex size-10 items-center justify-center rounded-md ${
+                    index <= currentStep ? "bg-neutral-500 " : "bg-gray-300"
                   }`}
                 >
                   {index + 1}
@@ -416,7 +416,7 @@ const darktheme = createTheme({
                                         value={formData[field]}
                                         onChange={handleChange}
                                         placeholder={`Enter event ${field}`}
-                                        className={`mt-3 border-neutral-300 bg-white bg-opacity-20 pl-10 text-white placeholder-neutral-200 focus:border-transparent focus:outline-none ${errors[field] ? "border-red-500" : ""} `}
+                                        className={`mt-3 rounded-md border-neutral-300 bg-white bg-opacity-20 pl-10 text-white placeholder-neutral-200 focus:border-transparent focus:outline-none ${errors[field] ? "border-red-500" : ""} `}
                                       />
                                     )}
                                   </>
@@ -443,7 +443,7 @@ const darktheme = createTheme({
                 <Button
                   type="button"
                   variant="gooeyLeft"
-                  className=" bg-white text-black opacity-80 hover:opacity-100"
+                  className=" bg-white text-black opacity-90 hover:opacity-100"
                   onClick={() => setCurrentStep(currentStep - 1)}
                 >
                   <ChevronLeftIcon className="mr-2 size-5" />
@@ -454,7 +454,7 @@ const darktheme = createTheme({
                 <Button
                   type="button"
                   variant="gooeyLeft"
-                  className=" bg-white text-black opacity-80 hover:opacity-100"
+                  className=" bg-white text-black opacity-90 hover:opacity-100"
                   onClick={() => setCurrentStep(currentStep + 1)}
                 >
                   Next
@@ -464,7 +464,7 @@ const darktheme = createTheme({
                 <Button
                   type="button"
                   variant="gooeyLeft"
-                  className="min-w-28  bg-white text-black opacity-80 hover:opacity-100"
+                  className="min-w-28  bg-white text-black opacity-90 hover:opacity-100"
                   onClick={handleSubmit}
                 >
                   Submit
