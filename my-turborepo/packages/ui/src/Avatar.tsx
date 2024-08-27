@@ -17,10 +17,10 @@ export const Avatar = ({ name, photo ,classname }: AvatarProps) => {
         <Image
           src={photo}
           alt={name ? name : "user"}
-          className="rounded-full size-10"
+          className="rounded-full m-1 size-10"
         />
       ) : (
-        <div className={cn("flex h-10 w-10 items-center justify-center rounded-full border border-white bg-[black] text-white focus:outline-0 dark:border-gray-800 dark:bg-white dark:text-black",classname)}>
+        <div className={cn("flex h-10 w-10 items-center justify-center rounded-full m-1 border border-white bg-[black] text-white focus:outline-0 dark:border-gray-800 dark:bg-white dark:text-black",classname)}>
           <div>{char}</div>
         </div>
       )}
