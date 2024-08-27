@@ -400,7 +400,7 @@ export default function Postform() {
                                             backgroundColor:
                                               theme.toString() === "dark"
                                                 ? "#484848"
-                                                : "#ffffff",
+                                                : "#ffffff", 
                                           },
                                         },
                                       }}
