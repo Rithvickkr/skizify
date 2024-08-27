@@ -164,20 +164,12 @@ export default function Postform() {
   };
 
   const formSteps = [
-<<<<<<< HEAD
     { title: "Details", fields: ["Title", "description"] },
-=======
-    { Title: "Gig Details", fields: ["Title", "description"] },
->>>>>>> 3764ac1eb0b8cbd989ea9f356e9299cfb74c1258
     {
       Title: "Date & Time",
       fields: ["startdate", "starttime", "enddate", "endtime"],
     },
-<<<<<<< HEAD
     { title: "Category", fields: ["category"] },
-=======
-    { Title: "category", fields: ["category"] },
->>>>>>> 3764ac1eb0b8cbd989ea9f356e9299cfb74c1258
   ];
 
   return (
@@ -209,7 +201,7 @@ export default function Postform() {
               >
                 <div
                   className={`mr-2 flex size-10 items-center justify-center rounded-md ${
-                    index <= currentStep ? "bg-neutral-500 " : "bg-gray-300"
+                    index <= currentStep ? "bg-neutral-500" : "bg-gray-300"
                   }`}
                 >
                   {index + 1}
@@ -408,7 +400,7 @@ export default function Postform() {
                                             backgroundColor:
                                               theme.toString() === "dark"
                                                 ? "#484848"
-                                                : "#ffffff", 
+                                                : "#ffffff",
                                           },
                                         },
                                       }}
@@ -520,11 +512,7 @@ export default function Postform() {
                 <Button
                   type="button"
                   variant="gooeyLeft"
-<<<<<<< HEAD
-                  className=" bg-white text-black opacity-90 hover:opacity-100"
-=======
-                  className="bg-white text-black opacity-80 hover:opacity-100"
->>>>>>> 3764ac1eb0b8cbd989ea9f356e9299cfb74c1258
+                  className="bg-white text-black opacity-90 hover:opacity-100"
                   onClick={() => setCurrentStep(currentStep - 1)}
                 >
                   <ChevronLeftIcon className="mr-2 size-5" />
@@ -535,11 +523,7 @@ export default function Postform() {
                 <Button
                   type="button"
                   variant="gooeyLeft"
-<<<<<<< HEAD
-                  className=" bg-white text-black opacity-90 hover:opacity-100"
-=======
-                  className="bg-white text-black opacity-80 hover:opacity-100"
->>>>>>> 3764ac1eb0b8cbd989ea9f356e9299cfb74c1258
+                  className="bg-white text-black opacity-90 hover:opacity-100"
                   onClick={() => setCurrentStep(currentStep + 1)}
                 >
                   Next
@@ -549,11 +533,7 @@ export default function Postform() {
                 <Button
                   type="button"
                   variant="gooeyLeft"
-<<<<<<< HEAD
-                  className="min-w-28  bg-white text-black opacity-90 hover:opacity-100"
-=======
-                  className="min-w-28 bg-white text-black opacity-80 hover:opacity-100"
->>>>>>> 3764ac1eb0b8cbd989ea9f356e9299cfb74c1258
+                  className="min-w-28 bg-white text-black opacity-90 hover:opacity-100"
                   onClick={handleSubmit}
                 >
                   Submit

@@ -79,7 +79,7 @@ export function SidebarDemo({ children }: { children: React.ReactNode }) {
     >
       <Sidebar open={open} setOpen={setOpen}>
         <SidebarBody className="justify-between gap-20 dark:bg-black">
-          <div className="flex flex-1 flex-col overflow-y-auto">
+          <div className="flex flex-1 flex-col overflow-y-auto no-scrollbar">{/*no-scrollbar => scroll bar was coming, Removed it*/}
             {open ? <Logo /> : <LogoIcon />}
             <div className="mt-8 flex flex-col gap-2">
               {filteredLinks.map((link, idx) => (
