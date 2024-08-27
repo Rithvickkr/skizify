@@ -1,11 +1,10 @@
-import GigStructure from "../../components/mygigs/Gig";
-import { getAllgigs } from "../../lib/actions/getgigs";
-import { GigStatus } from "@prisma/client";
-import { Search } from "lucide-react";
-import filtergigs from "../../lib/actions/Filters";
-import { getServerSession } from "next-auth";
-import { authOptions } from "../../lib/auth";
 import { GigsInterface } from "@repo/store/types";
+import { Search } from "lucide-react";
+import { getServerSession } from "next-auth";
+import GigStructure from "../../components/mygigs/Gig";
+import filtergigs from "../../lib/actions/Filters";
+import { getAllgigs } from "../../lib/actions/getgigs";
+import { authOptions } from "../../lib/auth";
 
 
 export default async function Page({
