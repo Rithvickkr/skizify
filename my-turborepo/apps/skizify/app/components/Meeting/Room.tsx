@@ -52,6 +52,7 @@ export default function Room({
   const [receivingPC, setReceivingPC] = useState<RTCPeerConnection | null>(
     null,
   );
+
   const [isScreenSharing, setIsScreenSharing] = useState(false);
   const [permissionToChat, setPermissionToChat] = useState<boolean>(false);
   const [message, setMessage] = useState("");
@@ -72,6 +73,13 @@ export default function Room({
   const [SelectPintab, setSelectPintab] = useState<boolean>(false);
   const [remoteUserJoined, setRemoteUserJoined] = useState(false);
   const [state, setState] = useState(1);
+  const [pinnedVideo, setPinnedVideo] = useState<number | null>(null);
+  const [selectPinTabs, setSelectPinTabs] = useState([
+    false,
+    false,
+    false,
+    false,
+  ]);
 
   //This is for Re-Establishing the connection under 5Sec IF error came First time
   useEffect(() => {
@@ -147,10 +155,7 @@ export default function Room({
           console.log(e);
           console.log("This is it , check the Screenshare Track");
           const { track } = e;
-          if (track.kind === "video") {
-            stream.addTrack(track);
-          }
-          if (track.kind === "audio") {
+          if (track.kind === "video" || track.kind === "audio") {
             stream.addTrack(track);
           }
           setRemoteUserJoined(true);
@@ -411,6 +416,22 @@ export default function Room({
     }
   };
 
+  const togglePinTab = (index: number) => {
+    setSelectPinTabs((prev) => {
+      const newState = [...prev];
+      newState[index] = !newState[index];
+      return newState;
+    });
+  };
+
+  const handlePin = (index: number) => {
+    setPinnedVideo((prevPinned) => (prevPinned === index ? null : index));
+  };
+
+  //------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  //------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  //------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  //------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   return (
     <div className="flex h-[85%] w-full rounded-xl from-neutral-900 via-black to-neutral-900 dark:bg-gradient-to-r md:h-[92%]">
       <div className="flex h-full w-full flex-1 flex-col items-center justify-between p-1 pb-2 md:p-3">
@@ -552,63 +573,67 @@ export default function Room({
       </div>
 
       <div
-        className={`${
-          isChatBarVisible ? "block" : "hidden"
-        } flex h-full flex-col overflow-hidden rounded-xl border bg-mediumdark transition-all duration-500 ease-in-out dark:border-1 dark:border-neutral-800 dark:bg-white lg:w-3/12`}
+        className={`transition-all duration-500 ease-in-out lg:relative lg:block ${
+          isChatBarVisible
+            ? "md:max-w-50% fixed inset-y-0 right-0 z-50 w-[80%] opacity-100 lg:static lg:w-3/12"
+            : "fixed -right-full w-0 opacity-0 lg:w-0 lg:opacity-100"
+        } `}
       >
-        <div className="flex items-center justify-between px-4 py-3 dark:border-neutral-700">
-          <div className="text-lg font-medium text-white opacity-70 dark:text-v0dark">
-            Chat
+        <div className="flex h-full flex-col overflow-hidden rounded-lg border bg-mediumdark dark:border-1 dark:border-neutral-800 dark:bg-white">
+          <div className="flex items-center justify-between px-4 py-3 dark:border-neutral-700">
+            <div className="text-xl font-medium text-white opacity-70 dark:text-v0dark">
+              In-call messages
+            </div>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="rounded-full text-neutral-200 hover:bg-neutral-500 dark:text-mediumdark dark:hover:bg-neutral-300"
+              onClick={() => setIsChatBarVisible(false)}
+            >
+              <X className="size-5" />
+            </Button>
           </div>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="rounded-full text-neutral-200 hover:bg-neutral-500 dark:text-mediumdark dark:hover:bg-neutral-300"
-            onClick={() => setIsChatBarVisible(false)}
-          >
-            <X className="size-5" />
-          </Button>
-        </div>
-        <div className="no-scrollbar h-64 flex-1 overflow-y-auto p-2 pt-4">
-          <div className="space-y-4">
-            {messages.map((data: Chat, index: any) => (
-              <div key={index}>
-                <ChatStructure data={data} />
-              </div>
-            ))}
-            {/* <div ref={messagesEndRef} /> */}
+          <div className="no-scrollbar flex-1 overflow-y-auto p-2 pt-4">
+            <div className="space-y-4">
+              {messages.map((data: Chat, index: any) => (
+                <div key={index}>
+                  <ChatStructure data={data} />
+                </div>
+              ))}
+              {/* <div ref={messagesEndRef} /> */}
+            </div>
           </div>
-        </div>
-        <div className="flex items-center gap-2 border-t p-4 dark:border-neutral-700">
-          <Textarea
-            placeholder={`${!permissionToChat ? "Chat is diabled, Let the person Join" : "Type your message..."}`}
-            className={`${!permissionToChat ? "cursor-not-allowed opacity-60" : ""} flex-1 resize-none rounded-lg text-white focus:border-none focus:outline-none focus:ring-2 focus:ring-neutral-500`}
-            onChange={(e) => {
-              if (permissionToChat) {
-                setMessage(e.target.value);
-              }
-            }}
-            value={message}
-            readOnly={!permissionToChat}
-          />
-          <Button
-            variant="ghost"
-            size="icon"
-            className="hover:bg-neutral-700 dark:hover:bg-neutral-500"
-          >
-            <Send
-              className="size-5 text-white"
-              onClick={(e) =>
-                messageHandler(
-                  e,
-                  session.data?.user.name || "",
-                  session.data?.user.id || "",
-                  session.data?.user.userImage,
-                )
-              }
+          <div className="flex items-center gap-2 border-t p-4 dark:border-neutral-700">
+            <Textarea
+              placeholder={`${!permissionToChat ? "Chat is diabled, Let the person Join" : "Type your message..."}`}
+              className={`${!permissionToChat ? "cursor-not-allowed opacity-60" : ""} flex-1 resize-none rounded-lg text-white focus:border-none focus:outline-none focus:ring-2 focus:ring-neutral-500`}
+              onChange={(e) => {
+                if (permissionToChat) {
+                  setMessage(e.target.value);
+                }
+              }}
+              value={message}
+              readOnly={!permissionToChat}
             />
-            <span className="sr-only">Send</span>
-          </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="hover:bg-neutral-700 dark:hover:bg-neutral-500"
+            >
+              <Send
+                className="size-5 text-white"
+                onClick={(e) =>
+                  messageHandler(
+                    e,
+                    session.data?.user.name || "",
+                    session.data?.user.id || "",
+                    session.data?.user.userImage,
+                  )
+                }
+              />
+              <span className="sr-only">Send</span>
+            </Button>
+          </div>
         </div>
       </div>
     </div>

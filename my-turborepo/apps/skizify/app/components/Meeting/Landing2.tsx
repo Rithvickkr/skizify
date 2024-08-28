@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Room from "./Room";
+import VideoPlatform from "./Structure";
 
 export default function Component() {
   const session = useSession();
@@ -262,7 +263,7 @@ export default function Component() {
   );
 }
 return (
-  <Room
+  <VideoPlatform
     name={session.data?.user.name || "User"}
     localAudioTrack={localAudioTrack}
     localVideoTrack={localVideoTrack}
