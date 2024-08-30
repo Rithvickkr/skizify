@@ -122,7 +122,7 @@ export function GigForm() {
           title,
           description,
           startDateTime,
-          endDateTime,
+          endDateTime, 
           session,
           interval,
           Timeneed,

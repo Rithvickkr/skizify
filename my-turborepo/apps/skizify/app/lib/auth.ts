@@ -1,11 +1,19 @@
 import db from "@repo/db/client";
 import CredentialsProvider from "next-auth/providers/credentials";
+import GoogleProvider from "next-auth/providers/google";
 import bcrypt from 'bcrypt';
 import { NextAuthOptions, Session } from "next-auth";
 import { JWT } from "next-auth/jwt";
 
 export const authOptions: NextAuthOptions = {
   providers: [
+    GoogleProvider({
+      clientId: process.env.GOOGLE_ID || "",
+      clientSecret: process.env.GOOGLE_SECRET || "",
+    }
+    ) ,
+   
+        
     CredentialsProvider({
       name: 'Credentials',
       credentials: {
