@@ -1,4 +1,4 @@
-import { BentoGrid, BentoGridItem } from "./Bentogrid";
+import { BentoGrid, BentoGridItem ,EnhancedLuxuryMeetingCard2 } from "./Bentogrid";
 import prisma from "@repo/db/client";
 
 //This will fetch Data from DB
@@ -43,7 +43,7 @@ export default async function GigStructure({
   //If the session don't exist an Error will come on Screen which is due to getAllgigs which is used in parent of this
   return (
     <div className="">
-      <div className="mx-auto grid w-full grid-cols-1 gap-2 pl-1 pr-3 md:grid-cols-2 md:pl-2 lg:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5 4xl:grid-cols-6">
+      <div className="mx-auto grid w-full grid-cols-1 gap-2 pl-1 pr-3 md:grid-cols-2 md:pl-2 lg:grid-cols-2 2xl:grid-cols-3 3xl:grid-cols-4 4xl:grid-cols-5">
         {entries.map(async (gig: GigsInterface) => {
           const user = await prisma.user.findUnique({
             where: {
@@ -51,7 +51,7 @@ export default async function GigStructure({
             },
           });
           return (
-            <BentoGridItem
+            <EnhancedLuxuryMeetingCard2
               gig={gig}
               poster={user}
               status={session?.user.role}

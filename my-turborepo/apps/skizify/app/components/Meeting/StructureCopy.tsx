@@ -35,7 +35,7 @@ export default function VideoPlatform() {
   const [isAudioMuted, setIsAudioMuted] = useState(false);
   const [isVideoMuted, setIsVideoMuted] = useState(false);
   const [isChatBarVisible, setIsChatBarVisible] = useState(false);
-  const [remoteUserJoined, setRemoteUserJoined] = useState(false);
+  const [remoteUserJoined, setRemoteUserJoined] = useState(true);
 
   // useEffect(() => {
   //   selectPinTabs.forEach((isSelected, index) => {

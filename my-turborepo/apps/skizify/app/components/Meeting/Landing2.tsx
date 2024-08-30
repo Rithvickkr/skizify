@@ -137,9 +137,9 @@ export default function Component() {
     }
   };
 
-  if (session.status === "unauthenticated") {
-    return <div>You are not Signed In</div>;
-  }
+  // if (session.status === "unauthenticated") {
+  //   return <div>You are not Signed In</div>;
+  // }
 
   if (!join) {
     return (

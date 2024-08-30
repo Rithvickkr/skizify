@@ -16,7 +16,7 @@ import {
   X,
 } from "lucide-react";
 import { useSession } from "next-auth/react";
-import { useEffect, useRef, useState } from "react";
+import { RefObject, useEffect, useRef, useState } from "react";
 import { Socket, io } from "socket.io-client";
 import { Dock, DockIcon } from "../../../@/components/magicui/dock";
 import { Textarea } from "../../../@/components/ui/textarea";
@@ -32,24 +32,19 @@ export interface Chat {
   userImage?: string;
 }
 
-
-export default function VideoPlatform(
-  {
-    name,
-    localAudioTrack,
-    localVideoTrack,
-    meetingId,
-    userId,
-  }: {
-    name: string;
-    localAudioTrack: MediaStreamTrack | null | undefined;
-    localVideoTrack: MediaStreamTrack | null | undefined;
-    meetingId: string;
-    userId: string;
-  }
-) {
-  
-
+export default function VideoPlatform({
+  name,
+  localAudioTrack,
+  localVideoTrack,
+  meetingId,
+  userId,
+}: {
+  name: string;
+  localAudioTrack: MediaStreamTrack | null | undefined;
+  localVideoTrack: MediaStreamTrack | null | undefined;
+  meetingId: string;
+  userId: string;
+}) {
   const session = useSession();
   const router = useRouter();
   const [socket, setSocket] = useState<Socket | null>(null);
@@ -64,18 +59,24 @@ export default function VideoPlatform(
   const [messages, setMessages] = useState<Chat[]>([]);
   const [isChatBarVisible, setIsChatBarVisible] = useState(false);
   const [screenTrack, setScreenTrack] = useState<
-  MediaStreamTrack | null | undefined
+    MediaStreamTrack | null | undefined
   >(null);
+  const [remoteUserTracks, setremoteUserTracks] = useState< //mreote User Tracks
+  MediaStreamTrack | null | undefined
+>(null);
+  const [remotescreenUserTracks, setremotescreenUserTracks] = useState< //remote User Screen Tracks
+  MediaStreamTrack | null | undefined
+>(null);
   const [isAudioMuted, setIsAudioMuted] = useState(false);
   const [isVideoMuted, setIsVideoMuted] = useState(false);
   const [remoteMediaStream, setRemoteMediaStream] =
-  useState<MediaStream | null>(null);
-  const localVideoref = useRef<HTMLVideoElement>(null);
-  const remoteVideoref = useRef<HTMLVideoElement>(null);
+    useState<MediaStream | null>(null);
+  const localVideoRef = useRef<HTMLVideoElement>(null);
+  const remoteVideoRef = useRef<HTMLVideoElement>(null);
   const localscreenShareVideoref = useRef<HTMLVideoElement>(null);
   const remotescreenShareVideoref = useRef<HTMLVideoElement>(null);
   const messagesEndRef = useRef<HTMLDivElement | null>(null); // for Automatic sroll at the bottom od the screen
-  
+
   //UNINPORTANT STATES
   const [SelectPintab, setSelectPintab] = useState<boolean>(false);
   const [remoteUserJoined, setRemoteUserJoined] = useState(false);
@@ -87,17 +88,15 @@ export default function VideoPlatform(
     false,
     false,
   ]);
-  
+
   //This is for Re-Establishing the connection under 5Sec IF error came First time
   useEffect(() => {
     const timer = setTimeout(() => {
       setState((prevState) => prevState + 1);
     }, 5000);
-    
+
     return () => clearTimeout(timer);
   }, [remoteUserJoined]);
-  
-
 
   useEffect(() => {
     const socket = io(URL);
@@ -144,8 +143,8 @@ export default function VideoPlatform(
         console.log("Offer Received Sir ----");
         const pc = new RTCPeerConnection();
         const stream = new MediaStream();
-        if (remoteVideoref.current) {
-          remoteVideoref.current.srcObject = stream;
+        if (remoteVideoRef.current) {
+          remoteVideoRef.current.srcObject = stream;
         }
 
         setRemoteMediaStream(stream);
@@ -156,8 +155,8 @@ export default function VideoPlatform(
           if (track.kind === "video" || track.kind === "audio") {
             stream.addTrack(track);
           }
-          setRemoteUserJoined(true);
-          remoteVideoref.current?.play(); //when we get the Tracks the we will play the Video
+          setRemoteUserJoined(true); //we are making It true when tracks have arrived
+          remoteVideoRef.current?.play(); //when we get the Tracks the we will play the Video
         };
         setReceivingPC(pc);
         pc.setRemoteDescription(remotesdp);
@@ -254,20 +253,29 @@ export default function VideoPlatform(
         screenTrack.stop();
       }
     };
-  }, [remoteUserJoined, state]);
-
+  }, [remoteUserJoined, state, pinnedVideo]);
 
   useEffect(() => {
-    if (localVideoref.current && localVideoTrack) {
-      localVideoref.current.srcObject = new MediaStream([localVideoTrack]);
-      localVideoref.current.play();
+    if (localVideoRef.current && localVideoTrack) {
+      console.log("video loading");
+      localVideoRef.current.srcObject = new MediaStream([localVideoTrack]);
+      localVideoRef.current.play();
     }
-  }, [localVideoref, remoteUserJoined]);
-
+  }, [localVideoRef, remoteUserJoined, pinnedVideo]);
+  
+  useEffect(() => {
+    if (isScreenSharing) {
+      if (localscreenShareVideoref.current && screenTrack) {
+        localscreenShareVideoref.current.srcObject = new MediaStream([
+          screenTrack,
+        ]);
+        localscreenShareVideoref.current.play();
+      }
+    }
+  }, [pinnedVideo, localscreenShareVideoref, remoteUserJoined]);
   // useEffect(() => {
   //   messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   // }, [messages]);
-
 
   const startScreenShare = async () => {
     try {
@@ -287,16 +295,21 @@ export default function VideoPlatform(
       //   }
       // });
 
-      // if (localVideoref.current) {
-      //   localVideoref.current.srcObject = stream;
+      // if (localVideoRef.current) {
+      //   localVideoRef.current.srcObject = stream;
       // }
 
-
-      if (screenTrack && localscreenShareVideoref && localscreenShareVideoref.current) {
-        localscreenShareVideoref.current.srcObject = new MediaStream([screenTrack]);
+      if (
+        screenTrack &&
+        localscreenShareVideoref &&
+        localscreenShareVideoref.current
+      ) {
+        localscreenShareVideoref.current.srcObject = new MediaStream([
+          screenTrack,
+        ]);
         localscreenShareVideoref.current.play();
       }
-      
+
       screenTrack.onended = () => {
         stopScreenShare();
       };
@@ -319,8 +332,8 @@ export default function VideoPlatform(
       //     }
       //   });
 
-      //   if (localVideoref.current) {
-      //     localVideoref.current.srcObject = new MediaStream([localVideoTrack]);
+      //   if (localVideoRef.current) {
+      //     localVideoRef.current.srcObject = new MediaStream([localVideoTrack]);
       //   }
       // }
 
@@ -328,19 +341,9 @@ export default function VideoPlatform(
         localscreenShareVideoref.current.srcObject = null;
       }
 
-
       setIsScreenSharing(false);
     }
   };
-
-  const toggleScreenShare = () => {
-    if (isScreenSharing) {
-      stopScreenShare();
-    } else {
-      startScreenShare();
-    }
-  };
-
 
   const endMeeting = () => {
     if (socket) {
@@ -381,21 +384,18 @@ export default function VideoPlatform(
       localVideoTrack.enabled = !localVideoTrack.enabled;
       setIsVideoMuted(!localVideoTrack.enabled);
 
-      if (localVideoref.current) {
+      if (localVideoRef.current) {
         //Is the Now Video Available then we will make a Stream to display to user
         if (localVideoTrack.enabled) {
-          localVideoref.current.srcObject = new MediaStream([localVideoTrack]);
-          localVideoref.current.play();
+          localVideoRef.current.srcObject = new MediaStream([localVideoTrack]);
+          localVideoRef.current.play();
         } else {
           //if the localVideoTrack.enabled is now set to fasle then we wll remove the the Videotrack
-          localVideoref.current.srcObject = null;
+          localVideoRef.current.srcObject = null;
         }
       }
     }
   };
-
-
-
 
   const messageHandler = (
     e: any,
@@ -412,10 +412,6 @@ export default function VideoPlatform(
     socket?.emit("send-message", { message, name, userImage, userId });
   };
 
-
-
-
-
   const togglePinTab = (index: number) => {
     setSelectPinTabs((prev) => {
       const newState = [...prev];
@@ -428,8 +424,18 @@ export default function VideoPlatform(
     setPinnedVideo((prevPinned) => (prevPinned === index ? null : index));
   };
 
+  const renderVideo = (
+    index: number,
+    reference: RefObject<HTMLVideoElement>,
+    track?: MediaStreamTrack
+  ) => {
+    useEffect(() => {
+      if (reference.current && track) {
+        const stream = new MediaStream([track]);
+        reference.current.srcObject = stream;
+      }
+    }, [reference, track]);
 
-  const renderVideo = (index: number) => (
     <div
       className={`relative overflow-hidden rounded-lg border border-neutral-400 dark:border-neutral-700 ${
         pinnedVideo === index
@@ -439,10 +445,11 @@ export default function VideoPlatform(
       onClick={() => togglePinTab(index)}
     >
       <video
-      ref={localVideoref}
+        ref={reference}
         autoPlay
         className="absolute inset-0 h-full w-full object-cover"
       />
+
       {selectPinTabs[index] && (
         <div className="absolute left-1/2 top-1/2 flex min-w-28 -translate-x-1/2 -translate-y-1/2 transform items-center justify-between rounded-e-full rounded-s-full bg-black p-2 opacity-40 transition-opacity duration-700 dark:bg-neutral-500 dark:opacity-50">
           {pinnedVideo === index ? (
@@ -478,35 +485,37 @@ export default function VideoPlatform(
   return (
     <div className="flex h-[85%] w-full rounded-xl from-neutral-900 via-black to-neutral-900 dark:bg-gradient-to-r sm:h-[92%]">
       <div className="flex h-full w-full flex-1 flex-col items-center justify-between p-1 pb-2">
-        {remoteUserJoined ? (
+        {/* {remoteUserJoined ? ( */}
           <div className="flex h-full w-full flex-col gap-1 sm:flex-row">
             {pinnedVideo !== null ? (
               <>
-                {renderVideo(pinnedVideo)}  {/*  h-1/2 w-full sm:h-full sm:w-4/5 */}
+                {renderVideo(pinnedVideo, localVideoRef)}{" "}
+                {/*  h-1/2 w-full sm:h-full sm:w-4/5 */}
                 <div className="ml-2 flex h-1/2 flex-col items-center gap-1 sm:h-full sm:w-1/5">
                   {[0, 1, 2, 3]
                     .filter((i) => i !== pinnedVideo)
-                    .map(renderVideo)}  {/* h-full w-[50%] sm:w-full */}
+                    .map(
+                      (x) => renderVideo(x, localVideoRef), // Assuming renderVideo is a function that renders video elements
+                    )}
                 </div>
               </>
             ) : (
-              <div className="flex h-full w-full flex-col items-center gap-3 pt-2 sm:grid sm:grid-cols-2 sm:pt-0">
-                {renderVideo(0)}
-                {renderVideo(1)}
-                {renderVideo(2)}
-                {renderVideo(3)}
+              <div className={`flex h-full w-full flex-col items-center gap-3 pt-2 sm:grid ${(screenTrack || remoteUserJoined ) ? "sm:grid-cols-2" : "sm:grid-cols-1"} sm:pt-0`}>
+                {localVideoTrack && renderVideo(0, localVideoRef, localVideoRef)}
+                {screenTrack && renderVideo(1, localscreenShareVideoref , screenTrack)}
+                {remoteUserJoined && renderVideo(2, remoteVideoRef )}
               </div>
             )}
           </div>
-        ) : (
+        {/*) : (
           <div className="relative h-full w-full overflow-hidden rounded-xl border border-neutral-400 dark:border-neutral-700">
             <video
-            ref={localVideoref}
+              ref={localVideoRef}
               autoPlay
               className="absolute inset-0 h-full w-full object-cover"
             />
           </div>
-        )}
+        )}*/}
 
         <div className="">
           <Dock
@@ -562,11 +571,13 @@ export default function VideoPlatform(
               </ButtonsDock>
             </DockIcon>
             <DockIcon>
-              <ButtonsDock name="ScreenShare">
+              <ButtonsDock
+                name="ScreenShare"
+                onClick={isScreenSharing ? stopScreenShare : startScreenShare}
+              >
                 <ScreenShare
                   strokeWidth={1.7}
                   className="size-4 lg:size-5 xl:size-6"
-                  onClick={toggleScreenShare}
                 />
               </ButtonsDock>
             </DockIcon>
@@ -589,7 +600,6 @@ export default function VideoPlatform(
               </ButtonsDock>
             </DockIcon>
           </Dock>
-
         </div>
       </div>
 
@@ -660,7 +670,6 @@ export default function VideoPlatform(
     </div>
   );
 }
-
 
 const ChatStructure: React.FC<{ data: Chat }> = ({ data }) => {
   const session = useSession();
