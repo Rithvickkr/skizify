@@ -45,6 +45,8 @@ export default function Component() {
       setlocalVideoTrack(videotrack);
       setLocalAudioTrack(audiotrack);
 
+      console.log("videoRef: ", videoRef);
+      console.log("videoRef.current: ", videoRef.current);
       if (videotrack && videoRef && videoRef.current) {
         videoRef.current.srcObject = new MediaStream([videotrack]);
         videoRef.current.play();
@@ -92,6 +94,8 @@ export default function Component() {
   };
 
   useEffect(() => {
+    console.log("videoRef: ", videoRef);
+    console.log("videoRef.current: ", videoRef.current);
     if (videoRef && videoRef.current) {
       getCam();
     }

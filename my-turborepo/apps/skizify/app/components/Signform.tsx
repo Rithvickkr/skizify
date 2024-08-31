@@ -1,21 +1,19 @@
 "use client";
-import { useState } from "react";
 import { motion } from "framer-motion";
+import {
+  ArrowRightIcon,
+  EyeIcon,
+  EyeOffIcon,
+  GithubIcon,
+  LockIcon,
+  MailIcon,
+  UserIcon,
+} from "lucide-react";
+import { useState } from "react";
 import { Button } from "../../@/components/ui/button";
 import { Input } from "../../@/components/ui/input";
 import { Label } from "../../@/components/ui/label";
 import { Separator } from "../../@/components/ui/separator";
-import {
-  UserIcon,
-  MailIcon,
-  LockIcon,
-  EyeIcon,
-  EyeOffIcon,
-  GithubIcon,
-  ArrowRightIcon,
-  SunIcon,
-  MoonIcon,
-} from "lucide-react";
 
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -253,7 +251,7 @@ export default function Signform() {
           <p
             className={`mt-8 text-center text-sm text-gray-600 dark:text-white`}
           >
-            Already have an account?{" "}
+            Already have an account?
             <a
               href="#"
               className={`font-medium underline transition-colors duration-300 hover:text-blue-600 dark:hover:text-gray-300`}

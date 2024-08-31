@@ -90,13 +90,14 @@ export default function VideoPlatform({
   ]);
 
   //This is for Re-Establishing the connection under 5Sec IF error came First time
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setState((prevState) => prevState + 1);
-    }, 5000);
+  // useEffect(() => {
+  //   console.log("hello");
+  //   const timer = setTimeout(() => {
+  //     setState((prevState) => prevState + 1);
+  //   }, 5000);
 
-    return () => clearTimeout(timer);
-  }, [remoteUserJoined]);
+  //   return () => clearTimeout(timer);
+  // }, [remoteUserJoined]);
 
   useEffect(() => {
     const socket = io(URL);
@@ -257,22 +258,26 @@ export default function VideoPlatform({
 
   useEffect(() => {
     if (localVideoRef.current && localVideoTrack) {
-      console.log("video loading");
       localVideoRef.current.srcObject = new MediaStream([localVideoTrack]);
       localVideoRef.current.play();
     }
-  }, [localVideoRef, remoteUserJoined, pinnedVideo]);
-  
+  }, [localVideoRef, remoteUserJoined, pinnedVideo , state]);
+
+
   useEffect(() => {
-    if (isScreenSharing) {
-      if (localscreenShareVideoref.current && screenTrack) {
-        localscreenShareVideoref.current.srcObject = new MediaStream([
-          screenTrack,
-        ]);
-        localscreenShareVideoref.current.play();
-      }
+    console.log("isScreenSharing: ", isScreenSharing);
+    if (isScreenSharing && localscreenShareVideoref.current && screenTrack) {
+      localscreenShareVideoref.current.srcObject = new MediaStream([screenTrack]);
+      localscreenShareVideoref.current.play().catch(error => console.error("Error playing video:", error));
     }
-  }, [pinnedVideo, localscreenShareVideoref, remoteUserJoined]);
+  }, [isScreenSharing, screenTrack , remoteUserJoined, pinnedVideo, state]);
+
+  useEffect(() => {
+    console.log("isScreenSharing:", isScreenSharing);
+    console.log("screenTrack:", screenTrack);
+    console.log("localscreenShareVideoref:", localscreenShareVideoref.current);
+  }, [isScreenSharing, screenTrack , remoteUserJoined]);
+  
   // useEffect(() => {
   //   messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   // }, [messages]);
@@ -282,40 +287,24 @@ export default function VideoPlatform({
       const stream = await navigator.mediaDevices.getDisplayMedia({
         video: true,
       });
+      console.log("stream: ", stream);
       const screenTrack = stream.getVideoTracks()[0];
+      console.log("screenTrack: ", screenTrack);
+      
       setScreenTrack(screenTrack);
 
-      if (screenTrack == undefined) {
-        throw new Error("ScreenTrack is Undefined");
+      if (!screenTrack) {
+        throw new Error("Screen track is undefined");
       }
-      // sendingPC?.addTrack(screenTrack);  As new Tracks we want to add then we have to force them , add willn't work
-      // sendingPC?.getSenders().forEach((sender) => {
-      //   if (sender.track?.kind === "video") {
-      //     sender.replaceTrack(screenTrack);
-      //   }
-      // });
-
-      // if (localVideoRef.current) {
-      //   localVideoRef.current.srcObject = stream;
-      // }
-
-      if (
-        screenTrack &&
-        localscreenShareVideoref &&
-        localscreenShareVideoref.current
-      ) {
-        localscreenShareVideoref.current.srcObject = new MediaStream([
-          screenTrack,
-        ]);
-        localscreenShareVideoref.current.play();
-      }
-
-      screenTrack.onended = () => {
-        stopScreenShare();
-      };
+  
+      setScreenTrack(screenTrack);
       setIsScreenSharing(true);
-    } catch (error) {
+  
+      // We'll let the useEffect handle setting the video source
+      
+    }catch (error) {
       console.error("Error starting screen sharing:", error);
+      setIsScreenSharing(false);
     }
   };
 
@@ -323,27 +312,15 @@ export default function VideoPlatform({
     if (screenTrack) {
       screenTrack.stop();
       setScreenTrack(null);
-
-      // if (localVideoTrack && sendingPC) {
-      //   //Here we will force our orginal Tracks back again, Same as Previous,
-      //   sendingPC.getSenders().forEach((sender) => {
-      //     if (sender.track?.kind === "video") {
-      //       sender.replaceTrack(localVideoTrack);
-      //     }
-      //   });
-
-      //   if (localVideoRef.current) {
-      //     localVideoRef.current.srcObject = new MediaStream([localVideoTrack]);
-      //   }
-      // }
-
-      if (localscreenShareVideoref && localscreenShareVideoref.current) {
+      setIsScreenSharing(false);
+  
+      if (localscreenShareVideoref.current) {
         localscreenShareVideoref.current.srcObject = null;
       }
-
-      setIsScreenSharing(false);
     }
   };
+  
+  
 
   const endMeeting = () => {
     if (socket) {
@@ -427,53 +404,48 @@ export default function VideoPlatform({
   const renderVideo = (
     index: number,
     reference: RefObject<HTMLVideoElement>,
-    track?: MediaStreamTrack
   ) => {
-    useEffect(() => {
-      if (reference.current && track) {
-        const stream = new MediaStream([track]);
-        reference.current.srcObject = stream;
-      }
-    }, [reference, track]);
+    
+    console.log("index: ", index);
+    console.log("reference: ", reference);
+    return (
+      <div
+        className={`relative overflow-hidden rounded-lg border border-neutral-400 dark:border-neutral-700 ${
+          pinnedVideo === index
+            ? "h-1/2 w-full sm:h-full sm:w-4/5"
+            : `${pinnedVideo == null ? "h-full w-[65%] sm:w-full" : "h-full w-[45%] sm:w-full"}`
+        }`}
+        onClick={() => togglePinTab(index)}
+      >
+        <video
+          ref={reference}
+          autoPlay
+          className="absolute inset-0 h-full w-full object-cover"
+        />
 
-    <div
-      className={`relative overflow-hidden rounded-lg border border-neutral-400 dark:border-neutral-700 ${
-        pinnedVideo === index
-          ? "h-1/2 w-full sm:h-full sm:w-4/5"
-          : `${pinnedVideo == null ? "h-full w-[65%] sm:w-full" : "h-full w-[45%] sm:w-full"}`
-      } `}
-      onClick={() => togglePinTab(index)}
-    >
-      <video
-        ref={reference}
-        autoPlay
-        className="absolute inset-0 h-full w-full object-cover"
-      />
-
-      {selectPinTabs[index] && (
-        <div className="absolute left-1/2 top-1/2 flex min-w-28 -translate-x-1/2 -translate-y-1/2 transform items-center justify-between rounded-e-full rounded-s-full bg-black p-2 opacity-40 transition-opacity duration-700 dark:bg-neutral-500 dark:opacity-50">
-          {pinnedVideo === index ? (
+        {selectPinTabs[index] && (
+          <div className="absolute left-1/2 top-1/2 flex min-w-28 -translate-x-1/2 -translate-y-1/2 transform items-center justify-between rounded-e-full rounded-s-full bg-black p-2 opacity-40 transition-opacity duration-700 dark:bg-neutral-500 dark:opacity-50">
             <div
               className="cursor-pointer rounded-full text-white opacity-60 hover:bg-v0dark hover:dark:bg-neutral-400 hover:dark:opacity-95"
-              onClick={() => handlePin(index)}
+              onClick={(e) => {
+                e.stopPropagation();
+                handlePin(index);
+              }}
             >
-              <PinOff className="m-2 size-5 text-white sm:size-6" />
+              {pinnedVideo === index ? (
+                <PinOff className="m-2 size-5 text-white sm:size-6" />
+              ) : (
+                <Pin className="m-2 size-5 text-white sm:size-6" />
+              )}
             </div>
-          ) : (
-            <div
-              className="cursor-pointer rounded-full text-white opacity-60 hover:bg-v0dark hover:dark:bg-neutral-400 hover:dark:opacity-95"
-              onClick={() => handlePin(index)}
-            >
-              <Pin className="m-2 size-5 text-white sm:size-6" />
+            <div className="cursor-pointer rounded-full text-white opacity-60 hover:bg-v0dark hover:dark:bg-neutral-400 hover:dark:opacity-95">
+              <EllipsisVertical className="m-2 size-5 text-white sm:size-6" />
             </div>
-          )}
-          <div className="cursor-pointer rounded-full text-white opacity-60 hover:bg-v0dark hover:dark:bg-neutral-400 hover:dark:opacity-95">
-            <EllipsisVertical className="m-2 size-5 text-white sm:size-6" />
           </div>
-        </div>
-      )}
-    </div>
-  );
+        )}
+      </div>
+    );
+  };
 
   //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -494,16 +466,18 @@ export default function VideoPlatform({
                 <div className="ml-2 flex h-1/2 flex-col items-center gap-1 sm:h-full sm:w-1/5">
                   {[0, 1, 2, 3]
                     .filter((i) => i !== pinnedVideo)
-                    .map(
-                      (x) => renderVideo(x, localVideoRef), // Assuming renderVideo is a function that renders video elements
-                    )}
+                    .map((x) => {
+                      const videoRef = x === 0 ? localVideoRef : x === 1 ? localscreenShareVideoref : remoteVideoRef;
+                      return renderVideo(x, videoRef);
+                    })}
+                  
                 </div>
               </>
             ) : (
               <div className={`flex h-full w-full flex-col items-center gap-3 pt-2 sm:grid ${(screenTrack || remoteUserJoined ) ? "sm:grid-cols-2" : "sm:grid-cols-1"} sm:pt-0`}>
-                {localVideoTrack && renderVideo(0, localVideoRef, localVideoRef)}
-                {screenTrack && renderVideo(1, localscreenShareVideoref , screenTrack)}
-                {remoteUserJoined && renderVideo(2, remoteVideoRef )}
+                {localVideoTrack && renderVideo(0, localVideoRef)}
+                {screenTrack && renderVideo(1, localscreenShareVideoref)}
+                {remoteUserJoined && renderVideo(2, remoteVideoRef  )}
               </div>
             )}
           </div>

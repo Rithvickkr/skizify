@@ -162,7 +162,7 @@ export default function Example({
           </div>
           <div className="flex-1 mb-4 rounded border border-black p-3 pl-2 pt-10 dark:border-neutral-600 md:mb-0 md:mt-0 md:pl-3 md:pt-0 lg:pl-5">
             <div className="mt-3 truncate text-2xl font-semibold text-gray-900 dark:text-gray-200">
-              Meetings for{" "}
+              Meetings for
               <time dateTime={format(selectedDay, "yyyy-MM-dd")}>
                 {format(selectedDay, "MMM dd, yyy")}
               </time>

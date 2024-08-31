@@ -1,7 +1,7 @@
 
 import prisma from "@repo/db/client";
 import { GigsInterface } from "@repo/store/types";
-import MygigCard from "./Mygigcard";
+import {MygigCard , MygigCard2} from "./Mygigcard";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../lib/auth";
 import getgigs  from "../../lib/actions/getgigs";
@@ -33,7 +33,7 @@ export default async function Userrequests() {
 
   return (
     <div>
-      <MygigCard gigs={ activeGigs } session={session} />
+      <MygigCard2 gigs={ activeGigs } session={session} />
     </div>
   );
 }

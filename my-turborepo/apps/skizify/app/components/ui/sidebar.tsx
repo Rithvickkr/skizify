@@ -116,13 +116,13 @@ export const MobileSidebar = ({
     <>
       <div
         className={cn(
-          "flex h-10 w-full flex-row items-center justify-between bg-neutral-100 px-4 py-4 dark:bg-neutral-800 md:hidden",
+          "flex h-10 w-full flex-row items-center justify-between bg-neutral-100 px-4 py-4 dark:bg-black  md:hidden",
         )}
         {...props}
       >
         <div className="z-20 flex w-full justify-end">
           <Menu
-            className="text-neutral-800 dark:text-neutral-200"
+            className="text-neutral-800 dark:text-neutral-200 cursor-pointer"
             onClick={() => setOpen(!open)}
           />
         </div>
@@ -145,7 +145,7 @@ export const MobileSidebar = ({
                 className="absolute right-10 top-10 z-50 text-neutral-800 dark:text-neutral-200"
                 onClick={() => setOpen(!open)}
               >
-                <Menu />
+                <Menu className="cursor-pointer"/>
               </div>
               {children}
             </motion.div>

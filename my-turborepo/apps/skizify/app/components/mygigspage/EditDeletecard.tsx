@@ -1,14 +1,15 @@
 "use client";
 
-import { Pencil, Trash } from "lucide-react";
+import { EditIcon, Pencil, Trash, TrashIcon } from "lucide-react";
 import { GigsInterface } from "@repo/store/types";
 import { Month, formatTime } from "../../lib/actions/ConvertgigInfo";
 import { useSession } from "next-auth/react";
 import { deleteGig } from "../../lib/actions/deletegig";
 import { ToolTip } from "../ui/Tooltip";
+import { Button } from "../ui/button";
 
 export default function EditDeleteCard({ gig }: { gig: GigsInterface }) {
-  const session  = useSession();
+  const session = useSession();
 
   if (!session) {
     // If session doesn't exist, the user will not be able to see the Edit and Delete options
@@ -27,31 +28,31 @@ export default function EditDeleteCard({ gig }: { gig: GigsInterface }) {
   };
 
   return (
-    <div className="flex self-center">
-      <div className="m-1 self-center truncate p-1 text-xs text-gray-500 md:text-sm">
-        Posted on{" "}
-        {`${formatTime(gig.createdAt)} ${Month(gig.createdAt)} ${gig.createdAt.getDate()}`}
-      </div>
-      <div className="m-1 cursor-pointer rounded p-1 text-gray-500 shadow dark:border dark:border-gray-800">
-        <ToolTip name="Edit">
-        <Pencil
-          className="size-4 text-black dark:text-white md:size-5 "
-          strokeWidth={1.3}
-          absoluteStrokeWidth
-        />
-        </ToolTip>
-      </div>
-      <div className="m-1 cursor-pointer rounded p-1 text-red-600 shadow dark:border dark:border-gray-800">
-        <ToolTip name="Delete" className="bg-red-600 dark:bg-red-600 text-white dark:text-white">
-        <Trash
-        className="size-4 md:size-5"
-        color="#ff0000"
-        strokeWidth={1.5}
-        absoluteStrokeWidth
-        onClick={() => handleDeleteGig(gig.id)}
-      />
-        </ToolTip>
-      </div>
+    <div className="flex gap-2 sm:gap-1">
+      <ToolTip name="Edit">
+        <Button
+          variant="outline"
+          size="icon"
+          className="size-8 rounded-md border-neutral-700 text-neutral-300 transition-all duration-300 hover:scale-110 hover:bg-neutral-800 hover:text-white sm:size-10"
+        >
+          <EditIcon className="size-3 sm:size-4" />
+          <span className="sr-only">Edit</span>
+        </Button>
+      </ToolTip>
+      <ToolTip
+        name="Delete"
+        className="bg-red-600 text-white dark:bg-red-600 dark:text-white"
+      >
+        <Button
+          variant="outline"
+          size="icon"
+          className="size-8 rounded-md border-neutral-700 text-neutral-300 transition-all duration-300 hover:scale-110 hover:bg-neutral-800 hover:text-white sm:size-10"
+          onClick={() => handleDeleteGig(gig.id)}
+        >
+          <TrashIcon className="size-3 sm:size-4" />
+          <span className="sr-only">Delete</span>
+        </Button>
+      </ToolTip>
     </div>
   );
 }

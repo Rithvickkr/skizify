@@ -17,7 +17,6 @@ import {
   formatTime,
 } from "../../lib/actions/ConvertgigInfo";
 import { GigStatus, UserRole } from "@prisma/client";
-import { Button } from "../../../@/components/ui/button";
 import { Datetimepackage } from "@repo/store/types";
 import { Badge } from "../../../@/components/ui/badge";
 
@@ -62,7 +61,7 @@ export function EnhancedLuxuryMeetingCard2({
       )}
     >
       <div className="w-[95%] flex-1 transition duration-200 group-hover/bento:translate-x-2">
-        <Card className="group relative w-full overflow-hidden bg-gradient-to-br from-neutral-50 via-neutral-100 to-neutral-100 p-3 shadow-lg transition-all duration-500 ease-in-out hover:shadow-2xl dark:from-black dark:to-v0dark ">
+        <Card className="group relative w-full overflow-hidden bg-gradient-to-br from-neutral-50 via-neutral-100 to-neutral-100 p-3 shadow-lg transition-all duration-500 ease-in-out hover:shadow-2xl dark:from-black dark:to-v0dark">
           {/* <div className="absolute inset-0 z-0 bg-[url('/noise.png')] opacity-5 mix-blend-overlay" /> */}
           {/* <div className="absolute -left-24 -top-24 h-96 w-96 rounded-full bg-gradient-to-br from-neutral-200 via-neutral-300 to-neutral-400 blur-3xl transition-all duration-700 ease-in-out group-hover:opacity-70 dark:from-neutral-700 dark:via-neutral-600 dark:to-neutral-500" />  
           //This is a Good Strategy to add Spotlight*/}
@@ -108,15 +107,22 @@ export function EnhancedLuxuryMeetingCard2({
           <CardContent className="relative z-10 mt-6 grid gap-6">
             <div className="relative overflow-hidden rounded-lg bg-gradient-to-br from-white/80 to-neutral-100/40 p-6 shadow-md backdrop-blur-sm transition-all duration-500 ease-in-out group-hover:shadow-lg dark:from-neutral-900/80 dark:to-neutral-800/40">
               <div className="absolute -right-4 -top-4 h-16 w-16 rounded-full bg-neutral-200/50 transition-all duration-500 ease-in-out group-hover:scale-150 group-hover:bg-neutral-300/50 dark:bg-neutral-700/50 dark:group-hover:bg-neutral-600/50" />
-              <h4 className="mb-2 text-xl font-semibold text-neutral-900 dark:text-neutral-100">
+              <h4 className="mb-2 truncate text-xl font-semibold text-neutral-900 dark:text-neutral-100">
                 {gig.title}
               </h4>
-              <p className="text-sm leading-relaxed text-neutral-600 transition-all duration-500 ease-in-out dark:text-neutral-400">
-                {gig.content}
-              </p>
+              <div className="text-sm leading-relaxed text-neutral-600 transition-all duration-500 ease-in-out dark:text-neutral-400">
+                <ScrollArea className="h-12 w-full">
+                  <p className="whitespace-normal break-words pr-4">
+                    {gig.content}
+                  </p>
+                  <ScrollBar orientation="vertical" />
+                </ScrollArea>
+              </div>
             </div>
+
             <div className="grid grid-cols-2 gap-4 text-sm">
-              {[{
+              {[
+                {
                   icon: "calendar",
                   text: `${startDATEmonth} ${startDATEday} - ${endDATEmonth} ${endDATEday}`,
                 },
@@ -161,10 +167,10 @@ export function EnhancedLuxuryMeetingCard2({
                 Datetimepackage={datetimepackage}
               />
             ) : (
-              <Button className="group relative overflow-hidden bg-neutral-900 text-white shadow-md transition-all duration-500 ease-in-out hover:bg-neutral-800 hover:shadow-lg dark:bg-neutral-100 dark:text-neutral-900 dark:hover:bg-neutral-200">
+              <ButtonE className="group relative overflow-hidden bg-neutral-900 text-white shadow-md transition-all duration-500 ease-in-out hover:bg-neutral-800 hover:shadow-lg dark:bg-neutral-100 dark:text-neutral-900 dark:hover:bg-neutral-200" variant={"gooeyLeft"}>
                 <span className="relative z-10">View Profile</span>
                 <span className="absolute inset-0 z-0 bg-gradient-to-r from-neutral-800 via-neutral-700 to-neutral-600 opacity-0 transition-opacity duration-500 ease-in-out group-hover:opacity-50 dark:from-neutral-200 dark:via-neutral-300 dark:to-neutral-400" />
-              </Button>
+              </ButtonE>
             )}
           </CardFooter>
         </Card>
