@@ -17,8 +17,8 @@ export default function Home() {
     //   </div>
 
     // </div>
-    // <Component />
-    <Profileform />
+    <Component />
+  
 
     // <Reviewpage/>
   );

@@ -22,17 +22,7 @@ export default function Component() {
   const [skills, setSkills] = useState<string[]>([]);
   const [newSkill, setNewSkill] = useState("");
 
-  useEffect(() => {
-    if (theme === "dark") {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, [theme]);
 
-  const toggleTheme = () => {
-    setTheme(theme === "light" ? "dark" : "light");
-  };
 
   const addSkill = (e: React.FormEvent) => {
     e.preventDefault();
@@ -47,9 +37,9 @@ export default function Component() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 p-4 transition-all duration-500 dark:from-slate-900 dark:to-slate-800">
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 p-4 transition-all duration-500 dark:from-black">
       <div className="w-full max-w-4xl overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-2xl transition-all duration-500 dark:border-slate-700 dark:bg-slate-800">
-        <div className="flex items-center justify-between border-b border-slate-200 bg-slate-50 p-8 dark:border-slate-700 dark:bg-slate-900">
+        <div className="flex items-center justify-between border-b border-slate-200 bg-slate-50 p-8 dark:border-slate-700 dark:bg-black">
           <h1 className="text-4xl font-extrabold tracking-tight text-slate-800 dark:text-slate-100">
             Profile Details
           </h1>
