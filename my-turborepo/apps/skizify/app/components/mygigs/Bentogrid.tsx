@@ -116,8 +116,7 @@ export function EnhancedLuxuryMeetingCard2({
               </p>
             </div>
             <div className="grid grid-cols-2 gap-4 text-sm">
-              {[
-                {
+              {[{
                   icon: "calendar",
                   text: `${startDATEmonth} ${startDATEday} - ${endDATEmonth} ${endDATEday}`,
                 },
