@@ -55,6 +55,7 @@ export default async function GigStructure({
               gig={gig}
               poster={user}
               status={session?.user.role}
+              authorid={gig.authorId}
             />
           );
         })}

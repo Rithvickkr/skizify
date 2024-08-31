@@ -1,6 +1,7 @@
 import { cn } from "../../utils/cn";
 import { GigsInterface } from "@repo/store/types";
 import { Avatar } from "@repo/ui/avatar";
+import ViewProfile from "../mygigspage/viewProfile";
 import {
   Card,
   CardContent,
@@ -25,11 +26,13 @@ export function EnhancedLuxuryMeetingCard2({
   gig,
   poster,
   status,
+  authorid
 }: {
   className?: string;
   gig: GigsInterface;
   poster: any;
   status: UserRole | undefined;
+  authorid: string;
 }) {
   const startDATEmonth = Month(gig.startDateTime);
   const startDATEday = gig.startDateTime.getDate();
@@ -167,10 +170,7 @@ export function EnhancedLuxuryMeetingCard2({
                 Datetimepackage={datetimepackage}
               />
             ) : (
-              <ButtonE className="group relative overflow-hidden bg-neutral-900 text-white shadow-md transition-all duration-500 ease-in-out hover:bg-neutral-800 hover:shadow-lg dark:bg-neutral-100 dark:text-neutral-900 dark:hover:bg-neutral-200" variant={"gooeyLeft"}>
-                <span className="relative z-10">View Profile</span>
-                <span className="absolute inset-0 z-0 bg-gradient-to-r from-neutral-800 via-neutral-700 to-neutral-600 opacity-0 transition-opacity duration-500 ease-in-out group-hover:opacity-50 dark:from-neutral-200 dark:via-neutral-300 dark:to-neutral-400" />
-              </ButtonE>
+              <ViewProfile id={authorid} />
             )}
           </CardFooter>
         </Card>
