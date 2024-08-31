@@ -332,7 +332,7 @@ export default function Postform() {
                                         </div>
                                       </Button>
                                     </PopoverTrigger>
-                                    <PopoverContent className="space-y-4 border border-[#d1d5d8] bg-[#484848] p-4 transition duration-200 hover:shadow-xl dark:border-gray-800 dark:bg-[#020817] dark:shadow-none">
+                                    <PopoverContent className="space-y-4 border border-[#d1d5d8] bg-[#484848] p-4 transition duration-200 hover:shadow-xl dark:border-gray-800 dark:bg-black dark:shadow-none">
                                       <div className="grid grid-cols-3 gap-2">
                                         {[30, 45, 60].map((time) => (
                                           <Button
