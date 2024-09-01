@@ -3,6 +3,7 @@ import { GigForm } from "../../components/Gigform";
 import Component from "../../components/postform2";
 import Reviewpage from "../../components/reviewpage/review";
 import Signform from "../../components/Signform";
+import Profileform from "../../components/newprofileform";
 
 export default function Home() {
   return (
@@ -17,6 +18,7 @@ export default function Home() {
 
     // </div>
     <Component />
+  
 
     // <Reviewpage/>
   );
