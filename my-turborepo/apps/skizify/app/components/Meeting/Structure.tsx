@@ -395,7 +395,7 @@ export default function VideoPlatform({
     }
     if (localVideoTrack) {
       localVideoTrack.stop();
-    }
+    } 
     if (screenTrack) {
       screenTrack.stop();
     }
