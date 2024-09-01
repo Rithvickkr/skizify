@@ -50,6 +50,40 @@ export class RoomManager {
     ReceivingUser?.socket.emit("addIceCandidate", { candidate, type });
   }
 
+    //method for handling screen share start
+    onScreenShare(roomId: string, UserSocketId: string) {
+      const room = this.rooms.get(roomId);
+      if (!room) return;
+  
+      const sharingUser = room.User1.socket.id === UserSocketId ? room.User1 : room.User2;
+      const receivingUser = room.User1.socket.id === UserSocketId ? room.User2 : room.User1;
+  
+      // Notify the receiving user that screen sharing has started
+      receivingUser.socket.emit("peer-screen-share-started", { roomId });
+    }
+  
+    //method for handling screen share stop
+    onStopScreenShare(roomId: string, UserSocketId: string) {
+      const room = this.rooms.get(roomId);
+      if (!room) return;
+  
+      const sharingUser = room.User1.socket.id === UserSocketId ? room.User1 : room.User2;
+      const receivingUser = room.User1.socket.id === UserSocketId ? room.User2 : room.User1;
+  
+      // Notify the receiving user that screen sharing has stopped
+      receivingUser.socket.emit("peer-screen-share-stopped", { roomId });
+    }
+  
+    //method for handling screen share track
+    onScreenShareTrack(roomId: string, sdp: any, UserSocketId: string) {
+      const room = this.rooms.get(roomId);
+      if (!room) return;
+  
+      const receivingUser = room.User1.socket.id === UserSocketId ? room.User2 : room.User1;
+  
+      // Send the screen share track to the receiving user
+      receivingUser.socket.emit("screen-share-track", { roomId, sdp });
+    }
   // getSession(session:ClientSessionInterface){
   //   const room = this.rooms.get(session);
   // }

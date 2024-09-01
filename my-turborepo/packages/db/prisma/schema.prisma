@@ -29,7 +29,8 @@ model User {
   education       String?
   skills          String[]
   achievements    String[]
-
+  qualification   String?
+  profession      String?
 }
 
 model Gigs {

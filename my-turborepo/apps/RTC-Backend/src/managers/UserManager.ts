@@ -121,7 +121,18 @@ export class UserManager {
     UserSocket.on('leave-meeting' , ({userId , meetingId} : {userId : string ,  meetingId : string}) => {
       this.removeUser(meetingId , userId);
     })
-
+    UserSocket.on("start-screen-share", ({ roomId }: { roomId: string }) => {
+      this.roomManager.onScreenShare(roomId, UserSocket.id);
+    });
+  
+    UserSocket.on("stop-screen-share", ({ roomId }: { roomId: string }) => {
+      this.roomManager.onStopScreenShare(roomId, UserSocket.id);
+    });
+  
+    UserSocket.on("screen-share-track", ({ roomId, sdp }: { roomId: string; sdp: any }) => {
+      this.roomManager.onScreenShareTrack(roomId, sdp, UserSocket.id);
+    });
+  
     // UserSocket.on("onsession", ( session : ClientSessionInterface ) => {
     //   this.roomManager.getSession(session);
     // } )
