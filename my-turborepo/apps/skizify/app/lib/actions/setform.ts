@@ -1,13 +1,17 @@
 "use server";
 import prisma from "@repo/db/client";
 
-export async function setform(
+export async function setformy(
   name: string,
   username: string,
   bio: string,
   education: string,
   session: any,
   skills: string[],
+  languages: string[],
+  qualifications: string,
+  profession: string,
+
 ) {
   const user = await prisma.user.findUnique({
     where: { email: session.user.email },
@@ -25,6 +29,11 @@ export async function setform(
             skills: {
               set: skills,
             },
+            languages: {
+              set: languages,
+            },
+            qualification: qualifications as string,
+            profession: profession as string,
           },
         });
 
@@ -36,7 +45,10 @@ export async function setform(
   } catch (err: any) {
     if (err.code === "P2002") {
       throw new Error("Username is already taken");
-    }
+    } 
+    console.log(session.user.email);
+    console.log(err);
     throw new Error("an error occurred while updating user profile");
+     
   }
 }
