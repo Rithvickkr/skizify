@@ -11,6 +11,7 @@ export async function setRole() {
   if (!session) {
     throw new Error("Session doesn't exist");
   }
+  console.log("session: ", session);
 
   try {
     if (session.user?.email) {
@@ -39,6 +40,8 @@ export async function setRole() {
       console.log("User role updated successfully:", updatedUser);
     }
   } catch (error) {
-    console.error("Error updating user role:", error);
+    console.log("error: ", error);
+    console.log("hELLO")
+    console.error("Error updating user role:",error);
   }
 }

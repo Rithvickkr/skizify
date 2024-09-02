@@ -269,8 +269,8 @@ export default function Component() {
 return (
   <VideoPlatform
     name={session.data?.user.name || "User"}
-    localAudioTrack={localAudioTrack}
-    localVideoTrack={localVideoTrack}
+    // localAudioTrack={localAudioTrack}
+    // localVideoTrack={localVideoTrack}
     userId={session.data?.user.id || ""}
     meetingId={"1"}
   />

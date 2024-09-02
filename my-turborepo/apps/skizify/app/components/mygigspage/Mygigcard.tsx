@@ -131,9 +131,12 @@ export function MygigCard2({
   return (
     <div className="space-y-4 pl-3 transition duration-200">
       {Array.isArray(gigs) && gigs.length > 0 ? (
-        gigs.map((gig) => (
-          <Card className="group relative w-full overflow-hidden bg-black text-white shadow-2xl">
-            <div className="absolute inset-0 bg-gradient-to-br from-neutral-800 via-black to-neutral-700 opacity-50" />
+        gigs.map((gig, index) => (
+          <Card
+            key={index}
+            className="group relative w-full overflow-hidden bg-neutral-200 text-white shadow-2xl dark:bg-black"
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-neutral-100 via-neutral-50 to-neutral-100 opacity-50 dark:from-neutral-800 dark:via-black dark:to-neutral-700" />
             <div className="absolute inset-0 backdrop-blur-[2px]" />
             <div className="relative z-10 p-2 sm:p-3 md:p-4">
               <div className="mb-3 flex flex-col items-center justify-between space-y-4 sm:mb-5 sm:flex-row sm:items-center sm:space-y-0">
@@ -146,7 +149,7 @@ export function MygigCard2({
                     />
                   </div>
                   <div>
-                    <h2 className="mb-1 bg-gradient-to-r from-neutral-400 to-neutral-200 bg-clip-text text-xl font-semibold text-transparent sm:text-2xl">
+                    <h2 className="mb-1 bg-gradient-to-r from-neutral-400 to-neutral-500 bg-clip-text text-xl font-semibold text-transparent dark:to-neutral-200 sm:text-2xl">
                       {session?.user.name}
                     </h2>
                     {/* <p className="text-sm text-neutral-400">@johndoe</p> */}
@@ -163,7 +166,7 @@ export function MygigCard2({
                   {gig.title}
                 </h4>
                 <div className="text-sm leading-relaxed text-neutral-600 transition-all duration-500 ease-in-out dark:text-neutral-400">
-                  <ScrollArea className="h-12 w-full">
+                  <ScrollArea className="h-12 w-full border-0 rounded-md shadow-none">
                     <p className="whitespace-normal break-words pr-4">
                       {gig.content}
                     </p>
@@ -172,37 +175,41 @@ export function MygigCard2({
                 </div>
               </div>
 
-              <div className="mb-3 grid grid-cols-1 gap-4 sm:grid-cols-2">
-                <div className="transform cursor-pointer rounded-lg bg-white bg-opacity-5 p-2 backdrop-blur-sm backdrop-filter transition-transform duration-300 hover:scale-105 sm:p-4">
+              <div className="p-1 duration-400  mb-3 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div className="shadow-sm mx-1 border dark:border-0 transform cursor-pointer rounded-lg bg-white bg-opacity-5 p-2 backdrop-filter transition-transform duration-300 hover:scale-105 sm:p-4">
                   <div className="mb-2 flex items-center text-sm">
-                    <CalendarRange className="mr-2 size-4 text-neutral-400" />
-                    <span className="font-medium text-neutral-200">
+                    <CalendarRange className="mr-2 size-4 text-neutral-800 opacity-85 hover:opacity-100 dark:text-neutral-400" />
+                    <span className="font-medium text-neutral-800 opacity-85 hover:opacity-100 dark:text-neutral-200">
                       Date Range
                     </span>
                   </div>
-                  <p className="text-xs text-neutral-300">
+                  <p className="text-xs text-neutral-800 opacity-85 hover:opacity-100 dark:text-neutral-300">
                     {`${Month(gig.startDateTime)} ${gig.startDateTime.getDate()} - ${Month(gig.endDateTime)} ${gig.endDateTime.getDate()}`}
                   </p>
                 </div>
-                <div className="transform cursor-pointer rounded-lg bg-white bg-opacity-5 p-2 backdrop-blur-sm backdrop-filter transition-transform duration-300 hover:scale-105 sm:p-4">
+                <div className="shadow-sm mx-1 border dark:border-0 transform cursor-pointer rounded-lg bg-white bg-opacity-5 p-2 backdrop-filter transition-transform duration-300 hover:scale-105 sm:p-4">
                   <div className="mb-2 flex items-center text-sm">
-                    <Clock7Icon className="mr-2 size-4 text-neutral-400" />
-                    <span className="font-medium text-neutral-200">Time</span>
+                    <Clock7Icon className="mr-2 size-4 text-neutral-800 opacity-85 hover:opacity-100 dark:text-neutral-400" />
+                    <span className="font-medium text-neutral-800 opacity-85 hover:opacity-100 dark:text-neutral-200">
+                      Time
+                    </span>
                   </div>
-                  <p className="text-xs text-neutral-300">
+                  <p className="text-xs text-neutral-800 opacity-85 hover:opacity-100 dark:text-neutral-300">
                     {`${formatTime(gig.startDateTime)} - ${formatTime(gig.endDateTime)}`}
                   </p>
                 </div>
               </div>
 
-              <div className="mb-3 transform rounded-xl bg-gradient-to-r from-lightdark to-mediumdark p-2 transition-transform duration-300 hover:scale-105">
+              <div className=" cursor-pointer  shadow-md hover:shadow-lg  mb-3 transform rounded-lg bg-neutral-200 from-lightdark to-mediumdark p-2 transition-all duration-300 hover:scale-100    dark:bg-gradient-to-r">
                 <div className="flex flex-col flex-wrap items-center gap-1 text-xs sm:flex-row sm:justify-around sm:gap-2">
-                  <div className="bg-gradient-to-r from-neutral-300 to-white bg-clip-text text-base font-semibold text-transparent sm:text-lg">
+                  <div className="bg-gradient-to-r from-black to-v0dark bg-clip-text text-base font-semibold text-transparent dark:from-neutral-300 dark:to-white sm:text-lg">
                     Session Details
                   </div>
                   <div>
-                    <span className="text-neutral-400">Session Duration:</span>
-                    <span className="ml-1 text-neutral-200">
+                    <span className="text-neutral-800 dark:text-neutral-400">
+                      Session Duration:
+                    </span>
+                    <span className="ml-1 text-neutral-800 dark:text-neutral-200">
                       {SessionTime(gig.timeneeded) == "1 Hr"
                         ? "60"
                         : SessionTime(gig.timeneeded).slice(0, 2)}{" "}
@@ -210,8 +217,10 @@ export function MygigCard2({
                     </span>
                   </div>
                   <div>
-                    <span className="text-neutral-400">Category:</span>
-                    <span className="ml-1 text-neutral-200">
+                    <span className="text-neutral-800 dark:text-neutral-400">
+                      Category:
+                    </span>
+                    <span className="ml-1 text-neutral-800 dark:text-neutral-200">
                       {gig.category}
                     </span>
                   </div>

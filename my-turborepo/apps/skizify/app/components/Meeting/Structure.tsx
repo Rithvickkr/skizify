@@ -58,11 +58,12 @@ export default function VideoPlatform({
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState<Chat[]>([]);
   const [isChatBarVisible, setIsChatBarVisible] = useState(false);
+  //my screenShare Tracks
   const [screenTrack, setScreenTrack] = useState<
     MediaStreamTrack | null | undefined
-  >(null);
+  >(null); 
   const [remoteUserTracks, setremoteUserTracks] = useState<
-    //mreote User Tracks
+    //remote User Tracks
     MediaStreamTrack | null | undefined
   >(null);
   const [remotescreenUserTracks, setremotescreenUserTracks] = useState<
@@ -84,12 +85,7 @@ export default function VideoPlatform({
   const [remoteUserJoined, setRemoteUserJoined] = useState(false);
   const [state, setState] = useState(1);
   const [pinnedVideo, setPinnedVideo] = useState<number | null>(null);
-  const [selectPinTabs, setSelectPinTabs] = useState([
-    false,
-    false,
-    false,
-    false,
-  ]);
+  const [selectPinTabs, setSelectPinTabs] = useState([false,false,false,false]);
 
   //New Variables
   const [remoteIsScreenSharing, setRemoteIsScreenSharing] = useState(false);
@@ -158,16 +154,22 @@ export default function VideoPlatform({
         }
 
         setRemoteMediaStream(stream);
+
         pc.ontrack = (e) => {
           console.log("Track received:", e.track.kind);
           const { track, streams } = e;
           if (track.kind === "video") {
-            if (track.label.includes("screen") || track.label.includes("display")) {
+            if (
+              track.label.includes("screen") ||
+              track.label.includes("display")
+            ) {
               // This is a screen share track
               setRemoteScreenTrack(track);
               setRemoteIsScreenSharing(true);
               if (remoteScreenVideoRef.current) {
-                remoteScreenVideoRef.current.srcObject = new MediaStream([track]);
+                remoteScreenVideoRef.current.srcObject = new MediaStream([
+                  track,
+                ]);
               }
             } else {
               // This is the regular video track
@@ -182,8 +184,7 @@ export default function VideoPlatform({
           }
           setRemoteUserJoined(true);
         };
-        
-        
+
         setReceivingPC(pc);
         pc.setRemoteDescription(remotesdp);
 
@@ -300,11 +301,11 @@ export default function VideoPlatform({
     }
   }, [isScreenSharing, screenTrack, pinnedVideo, state]);
 
-  useEffect(() => {
-    console.log("isScreenSharing:", isScreenSharing);
-    console.log("screenTrack:", screenTrack);
-    console.log("localscreenShareVideoref:", localscreenShareVideoref.current);
-  }, [isScreenSharing, screenTrack, remoteUserJoined]);
+  // useEffect(() => {
+  //   console.log("isScreenSharing:", isScreenSharing);
+  //   console.log("screenTrack:", screenTrack);
+  //   console.log("localscreenShareVideoref:", localscreenShareVideoref.current);
+  // }, [isScreenSharing, screenTrack, remoteUserJoined]);
 
   // useEffect(() => {
   //   messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -395,7 +396,7 @@ export default function VideoPlatform({
     }
     if (localVideoTrack) {
       localVideoTrack.stop();
-    } 
+    }
     if (screenTrack) {
       screenTrack.stop();
     }

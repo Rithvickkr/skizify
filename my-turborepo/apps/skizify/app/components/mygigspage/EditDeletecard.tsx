@@ -33,7 +33,7 @@ export default function EditDeleteCard({ gig }: { gig: GigsInterface }) {
         <Button
           variant="outline"
           size="icon"
-          className="size-8 rounded-md border-neutral-700 text-neutral-300 transition-all duration-300 hover:scale-110 hover:bg-neutral-800 hover:text-white sm:size-10"
+          className="size-8 rounded-md border-neutral-700 bg-black/80 text-neutral-300 transition-all duration-300 hover:scale-110 hover:bg-neutral-800 sm:size-10"
         >
           <EditIcon className="size-3 sm:size-4" />
           <span className="sr-only">Edit</span>
@@ -46,7 +46,7 @@ export default function EditDeleteCard({ gig }: { gig: GigsInterface }) {
         <Button
           variant="outline"
           size="icon"
-          className="size-8 rounded-md border-neutral-700 text-neutral-300 transition-all duration-300 hover:scale-110 hover:bg-neutral-800 hover:text-white sm:size-10"
+          className="size-8 rounded-md border-neutral-700 bg-black/80 text-neutral-300 transition-all duration-300 hover:scale-110 hover:bg-neutral-800 sm:size-10"
           onClick={() => handleDeleteGig(gig.id)}
         >
           <TrashIcon className="size-3 sm:size-4" />
