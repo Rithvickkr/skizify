@@ -32,7 +32,7 @@ import { Textarea } from "../../@/components/ui/textarea";
 import { setformy } from "../lib/actions/setform";
 import { BottomGradient } from "./SignupForm";
 
-export default function Component() {
+export default function Newprofile() {
   interface form {
     name: string;
     username: string;
