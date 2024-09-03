@@ -61,7 +61,7 @@ export default function VideoPlatform({
   //my screenShare Tracks
   const [screenTrack, setScreenTrack] = useState<
     MediaStreamTrack | null | undefined
-  >(null); 
+  >(null);
   const [remoteUserTracks, setremoteUserTracks] = useState<
     //remote User Tracks
     MediaStreamTrack | null | undefined
@@ -85,7 +85,12 @@ export default function VideoPlatform({
   const [remoteUserJoined, setRemoteUserJoined] = useState(false);
   const [state, setState] = useState(1);
   const [pinnedVideo, setPinnedVideo] = useState<number | null>(null);
-  const [selectPinTabs, setSelectPinTabs] = useState([false,false,false,false]);
+  const [selectPinTabs, setSelectPinTabs] = useState([
+    false,
+    false,
+    false,
+    false,
+  ]);
 
   //New Variables
   const [remoteIsScreenSharing, setRemoteIsScreenSharing] = useState(false);
@@ -93,6 +98,8 @@ export default function VideoPlatform({
     useState<MediaStreamTrack | null>(null);
   const [screenSender, setScreenSender] = useState<RTCRtpSender | null>(null);
   const remoteScreenVideoRef = useRef<HTMLVideoElement>(null);
+  const [remoteAudioTrack, setRemoteAudioTrack] =
+    useState<MediaStreamTrack | null>(null);
 
   //This is for Re-Establishing the connection under 5Sec IF error came First time
   // useEffect(() => {
@@ -157,36 +164,33 @@ export default function VideoPlatform({
 
         pc.ontrack = (e) => {
           console.log("Track received:", e.track.kind);
+          console.log("track.label: ", e.track.label.includes);
           const { track, streams } = e;
-          if (track.kind === "video") {
-            if (
-              track.label.includes("screen") ||
-              track.label.includes("display")
-            ) {
-              // This is a screen share track
-              setRemoteScreenTrack(track);
-              setRemoteIsScreenSharing(true);
-              if (remoteScreenVideoRef.current) {
-                remoteScreenVideoRef.current.srcObject = new MediaStream([
-                  track,
-                ]);
-              }
-            } else {
-              // This is the regular video track
-              if (remoteVideoRef.current) {
-                remoteVideoRef.current.srcObject = new MediaStream([track]);
-              }
-            }
-          } else if (track.kind === "audio") {
-            if (remoteAudioRef.current) {
-              remoteAudioRef.current.srcObject = new MediaStream([track]);
-            }
+          if (
+            track.label.includes("screen") ||
+            track.label.includes("display")
+          ) {
+            // This is a screen share track
+            setRemoteScreenTrack(track);
+            setRemoteIsScreenSharing(true);
           }
+          // This is the regular video track
+          // if (remoteVideoRef.current) {
+          //   remoteVideoRef.current.srcObject = new MediaStream([track]);
+          // }
+          console.log(e);
+          if (track.kind === "video") {
+            setRemoteAudioTrack(track);
+            stream.addTrack(track);
+          } else if (track.kind === "audio") {
+            setRemoteAudioTrack(track);
+            stream.addTrack(track);
+          }
+          remoteVideoRef.current?.play();
           setRemoteUserJoined(true);
         };
 
         setReceivingPC(pc);
-        pc.setRemoteDescription(remotesdp);
 
         // pc.ontrack()
         pc.onicecandidate = async (e) => {
@@ -200,6 +204,7 @@ export default function VideoPlatform({
             });
           }
         };
+        pc.setRemoteDescription(remotesdp);
         const sdp = await pc.createAnswer();
         pc.setLocalDescription(sdp);
 
@@ -301,6 +306,22 @@ export default function VideoPlatform({
     }
   }, [isScreenSharing, screenTrack, pinnedVideo, state]);
 
+  useEffect(() => {
+    console.log("remoteIsScreenSharing: ", remoteIsScreenSharing);
+    if (
+      remoteScreenVideoRef.current &&
+      remoteIsScreenSharing &&
+      remoteScreenTrack
+    ) {
+      remoteScreenVideoRef.current.srcObject = new MediaStream([
+        remoteScreenTrack,
+      ]);
+      remoteScreenVideoRef.current
+        .play()
+        .catch((error) => console.error("Error playing video:", error));
+    }
+  }, [remoteIsScreenSharing, remoteScreenTrack]);
+
   // useEffect(() => {
   //   console.log("isScreenSharing:", isScreenSharing);
   //   console.log("screenTrack:", screenTrack);
@@ -318,7 +339,6 @@ export default function VideoPlatform({
           video: true,
         });
         const screenTrack = stream.getVideoTracks()[0];
-
         if (!screenTrack) {
           throw new Error("Screen track is undefined");
         }
@@ -328,21 +348,23 @@ export default function VideoPlatform({
 
         // Add the screen track to the sending peer connection
         if (sendingPC) {
-          const sender = sendingPC.addTrack(screenTrack, stream);
+          const sender = sendingPC.addTrack(screenTrack);
           setScreenSender(sender);
 
-          // Create and send offer for the screen share track
-          const offer = await sendingPC.createOffer();
-          await sendingPC.setLocalDescription(offer);
-          socket.emit("screen-share-track", { roomId: meetingId, sdp: offer });
+          // Handle the negotiation process when screen sharing is started
+          sendingPC.onnegotiationneeded = async () => {
+            // Create and send offer for the screen share track
+            const offer = await sendingPC.createOffer();
+            await sendingPC.setLocalDescription(offer);
+            socket.emit("offer", { roomId: meetingId, sdp: offer });
+          };
+
+          // Notify the server that screen sharing has started
+          socket.emit("start-screen-share", { roomId: meetingId });
         } else {
           console.error("sendingPC is null, cannot add screen share track");
           throw new Error("Peer connection is not established");
         }
-
-        // Notify the server that screen sharing has started
-        socket.emit("start-screen-share", { roomId: meetingId });
-
         // Handle the end of screen sharing
         screenTrack.onended = () => {
           stopScreenShare();
@@ -458,25 +480,8 @@ export default function VideoPlatform({
   const renderVideo = (
     index: number,
     reference: RefObject<HTMLVideoElement>,
+    title: string,
   ) => {
-    let videoTitle = "";
-    console.log("index: ", index);
-    console.log("reference: ", reference);
-    switch (index) {
-      case 0:
-        videoTitle = "Your Video";
-        break;
-      case 1:
-        videoTitle = "Remote Video";
-        break;
-      case 2:
-        videoTitle = "Your Screen Share";
-        break;
-      case 3:
-        videoTitle = "Remote Screen Share";
-        break;
-    }
-
     return (
       <div
         className={`relative overflow-hidden rounded-lg border border-neutral-400 dark:border-neutral-700 ${
@@ -489,9 +494,12 @@ export default function VideoPlatform({
         <video
           ref={reference}
           autoPlay
+          playsInline
           className="absolute inset-0 h-full w-full object-cover"
         />
-
+        <div className="absolute bottom-2 left-2 rounded bg-black bg-opacity-50 px-2 py-1 text-sm text-white">
+          {title}
+        </div>
         {selectPinTabs[index] && (
           <div className="absolute left-1/2 top-1/2 flex min-w-28 -translate-x-1/2 -translate-y-1/2 transform items-center justify-between rounded-e-full rounded-s-full bg-black p-2 opacity-40 transition-opacity duration-700 dark:bg-neutral-500 dark:opacity-50">
             <div
@@ -515,7 +523,6 @@ export default function VideoPlatform({
       </div>
     );
   };
-
   return (
     <div className="flex h-[85%] w-full rounded-xl from-neutral-900 via-black to-neutral-900 dark:bg-gradient-to-r sm:h-[92%]">
       <div className="flex h-full w-full flex-1 flex-col items-center justify-between p-1 pb-2">
@@ -523,32 +530,65 @@ export default function VideoPlatform({
         <div className="flex h-full w-full flex-col gap-1 sm:flex-row">
           {pinnedVideo !== null ? (
             <>
-              {renderVideo(pinnedVideo, localVideoRef)}
-              {/*  h-1/2 w-full sm:h-full sm:w-4/5 */}
+              {renderVideo(
+                pinnedVideo,
+                pinnedVideo === 0
+                  ? localVideoRef
+                  : pinnedVideo === 1
+                    ? remoteVideoRef
+                    : pinnedVideo === 2
+                      ? localscreenShareVideoref
+                      : remoteScreenVideoRef,
+                pinnedVideo === 0
+                  ? "Your Video"
+                  : pinnedVideo === 1
+                    ? "Remote Video"
+                    : pinnedVideo === 2
+                      ? "Your Screen Share"
+                      : "Remote Screen Share",
+              )}
               <div className="ml-2 flex h-1/2 flex-col items-center gap-1 sm:h-full sm:w-1/5">
                 {[0, 1, 2, 3]
                   .filter((i) => i !== pinnedVideo)
-                  .map((x) => {
+                  .map((index) => {
                     const videoRef =
-                      x === 0
+                      index === 0
                         ? localVideoRef
-                        : x === 1
-                          ? localscreenShareVideoref
-                          : remoteVideoRef;
-                    return renderVideo(x, videoRef);
+                        : index === 1
+                          ? remoteVideoRef
+                          : index === 2
+                            ? localscreenShareVideoref
+                            : remoteScreenVideoRef;
+                    const title =
+                      index === 0
+                        ? "Your Video"
+                        : index === 1
+                          ? "Remote Video"
+                          : index === 2
+                            ? "Your Screen Share"
+                            : "Remote Screen Share";
+                    return renderVideo(index, videoRef, title);
                   })}
               </div>
             </>
           ) : (
             <div
-              className={`flex h-full w-full flex-col items-center gap-3 pt-2 sm:grid ${screenTrack || remoteUserJoined ? "sm:grid-cols-2" : "sm:grid-cols-1"} sm:pt-0`}
+              className={`flex h-full w-full flex-col items-center gap-3 pt-2 sm:grid ${
+                (isScreenSharing && screenTrack) ||
+                remoteIsScreenSharing ||
+                remoteUserJoined
+                  ? "sm:grid-cols-2"
+                  : "sm:grid-cols-1"
+              } sm:pt-0`}
             >
-              {localVideoTrack && renderVideo(0, localVideoRef)}
-              {remoteUserJoined && renderVideo(1, remoteVideoRef)}
+              {localVideoTrack && renderVideo(0, localVideoRef, "Your Video")}
+              {remoteUserJoined &&
+                renderVideo(1, remoteVideoRef, "Remote Video")}
               {isScreenSharing &&
                 screenTrack &&
-                renderVideo(2, localscreenShareVideoref)}
-              {remoteIsScreenSharing && renderVideo(3, remoteScreenVideoRef)}
+                renderVideo(2, localscreenShareVideoref, "Your Screen Share")}
+              {remoteIsScreenSharing &&
+                renderVideo(3, remoteScreenVideoRef, "Remote Screen Share")}
             </div>
           )}
         </div>
