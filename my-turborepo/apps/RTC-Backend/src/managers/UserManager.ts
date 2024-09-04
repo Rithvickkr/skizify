@@ -7,10 +7,10 @@ export interface User {
   meetingId: string;
 }
 export interface Chat {
-  message : string,
-  name : string,
-  userId : string ,
-  userImage? :string,
+  message: string;
+  name: string;
+  userId: string;
+  userImage?: string;
 }
 
 export class UserManager {
@@ -34,7 +34,7 @@ export class UserManager {
     }
     console.log(this.meeting);
     // this.queue.push(user.socket.id);
-    this.initHandlers(user.socket, user.meetingId , userId);
+    this.initHandlers(user.socket, user.meetingId, userId);
     this.clearQueue(user.meetingId);
     this.messageHandler(io, user.meetingId, user.socket);
   }
@@ -67,7 +67,6 @@ export class UserManager {
     // this.clearQueue(meetingId); //again recalling the Function
   }
 
-
   //user will be removed Surely First from initHandlers & and when User disconnects Check index.ts , there we also have written this
   removeUser(meetingId: string, userId: string) {
     // this.meeting = this.meeting.filter((x) => x.socket.id !== socketId);
@@ -87,7 +86,7 @@ export class UserManager {
     }
   }
 
-  initHandlers(UserSocket: Socket, meetingId: string , userId : string) {
+  initHandlers(UserSocket: Socket, meetingId: string, userId: string) {
     if (!UserSocket) {
       console.error("Socket instance is not available.");
       return;
@@ -118,21 +117,46 @@ export class UserManager {
       }
     );
     // socket?.emit('leave-meeting', { userId, meetingId });
-    UserSocket.on('leave-meeting' , ({userId , meetingId} : {userId : string ,  meetingId : string}) => {
-      this.removeUser(meetingId , userId);
-    })
-    UserSocket.on("start-screen-share", ({ roomId }: { roomId: string }) => {
-      this.roomManager.onScreenShare(roomId, UserSocket.id);
-    });
-  
-    UserSocket.on("stop-screen-share", ({ roomId }: { roomId: string }) => {
-      this.roomManager.onStopScreenShare(roomId, UserSocket.id);
-    });
-  
-    UserSocket.on("screen-share-track", ({ roomId, sdp }: { roomId: string; sdp: any }) => {
-      this.roomManager.onScreenShareTrack(roomId, sdp, UserSocket.id);
-    });
-  
+    UserSocket.on(
+      "leave-meeting",
+      ({ userId, meetingId }: { userId: string; meetingId: string }) => {
+        this.removeUser(meetingId, userId);
+      }
+    );
+    UserSocket.on(
+      "screen-offer",
+      ({ roomId, sdp }: { roomId: string; sdp: any }) => {
+        this.roomManager.onScreenOffer(roomId, sdp, UserSocket.id);
+      }
+    );
+
+    UserSocket.on(
+      "screen-answer",
+      ({ roomId, sdp }: { roomId: string; sdp: any }) => {
+        this.roomManager.onScreenAnswer(roomId, sdp, UserSocket.id);
+      }
+    );
+
+    UserSocket.on(
+      "screen-ice-candidate",
+      ({
+        roomId,
+        candidate,
+        type,
+      }: {
+        roomId: string;
+        candidate: any;
+        type: "sender" | "receiver";
+      }) => {
+        this.roomManager.onScreenIceCandidate(
+          roomId,
+          candidate,
+          UserSocket.id,
+          type
+        );
+      }
+    );
+
     // UserSocket.on("onsession", ( session : ClientSessionInterface ) => {
     //   this.roomManager.getSession(session);
     // } )
@@ -141,12 +165,7 @@ export class UserManager {
   messageHandler(UserIO: Server, meetingId: string, UserSocket: Socket) {
     UserSocket.on(
       "send-message",
-      ({
-        message,
-        name,
-        userId,
-        userImage,
-      }:Chat) => {
+      ({ message, name, userId, userImage }: Chat) => {
         // console.log("Yeah GOT the message, Sending on Particular Room Id");
         // console.log("Broadcasting to room:", meetingId);
         // console.log("Message is this ====>", message);
