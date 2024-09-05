@@ -32,7 +32,8 @@ import { Textarea } from "../../@/components/ui/textarea";
 import { setformy } from "../lib/actions/setform";
 import { BottomGradient } from "./SignupForm";
 
-export default function Newprofile() {
+export default function Newprofile({isVisible} : {isVisible: boolean}) {
+  if (!isVisible) return null;
   interface form {
     name: string;
     username: string;
@@ -43,6 +44,7 @@ export default function Newprofile() {
     qualification: string;
     profession: string;
   }
+
   const { data: session } = useSession();
   const [isLoading, setIsLoading] = useState(false);
   const [photo, setPhoto] = useState<string | null>(null);
@@ -142,7 +144,7 @@ export default function Newprofile() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-background via-primary/10 to-secondary/20 p-4">
+    <div className="flex min-h-screen items-center justify-center p-4  ">
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}

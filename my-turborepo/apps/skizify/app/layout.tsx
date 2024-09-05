@@ -8,6 +8,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 
 
+
 // import {NextUIProvider} from "@nextui-org/react";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -26,10 +27,13 @@ export default function RootLayout({
     <html lang="en" className="no-scrollbar" suppressHydrationWarning>
       <body className={inter.className} suppressHydrationWarning={true}>
       <Providers >
+       
         {/* <NextUIProvider> */}
           {children}
           <Toaster />
         {/* </NextUIProvider> */}
+        
+        
       </Providers>
       </body>
     </html>
