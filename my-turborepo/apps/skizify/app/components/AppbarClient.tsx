@@ -4,6 +4,13 @@ import { useSession } from "next-auth/react";
 import { Appbar } from "@repo/ui/appbar";
 import { setRole } from "../lib/actions/setRole";
 
+import { useRecoilState, RecoilState } from 'recoil';
+import { userRoleState } from '@repo/store';
+import { UserRole } from "@prisma/client";
+import { Bell } from "lucide-react";
+import WarningPage from "./ui/WarningPage";
+
+
 export function AppbarClient() {
   const session = useSession();
   const [roly, setRoly] = useRecoilState(userRoleState);
@@ -18,9 +25,10 @@ export function AppbarClient() {
   };
 
   const changeRoles = async () => {
-    const roly: UserRole = (await setRole()) ?? UserRole.USER;
-    setRoly(() => roly ?? UserRole.USER);
-    console.log(roly);
+    const role: UserRole = (await setRole()) ?? UserRole.USER;
+    setRoly( UserRole.SKIZZER.toString() );
+    console.log(role);
+    console.log(roly);//NOt wortking will see tomorrow
 
 
     window.location.reload(); // This will hard reload the page
