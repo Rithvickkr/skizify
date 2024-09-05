@@ -121,7 +121,7 @@ export default function Example({
                           "bg-black dark:bg-white dark:text-black",
                         !isEqual(day, selectedDay) &&
                           isToday(day) &&
-                          "text-red-500 dark:bg-red-500",
+                          "text-red-500 dark:bg-red-800",
                         !isEqual(day, selectedDay) &&
                           !isToday(day) &&
                           isSameMonth(day, firstDayCurrentMonth) &&
@@ -132,7 +132,7 @@ export default function Example({
                           "text-gray-400 dark:text-white",
                         isEqual(day, selectedDay) &&
                           isToday(day) &&
-                          "bg-red-500 dark:bg-red-500 dark:text-white",
+                          "bg-red-700 dark:bg-red-800 dark:text-white",
                         !isEqual(day, selectedDay) &&
                           "hover:bg-gray-200 dark:text-white dark:hover:bg-lightdark ",
                         (isEqual(day, selectedDay) || isToday(day)) &&

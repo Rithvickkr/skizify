@@ -3,6 +3,8 @@ import { signIn, signOut } from "next-auth/react";
 import { useSession } from "next-auth/react";
 import { Appbar } from "@repo/ui/appbar";
 import { setRole } from "../lib/actions/setRole";
+import { Bell } from "lucide-react";
+import WarningPage from "./ui/WarningPage";
 
 export function AppbarClient() {
   const session = useSession();
@@ -28,7 +30,12 @@ export function AppbarClient() {
         onSignout={handleSignOut}
         altname={name}
         fn={changeRoles}
-      />
+      >
+        <div className="cursor-pointer rounded-full p-3 hover:bg-neutral-100 dark:bg-black hover:dark:bg-[#212125] dark:hover:bg-opacity-75">
+          <Bell className="size-5 md:size-6" strokeWidth={1.8} />
+        </div>
+        <WarningPage />
+      </Appbar>
     </div>
   );
 }

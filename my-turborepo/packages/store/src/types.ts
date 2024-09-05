@@ -1,4 +1,5 @@
 import { GigStatus , UserRole } from "@prisma/client";
+import { ReactNode } from "react";
 
 export interface GigsInterface {
     confirmUserId: string;
@@ -40,6 +41,7 @@ export interface GigsInterface {
     onSignout: any;
     altname: string;
     fn: any;
+    children : ReactNode
   }
 
   export interface meetingsInfo_interface {

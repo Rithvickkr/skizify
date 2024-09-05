@@ -134,9 +134,9 @@ export function MygigCard2({
         gigs.map((gig, index) => (
           <Card
             key={index}
-            className="group relative w-full overflow-hidden bg-neutral-200 text-white shadow-2xl dark:bg-black"
+            className="group relative w-full overflow-hidden bg-neutral-100 text-white shadow-2xl dark:bg-black"
           >
-            <div className="absolute inset-0 bg-gradient-to-br from-neutral-100 via-neutral-50 to-neutral-100 opacity-50 dark:from-neutral-800 dark:via-black dark:to-neutral-700" />
+            <div className="absolute inset-0 bg-gradient-to-br from-neutral-50 via-neutral-100 to-neutral-50 opacity-50 dark:from-neutral-800 dark:via-black dark:to-neutral-700" />
             <div className="absolute inset-0 backdrop-blur-[2px]" />
             <div className="relative z-10 p-2 sm:p-3 md:p-4">
               <div className="mb-3 flex flex-col items-center justify-between space-y-4 sm:mb-5 sm:flex-row sm:items-center sm:space-y-0">
@@ -145,7 +145,7 @@ export function MygigCard2({
                     <Avatar
                       name={session?.user.name}
                       photo={session?.user.userImage}
-                      classname="sm:size-16 size-12 sm:rounded-xl rounded-lg border-4 border-white dark:border-neutral-800 shadow-xl transition-all duration-500 ease-in-out group-hover:scale-105 group-hover:rotate-6 "
+                      classname="sm:size-16 size-14 sm:rounded-xl rounded-lg border-4 border-white dark:border-neutral-800 shadow-xl transition-all duration-500 ease-in-out group-hover:scale-105 group-hover:rotate-6 "
                     />
                   </div>
                   <div>
@@ -202,7 +202,7 @@ export function MygigCard2({
 
               <div className=" cursor-pointer  shadow-md hover:shadow-lg  mb-3 transform rounded-lg bg-neutral-200 from-lightdark to-mediumdark p-2 transition-all duration-300 hover:scale-100    dark:bg-gradient-to-r">
                 <div className="flex flex-col flex-wrap items-center gap-1 text-xs sm:flex-row sm:justify-around sm:gap-2">
-                  <div className="bg-gradient-to-r from-black to-v0dark bg-clip-text text-base font-semibold text-transparent dark:from-neutral-300 dark:to-white sm:text-lg">
+                  <div className="bg-gradient-to-r flex-1 sm:flex-initial from-black to-v0dark bg-clip-text text-base font-semibold text-transparent dark:from-neutral-300 dark:to-white sm:text-lg">
                     Session Details
                   </div>
                   <div>
