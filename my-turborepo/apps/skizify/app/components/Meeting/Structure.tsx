@@ -104,15 +104,17 @@ export default function VideoPlatform({
   const [remoteAudioTrack, setRemoteAudioTrack] =
     useState<MediaStreamTrack | null>(null);
 
-  //This is for Re-Establishing the connection under 5Sec IF error came First time
+  // This is for Re-Establishing the connection under 5Sec IF error came First time
   // useEffect(() => {
   //   console.log("hello");
   //   const timer = setTimeout(() => {
-  //     setState((prevState) => prevState + 1);
-  //   }, 5000);
+  //     setState((prevState) => prevState + 1)
+  //   }, 5000)
 
-  //   return () => clearTimeout(timer);
-  // }, [remoteUserJoined]);
+  //   return () => clearTimeout(timer)
+  // }, [remoteUserJoined])
+  
+  
 
   useEffect(() => {
     const socket = io(URL);
@@ -158,6 +160,7 @@ export default function VideoPlatform({
       async ({ roomId, sdp: remotesdp }: { roomId: string; sdp: any }) => {
         console.log("Offer Received Sir ----");
         const pc = new RTCPeerConnection();
+        setReceivingPC(pc);
         const stream = new MediaStream();
 
         // Attach stream to video element if reference exists
@@ -200,9 +203,9 @@ export default function VideoPlatform({
         // Set up ICE candidate handling
 
         // Save the peer connection in the state
-        setReceivingPC(pc);
 
         // Handle SDP exchange
+        
         pc.onicecandidate = async (e) => {
           if (e.candidate) {
             console.log("Sending ICE Candidate...");
@@ -213,7 +216,7 @@ export default function VideoPlatform({
             });
           }
         };
-
+        
         await pc.setRemoteDescription(remotesdp);
         const answerSdp = await pc.createAnswer();
         await pc.setLocalDescription(answerSdp);
@@ -296,71 +299,46 @@ export default function VideoPlatform({
     };
   }, [remoteUserJoined, state, pinnedVideo]);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   useEffect(() => {
     if (socket) {
       socket.on("screen-offer", async ({ sdp }) => {
         try {
-          
           console.log("At least i get the screen-offer ");
           let screenPC = remoteScreenSharePC;
           const stream = new MediaStream();
           if (remoteScreenVideoRef.current) {
             remoteScreenVideoRef.current.srcObject = stream;
           }
-  
+
           if (!screenPC) {
             screenPC = new RTCPeerConnection();
             setRemoteScreenSharePC(screenPC);
           }
 
-          
           screenPC.ontrack = (e) => {
-            console.log("I get the Tracks")
+            console.log("I get the Tracks");
             const { track, streams } = e;
             console.log("track: ", track);
             console.log("Track received:", track.kind, track.label);
-            
+
             if (track.kind === "video") {
               stream.addTrack(track); // Add track to the stream
             } else if (track.kind === "audio") {
               stream.addTrack(track); // Add track to the stream
             }
-            
+
             remoteScreenVideoRef.current?.play().catch((error) => {
               console.error("Error playing video:", error);
             });
-            
+
             setRemoteIsScreenSharing(true);
           };
-        
-          
+
           screenPC.onicecandidate = async (e) => {
             if (e.candidate) {
               console.log("Sending ICE Candidate...");
               socket.emit("screen-ice-candidate", {
-                roomId : meetingId,
+                roomId: meetingId,
                 candidate: e.candidate,
                 type: "receiver",
               });
@@ -381,8 +359,6 @@ export default function VideoPlatform({
           await screenPC.setLocalDescription(answer);
 
           socket.emit("screen-answer", { roomId: meetingId, sdp: answer });
-          
-
         } catch (error) {
           console.error("Error handling screen offer:", error);
         }
@@ -483,7 +459,7 @@ export default function VideoPlatform({
       try {
         const stream = await navigator.mediaDevices.getDisplayMedia({
           video: true,
-          audio : true
+          audio: true,
         });
         const screenTrack = stream.getVideoTracks()[0];
 
@@ -502,7 +478,7 @@ export default function VideoPlatform({
         screenPC.addTrack(screenTrack, stream);
 
         // Set up ICE candidate handling for the screen share PC
-        
+
         // Create and send offer for the screen share track
         screenPC.onnegotiationneeded = async () => {
           //Now we will send Offer to the Other side
