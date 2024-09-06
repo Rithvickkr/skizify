@@ -5,13 +5,16 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../auth";
 import { UserRole } from "@prisma/client";
 
+// Ensure the module exists and the path is correct
+
+
 export async function setRole() {
-  console.log("FUNCTION IS CALLED , CHANGING THEIR ROLES");
+ 
   const session = await getServerSession(authOptions);
   if (!session) {
     throw new Error("Session doesn't exist");
   }
-  console.log("session: ", session);
+ 
 
   try {
     if (session.user?.email) {
@@ -38,6 +41,7 @@ export async function setRole() {
       });
 
       console.log("User role updated successfully:", updatedUser);
+      return updatedUser.role;
     }
   } catch (error) {
     console.log("error: ", error);
