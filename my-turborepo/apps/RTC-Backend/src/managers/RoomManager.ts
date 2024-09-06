@@ -45,7 +45,7 @@ export class RoomManager {
   ) {
     const room = this.rooms.get(roomId);
     const User1 = room?.User1;
-    const User2 = room?.User1;
+    const User2 = room?.User2;
     const ReceivingUser = UserSocketId === User1?.socket.id ? User2 : User1;
     ReceivingUser?.socket.emit("addIceCandidate", { candidate, type });
   }
@@ -55,9 +55,9 @@ export class RoomManager {
     const room = this.rooms.get(roomId);
     if (room) {
       const User1 = room?.User1;
-      const User2 = room?.User1;
+      const User2 = room?.User2;
       const ReceivingUser = UserSocketId === User1?.socket.id ? User2 : User1;
-      ReceivingUser.socket.emit("screen-offer", { sdp });
+      ReceivingUser.socket.emit("screen-offer", { roomId , sdp });
     }
   }
 
@@ -65,9 +65,9 @@ export class RoomManager {
     const room = this.rooms.get(roomId);
     if (room) {
       const User1 = room?.User1;
-      const User2 = room?.User1;
+      const User2 = room?.User2;
       const ReceivingUser = UserSocketId === User1?.socket.id ? User2 : User1;
-      ReceivingUser.socket.emit("screen-answer", { sdp });
+      ReceivingUser.socket.emit("screen-answer", { roomId , sdp });
     }
   }
 
@@ -76,7 +76,7 @@ export class RoomManager {
     const room = this.rooms.get(roomId);
     if (room) {
       const User1 = room?.User1;
-      const User2 = room?.User1;
+      const User2 = room?.User2;
       const ReceivingUser = UserSocketId === User1?.socket.id ? User2 : User1;
       ReceivingUser.socket.emit("screen-ice-candidate", { candidate , type });
     }
