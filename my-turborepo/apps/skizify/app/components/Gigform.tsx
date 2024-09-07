@@ -136,19 +136,19 @@ export function GigForm() {
         setEndTime("");
         setTimeneed(0);
         setSelectedTime(null);
-        toast({
-          title: "Event created successfully",
-          description: "Your event has been created successfully.",
+        // toast({
+        //   title: "Event created successfully",
+        //   description: "Your event has been created successfully.",
           
-        });
+        // });
       } catch (error) {
         console.error("Error posting gig:", error);
-        toast({
-          variant: "destructive",
-          title: "Uh oh! Something went wrong.",
-          description: "There was a problem with your request.",
-          action: <ToastAction altText="Try again">Try again</ToastAction>,
-        })
+        // toast({
+        //   variant: "destructive",
+        //   title: "Uh oh! Something went wrong.",
+        //   description: "There was a problem with your request.",
+        //   action: <ToastAction altText="Try again">Try again</ToastAction>,
+        // })
       }
     }
   };
@@ -206,7 +206,7 @@ export function GigForm() {
                 </div>
               </Button>
             </PopoverTrigger>
-            <PopoverContent className="space-y-4 border border-[#d1d5d8] bg-white p-4 transition duration-200 hover:shadow-xl dark:border-gray-800 dark:bg-[#020817] dark:shadow-none">
+            <PopoverContent className="space-y-4 border border-[#d1d5d8] bg-white p-4 transition duration-200 hover:shadow-xl dark:border-gray-800 hover:bg-black dark:bg-[#020817] dark:shadow-none">
               <div className="grid grid-cols-3 gap-2">
                 {[30, 45, 60].map((time) => (
                   <Button
@@ -214,8 +214,8 @@ export function GigForm() {
                     variant="default"
                     className={`border-[#d1d5d8] px-2 py-1 text-xs ${
                       selectedTime === time
-                        ? "bg-black text-white dark:bg-white dark:text-black"
-                        : "bg-white text-black dark:bg-gray-800 dark:text-white"
+                        ? "bg-black text-white dark:bg-white dark:text-black hover:bg-black"
+                        : "bg-white text-black dark:bg-gray-800 dark:text-white hover:bg-black"
                     }`}
                     onClick={() => {
                       setTimeneed(time);

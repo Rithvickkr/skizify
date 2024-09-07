@@ -27,7 +27,8 @@ export async function skizzerRequests(){
                     select : {
                         title : true,
                         content : true,
-                        timeneeded : true
+                        timeneeded : true,
+                        acceptedUsers : true
                     }
                 },
                 user : {
@@ -35,7 +36,7 @@ export async function skizzerRequests(){
                         name : true,
                         userImage : true
                     }
-                }
+                },
             }
         })
         if(requests){

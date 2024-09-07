@@ -52,10 +52,8 @@ export default function VideoPlatform({
   const [receivingPC, setReceivingPC] = useState<RTCPeerConnection | null>(
     null,
   );
-  const [sendingscreenSharePC, setSendingScreenSharePC] =
-    useState<RTCPeerConnection | null>(null);
-  const [remoteScreenSharePC, setRemoteScreenSharePC] =
-    useState<RTCPeerConnection | null>(null);
+  const [sendingscreenSharePC, setSendingScreenSharePC] =useState<RTCPeerConnection | null>(null);
+  const [remoteScreenSharePC, setRemoteScreenSharePC] =useState<RTCPeerConnection | null>(null);
 
   const [isScreenSharing, setIsScreenSharing] = useState(false);
   const [permissionToChat, setPermissionToChat] = useState<boolean>(false);
@@ -64,19 +62,15 @@ export default function VideoPlatform({
   const [isChatBarVisible, setIsChatBarVisible] = useState(false);
   //my screenShare Tracks
   const [screenTrackVideo, setScreenTrackVideo] = useState<
-    MediaStreamTrack | null | undefined
-  >(null);
+  MediaStreamTrack | null | undefined>(null);
   const [screenTrackAudio, setScreenTrackAudio] = useState<
-    MediaStreamTrack | null | undefined
-  >(null);
+  MediaStreamTrack | null | undefined>(null);
   const [remoteUserTracks, setremoteUserTracks] = useState<
     //remote User Tracks
-    MediaStreamTrack | null | undefined
-  >(null);
+    MediaStreamTrack | null | undefined>(null);
   const [remotescreenUserTracks, setremotescreenUserTracks] = useState<
     //remote User Screen Tracks
-    MediaStreamTrack | null | undefined
-  >(null);
+    MediaStreamTrack | null | undefined>(null);
   const [isAudioMuted, setIsAudioMuted] = useState(false);
   const [isVideoMuted, setIsVideoMuted] = useState(false);
   const [remoteMediaStream, setRemoteMediaStream] =
@@ -156,12 +150,13 @@ export default function VideoPlatform({
         const pc = new RTCPeerConnection();
         setReceivingPC(pc);
         const stream = new MediaStream();
+        console.log("stream: ", stream);
 
         // Attach stream to video element if reference exists
         console.log("remoteVideoRef.current: ", remoteVideoRef.current);
         if (remoteVideoRef.current) {
           remoteVideoRef.current.srcObject = stream;
-          console.log("remoteVideoRef.current: ", remoteVideoRef.current);
+          console.log("remoteVideoRef.current: ", remoteVideoRef.current.srcObject);
         }
 
         // Store the remote media stream in the state
@@ -170,7 +165,7 @@ export default function VideoPlatform({
         // Handle incoming tracks
         pc.ontrack = (e) => {
           const { track, streams } = e;
-          // console.log("Track received:", track.kind, track.label);
+          console.log("Track received:", track.kind, track.label);
 
           // Handle screen-sharing track
           // if (
@@ -186,7 +181,8 @@ export default function VideoPlatform({
           } else if (track.kind === "audio") {
             stream.addTrack(track); // Add track to the stream
           }
-
+          console.log("stream: ", stream);
+          console.log(remoteMediaStream);
           // Ensure the video plays once a track is added
           console.log("remoteVideoRef.current: ", remoteVideoRef.current);
           remoteVideoRef.current?.play().catch((error) => {
@@ -299,46 +295,84 @@ export default function VideoPlatform({
   }, [remoteUserJoined, pinnedVideo]);
 
 
+  // useEffect(() => {
+  //   if (remoteScreenStream && remoteScreenVideoRef.current) {
+  //     console.log("Attempting to play remote screen share");
+  //     remoteScreenVideoRef.current.srcObject = remoteScreenStream;
+  //     remoteScreenVideoRef.current.play()
+  //       .then(() => console.log("Remote screen share playing successfully"))
+  //       .catch(error => {
+  //         console.error("Error playing remote screen:", error);
+  //         // Attempt to play without user interaction
+  //         if(remoteScreenVideoRef.current){
+  //           remoteScreenVideoRef.current.muted = true;
+  //           remoteScreenVideoRef.current.play()
+  //             .then(() => console.log("Remote screen share playing successfully (muted)"))
+  //             .catch(err => console.error("Error playing muted remote screen:", err));            
+  //         }
+  //       });
+  //   }
+  // }, [remoteScreenStream]);
 
   
   useEffect(() => {
     if (socket) {
-          socket.on("screen-offer", async ({ roomId, sdp }: { roomId: string; sdp: RTCSessionDescriptionInit }) => {
-            try {
-              console.log("Received screen-offer");
-              const pc = new RTCPeerConnection();
-              setRemoteScreenSharePC(pc);
-              
-              pc.ontrack = (e: RTCTrackEvent) => {
-                console.log("Received remote screen track", e.track);
-                const stream = new MediaStream([e.track]);
-                console.log("stream: ", stream);
-                console.log("setRemoteScreenStream: ", remoteScreenStream);
-                setRemoteScreenStream(stream);
-                console.log("setRemoteScreenStream: ", remoteScreenStream);
-                setRemoteIsScreenSharing(true);
-              };
+      socket.on("screen-offer", async ({ roomId, sdp }: { roomId: string; sdp: RTCSessionDescriptionInit }) => {
+        try {
+          console.log("Received screen-offer");
+          const pc = new RTCPeerConnection();
+          setRemoteScreenSharePC(pc);
     
-              await pc.setRemoteDescription(new RTCSessionDescription(sdp));
-              const answer = await pc.createAnswer();
-              await pc.setLocalDescription(answer);
+          const stream = new MediaStream();
+          setRemoteScreenStream(stream);
     
-              socket.emit("screen-answer", { roomId: meetingId, sdp: answer });
+          pc.ontrack = (e) => {
+            const { track } = e;
+            console.log("Received remote screen track", track);
     
-              pc.onicecandidate = (event: RTCPeerConnectionIceEvent) => {
-                if (event.candidate) {
-                  socket.emit("screen-ice-candidate", {
-                    roomId: meetingId,
-                    candidate: event.candidate,
-                    type: "receiver",
-                  });
-                }
-              };
-            } catch (error) {
-              console.error("Error handling screen offer:", error);
+            if (track.kind === "video" || track.kind === "audio") {
+              stream.addTrack(track);
+              console.log(`Added ${track.kind} track to screen sharing stream`);
             }
-          });
-        
+    
+            setRemoteScreenStream(stream);
+            setRemoteIsScreenSharing(true);
+            
+            console.log("setRemoteScreenStream: ", remoteScreenStream);
+            console.log("setRemoteIsScreenSharing: ", remoteIsScreenSharing);
+            console.log("remoteScreenVideoRef.current: ", remoteScreenVideoRef.current);
+            
+            
+            if (remoteScreenVideoRef.current) {
+              console.log("remoteScreenVideoRef.current: ", remoteScreenVideoRef.current);
+              console.log("stream: ", stream);
+              remoteScreenVideoRef.current.srcObject = stream;
+              remoteScreenVideoRef.current.play().catch((error) => {
+                console.error("Error playing screen sharing video:", error);
+              });
+            }
+          };
+    
+          pc.onicecandidate = (e: RTCPeerConnectionIceEvent) => {
+            if (e.candidate) {
+              socket.emit("screen-ice-candidate", {
+                roomId,
+                candidate: e.candidate,
+                type: "receiver",
+              });
+            }
+          };
+    
+          await pc.setRemoteDescription(sdp);
+          const answer = await pc.createAnswer();
+          await pc.setLocalDescription(answer);
+          socket.emit("screen-answer", { roomId, sdp: answer });
+          
+        } catch (error) {
+          console.error("Error handling screen offer:", error);
+        }
+      });
+              
 
       socket.on("screen-answer", async ({ roomId , sdp }) => {
         try {
@@ -401,24 +435,6 @@ export default function VideoPlatform({
     remoteIsScreenSharing
   ]);
 
-  useEffect(() => {
-    if (remoteScreenStream && remoteScreenVideoRef.current) {
-      console.log("Attempting to play remote screen share");
-      remoteScreenVideoRef.current.srcObject = remoteScreenStream;
-      remoteScreenVideoRef.current.play()
-        .then(() => console.log("Remote screen share playing successfully"))
-        .catch(error => {
-          console.error("Error playing remote screen:", error);
-          // Attempt to play without user interaction
-          if(remoteScreenVideoRef.current){
-            remoteScreenVideoRef.current.muted = true;
-            remoteScreenVideoRef.current.play()
-              .then(() => console.log("Remote screen share playing successfully (muted)"))
-              .catch(err => console.error("Error playing muted remote screen:", err));            
-          }
-        });
-    }
-  }, [remoteScreenStream]);
   
   useEffect(() => {
     console.log("remoteIsScreenSharing:", remoteIsScreenSharing);
@@ -483,11 +499,11 @@ export default function VideoPlatform({
         // Add the screen track to the new peer connection
         if(screenTrackVideo){
           console.log("adding Vide0 Track");
-          screenPC.addTrack(screenTrackVideo, stream);
+          screenPC.addTrack(screenTrackVideo);
         }
         if(screenTrackAudio){
           console.log("adding Audi0 Track");
-          screenPC.addTrack(screenTrackAudio, stream);
+          screenPC.addTrack(screenTrackAudio);
         }
         // Set up ICE candidate handling for the screen share PC
 
@@ -621,7 +637,7 @@ export default function VideoPlatform({
     title: string,
   ) => {
     if(title == "Remote Screen Share"){
-      console.log("reference of ",title , reference);
+      console.log("reference of ",title , reference?.current?.srcObject);
     }
     return (
       <div

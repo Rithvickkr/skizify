@@ -32,7 +32,7 @@ export default async function AcceptedBy({ gig }: { gig: GigsInterface }) {
             </Button>
           </div>
         </CredenzaTrigger>
-        <CredenzaContent className="border border-black dark:border-white">
+        <CredenzaContent className="border border-black dark:border-neutral-500 ">
           <CredenzaHeader>
             <CredenzaTitle>
               <div className="font-display text-2xl font-bold md:text-4xl">
@@ -40,7 +40,7 @@ export default async function AcceptedBy({ gig }: { gig: GigsInterface }) {
               </div>
             </CredenzaTitle>
             <CredenzaDescription>
-              <div className="text-lg text-gray-400">
+              <div className="text-lg bg-gradient-to-r from-neutral-800 to-neutral-300 bg-clip-text">
                 Request accepted by Skizzers
               </div>
             </CredenzaDescription>

@@ -43,7 +43,7 @@ export function AppbarClient() {
         altname={name}
         fn={changeRoles}
       >
-        <div className="cursor-pointer rounded-full p-3 hover:bg-neutral-100 dark:bg-black hover:dark:bg-[#212125] dark:hover:bg-opacity-75">
+        <div className="cursor-pointer rounded-full p-2 hover:bg-neutral-100 dark:bg-black hover:dark:bg-[#212125] dark:hover:bg-opacity-75">
           <Bell className="size-5 md:size-6" strokeWidth={1.8} />
         </div>
         <WarningPage />

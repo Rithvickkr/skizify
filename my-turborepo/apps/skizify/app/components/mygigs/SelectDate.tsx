@@ -206,7 +206,7 @@ export function SelectDATE({
           <div className="mt-2 flex items-center gap-4 mb-2">
             <Button
               variant="outline"
-              className="h-auto w-full flex-col items-start bg-transparent hover:bg-[#f4f4f5] hover:dark:bg-transparent"
+              className="h-auto w-full flex-col dark:border-neutral-500 items-start bg-transparent hover:bg-[#f4f4f5] hover:dark:bg-transparent"
             >
               <span className="text-[0.65rem] font-semibold uppercase">
                 Start date
@@ -216,7 +216,7 @@ export function SelectDATE({
 
             <Button
               variant="outline"
-              className="h-auto w-full flex-col items-start bg-transparent hover:bg-[#f4f4f5] hover:dark:bg-transparent"
+              className="h-auto w-full flex-col dark:border-neutral-500 items-start bg-transparent hover:bg-[#f4f4f5] hover:dark:bg-transparent"
             >
               <span className="text-[0.65rem] font-semibold uppercase">
                 End date
@@ -229,14 +229,14 @@ export function SelectDATE({
       <div>
         <Label>Select a date</Label>
         <Select onValueChange={handleValueChange}>
-          <SelectTrigger className="mt-2 hover:shadow-md">
+          <SelectTrigger className="mt-2 hover:shadow-md border dark:border-neutral-500">
             <SelectValue placeholder="Select a date" />
           </SelectTrigger>
-          <SelectContent className="border bg-white dark:bg-white dark:text-black">
+          <SelectContent className="border bg-white dark:border-neutral-500 dark:bg-black dark:text-black p-1">
             {daysArray.map((date) => (
               <SelectItem
                 key={date.toISOString()}
-                className="cursor-pointer hover:bg-neutral-300 rounded bg-neutral-100 mb-1 hover:shadow-md"
+                className="cursor-pointer text-black   hover:bg-neutral-200  hover:dark:bg-v0dark opacity-80 hover:opacity-100 rounded bg-neutral-100 dark:bg-black dark:text-white mb-1 hover:shadow-md"
                 value={`${date.toISOString().split("T")[0]}`}
               >
                 {`${Month(date)} ${date.getDate()}, ${date.getFullYear()}`}
@@ -250,9 +250,9 @@ export function SelectDATE({
           Propose Budget {`(in $)`}
         </Label>
 
-        <Button className="h-9 rounded border dark:border-0 dark:border-black bg-transparent p-0 text-black hover:bg-transparent hover:shadow hover:ring-black dark:bg-transparent dark:text-white dark:hover:text-black ">
+        <Button className="h-9 rounded border  dark:border-neutral-500 bg-transparent p-0 text-black hover:bg-transparent hover:shadow hover:ring-black dark:bg-transparent dark:text-white dark:hover:text-black ">
           <input
-            className="h-full w-full rounded border-0 text-sm text-black placeholder-black placeholder:text-sm placeholder:font-light     focus:border-transparent focus:outline-none focus:ring-0 dark:border dark:border-white dark:bg-transparent dark:text-white placeholder:dark:text-white"
+            className="h-full w-full rounded border-0 text-sm text-black placeholder-black placeholder:text-sm placeholder:font-light     focus:border-transparent focus:outline-none focus:ring-0 dark:border dark:border-neutral-500 dark:bg-transparent dark:text-white placeholder:dark:text-white"
             type="text"
             placeholder="Budget"
             required

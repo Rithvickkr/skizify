@@ -37,7 +37,7 @@ export default function SkizzerselectCard({
   //aslo I will put a limit if the user selected someone , then there that gig will not be displayed on the main screen
   return (
     <div>
-      <div className="flex flex-col space-y-4 rounded border border-white p-2">
+      <div className="flex flex-col space-y-4 rounded border border-neutral-500  p-2">
         {SKizzersInfo.map((skizzer: any) => {
           return (
             <div
@@ -122,31 +122,31 @@ export default function SkizzerselectCard({
                 });
 
                 console.log("Gig confirmed successfully");
-                toast({
-                  title: "Gig confirmed successfully",
-                  description: `You have successfully confirmed the gig with ${info.Skizzer.name} 
-                  on ${Month(info.finalDateTime)} ${info.finalDateTime.getDate()} at ${formatTime(info.finalDateTime)}`,
-                })
+                // toast({
+                //   title: "Gig confirmed successfully",
+                //   description: `You have successfully confirmed the gig with ${info.Skizzer.name} 
+                //   on ${Month(info.finalDateTime)} ${info.finalDateTime.getDate()} at ${formatTime(info.finalDateTime)}`,
+                // })
                 
                 //This will send the email to the Skizzer
               } else {
-                toast({
-                  className: "bg-red-600",
-                  title: "Uh oh! Something went wrong.",
-                  description: "There was a problem with your request.",
-                  action: <ToastAction altText="Try again">Try again</ToastAction>,
+                // toast({
+                //   className: "bg-red-600",
+                //   title: "Uh oh! Something went wrong.",
+                //   description: "There was a problem with your request.",
+                //   action: <ToastAction altText="Try again">Try again</ToastAction>,
                   
-                })
+                // })
               }
             } catch (error) {
               console.error(error);
 
-              toast({
-                className: "bg-red-600",
-                title: "Uh oh! Something went wrong.",
-                description: "There was a problem with your request.",
-                action: <ToastAction altText="Try again">Try again</ToastAction>,
-              })
+              // toast({
+              //   className: "bg-red-600",
+              //   title: "Uh oh! Something went wrong.",
+              //   description: "There was a problem with your request.",
+              //   action: <ToastAction altText="Try again">Try again</ToastAction>,
+              // })
             }
           }}
         >

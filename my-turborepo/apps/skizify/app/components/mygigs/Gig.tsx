@@ -1,4 +1,4 @@
-import { BentoGrid, BentoGridItem ,EnhancedLuxuryMeetingCard2 } from "./Bentogrid";
+import { EnhancedLuxuryMeetingCard2 } from "./Bentogrid";
 import prisma from "@repo/db/client";
 
 //This will fetch Data from DB

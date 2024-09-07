@@ -196,12 +196,12 @@ export default function Postform() {
               <div
                 key={index}
                 className={`flex items-center ${
-                  index <= currentStep ? "text-white" : "text-gray-400"
+                  index <= currentStep ? "text-white" : "text-neutral-400"
                 }`}
               >
                 <div
                   className={`mr-2 flex size-10 items-center justify-center rounded-md ${
-                    index <= currentStep ? "bg-neutral-500" : "bg-gray-300"
+                    index <= currentStep ? "bg-neutral-500" : "bg-neutral-300"
                   }`}
                 >
                   {index + 1}
@@ -268,7 +268,7 @@ export default function Postform() {
                                     <SelectTrigger>
                                       <SelectValue placeholder="Select a category" />
                                     </SelectTrigger>
-                                    <SelectContent className="bg-white pr-2 dark:border-0 dark:bg-black">
+                                    <SelectContent className="bg-white p-1 pr-2 dark:border-0 dark:bg-black">
                                       <SelectItem
                                         className="m-1 rounded-md border bg-neutral-300 text-black opacity-80 hover:opacity-100 hover:shadow-sm dark:border-neutral-700 dark:bg-black dark:text-white dark:opacity-60 hover:dark:opacity-90"
                                         value={"Entertainment"}
@@ -332,7 +332,7 @@ export default function Postform() {
                                         </div>
                                       </Button>
                                     </PopoverTrigger>
-                                    <PopoverContent className="space-y-4 border border-[#d1d5d8] bg-[#484848] p-4 transition duration-200 hover:shadow-xl dark:border-gray-800 dark:bg-black dark:shadow-none">
+                                    <PopoverContent className="space-y-4 border border-[#d1d5d8] bg-[#484848] p-4 transition duration-200 hover:shadow-xl dark:border-neutral-800 dark:bg-black dark:shadow-none">
                                       <div className="grid grid-cols-3 gap-2">
                                         {[30, 45, 60].map((time) => (
                                           <Button
@@ -340,8 +340,8 @@ export default function Postform() {
                                             variant="default"
                                             className={`border-[#d1d5d8] px-2 py-1 text-xs ${
                                               selectedTime === time
-                                                ? "bg-black text-white dark:bg-white dark:text-black"
-                                                : "bg-white text-black dark:bg-gray-800 dark:text-white"
+                                                ? "bg-black text-white dark:bg-white dark:text-black border-neutral-500 hover:bg-black hover:text-white hover:border hover:border-neutral-500"
+                                                : "bg-white text-black dark:bg-neutral-800 dark:text-white hover:bg-black opacity-80 hover:opacity-100 hover:text-white hover:border hover:border-neutral-500"
                                             }`}
                                             onClick={() => {
                                               setTimeneed(time);
