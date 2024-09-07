@@ -3,11 +3,6 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Providers } from "./providers";
 import { Toaster } from "../@/components/ui/toaster";
-import Footer from "./components/footer/Footer";
-import { LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-
-
 
 // import {NextUIProvider} from "@nextui-org/react";
 
@@ -26,20 +21,17 @@ export default function RootLayout({
   return (
     <html lang="en" className="no-scrollbar" suppressHydrationWarning>
       <body className={inter.className} suppressHydrationWarning={true}>
-      <Providers >
-       
-        {/* <NextUIProvider> */}
+        <Providers>
+          {/* <NextUIProvider> */}
           {children}
           <Toaster />
-        {/* </NextUIProvider> */}
-        
-        
-      </Providers>
+          {/* </NextUIProvider> */}
+        </Providers>
       </body>
     </html>
   );
 }
 //(Removed it)
-//suppressHydrationWarning When there is a Mismatch of components 
+//suppressHydrationWarning When there is a Mismatch of components
 // like Component is not adaptable to Dark mode then HydrationWarning will be there
-//Added Recoil Root 
+//Added Recoil Root
