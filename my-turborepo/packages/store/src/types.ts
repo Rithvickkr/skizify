@@ -81,9 +81,22 @@ export interface GigsInterface {
         title: string;
         content: string;
         timeneeded : number;
+        acceptedUsers: AcceptedUser[];
     };
     user: {
         name : string | null,
         userImage : string | null
     };
     }
+
+
+    interface AcceptedUser {
+      id: string;
+      gigId: string;
+      skizzerId: string;
+      UserId: string;
+      status: string;
+      budget: number;
+      finalDateTime: Date;
+    }
+    

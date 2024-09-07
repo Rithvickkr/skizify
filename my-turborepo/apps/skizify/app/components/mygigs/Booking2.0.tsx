@@ -1,20 +1,17 @@
+import { Datetimepackage, GigsInterface } from "@repo/store/types";
+import { Avatar } from "@repo/ui/avatar";
+import { Clock7 } from "lucide-react";
+import { ScrollArea, ScrollBar } from "../../../@/components/ui/scroll-area";
+import { Button as ButtonE } from "../ui/button";
 import {
   Credenza,
   CredenzaBody,
-  CredenzaClose,
   CredenzaContent,
   CredenzaDescription,
-  CredenzaFooter,
   CredenzaHeader,
   CredenzaTitle,
-  CredenzaTrigger,
+  CredenzaTrigger
 } from "../ui/Credenza";
-import { Clock7 } from "lucide-react";
-import { GigsInterface } from "@repo/store/types";
-import { Datetimepackage } from "@repo/store/types";
-import { Avatar } from "@repo/ui/avatar";
-import { ScrollArea, ScrollBar } from "../../../@/components/ui/scroll-area";
-import { Button as ButtonE } from "../ui/button";
 import { SelectDATE } from "./SelectDate";
 export function BookButton2({
   gig,
@@ -30,7 +27,7 @@ export function BookButton2({
       <Credenza>
         <CredenzaTrigger asChild>
           <ButtonE
-            className="col-span-1 h-9 min-w-full bg-black text-white dark:border dark:border-white dark:bg-black xl:h-10"
+            className="col-span-1  h-9 min-w-28 bg-black text-white dark:border dark:border-white dark:bg-black xl:h-10"
             variant="gooeyLeft"
           >
             Book
@@ -66,7 +63,7 @@ export function BookButton2({
                 <div className="mb-1 ml-2 h-7 justify-items-center font-display text-2xl font-semibold">
                   {gig.title || "Title"}
                 </div>
-                <ScrollArea className="w-full truncate text-wrap rounded-md border p-2 px-2 text-sm">
+                <ScrollArea className=" w-full truncate text-wrap rounded-md border dark:border-neutral-500 p-2 px-2 text-sm">
                   {gig.content}
                   <ScrollBar orientation="vertical" />
                 </ScrollArea>
