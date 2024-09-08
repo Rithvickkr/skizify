@@ -16,6 +16,6 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts"
-  ],
+, "../../packages/ui/src/Tooltip.tsx"  ],
   "exclude": ["node_modules"]
 }

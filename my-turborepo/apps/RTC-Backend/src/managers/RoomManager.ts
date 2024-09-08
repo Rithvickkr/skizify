@@ -53,35 +53,40 @@ export class RoomManager {
   //method for handling screen share start
   onScreenOffer(roomId: string, sdp: any, UserSocketId: string) {
     const room = this.rooms.get(roomId);
-    if (room) {
-      const User1 = room?.User1;
-      const User2 = room?.User2;
-      const ReceivingUser = UserSocketId === User1?.socket.id ? User2 : User1;
-      ReceivingUser.socket.emit("screen-offer", { roomId , sdp });
-    }
+    const User1 = room?.User1;
+    const User2 = room?.User2;
+    const ReceivingUser = UserSocketId === User1?.socket.id ? User2 : User1;
+    ReceivingUser?.socket.emit("screen-offer", { roomId, sdp });
   }
 
   onScreenAnswer(roomId: string, sdp: any, UserSocketId: string) {
     const room = this.rooms.get(roomId);
-    if (room) {
-      const User1 = room?.User1;
-      const User2 = room?.User2;
-      const ReceivingUser = UserSocketId === User1?.socket.id ? User2 : User1;
-      ReceivingUser.socket.emit("screen-answer", { roomId , sdp });
-    }
+    const User1 = room?.User1;
+    const User2 = room?.User2;
+    const ReceivingUser = UserSocketId === User1?.socket.id ? User2 : User1;
+    ReceivingUser?.socket.emit("screen-answer", { roomId, sdp });
   }
 
-  onScreenIceCandidate(roomId: string, candidate: any, UserSocketId: string , type: "sender" | "receiver"
+  onScreenIceCandidate(
+    roomId: string,
+    candidate: any,
+    UserSocketId: string,
+    type: "sender" | "receiver"
   ) {
     const room = this.rooms.get(roomId);
-    if (room) {
-      const User1 = room?.User1;
-      const User2 = room?.User2;
-      const ReceivingUser = UserSocketId === User1?.socket.id ? User2 : User1;
-      ReceivingUser.socket.emit("screen-ice-candidate", { candidate , type });
-    }
+    const User1 = room?.User1;
+    const User2 = room?.User2;
+    const ReceivingUser = UserSocketId === User1?.socket.id ? User2 : User1;
+    ReceivingUser?.socket.emit("screen-ice-candidate", { candidate, type });
   }
 
+  stopScreenShare(roomId: string, UserSocketId: string) {
+    const room = this.rooms.get(roomId);
+    const User1 = room?.User1;
+    const User2 = room?.User2;
+    const ReceivingUser = UserSocketId === User1?.socket.id ? User2 : User1;
+    ReceivingUser?.socket.emit("stop-screen-share", { roomId });
+  }
   // getSession(session:ClientSessionInterface){
   //   const room = this.rooms.get(session);
   // }

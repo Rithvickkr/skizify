@@ -28,7 +28,8 @@ export async function skizzerRequests(){
                         title : true,
                         content : true,
                         timeneeded : true,
-                        acceptedUsers : true
+                        acceptedUsers : true,
+                        authorId : true
                     }
                 },
                 user : {

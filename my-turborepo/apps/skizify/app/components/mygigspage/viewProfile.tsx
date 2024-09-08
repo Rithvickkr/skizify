@@ -1,12 +1,13 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { Button as ButtonE } from "../ui/button";
-export default  function ViewProfile({id}: {id : string}) {
+import { cn } from "../../utils/cn";
+export default  function ViewProfile({id , classname}: {id : string , classname? : string}) {
     const router = useRouter();
   return (
     <div>
     <ButtonE
-      className="group relative overflow-hidden bg-neutral-900 text-white shadow-md transition-all duration-500 ease-in-out hover:bg-neutral-800 hover:shadow-lg dark:bg-neutral-100 dark:text-neutral-900 dark:hover:bg-neutral-200"
+      className={cn("group relative overflow-hidden bg-neutral-900 text-white shadow-md transition-all duration-500 ease-in-out hover:bg-neutral-800 hover:shadow-lg dark:bg-neutral-100 dark:text-neutral-900 dark:hover:bg-neutral-200",classname)}
       variant={"gooeyLeft"}
       onClick={() => {      
         router.push(`/About/${id}`);

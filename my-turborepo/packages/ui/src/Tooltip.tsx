@@ -3,8 +3,8 @@ import {
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "../../../@/components/ui/tooltip";
-import { cn } from "../../utils/cn";
+} from "../../../apps/skizify/@/components/ui/tooltip";
+import { cn } from "../../../apps/skizify/app/utils/cn";
 export function ToolTip({
   name,
   children,

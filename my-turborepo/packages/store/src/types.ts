@@ -82,6 +82,7 @@ export interface GigsInterface {
         content: string;
         timeneeded : number;
         acceptedUsers: AcceptedUser[];
+        authorId: string;
     };
     user: {
         name : string | null,

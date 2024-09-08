@@ -5,7 +5,7 @@ import { GigsInterface } from "@repo/store/types";
 import { Month, formatTime } from "../../lib/actions/ConvertgigInfo";
 import { useSession } from "next-auth/react";
 import { deleteGig } from "../../lib/actions/deletegig";
-import { ToolTip } from "../ui/Tooltip";
+import { ToolTip } from "@repo/ui/tooltip";
 import { Button } from "../ui/button";
 
 export default function EditDeleteCard({ gig }: { gig: GigsInterface }) {

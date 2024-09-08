@@ -26,7 +26,8 @@ import {
   formatTime,
 } from "../../lib/actions/ConvertgigInfo";
 import { ScrollArea, ScrollBar } from "../../../@/components/ui/scroll-area";
-import { ToolTip } from "../ui/Tooltip";
+import ViewProfile from "../mygigspage/viewProfile";
+import { ToolTip } from "@repo/ui/tooltip";
 
 // export interface GiguserContent {
 //   id: string,
@@ -64,7 +65,9 @@ export default function EnhancedGigCard({
         : "bg-gradient-to-r from-red-300 via-rose-200 to-red-500 dark:from-red-500 dark:via-rose-500 dark:to-red-700";
   const sessionTime = SessionTime(gig.gig.timeneeded);
   const finalTime = formatTime(gig.finalDateTime);
-  const finalDate = Month(gig.finalDateTime);
+  const finalMonth = Month(gig.finalDateTime);
+  
+
   //   <Avatar
   //   name={gig.user.name || "User"}
   //   photo={gig.user.userImage}
@@ -74,7 +77,7 @@ export default function EnhancedGigCard({
   return (
     <Card className="group w-full overflow-hidden rounded-xl border border-neutral-200 bg-white text-neutral-800 shadow-md backdrop-blur-md transition-all duration-300 ease-in-out hover:shadow-lg dark:border-neutral-800/50 dark:bg-neutral-900/60 dark:text-neutral-200 dark:shadow-lg dark:hover:shadow-xl">
       <div className="absolute inset-0 bg-gradient-to-r from-neutral-200/60 via-transparent to-neutral-300/60 opacity-0 transition-opacity duration-500 ease-in-out group-hover:opacity-100 dark:from-neutral-800/10 dark:to-neutral-700/10" />
-      <CardHeader className="relative p-6">
+      <CardHeader className="relative p-3">
         <div className="flex items-center space-x-4">
           <Avatar
             name={gig.user.name || "User"}
@@ -96,58 +99,54 @@ export default function EnhancedGigCard({
           </Badge>
         </div>
       </CardHeader>
-      <CardContent className="relative space-y-4 p-6">
+      <Separator className="my-2 mx-4 bg-neutral-200 dark:bg-neutral-800" />
+      <CardContent className="relative space-y-4 p-3">
         <div className="relative overflow-hidden rounded-lg bg-gradient-to-br from-white/80 to-neutral-100/40 p-6 shadow-md backdrop-blur-sm transition-all duration-500 ease-in-out group-hover:shadow-lg dark:from-neutral-900/80 dark:to-neutral-800/40">
           <div className="absolute -right-4 -top-4 h-16 w-16 rounded-full bg-neutral-200/50 transition-all duration-500 ease-in-out group-hover:scale-150 group-hover:bg-neutral-300/50 dark:bg-neutral-700/50 dark:group-hover:bg-neutral-600/50" />
           <h4 className="mb-2 truncate text-xl font-semibold text-neutral-900 dark:text-neutral-100">
             {gig.gig.title}
           </h4>
           <div className="text-sm leading-relaxed text-neutral-600 transition-all duration-500 ease-in-out dark:text-neutral-400">
-            <ScrollArea className="h-12 w-full">
+            <ScrollArea className="h-12 w-full border-0 shadow-none">
               <p className="whitespace-normal break-words pr-4">
                 {gig.gig.content}
               </p>
               <ScrollBar orientation="vertical" />
             </ScrollArea>
           </div>
-        </div>{" "}
-        <Separator className="my-4 bg-neutral-200 dark:bg-neutral-800" />
-        <div className="grid grid-cols-2 gap-4 text-sm">
-          <div className="flex items-center space-x-2 text-neutral-500 transition-all duration-300 group-hover:text-neutral-700 dark:text-neutral-400 dark:group-hover:text-neutral-200">
+        </div>
+        <Separator className="my-2 bg-neutral-200 dark:bg-neutral-800" />
+        <div className="grid grid-cols-2 gap-1 text-sm font-medium p-1">
+          <div className="flex cursor-pointer items-center hover:bg-neutral-200 p-2 rounded-md dark:hover:bg-neutral-800  space-x-2 text-neutral-500 transition-all duration-300 group-hover:text-neutral-700 dark:text-neutral-400 dark:group-hover:text-neutral-200">
             <CalendarRange className="h-4 w-4 text-neutral-400 transition-colors duration-300 dark:text-neutral-500" />
             <ToolTip name="Meeting Date">
-            <span>{finalDate}</span>
+              <span>{finalMonth}{" "}{gig.finalDateTime.getDate()}</span>
             </ToolTip>
           </div>
-          <div className="flex items-center space-x-2 text-neutral-500 transition-all duration-300 group-hover:text-neutral-700 dark:text-neutral-400 dark:group-hover:text-neutral-200">
+          <div className="flex cursor-pointer items-center hover:bg-neutral-200 p-2 rounded-md dark:hover:bg-neutral-800  space-x-2 text-neutral-500 transition-all duration-300 group-hover:text-neutral-700 dark:text-neutral-400 dark:group-hover:text-neutral-200">
             <ClockIcon className="h-4 w-4 text-neutral-400 transition-colors duration-300 dark:text-neutral-500" />
             <ToolTip name="Meeting Time">
-            <span>{finalTime}</span>
+              <span>{finalTime}</span>
             </ToolTip>
           </div>
-          <div className="flex items-center space-x-2 text-neutral-500 transition-all duration-300 group-hover:text-neutral-700 dark:text-neutral-400 dark:group-hover:text-neutral-200">
+          <div className="flex cursor-pointer items-center hover:bg-neutral-200 p-2 rounded-md dark:hover:bg-neutral-800  space-x-2 text-neutral-500 transition-all duration-300 group-hover:text-neutral-700 dark:text-neutral-400 dark:group-hover:text-neutral-200">
             <DollarSignIcon className="h-4 w-4 text-neutral-400 transition-colors duration-300 dark:text-neutral-500" />
             <ToolTip name="Buget">
-            <span>{gig.budget}</span>
+              <span>{gig.budget}</span>
             </ToolTip>
           </div>
-          <div className="flex items-center space-x-2 text-neutral-500 transition-all duration-300 group-hover:text-neutral-700 dark:text-neutral-400 dark:group-hover:text-neutral-200">
+          <div className="flex cursor-pointer items-center hover:bg-neutral-200 p-2 rounded-md dark:hover:bg-neutral-800  space-x-2 text-neutral-500 transition-all duration-300 group-hover:text-neutral-700 dark:text-neutral-400 dark:group-hover:text-neutral-200">
             <TagIcon className="h-4 w-4 text-neutral-400 transition-colors duration-300 dark:text-neutral-500" />
             <ToolTip name="Session Duration">
-            <span>
-              {sessionTime == "1 Hr" ? "60" : sessionTime.slice(0, 2)} minutes
-            </span>
+              <span>
+                {sessionTime == "1 Hr" ? "60" : sessionTime.slice(0, 2)} minutes
+              </span>
             </ToolTip>
           </div>
         </div>
       </CardContent>
       <div className="flex items-center justify-between border-t border-neutral-200 p-6 dark:border-neutral-800/50">
-          <div className="flex items-center space-x-2 text-sm text-neutral-500 dark:text-neutral-400">
-            <UserIcon className="h-4 w-4 text-neutral-400 dark:text-neutral-500" />
-        <ToolTip name="No. of users">
-            <span>{gig.gig.acceptedUsers.length}</span>
-        </ToolTip>
-          </div>
+          <ViewProfile id={gig.gig.authorId} classname="rounded-3xl min-w-36 group-hover:scale-105 dark:opacity-80 hover:dark:opacity-100" />
         <Button
           variant={"gooeyLeft"}
           className="flex items-center space-x-2 rounded-full border border-neutral-500 bg-v0dark px-4 py-2 text-sm text-white shadow-md transition-all duration-300 hover:shadow-lg group-hover:scale-105 dark:border-0 dark:bg-neutral-800/90 dark:text-neutral-100 dark:shadow-md dark:hover:bg-neutral-700 dark:hover:shadow-lg"

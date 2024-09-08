@@ -156,6 +156,9 @@ export class UserManager {
         );
       }
     );
+    UserSocket.on("stop-screen-share", ({ roomId }: { roomId: string }) => {
+      this.roomManager.stopScreenShare(roomId, UserSocket.id);
+    });
 
     // UserSocket.on("onsession", ( session : ClientSessionInterface ) => {
     //   this.roomManager.getSession(session);

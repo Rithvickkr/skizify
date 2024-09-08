@@ -12,6 +12,7 @@ import {
 import { UserRole } from "@prisma/client";
 import { AppbarProps } from "@repo/store/types";
 import SwitchTheme from "../../../apps/skizify/app/components/SwitchTheme";
+import { ToolTip } from "./Tooltip";
 
 export const Appbar = ({ user, onSignout, onSignin, fn, children }: AppbarProps) => {
   const name = user?.name || "User";
@@ -35,15 +36,13 @@ export const Appbar = ({ user, onSignout, onSignin, fn, children }: AppbarProps)
               classname="ring-2 ring-black dark:ring-slate-50 "
             />
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="z-30 mr-3 mt-2 w-60 bg-white p-3 shadow-2xl dark:border-neutral-700 dark:bg-black">
-            {/* <DropdownMenuLabel>My Account</DropdownMenuLabel> */}
-            <DropdownMenuSeparator />
-            <DropdownMenuItem className="x focus:outline-0">
+          <DropdownMenuContent className="z-30 mr-3 w-60 bg-white p-3 pt-1 shadow-2xl dark:border-neutral-700 dark:bg-black">
+            <DropdownMenuItem className="focus:outline-0 p-2 pl-1">
               <div className="flex flex-col dark:text-slate-50">
-                <div className="my-1 break-words break-all font-semibold">
+                <div className="my-1 break-words break-all font-semibold text-base ">
                   {user?.name}
                 </div>
-                <div className="truncate break-words break-all text-xs">
+                <div className="truncate break-words dark:text-neutral-300  break-all text-xs">
                   {user?.email}
                 </div>
               </div>

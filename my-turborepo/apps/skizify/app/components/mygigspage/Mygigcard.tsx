@@ -3,7 +3,7 @@ import { Avatar } from "@repo/ui/avatar";
 
 import { CalendarRange, Clock7Icon, EditIcon, TrashIcon } from "lucide-react";
 import { Card } from "../../../@/components/ui/card";
-import { ToolTip } from "../ui/Tooltip";
+import { ToolTip } from "@repo/ui/tooltip";
 
 // import { useRouter } from "next/navigation";
 import { GigsInterface } from "@repo/store/types";
