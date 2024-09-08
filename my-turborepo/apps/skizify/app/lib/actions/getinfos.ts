@@ -1,4 +1,4 @@
-
+"use server"
 import prisma from "@repo/db/client";
 export interface UserInfos {
     name: string ,

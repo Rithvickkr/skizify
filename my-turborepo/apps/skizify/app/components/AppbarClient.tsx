@@ -4,16 +4,16 @@ import { useSession } from "next-auth/react";
 import { Appbar } from "@repo/ui/appbar";
 import { setRole } from "../lib/actions/setRole";
 
-import { useRecoilState, RecoilState } from 'recoil';
-import { userRoleState } from '@repo/store';
-import { UserRole } from "@prisma/client";
+import { useRecoilState, RecoilState } from "recoil";
+import { userRoleState } from "@repo/store";
+
 import { Bell } from "lucide-react";
 import WarningPage from "./ui/WarningPage";
-
+import getInfos from "../lib/actions/getinfos";
 
 export function AppbarClient() {
   const session = useSession();
-  const [roly, setRoly] = useRecoilState(userRoleState);
+  // const [roly, setRoly] = useRecoilState(userRoleState);
   const name = session.data?.user?.name || "User";
   const handleSignOut = async () => {
     try {
@@ -25,14 +25,13 @@ export function AppbarClient() {
   };
 
   const changeRoles = async () => {
-    const role: UserRole = (await setRole()) ?? UserRole.USER;
-    setRoly( UserRole.SKIZZER.toString() );
-    console.log(role);
-    console.log(roly);//NOt wortking will see tomorrow
-
+    const role = await setRole();
+    // const info = await getInfos(session.data?.user?.id || "");
 
     window.location.reload(); // This will hard reload the page
-
+    // if (role === "SKIZZER" && info?.bio != "") {
+    //   window.location.href = "/profile";
+    // }
   };
   return (
     <div>
