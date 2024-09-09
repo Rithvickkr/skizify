@@ -126,7 +126,7 @@ export default function Footer() {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="not-prose space-y-2"
+            className="not-prose md:flex space-x-2 space-y-2"
           >
             <FormField
               control={form.control}
@@ -138,7 +138,7 @@ export default function Footer() {
                   </FormLabel>
                   <FormControl>
                     <Input
-                      className="my-2  md:w-96"
+                      className="my-2  md:max-w-screen-4xl "
                       placeholder="example@fjord.dev"
                       {...field}
                     />
@@ -152,7 +152,7 @@ export default function Footer() {
             />
             <Button
               variant="gooeyLeft"
-              className="group/btn relative bg-black dark:bg-white dark:text-black text-white dark:shadow-[0px_0px_1px_1px_var(--neutral-800)] md:h-10 md:px-4 md:py-2"
+              className="group/btn place-self-end   relative bg-black dark:bg-white dark:text-black text-white dark:shadow-[0px_0px_1px_1px_var(--neutral-800)] md:h-9 md:px-4 md:py-2"
               size={"sm"}
             >
               Submit

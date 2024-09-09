@@ -115,7 +115,7 @@ export function EnhancedLuxuryMeetingCard2({
               </h4>
               <div className="text-sm leading-relaxed text-neutral-600 transition-all duration-500 ease-in-out dark:text-neutral-400">
                 <ScrollArea className="h-12 w-full">
-                  <p className="whitespace-normal break-words pr-4">
+                  <p className="whitespace-normal leading-5 break-words pr-4">
                     {gig.content}
                   </p>
                   <ScrollBar orientation="vertical" />
