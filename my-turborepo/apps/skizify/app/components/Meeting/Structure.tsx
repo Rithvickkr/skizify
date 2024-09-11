@@ -678,6 +678,7 @@ export default function VideoPlatform({
     setPinnedVideo((prevPinned) => (prevPinned === index ? null : index));
   };
 
+
   useEffect(() => {
     const handleKeyDown = (event : any) => {
       // Example: Detect Ctrl + S (or Command + S on Mac)
