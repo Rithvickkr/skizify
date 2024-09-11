@@ -1,6 +1,6 @@
 "use client"
 import { atom } from 'recoil';
-import { UserRole } from "@prisma/client";
+import { UserRole } from "./types";
 
 export const userRoleState = atom({
     key: 'userRoleState', 
