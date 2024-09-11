@@ -4,9 +4,15 @@
     "**/.env.*local"
   ],
   "tasks": {
+    "prisma:generate": {
+      "outputs": [
+        "node_modules/.prisma/**"
+      ]
+    },
     "build": {
       "dependsOn": [
-        "^build"
+        "^build",
+        "^prisma:generate"  
       ],
       "outputs": [
         ".next/**",
