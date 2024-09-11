@@ -1,0 +1,16 @@
+{
+    "version": 2,
+    "env": {
+      "DATABASE_URL": "@database_url",
+      "JWT_SECRET": "@jwt_secret"
+    },
+    "build": {
+      "env": {
+        "DATABASE_URL": "@database_url"
+      },
+      "commands": {
+        "build": "npm run prisma:generate && npm run build"
+      }
+    }
+  }
+  
