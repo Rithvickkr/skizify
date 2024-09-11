@@ -2,7 +2,7 @@
 import prisma from "@repo/db/client";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth";
-import { GigStatus } from "@prisma/client";
+import { GigStatus } from "@repo/store/types";
 
 //details to Show tha past and Future meetings for calendar
 

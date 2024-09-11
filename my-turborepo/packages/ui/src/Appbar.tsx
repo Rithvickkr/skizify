@@ -9,7 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "../../../apps/skizify/@/components/ui/dropdown-menu";
 
-import { UserRole } from "@prisma/client";
+import { UserRole } from "@repo/store/types";
 import { AppbarProps } from "@repo/store/types";
 import SwitchTheme from "../../../apps/skizify/app/components/SwitchTheme";
 import { ToolTip } from "./Tooltip";

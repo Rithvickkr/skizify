@@ -2,7 +2,7 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "../../lib/auth";
 import { SidebarItem } from "./SidebarItem";
 import { JSX, SVGProps } from "react";
-import { UserRole } from "@prisma/client";
+import { UserRole } from "@repo/store/types";
 import { SquareCheckBig } from "lucide-react";
 export async function Sidebar() {
   const session = await getServerSession(authOptions);

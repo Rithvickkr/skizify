@@ -1,5 +1,4 @@
 import { skizzerRequests } from "../../lib/actions/skizzerRequests";
-import { GigStatus } from "@prisma/client";
 import EnhancedGigCards from "./SkizzzerRequestCard2";
 import { GiguserContent } from "@repo/store/types";
 

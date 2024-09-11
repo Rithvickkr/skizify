@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { useSession } from "next-auth/react";
-import { UserRole } from "@prisma/client";
+import { UserRole } from "@repo/store/types";
 import { useRouter } from "next/navigation";
 import { Button } from "../../@/components/ui/button";
 import { Input } from "../../@/components/ui/input";

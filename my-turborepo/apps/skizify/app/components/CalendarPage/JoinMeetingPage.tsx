@@ -19,7 +19,7 @@ import {
 
 import { SessionTime } from "../../lib/actions/ConvertgigInfo";
 import { meetingsInfo_interface } from "@repo/store/types";
-import { UserRole } from "@prisma/client";
+import { UserRole } from "@repo/store/types";
 import { useSession } from "next-auth/react";
 import { ScrollArea, ScrollBar } from "../../../@/components/ui/scroll-area";
 import { useRouter } from "next/navigation";

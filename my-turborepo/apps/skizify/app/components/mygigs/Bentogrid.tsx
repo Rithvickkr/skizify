@@ -17,7 +17,7 @@ import {
   SessionTime,
   formatTime,
 } from "../../lib/actions/ConvertgigInfo";
-import { GigStatus, UserRole } from "@prisma/client";
+import { GigStatus, UserRole } from "@repo/store/types";
 import { Datetimepackage } from "@repo/store/types";
 import { Badge } from "../../../@/components/ui/badge";
 

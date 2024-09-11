@@ -19,7 +19,7 @@ import {
   VideoIcon,
 } from "lucide-react";
 import { GiguserContent } from "@repo/store/types";
-import { GigStatus } from "@prisma/client";
+import { GigStatus } from "@repo/store/types";
 import {
   Month,
   SessionTime,

@@ -2,7 +2,7 @@ import { getServerSession } from "next-auth";
 import Example from "../../components/CalendarPage/Calendar";
 import { getSkizzercalendarMeetingsdetails, getUsercalendarMeetingsdetails } from "../../lib/actions/getcalendarMeetings";
 import { meetingsInfo_interface } from "@repo/store/types";
-import { GigStatus , UserRole } from "@prisma/client";
+import { GigStatus , UserRole } from "@repo/store/types";
 import { authOptions } from "../../lib/auth";
 
 export default async function Home(){

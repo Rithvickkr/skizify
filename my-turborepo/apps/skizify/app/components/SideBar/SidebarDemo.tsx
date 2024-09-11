@@ -1,5 +1,5 @@
 "use client";
-import { UserRole } from "@prisma/client";
+import { UserRole } from "@repo/store/types";
 import { motion } from "framer-motion";
 import {
   CalendarRange,

@@ -1,6 +1,6 @@
 "use server";
 import prisma from "@repo/db/client";
-import { UserRole, GigStatus, MeetingStatus } from "@prisma/client";
+import { UserRole, GigStatus, MeetingStatus } from "@repo/store/types";
 import { formatTime } from "./ConvertgigInfo";
 //This will be accesible to User after User is Watching who has Accepted the Gig and Then choose one SKIZZER
 // and Booked the meeting
@@ -49,7 +49,7 @@ export async function confirmGig({
       const meeting = await prisma.meeting.create({
         data: {
           gigUserId: updatedRole.id, // Use updatedRole.id from the previous update
-          status: MeetingStatus.BOOKED_PENDING,
+          status: "BOOKED_PENDING",
         },
       });
 
