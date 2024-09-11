@@ -3,7 +3,7 @@
 import prisma from "@repo/db/client";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth";
-import { UserRole } from "@prisma/client";
+import { UserRole } from "@repo/store/types";
 
 // Ensure the module exists and the path is correct
 

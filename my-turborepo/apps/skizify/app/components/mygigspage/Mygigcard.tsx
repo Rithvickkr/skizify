@@ -1,4 +1,4 @@
-import { GigStatus } from "@prisma/client";
+import { GigStatus } from "@repo/store/types";
 import { Avatar } from "@repo/ui/avatar";
 
 import { CalendarRange, Clock7Icon, EditIcon, TrashIcon } from "lucide-react";

@@ -1,4 +1,3 @@
-import { GigStatus , UserRole } from "@prisma/client";
 import { ReactNode } from "react";
 
 export interface GigsInterface {
@@ -99,5 +98,33 @@ export interface GigsInterface {
       status: string;
       budget: number;
       finalDateTime: Date;
+    }
+    
+    export enum MeetingStatus {
+      UNBOOKED_PENDING = "UNBOOKED PENDING",
+      BOOKED_PENDING = "BOOKED PENDING",
+      ONGOING = "ONGOING", //When the meeting Time is Ongoing Then Before 30 Minutes we will send the Notification
+      ENDED = "ENDED"
+    }
+    
+    export enum AuthType {
+      GOOGLE = "GOOGLE",
+      FACEBOOK = "FACEBOOK",
+      GITHUB = "GITHUB",
+      PENDING = "PENDING",
+      LINKEDIN = "LINKEDIN"
+    }
+    
+    export enum GigStatus {
+      PENDING = "PENDING",
+      ACCEPTED = "ACCEPTED",
+      REJECTED = "REJECTED",
+      IGNORED = "IGNORED",
+      CONFIRMED = "CONFIRMED"
+    }
+    
+    export enum UserRole {
+      USER = "USER",
+      SKIZZER = "SKIZZER"
     }
     
