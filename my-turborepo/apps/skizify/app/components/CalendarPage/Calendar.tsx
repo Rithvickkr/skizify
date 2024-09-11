@@ -25,7 +25,7 @@ function classNames(...classes: (string | boolean | undefined)[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Example({
+export default function Calendar({
   meetings,
 }: {
   meetings: meetingsInfo_interface[];
@@ -60,18 +60,20 @@ export default function Example({
   );
 
   return (
-    <div className="pt-16">
-      <div className="mx-auto max-w-3xl pl-1 pr-3 md:max-w-6xl md:px-6">
-        <div className="flex flex-wrap gap-5 md:gap-7 lg:gap-9">
+    <div className="pt-16 w-full h-full">
+      <div className="mx-auto max-w-3xl pl-1 pr-3 md:max-w-7xl  md:px-6">
+        <div className="flex flex-wrap gap-5 md:gap-7 lg:gap-9 relative">
+
+
           <div className="flex-1 pt-5 h-400 mb-3 w-full rounded-md border border-black pl-2 pr-3 dark:border-neutral-600 dark:bg-transparent md:mb-0 md:w-[97%] md:pl-3 lg:w-[94%]">
             <div className="flex items-center">
-              <div className="ml-0 mt-4 flex-auto text-2xl font-semibold text-gray-900 dark:text-white md:ml-3">
+              <div className="ml-0 mt-4 flex-auto text-2xl font-semibold text-neutral-900 dark:text-white md:ml-3">
                 {format(firstDayCurrentMonth, "MMMM yyyy")}
               </div>
               <button
                 type="button"
                 onClick={previousMonth}
-                className="mt-3 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500"
+                className="mt-3 flex flex-none items-center justify-center p-1.5 text-neutral-400 hover:text-neutral-500"
               >
                 <span className="sr-only">Previous month</span>
                 <ChevronLeftIcon className="size-6" aria-hidden="true" />
@@ -79,7 +81,7 @@ export default function Example({
               <button
                 onClick={nextMonth}
                 type="button"
-                className="-mr-1.5 ml-2 mt-3 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500"
+                className="-mr-1.5 ml-2 mt-3 flex flex-none items-center justify-center p-1.5 text-neutral-400 hover:text-neutral-500"
               >
                 <span className="sr-only">Next month</span>
                 <ChevronRightIcon className="size-6" aria-hidden="true" />
@@ -125,16 +127,16 @@ export default function Example({
                         !isEqual(day, selectedDay) &&
                           !isToday(day) &&
                           isSameMonth(day, firstDayCurrentMonth) &&
-                          "text-gray-900",
+                          "text-neutral-900",
                         !isEqual(day, selectedDay) &&
                           !isToday(day) &&
                           !isSameMonth(day, firstDayCurrentMonth) &&
-                          "text-gray-400 dark:text-white",
+                          "text-neutral-400 dark:text-white",
                         isEqual(day, selectedDay) &&
                           isToday(day) &&
                           "bg-red-700 dark:bg-red-800 dark:text-white",
                         !isEqual(day, selectedDay) &&
-                          "hover:bg-gray-200 dark:text-white dark:hover:bg-lightdark ",
+                          "hover:bg-neutral-200 dark:text-white dark:hover:bg-lightdark ",
                         (isEqual(day, selectedDay) || isToday(day)) &&
                           "font-semibold",
                         "flex h-12 w-full items-center justify-center rounded ring-1 ring-black",
@@ -160,14 +162,18 @@ export default function Example({
               )}
             </div>
           </div>
+
+
+
+
           <div className="flex-1 mb-4 rounded border border-black p-3 pl-2 pt-10 dark:border-neutral-600 md:mb-0 md:mt-0 md:pl-3 md:pt-0 lg:pl-5">
-            <div className="mt-3 truncate text-2xl font-semibold text-gray-900 dark:text-gray-200">
+            <div className="mt-3 truncate text-2xl font-semibold text-neutral-900 dark:text-neutral-200">
               Meetings for
               <time dateTime={format(selectedDay, "yyyy-MM-dd")}>
                 {format(selectedDay, "MMM dd, yyy")}
               </time>
             </div>
-            <div className="mt-4 cursor-pointer space-y-1 text-sm leading-6 text-gray-500">
+            <div className="mt-4 cursor-pointer space-y-1 text-sm leading-6 text-neutral-500">
               {selectedDayMeetings.length > 0 ? (
                 <div className="h-[330px] overflow-y-auto rounded-md">
                   {/* <ScrollArea className="rounded"> */}

@@ -2,11 +2,16 @@
 import { Avatar } from "@repo/ui/avatar";
 import {
   EllipsisVertical,
+  Expand,
+  Fullscreen,
   MessageSquare,
   MessageSquareOff,
   MicIcon,
   MicOffIcon,
+  Minimize,
   PhoneIcon,
+  PictureInPicture,
+  PictureInPicture2,
   Pin,
   PinOff,
   ScreenShare,
@@ -111,6 +116,8 @@ export default function VideoPlatform({
   const [pendingCandidates, setPendingCandidates] = useState<RTCIceCandidate[]>(
     [],
   );
+  const [isFullScreen, setIsFullScreen] = useState(false);
+  const [pipActiveIndex, setPipActiveIndex] = useState<number | null>(null);
 
   useEffect(() => {
     const socket = io(URL);
@@ -615,6 +622,10 @@ export default function VideoPlatform({
     router.push("./meeting/end");
   };
 
+  const toggleChat = () => {
+    setIsChatBarVisible((prev) => !prev); // Properly toggle the state
+  };
+
   const toggleAudio = () => {
     if (localAudioTrack) {
       localAudioTrack.enabled = !localAudioTrack.enabled;
@@ -667,18 +678,68 @@ export default function VideoPlatform({
     setPinnedVideo((prevPinned) => (prevPinned === index ? null : index));
   };
 
+  useEffect(() => {
+    const handleKeyDown = (event : any) => {
+      // Example: Detect Ctrl + S (or Command + S on Mac)
+      if ((event.ctrlKey || event.metaKey) && event.key === 'a') {
+        event.preventDefault(); // Prevent the default save action
+        // You can trigger your custom logic here
+        toggleAudio();
+      }
+      if ((event.ctrlKey || event.metaKey) && event.key === 'v') {
+        event.preventDefault(); // Prevent the default save action
+        // You can trigger your custom logic here
+        toggleVideo();
+      }
+      if ((event.ctrlKey || event.metaKey) && event.key === 'e') {
+        event.preventDefault(); // Prevent the default save action
+        // You can trigger your custom logic here
+        endMeeting();
+      }
+      if ((event.ctrlKey || event.metaKey) && event.key === 's') {
+        event.preventDefault(); // Prevent the default save action
+        // You can trigger your custom logic here
+        isScreenSharing ? stopScreenShare() : startScreenShare()
+      }
+      if ((event.ctrlKey || event.metaKey) && event.key === 'c') {
+        event.preventDefault(); // Prevent the default save action
+        // You can trigger your custom logic here
+        toggleChat();
+      }
+    };
+
+    // Add event listener for keydown
+    window.addEventListener('keydown', handleKeyDown);
+
+    // Clean up the event listener on component unmount
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+
+
   const renderVideo = (
     index: number,
     reference: RefObject<HTMLVideoElement>,
     title: string,
   ) => {
+    const isPipAvailable = "pictureInPictureEnabled" in document;
+
     if (title === "Remote Screen Share" && !remoteIsScreenSharing) {
       return null; // Don't render anything if screen sharing has stopped
+    } else if (
+      title == "Your Screen Share" &&
+      !isScreenSharing &&
+      !screenTrackVideo
+    ) {
+      return null;
+    } else if (title == "Remote Video" && !remoteUserJoined) {
+      return null;
     }
 
     if (title == "Remote Screen Share") {
-      console.log("reference of ", title, reference?.current?.srcObject);
-      console.log("remoteScreenStream: ", remoteScreenStream);
+      // console.log("reference of ", title, reference?.current?.srcObject);
+      // console.log("remoteScreenStream: ", remoteScreenStream);
       // If srcObject is null, try setting it again
       if (
         reference?.current &&
@@ -688,9 +749,68 @@ export default function VideoPlatform({
         reference.current.srcObject = remoteScreenStream;
       }
     }
-    if (title == "Remote Screen Share") {
-      console.log("reference of ", title, reference?.current?.srcObject);
-    }
+    const toggleFullScreen = (e: React.MouseEvent) => {
+      e.stopPropagation();
+      const videoElement = reference.current;
+      if (!videoElement) return;
+
+      if (!document.fullscreenElement) {
+        if (videoElement.requestFullscreen) {
+          videoElement.requestFullscreen();
+        } else if ((videoElement as any).webkitRequestFullscreen) {
+          // Safari
+          (videoElement as any).webkitRequestFullscreen();
+        }
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        } else if ((document as any).webkitExitFullscreen) {
+          // Safari
+          (document as any).webkitExitFullscreen();
+        }
+      }
+      setIsFullScreen(!isFullScreen);
+    };
+
+    const getVideoRefByIndex = (
+      index: number,
+    ): RefObject<HTMLVideoElement> | null => {
+      switch (index) {
+        case 0:
+          return localVideoRef;
+        case 1:
+          return remoteVideoRef;
+        case 2:
+          return localscreenShareVideoref;
+        case 3:
+          return remoteScreenVideoRef;
+        default:
+          return null;
+      }
+    };
+
+    const togglePictureInPicture = async (index: number) => {
+      const videoElement = getVideoRefByIndex(index)?.current;
+      if (!videoElement) return;
+
+      try {
+        if (pipActiveIndex !== index) {
+          if (document.pictureInPictureElement) {
+            await document.exitPictureInPicture();
+          }
+          await videoElement.requestPictureInPicture();
+          setPipActiveIndex(index);
+        } else {
+          if (document.pictureInPictureElement) {
+            await document.exitPictureInPicture();
+          }
+          setPipActiveIndex(null);
+        }
+      } catch (error) {
+        console.error("Failed to toggle picture-in-picture mode:", error);
+      }
+    };
+
     return (
       <div
         key={`video-container-${index}`}
@@ -715,7 +835,7 @@ export default function VideoPlatform({
             <div
               className="cursor-pointer rounded-full text-white opacity-60 hover:bg-v0dark hover:dark:bg-neutral-400 hover:dark:opacity-95"
               onClick={(e) => {
-                e.stopPropagation();
+                e.stopPropagation(); //The above Div has also a On click Event , So it willn't Trigger the Onclick event of Parent Element
                 handlePin(index);
               }}
             >
@@ -725,6 +845,28 @@ export default function VideoPlatform({
                 <Pin className="m-2 size-5 text-white sm:size-6" />
               )}
             </div>
+            <div
+              className="cursor-pointer rounded-full text-white opacity-60 hover:bg-v0dark hover:dark:bg-neutral-400 hover:dark:opacity-95"
+              onClick={toggleFullScreen}
+            >
+              <Fullscreen className="m-2 size-5 text-white sm:size-6" />
+            </div>
+            {isPipAvailable && (
+              <div
+                className="cursor-pointer rounded-full text-white opacity-60 hover:bg-v0dark hover:dark:bg-neutral-400 hover:dark:opacity-95"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  togglePictureInPicture(index);
+                }}
+              >
+                {pipActiveIndex === index ? (
+                  <PictureInPicture className="m-2 size-5 text-white sm:size-6" />
+                ) : (
+                  <PictureInPicture2 className="m-2 size-5 text-white sm:size-6" />
+                )}
+              </div>
+            )}
+
             <div className="cursor-pointer rounded-full text-white opacity-60 hover:bg-v0dark hover:dark:bg-neutral-400 hover:dark:opacity-95">
               <EllipsisVertical className="m-2 size-5 text-white sm:size-6" />
             </div>
@@ -820,6 +962,7 @@ export default function VideoPlatform({
           >
             <DockIcon>
               <ButtonsDock
+                shortcut="Ctrl A"
                 name={isAudioMuted ? "Unmute" : "Mute"}
                 onClick={toggleAudio}
               >
@@ -838,6 +981,7 @@ export default function VideoPlatform({
             </DockIcon>
             <DockIcon>
               <ButtonsDock
+                shortcut="Ctrl V"
                 name={isVideoMuted ? "Start Video" : "Stop Video"}
                 onClick={toggleVideo}
               >
@@ -856,6 +1000,7 @@ export default function VideoPlatform({
             </DockIcon>
             <DockIcon>
               <ButtonsDock
+                shortcut="Ctrl E"
                 name="Call-End"
                 className="bg-red-600 text-white hover:bg-red-600 dark:bg-red-600 hover:dark:bg-red-600"
                 onClick={endMeeting}
@@ -868,6 +1013,7 @@ export default function VideoPlatform({
             </DockIcon>
             <DockIcon>
               <ButtonsDock
+                shortcut="Ctrl S"
                 name="ScreenShare"
                 onClick={isScreenSharing ? stopScreenShare : startScreenShare}
               >
@@ -879,8 +1025,9 @@ export default function VideoPlatform({
             </DockIcon>
             <DockIcon>
               <ButtonsDock
+                shortcut="Ctrl C"
                 name="Chat"
-                onClick={() => setIsChatBarVisible(!isChatBarVisible)}
+                onClick={toggleChat}
               >
                 {isChatBarVisible ? (
                   <MessageSquareOff
@@ -945,7 +1092,7 @@ export default function VideoPlatform({
             <Button
               variant="ghost"
               size="icon"
-              className="hover:bg-neutral-700 dark:hover:bg-neutral-500"
+              className="hover:bg-neutral-700 dark:hover:bg-neutral-200"
             >
               <Send
                 className="size-5 text-white dark:text-black"
@@ -966,18 +1113,21 @@ export default function VideoPlatform({
     </div>
   );
 }
+const formattedTime = new Date().toLocaleTimeString("en-US", {
+  hour: "numeric",
+  minute: "2-digit",
+  hour12: true,
+});
 
 const ChatStructure: React.FC<{ data: Chat }> = ({ data }) => {
   const session = useSession();
   return (
     <div className="">
       {data.userId === session.data?.user.id ? (
-        <div className="flex items-start justify-end gap-3">
-          <div className="min-w-32 rounded-md bg-neutral-200 p-2 text-sm text-black">
+        <div className="flex items-start justify-end gap-2">
+          <div className="min-w-32 rounded-lg rounded-br-none bg-white p-4 text-base text-black dark:bg-black dark:text-white">
             <p className="break-words break-all">{data.message}</p>
-            <div className="mt-1 text-xs text-[#58595a] dark:text-neutral-400">
-              2:35 PM
-            </div>
+            <div className="mt-1 text-xs">2:35 PM</div>
           </div>
           <Avatar
             name={data.name}
@@ -989,12 +1139,14 @@ const ChatStructure: React.FC<{ data: Chat }> = ({ data }) => {
         <div className="flex items-start gap-3">
           <Avatar
             name={data.name}
-            classname="size-8 shadow-sm bg-neutral-200 text-sm  text-black border border-black"
+            classname="size-8 shadow-sm  bg-neutral-200 text-sm  text-black border border-black"
             photo={data.userImage}
           />
-          <div className="min-w-32 rounded-md bg-lightdark p-2 text-sm text-[#e2e8f0]">
+          <div className="min-w-32 rounded-lg rounded-bl-none bg-[#272729] p-4 text-base text-[#e2e8f0] dark:bg-[#f4f4f4] dark:text-black">
             <p className="break-words break-all">{data.message}</p>
-            <div className="mt-1 text-xs text-neutral-200">2:36 PM</div>
+            <div className="mt-1 text-xs text-white dark:text-black">
+              2:36 PM
+            </div>
           </div>
         </div>
       )}
