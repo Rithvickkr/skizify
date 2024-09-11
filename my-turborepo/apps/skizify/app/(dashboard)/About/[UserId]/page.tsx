@@ -1,7 +1,11 @@
 import getInfos from "../../../lib/actions/getinfos";
 import UserInfo from "../../../components/profilepage/UserInfo";
 import { Review } from "../../../components/profilepage/UserInfo";
-export default async function about({ params }: { params: any }) {
+interface AboutParams {
+  UserId: string;
+}
+
+export default async function about({ params }: { params: AboutParams }) {
   const infos = await getInfos(params.UserId);
 
   if (!infos) {
