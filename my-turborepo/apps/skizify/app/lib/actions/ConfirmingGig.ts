@@ -24,7 +24,7 @@ export async function confirmGig({
       );
     }
 //If the Gig is Failed to update then the GigUser table will aslo not be updated then the meeting will also not be created
-    const meetingStatus = await prisma.$transaction(async (prisma) => {
+    const meetingStatus = await prisma.$transaction(async (prisma : any) => {
       const gig = await prisma.gigs.update({
         where: { id: gigId },
         data: {

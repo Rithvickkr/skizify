@@ -9,9 +9,9 @@ export default async function Home(){
     const session = await getServerSession(authOptions);
     let meetings : meetingsInfo_interface[]; 
   if(session?.user.role === UserRole.SKIZZER){
-    meetings = await getSkizzercalendarMeetingsdetails();
+    meetings = await getSkizzercalendarMeetingsdetails() as meetingsInfo_interface[];
   }else {
-    meetings = await getUsercalendarMeetingsdetails();
+    meetings = await getUsercalendarMeetingsdetails() as meetingsInfo_interface[];
   }
     return (
       
