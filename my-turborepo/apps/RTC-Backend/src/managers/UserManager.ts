@@ -54,8 +54,8 @@ export class UserManager {
     // const User1 = this.meeting.find((x) => x.socket.id === id1);
     // const User2 = this.meeting.find((x) => x.socket.id === id2);
     while (room.length >= 2) {
-      const user1 = room[0]; // Remove the first user
-      const user2 = room[1]; // Remove the second user
+      const user1 = room.shift(); // Remove the first user
+      const user2 = room.shift(); // Remove the second user
 
       if (user1 && user2 && user1.meetingId === user2.meetingId) {
         user1.socket.join(meetingId); //User1 Joined the Room
@@ -74,7 +74,10 @@ export class UserManager {
     console.log(userId);
     const users = this.meeting.get(meetingId);
     if (!users) return;
+    //Let's tell the other User
 
+    this.roomManager.onLeaveMeeting(meetingId,userId)
+    this.roomManager.stopScreenShare(meetingId, userId);
     // Remove the user from the array
     const updatedUsers = users.filter((user) => user.userId !== userId);
 
@@ -157,7 +160,7 @@ export class UserManager {
       }
     );
     UserSocket.on("stop-screen-share", ({ roomId }: { roomId: string }) => {
-      this.roomManager.stopScreenShare(roomId, UserSocket.id);
+      this.roomManager.stopScreenShare(roomId, userId);
     });
 
     // UserSocket.on("onsession", ( session : ClientSessionInterface ) => {

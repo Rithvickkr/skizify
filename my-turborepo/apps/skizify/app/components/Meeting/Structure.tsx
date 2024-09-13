@@ -15,6 +15,7 @@ import {
   Pin,
   PinOff,
   ScreenShare,
+  ScreenShareOff,
   Send,
   Video,
   VideoOff,
@@ -74,14 +75,6 @@ export default function VideoPlatform({
   const [screenTrackAudio, setScreenTrackAudio] = useState<
     MediaStreamTrack | null | undefined
   >(null);
-  const [remoteUserTracks, setremoteUserTracks] = useState<
-    //remote User Tracks
-    MediaStreamTrack | null | undefined
-  >(null);
-  const [remotescreenUserTracks, setremotescreenUserTracks] = useState<
-    //remote User Screen Tracks
-    MediaStreamTrack | null | undefined
-  >(null);
   const [isAudioMuted, setIsAudioMuted] = useState(false);
   const [isVideoMuted, setIsVideoMuted] = useState(false);
   const [remoteMediaStream, setRemoteMediaStream] =
@@ -93,9 +86,12 @@ export default function VideoPlatform({
   const localscreenShareVideoref = useRef<HTMLVideoElement>(null);
   const remoteScreenVideoRef = useRef<HTMLVideoElement>(null);
   const messagesEndRef = useRef<HTMLDivElement | null>(null); // for Automatic sroll at the bottom od the screen
+  const [remoteVideoTrack, setRemoteVideoTrack] =
+    useState<MediaStreamTrack | null>(null);
+  const [remoteAudioTrack, setRemoteAudioTrack] =
+    useState<MediaStreamTrack | null>(null);
 
   //UNINPORTANT STATES
-  const [SelectPintab, setSelectPintab] = useState<boolean>(false);
   const [remoteUserJoined, setRemoteUserJoined] = useState(false);
   const [pinnedVideo, setPinnedVideo] = useState<number | null>(null);
   const [selectPinTabs, setSelectPinTabs] = useState([
@@ -108,14 +104,6 @@ export default function VideoPlatform({
   //New Variables
   const [remoteIsScreenSharing, setRemoteIsScreenSharing] =
     useState<boolean>(false);
-  const [remoteScreenTrack, setRemoteScreenTrack] =
-    useState<MediaStreamTrack | null>(null);
-  const [screenSender, setScreenSender] = useState<RTCRtpSender | null>(null);
-  const [remoteAudioTrack, setRemoteAudioTrack] =
-    useState<MediaStreamTrack | null>(null);
-  const [pendingCandidates, setPendingCandidates] = useState<RTCIceCandidate[]>(
-    [],
-  );
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [pipActiveIndex, setPipActiveIndex] = useState<number | null>(null);
 
@@ -195,9 +183,11 @@ export default function VideoPlatform({
 
           // Handle video and audio tracks
           if (track.kind === "video") {
-            stream.addTrack(track); // Add track to the stream
+            setRemoteVideoTrack(track);
+            stream.addTrack(track);
           } else if (track.kind === "audio") {
-            stream.addTrack(track); // Add track to the stream
+            setRemoteAudioTrack(track);
+            stream.addTrack(track);
           }
           console.log("stream: ", stream);
           console.log(remoteMediaStream);
@@ -288,6 +278,43 @@ export default function VideoPlatform({
       console.log("Bro I got something from the Backend", data);
       setMessages((messages: Chat[]) => [...messages, data]);
       console.log("Data is not become", messages);
+    });
+
+    socket.on("leave-meeting", async ({ userId }: { userId: string }) => {
+      console.log("Other User has left the meeting", userId);
+
+      // Reset remote user states
+      setRemoteUserJoined(false);
+      setRemoteVideoTrack(null);
+      setRemoteAudioTrack(null);
+      setRemoteIsScreenSharing(false);
+
+      // Clean up remote media stream
+      setRemoteMediaStream((prevStream) => {
+        if (prevStream) {
+          prevStream.getTracks().forEach((track) => track.stop());
+        }
+        return null;
+      });
+
+      // Clear the remote video element
+      if (remoteVideoRef.current) {
+        remoteVideoRef.current.srcObject = null;
+      }
+
+      // Reset screen sharing states if applicable
+      setRemoteIsScreenSharing(false);
+
+      // Close and reset the receiving peer connection
+      setReceivingPC((pc) => {
+        if (pc) {
+          pc.ontrack = null;
+          pc.onicecandidate = null;
+          pc.oniceconnectionstatechange = null;
+          pc.close();
+        }
+        return null;
+      });
     });
 
     setSocket(socket);
@@ -448,7 +475,6 @@ export default function VideoPlatform({
       socket.on("stop-screen-share", () => {
         console.log("Remote user stopped screen sharing");
         setRemoteIsScreenSharing(false);
-        setRemoteScreenStream(null);
 
         // Close and clean up the remote screen share PC if it exists
         if (remoteScreenSharePC) {
@@ -456,10 +482,27 @@ export default function VideoPlatform({
           setRemoteScreenSharePC(null);
         }
 
-        // Clear the video element's srcObject
+        setRemoteScreenStream((prevStream) => {
+          if (prevStream) {
+            prevStream.getTracks().forEach((track) => track.stop());
+          }
+          return null;
+        });
+
+        // Clear the remote video element
         if (remoteScreenVideoRef.current) {
           remoteScreenVideoRef.current.srcObject = null;
         }
+
+        setRemoteScreenSharePC((pc) => {
+          if (pc) {
+            pc.ontrack = null;
+            pc.onicecandidate = null;
+            pc.oniceconnectionstatechange = null;
+            pc.close();
+          }
+          return null;
+        });
       });
 
       // Clean up
@@ -576,6 +619,20 @@ export default function VideoPlatform({
       }
     }
   };
+  useEffect(() => {
+    if (screenTrackVideo) {
+      const handleTrackEnded = () => {
+        console.log("Screen sharing track ended");
+        stopScreenShare();
+      };
+
+      screenTrackVideo.addEventListener("ended", handleTrackEnded);
+
+      return () => {
+        screenTrackVideo.removeEventListener("ended", handleTrackEnded);
+      };
+    }
+  }, [screenTrackVideo]);
 
   // Modify the stopScreenShare function
   const stopScreenShare = () => {
@@ -678,31 +735,34 @@ export default function VideoPlatform({
     setPinnedVideo((prevPinned) => (prevPinned === index ? null : index));
   };
 
-
   useEffect(() => {
-    const handleKeyDown = (event : any) => {
+    const handleKeyDown = (event: any) => {
       // Example: Detect Ctrl + S (or Command + S on Mac)
-      if ((event.ctrlKey || event.metaKey) && event.key === 'a') {
+      if ((event.ctrlKey || event.metaKey) && event.key === "a") {
         event.preventDefault(); // Prevent the default save action
         // You can trigger your custom logic here
         toggleAudio();
       }
-      if ((event.ctrlKey || event.metaKey) && event.key === 'v') {
+      if ((event.ctrlKey || event.metaKey) && event.key === "v") {
         event.preventDefault(); // Prevent the default save action
         // You can trigger your custom logic here
         toggleVideo();
       }
-      if ((event.ctrlKey || event.metaKey) && event.key === 'e') {
+      if ((event.ctrlKey || event.metaKey) && event.key === "e") {
         event.preventDefault(); // Prevent the default save action
         // You can trigger your custom logic here
         endMeeting();
       }
-      if ((event.ctrlKey || event.metaKey) && event.key === 's') {
+      if ((event.ctrlKey || event.metaKey) && event.key === "s") {
         event.preventDefault(); // Prevent the default save action
         // You can trigger your custom logic here
-        isScreenSharing ? stopScreenShare() : startScreenShare()
+
+        if (isScreenSharing) {
+          stopScreenShare();
+        }
+        startScreenShare();
       }
-      if ((event.ctrlKey || event.metaKey) && event.key === 'c') {
+      if ((event.ctrlKey || event.metaKey) && event.key === "c") {
         event.preventDefault(); // Prevent the default save action
         // You can trigger your custom logic here
         toggleChat();
@@ -710,14 +770,13 @@ export default function VideoPlatform({
     };
 
     // Add event listener for keydown
-    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown);
 
     // Clean up the event listener on component unmount
     return () => {
-      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener("keydown", handleKeyDown);
     };
   }, []);
-
 
   const renderVideo = (
     index: number,
@@ -1018,18 +1077,21 @@ export default function VideoPlatform({
                 name="ScreenShare"
                 onClick={isScreenSharing ? stopScreenShare : startScreenShare}
               >
-                <ScreenShare
-                  strokeWidth={1.7}
-                  className="size-4 lg:size-5 xl:size-6"
-                />
+                {isScreenSharing ? (
+                  <ScreenShareOff
+                    strokeWidth={1.7}
+                    className="size-4 lg:size-5 xl:size-6"
+                  />
+                ) : (
+                  <ScreenShare
+                    strokeWidth={1.7}
+                    className="size-4 lg:size-5 xl:size-6"
+                  />
+                )}
               </ButtonsDock>
             </DockIcon>
             <DockIcon>
-              <ButtonsDock
-                shortcut="Ctrl C"
-                name="Chat"
-                onClick={toggleChat}
-              >
+              <ButtonsDock shortcut="Ctrl C" name="Chat" onClick={toggleChat}>
                 {isChatBarVisible ? (
                   <MessageSquareOff
                     strokeWidth={1.7}

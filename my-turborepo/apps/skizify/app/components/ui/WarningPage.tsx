@@ -31,7 +31,7 @@ export default function WarningPage({
   return (
     <Credenza>
       <CredenzaTrigger asChild>
-        <Button variant="outline">{trigger || "Share"}</Button>
+        <Button className="animate-pulse border border-neutral-600 " variant="outline">{trigger || "Share"}</Button>
       </CredenzaTrigger>
       <CredenzaContent className="border border-neutral-300 p-4 dark:border-neutral-700 sm:max-w-md">
         <CredenzaHeader className="gap-2">

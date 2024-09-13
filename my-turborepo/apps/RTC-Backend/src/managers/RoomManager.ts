@@ -80,12 +80,19 @@ export class RoomManager {
     ReceivingUser?.socket.emit("screen-ice-candidate", { candidate, type });
   }
 
-  stopScreenShare(roomId: string, UserSocketId: string) {
+  stopScreenShare(roomId: string, userId: string ) {
     const room = this.rooms.get(roomId);
     const User1 = room?.User1;
     const User2 = room?.User2;
-    const ReceivingUser = UserSocketId === User1?.socket.id ? User2 : User1;
+    const ReceivingUser = userId === User1?.userId ? User2 : User1;
     ReceivingUser?.socket.emit("stop-screen-share", { roomId });
+  }
+  onLeaveMeeting(roomId : string , userId : string){
+    const room = this.rooms.get(roomId);
+    const User1 = room?.User1;
+    const User2 = room?.User2;
+    const ReceivingUser = userId === User1?.userId ? User2 : User1;
+    ReceivingUser?.socket.emit("leave-meeting", { userId });
   }
   // getSession(session:ClientSessionInterface){
   //   const room = this.rooms.get(session);

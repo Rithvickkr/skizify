@@ -60,12 +60,10 @@ export default function Calendar({
   );
 
   return (
-    <div className="pt-16 w-full h-full bg-gradient-to-br    dark:from-neutral-800/45 dark:via-black  dark:to-neutral-800/45  ">
-      <div className="mx-auto max-w-3xl pl-1 pr-3 md:max-w-7xl  md:px-6">
-        <div className="flex flex-wrap gap-5 md:gap-7 lg:gap-9 relative">
-
-
-          <div className="flex-1 pt-5 h-400 mb-3 w-full rounded-md border border-black pl-2 pr-3 dark:border-neutral-600 dark:bg-transparent md:mb-0 md:w-[97%] md:pl-3 lg:w-[94%]">
+    <div className="h-full w-full bg-gradient-to-br pt-16 dark:from-neutral-800/45 dark:via-black dark:to-neutral-800/45">
+      <div className="mx-auto max-w-3xl pl-1 pr-3 md:max-w-7xl md:px-6">
+        <div className="relative flex flex-wrap gap-5 md:gap-7 lg:gap-9">
+          <div className="h-400 mb-3 w-full flex-1 rounded-md border border-black pl-2 pr-3 pt-5 dark:border-neutral-600 dark:bg-transparent md:mb-0 md:w-[97%] md:pl-3 lg:w-[94%]">
             <div className="flex items-center">
               <div className="ml-0 mt-4 flex-auto text-2xl font-semibold text-neutral-900 dark:text-white md:ml-3">
                 {format(firstDayCurrentMonth, "MMMM yyyy")}
@@ -136,10 +134,10 @@ export default function Calendar({
                           isToday(day) &&
                           "bg-red-700 dark:bg-red-800 dark:text-white",
                         !isEqual(day, selectedDay) &&
-                          "hover:bg-neutral-100 dark:text-white dark:hover:bg-lightdark ",
+                          "hover:bg-neutral-100 dark:text-white dark:hover:bg-lightdark",
                         (isEqual(day, selectedDay) || isToday(day)) &&
                           "font-semibold",
-                        "flex h-12 w-full items-center justify-center rounded ring-1 ring-black  hover:scale-[1.03] transition-all duration-150 ",
+                        "flex h-12 w-full items-center justify-center rounded ring-1 ring-black transition-all duration-150 hover:scale-[1.03]",
                       )}
                     >
                       <time dateTime={format(day, "yyyy-MM-dd")}>
@@ -163,10 +161,7 @@ export default function Calendar({
             </div>
           </div>
 
-
-
-
-          <div className="flex-1 mb-4 rounded border border-black p-3 pl-2 pt-10 dark:border-neutral-600 md:mb-0 md:mt-0 md:pl-3 md:pt-0 lg:pl-5">
+          <div className="mb-4 flex-1 rounded border border-black p-3 pl-2 pt-10 dark:border-neutral-600 md:mb-0 md:mt-0 md:pl-3 md:pt-0 lg:pl-5">
             <div className="mt-3 truncate text-2xl font-semibold text-neutral-900 dark:text-neutral-200">
               Meetings for
               <time dateTime={format(selectedDay, "yyyy-MM-dd")}>

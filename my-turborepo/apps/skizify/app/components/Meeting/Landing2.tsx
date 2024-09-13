@@ -142,9 +142,9 @@ export default function Component() {
 
   if (!join) {
     return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-black to-mediumdark p-4">
-      <div className="w-full max-w-4xl rounded-xl bg-white bg-opacity-10 p-8 shadow-2xl backdrop-blur-lg">
-        <h1 className="mb-8 text-center text-3xl font-bold text-white">
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-neutral-50 rounded-md md:rounded-xl   to-neutral-100 dark:from-black dark:to-mediumdark p-4">
+      <div className="w-full max-w-7xl rounded-xl bg-black dark:bg-neutral-100/5  bg-opacity-5 p-8 shadow-2xl backdrop-blur-xl">
+        <h1 className="mb-8 text-center text-3xl font-bold dark:text-white">
           ⎯⎯ Ready to join the Meeting ⎯⎯
         </h1>
 
@@ -247,8 +247,8 @@ export default function Component() {
             </div> */}
 
             <div className="h-full rounded-xl bg-white bg-opacity-5 p-4">
-              <h2 className="mb-2 font-semibold text-white">Meeting Tips</h2>
-              <ul className="space-y-1 text-sm text-gray-300">
+              <h2 className="mb-2 font-semibold dark:text-white">Meeting Tips</h2>
+              <ul className="space-y-1 text-sm md:text-base xl:text-lg dark:text-gray-300">
                 <li>• Ensure you're in a well-lit area</li>
                 <li>• Use a neutral background if possible</li>
                 <li>• Test your audio before joining</li>
