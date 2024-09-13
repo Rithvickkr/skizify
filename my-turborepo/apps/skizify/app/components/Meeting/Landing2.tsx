@@ -1,18 +1,13 @@
 "use client";
-import React, { useState, useRef, useEffect } from "react";
-import { Button } from "../ui/button";
-import { Switch } from "../../../@/components/ui/switch";
-import { Slider } from "../../../@/components/ui/slider";
 import {
   Camera,
   Mic,
-  VideoOff,
   MicOff,
-  Sparkles,
-  Image as ImageIcon,
+  VideoOff
 } from "lucide-react";
 import { useSession } from "next-auth/react";
-import Room from "./Room";
+import { useEffect, useRef, useState } from "react";
+import { Button } from "../ui/button";
 import VideoPlatform from "./Structure";
 
 export default function Component() {

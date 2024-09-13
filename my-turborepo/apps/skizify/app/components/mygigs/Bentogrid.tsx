@@ -59,7 +59,7 @@ export function EnhancedLuxuryMeetingCard2({
   return (
     <div
       className={cn(
-        "group/bento min-w-xl shadow-input row-span-1 flex w-full flex-1 cursor-pointer items-center justify-center space-y-4 rounded-xl border border-[#d1d5d8] bg-white from-black from-90% to-[#191919] p-3 transition duration-200 hover:shadow-lg dark:border-neutral-700 dark:bg-gradient-to-r dark:shadow-none",
+        "group/bento min-w-xl shadow-input row-span-1 flex w-full flex-1 cursor-pointer items-center justify-center space-y-4 rounded-xl border border-[#d1d5d8] bg-white from-black from-90% to-[#191919] p-3 transition duration-200 hover:shadow-lg dark:border-neutral-700 dark:bg-gradient-to-br dark:shadow-none",
         className,
       )}
     >

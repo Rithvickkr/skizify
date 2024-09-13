@@ -60,7 +60,7 @@ export default function Calendar({
   );
 
   return (
-    <div className="pt-16 w-full h-full">
+    <div className="pt-16 w-full h-full bg-gradient-to-br    dark:from-neutral-800/45 dark:via-black  dark:to-neutral-800/45  ">
       <div className="mx-auto max-w-3xl pl-1 pr-3 md:max-w-7xl  md:px-6">
         <div className="flex flex-wrap gap-5 md:gap-7 lg:gap-9 relative">
 
@@ -136,10 +136,10 @@ export default function Calendar({
                           isToday(day) &&
                           "bg-red-700 dark:bg-red-800 dark:text-white",
                         !isEqual(day, selectedDay) &&
-                          "hover:bg-neutral-200 dark:text-white dark:hover:bg-lightdark ",
+                          "hover:bg-neutral-100 dark:text-white dark:hover:bg-lightdark ",
                         (isEqual(day, selectedDay) || isToday(day)) &&
                           "font-semibold",
-                        "flex h-12 w-full items-center justify-center rounded ring-1 ring-black",
+                        "flex h-12 w-full items-center justify-center rounded ring-1 ring-black  hover:scale-[1.03] transition-all duration-150 ",
                       )}
                     >
                       <time dateTime={format(day, "yyyy-MM-dd")}>

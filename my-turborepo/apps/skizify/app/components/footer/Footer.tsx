@@ -1,9 +1,6 @@
-import React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Facebook, Github, Linkedin, Twitter } from "lucide-react";
-import Link from "next/link";
+import React from "react";
 import { useForm } from "react-hook-form";
-import Balancer from "react-wrap-balancer";
 import * as z from "zod";
 
 import {
@@ -27,7 +24,6 @@ import { Input } from "../../../@/components/ui/input";
 import { BottomGradient } from "../SignupForm";
 import { Button } from "../ui/button";
 import { Section } from "./craft";
-import { ReactNode } from "react";
 const formSchema = z.object({
   email: z.string().email({
     message: "Please enter a valid email address.",

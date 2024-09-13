@@ -15,38 +15,23 @@ export default function SearchBar() {
   const speechRecognitionRef = useRef<any | null>(null);
 
   useEffect(() => {
-    const handleKeyPress = (event: KeyboardEvent) => {
-      if (event.code === "KeyK" && (event.ctrlKey || event.metaKey)) {
-        event.preventDefault();
-        setDialogOpen(true);
+    const handleKeyDown = (event : any) => {
+      // Example: Detect Ctrl + S (or Command + S on Mac)
+      if ((event.ctrlKey || event.metaKey) && event.key === 'k') {
+        event.preventDefault(); // Prevent the default save action
+        // You can trigger your custom logic here
+        alert("SomeBody Call me !! Let me Sleep")
       }
-      // else if (event.code === "ArrowDown") {
-      //   event.preventDefault();
-      //   setSelectedIndex((prevIndex) => Math.min(prevIndex + 1, searchTracks.length - 1));
-      // } else if (event.code === "ArrowUp") {
-      //   event.preventDefault();
-      //   setSelectedIndex((prevIndex) => Math.max(prevIndex - 1, 0));
-      // } else if (event.code === "Enter" && selectedIndex !== -1) {
-      //   event.preventDefault();
-      //   document.getElementById(`track-link-${selectedIndex}`)?.click();
-      // }
-      // if (event.code === "ArrowDown" || event.code === "ArrowUp") {
-      //   event.preventDefault();
-      //   const container = scrollableContainerRef.current;
-      //   if (container) {
-      //     if (selectedIndex > 3) {
-      //       const scrollAmount = event.code === "ArrowDown" ? 85 : -80;
-      //       container.scrollBy({ top: scrollAmount, behavior: "smooth" });
-      //     }
-      //   }
-      // }
     };
-    window.addEventListener("keydown", handleKeyPress);
+
+    // Add event listener for keydown
+    window.addEventListener('keydown', handleKeyDown);
+
+    // Clean up the event listener on component unmount
     return () => {
-      window.removeEventListener("keydown", handleKeyPress);
+      window.removeEventListener('keydown', handleKeyDown);
     };
   }, []);
-
   useEffect(() => {
     const isMacOS = navigator.platform.toUpperCase().indexOf("MAC") >= 0;
     setShortcut(isMacOS ? "Cmd K" : "Ctrl K");
@@ -73,7 +58,7 @@ export default function SearchBar() {
               placeholder="Search article"
             />
           </div>
-          <div className="h-8 w-[4.5rem] cursor-pointer truncate rounded bg-black/50 p-1 px-2 text-center text-white hover:opacity-90 dark:bg-zinc-800 dark:text-neutral-200 hover:dark:bg-zinc-700 hover:dark:text-white">
+          <div className="h-8 w-[4.5rem] cursor-pointer truncate rounded bg-black/80 p-1 px-2 text-center text-white hover:opacity-90 dark:bg-zinc-800 dark:text-neutral-200 hover:dark:bg-zinc-700 hover:dark:text-white">
             {shortcut}
           </div>
           {/* The `flex-none` utility class sets `flex: none` on the element, which means it will not grow or shrink, and will only take up the space of its content. */}

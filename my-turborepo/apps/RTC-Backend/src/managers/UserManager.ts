@@ -54,8 +54,8 @@ export class UserManager {
     // const User1 = this.meeting.find((x) => x.socket.id === id1);
     // const User2 = this.meeting.find((x) => x.socket.id === id2);
     while (room.length >= 2) {
-      const user1 = room.shift(); // Remove the first user
-      const user2 = room.shift(); // Remove the second user
+      const user1 = room[0]; // Remove the first user
+      const user2 = room[1]; // Remove the second user
 
       if (user1 && user2 && user1.meetingId === user2.meetingId) {
         user1.socket.join(meetingId); //User1 Joined the Room
