@@ -1,36 +1,30 @@
-"use client"
+"use client";
 import { useRouter } from "next/navigation";
-import {
-    ArrowRightIcon,
-  } from "lucide-react";
-  import {
-    Tooltip,
-    TooltipContent,
-    TooltipProvider,
-    TooltipTrigger,
-  } from "../../../@/components/ui/tooltip"
+import { ArrowRightIcon, ChevronRight } from "lucide-react";
 import { Button } from "../ui/button";
+import { ToolTip } from "@repo/ui/tooltip";
 
-export default function RedirectToMeetingPage({confirmId}:{confirmId : string}) {
-      const router = useRouter();
-    return (
-        <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger>
-                  <Button
-                    className="w-full bg-black text-white hover:bg-black dark:bg-white dark:text-black hover:dark:bg-white"
-                    Icon={ArrowRightIcon}
-                    iconPlacement="right"
-                    variant="gooeyLeft"
-                    onClick={() => router.push(`/Meetings/${confirmId}`)}
-                  >
-                    Booked 🎉
-                  </Button>
-                    </TooltipTrigger>
-                    <TooltipContent className="bg-black text-white dark:bg-white dark:text-black">
-                      <p>Check out Calendar</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-    )
+export default function RedirectToMeetingPage({
+  confirmId,
+}: {
+  confirmId: string;
+}) {
+  const router = useRouter();
+  return (
+    <div className="w-full">
+      <ToolTip name="Check out Calendar">
+        <div className="my-1 w-full flex place-content-start items-center p-2 sm:my-2 md:my-0">
+          <Button
+            className="w-full bg-black text-white hover:bg-black dark:bg-white dark:text-black hover:dark:bg-white"
+            Icon={ChevronRight}
+            iconPlacement="right"
+            variant="expandIcon"
+            onClick={() => router.push(`/Meetings/${confirmId}`)}
+          >
+            Booked 🎉
+          </Button>
+        </div>
+      </ToolTip>
+    </div>
+  );
 }

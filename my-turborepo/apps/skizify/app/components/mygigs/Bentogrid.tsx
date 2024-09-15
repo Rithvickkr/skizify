@@ -64,7 +64,7 @@ export function EnhancedLuxuryMeetingCard2({
       )}
     >
       <div className="w-[95%] flex-1 transition duration-200 group-hover/bento:translate-x-2">
-        <Card className="group relative w-full overflow-hidden bg-gradient-to-br from-neutral-50 via-neutral-100 to-neutral-100 p-3 shadow-lg transition-all duration-500 ease-in-out hover:shadow-2xl dark:from-black dark:to-v0dark">
+        <Card className="group relative w-full overflow-hidden bg-gradient-to-br from-neutral-50 via-neutral-100 to-neutral-100 p-3 shadow-lg transition-all duration-500 ease-in-out hover:shadow-2xl dark:from-black dark:to-v0dark/70">
           {/* <div className="absolute inset-0 z-0 bg-[url('/noise.png')] opacity-5 mix-blend-overlay" /> */}
           {/* <div className="absolute -left-24 -top-24 h-96 w-96 rounded-full bg-gradient-to-br from-neutral-200 via-neutral-300 to-neutral-400 blur-3xl transition-all duration-700 ease-in-out group-hover:opacity-70 dark:from-neutral-700 dark:via-neutral-600 dark:to-neutral-500" />  
           //This is a Good Strategy to add Spotlight*/}

@@ -227,7 +227,7 @@ export function MygigCard2({
                 </div>
               </div>
 
-              <div className="relative">
+              <div className="relative w-full">
                 {/* <details className="group">
                   <summary className="flex w-full cursor-pointer items-center justify-between rounded-lg bg-white bg-opacity-5 p-2 text-left text-neutral-400 transition-colors duration-300 hover:bg-opacity-10 hover:text-white">
                     <span className="flex items-center">

@@ -9,8 +9,9 @@ import { useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "../ui/button";
 import VideoPlatform from "./Structure";
+import { JoinMeetingButton } from "./JoinButton";
 
-export default function Component() {
+export default function Component({meetingId} : {meetingId : string}) {
   const session = useSession();
   const [isCameraOn, setIsCameraOn] = useState(true);
   const [isBackgroundBlur, setIsBackgroundBlur] = useState(false);
@@ -144,9 +145,9 @@ export default function Component() {
     return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-neutral-50 rounded-md md:rounded-xl   to-neutral-100 dark:from-black dark:to-mediumdark p-4">
       <div className="w-full max-w-7xl rounded-xl bg-black dark:bg-neutral-100/5  bg-opacity-5 p-8 shadow-2xl backdrop-blur-xl">
-        <h1 className="mb-8 text-center text-3xl font-bold dark:text-white">
-          ⎯⎯ Ready to join the Meeting ⎯⎯
-        </h1>
+      <h1 className="mb-8 text-center text-3xl font-bold bg-gradient-to-r from-slate-500 via-white via-30% to-65% to-neutral-500 bg-clip-text text-transparent font-helvetica ">
+  ⎯⎯ Ready to join the Meeting ⎯⎯
+</h1>
 
         <div className="flex flex-col gap-8 lg:flex-row">
           <div className="flex-1">
@@ -198,14 +199,7 @@ export default function Component() {
                 </Button>
               </div>
             </div>
-            <Button
-              className="w-full border border-neutral-500 bg-black py-6 text-lg"
-              size="lg"
-              variant={"gooeyLeft"}
-              onClick={() => setJoin(true)}
-            >
-              Join Meeting
-            </Button>
+            <JoinMeetingButton SetMeetingTrue={() => setJoin(true)} />
           </div>
 
           <div className="flex-1 space-y-6">
@@ -267,7 +261,7 @@ return (
     localAudioTrack={localAudioTrack}
     localVideoTrack={localVideoTrack}
     userId={session.data?.user.id || ""}
-    meetingId={"1"}
+    meetingId = {meetingId}
   />
 );
 }

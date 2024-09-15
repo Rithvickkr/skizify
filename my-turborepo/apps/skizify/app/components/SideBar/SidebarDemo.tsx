@@ -7,6 +7,7 @@ import {
   LayoutGrid,
   SquareCheckBig,
   SquareUserRound,
+  Video,
 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
@@ -25,7 +26,7 @@ export function SidebarDemo({ children }: { children: React.ReactNode }) {
       icon:
         session.data?.user.role === UserRole.USER ? (
           <PlusIcon
-            className={`size-6 flex-shrink-0 text-neutral-700 dark:text-neutral-200 ${session.data?.user.role === UserRole.USER ? "" : "hidden"} `}
+            className={`size-6 my-0.5 flex-shrink-0 text-neutral-700 dark:text-neutral-200 ${session.data?.user.role === UserRole.USER ? "" : "hidden"} `}
           />
         ) : (
           ""
@@ -36,23 +37,33 @@ export function SidebarDemo({ children }: { children: React.ReactNode }) {
       href: "/mygigs",
       icon:
         session.data?.user.role === UserRole.USER ? (
-          <LayoutGrid className="size-6 flex-shrink-0 text-neutral-700 dark:text-neutral-200" />
+          <LayoutGrid className="size-6 my-0.5 flex-shrink-0 text-neutral-700 dark:text-neutral-200" />
         ) : (
-          <SquareCheckBig className="size-6 flex-shrink-0 text-neutral-700 dark:text-neutral-200" />
+          <SquareCheckBig className="size-6 my-0.5 flex-shrink-0 text-neutral-700 dark:text-neutral-200" />
         ),
     },
     {
       label: "Explore",
       href: "/explore",
       icon: (
-        <Codesandbox className="size-6 flex-shrink-0 text-neutral-700 dark:text-neutral-200" />
+        <Codesandbox className="size-6 my-0.5 flex-shrink-0 text-neutral-700 dark:text-neutral-200" />
       ),
     },
     {
       label: "Calendar",
       href: "/schedule",
       icon: (
-        <CalendarRange className="size-6 flex-shrink-0 text-neutral-700 dark:text-neutral-200" />
+        <CalendarRange className="size-6 my-0.5 flex-shrink-0 text-neutral-700 dark:text-neutral-200" />
+      ),
+    },
+    {
+      label: "Meeting",
+      href: "/meeting",
+      icon: (
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6 my-0.5">
+  <path strokeLinecap="round" strokeLinejoin="round" d="M9 17.25v1.007a3 3 0 0 1-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0 1 15 18.257V17.25m6-12V15a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 15V5.25m18 0A2.25 2.25 0 0 0 18.75 3H5.25A2.25 2.25 0 0 0 3 5.25m18 0V12a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 12V5.25" />
+</svg>
+
       ),
     },
     {
@@ -60,7 +71,7 @@ export function SidebarDemo({ children }: { children: React.ReactNode }) {
       href: "/profile",
       icon: (
         <SquareUserRound
-          className="size-6 flex-shrink-0 text-neutral-700 dark:text-neutral-200"
+          className="size-6 my-0.5 flex-shrink-0 text-neutral-700 dark:text-neutral-200"
         />
       ),
     },

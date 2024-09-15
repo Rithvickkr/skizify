@@ -1,11 +1,10 @@
-import Landing from "../../components/Meeting/Landing";
-import Landing2 from "../../components/Meeting/Landing2";
+import SetHairScreen from "../../components/Meeting/SetHairScreen";
 import VideoPlatform from "../../components/Meeting/StructureCopy";
 export default function Meeting() {
   return (
     <div className="h-screen w-full rounded-lg no-scrollbar">
       {/* <Landing /> */}
-      <Landing2 />
+      <SetHairScreen meetingId={"1"} />
       {/* <VideoPlatform /> */}
     </div>
   );

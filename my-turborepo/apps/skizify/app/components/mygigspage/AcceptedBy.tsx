@@ -10,7 +10,7 @@ import {
   CredenzaTrigger,
 } from "../ui/Credenza";
 import { Button } from "../ui/button";
-import { ArrowRightIcon} from "lucide-react";
+import { ArrowRightIcon, ChevronRight} from "lucide-react";
 import { Skizzer_acceptedGig } from "../../lib/actions/Skizzer-accept-gig";
 import SkizzerselectCard from "./SkizzerSelectCard";
 
@@ -24,7 +24,7 @@ export default async function AcceptedBy({ gig }: { gig: GigsInterface }) {
           <div className="my-1 flex place-content-start items-center p-2 sm:my-2 md:my-0">
             <Button
               className="w-full bg-black text-white hover:bg-black dark:bg-white dark:text-black hover:dark:bg-white"
-              Icon={ArrowRightIcon}
+              Icon={ChevronRight}
               iconPlacement="right"
               variant="expandIcon"
             >

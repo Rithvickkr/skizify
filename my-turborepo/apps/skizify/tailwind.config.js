@@ -17,7 +17,7 @@ module.exports = {
     fontFamily:{
       'display': ['Archivo'],
       time : ['"Libre Franklin"', 'sans-serif'],
-
+      helvetica: ['Helvetica', 'Arial', 'sans-serif'],
     },
 
   extend: {

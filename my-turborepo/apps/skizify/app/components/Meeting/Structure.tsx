@@ -813,7 +813,7 @@ export default function VideoPlatform({
       e.stopPropagation();
       const videoElement = reference.current;
       if (!videoElement) return;
-
+    
       if (!document.fullscreenElement) {
         if (videoElement.requestFullscreen) {
           videoElement.requestFullscreen();
@@ -829,9 +829,9 @@ export default function VideoPlatform({
           (document as any).webkitExitFullscreen();
         }
       }
+    
       setIsFullScreen(!isFullScreen);
-    };
-
+    };    
     const getVideoRefByIndex = (
       index: number,
     ): RefObject<HTMLVideoElement> | null => {
@@ -885,6 +885,7 @@ export default function VideoPlatform({
           ref={reference}
           autoPlay
           playsInline
+          controls={false}  // Add this line
           className="absolute inset-0 h-full w-full object-cover"
         />
         <div className="absolute bottom-2 left-2 rounded bg-black bg-opacity-50 px-2 py-1 text-sm text-white">
