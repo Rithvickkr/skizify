@@ -58,7 +58,7 @@ export default function SearchBar() {
               placeholder="Search article"
             />
           </div>
-          <div className="h-8 w-[4.5rem] cursor-pointer truncate rounded bg-black/80 p-1 px-2 text-center text-white hover:opacity-90 dark:bg-zinc-800 dark:text-neutral-200 hover:dark:bg-zinc-700 hover:dark:text-white">
+          <div className="h-8 w-[4.5rem] cursor-pointer truncate rounded bg-black/80 p-1 px-2 text-center text-white hover:opacity-90 dark:bg-zinc-800 dark:text-neutral-400 hover:dark:bg-zinc-700 hover:dark:text-white">
             {shortcut}
           </div>
           {/* The `flex-none` utility class sets `flex: none` on the element, which means it will not grow or shrink, and will only take up the space of its content. */}

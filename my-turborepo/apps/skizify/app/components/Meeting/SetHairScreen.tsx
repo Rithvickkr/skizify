@@ -1,17 +1,12 @@
 "use client";
-import {
-  Camera,
-  Mic,
-  MicOff,
-  VideoOff
-} from "lucide-react";
+import { Camera, Mic, MicOff, VideoOff } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "../ui/button";
 import VideoPlatform from "./Structure";
 import { JoinMeetingButton } from "./JoinButton";
 
-export default function Component({meetingId} : {meetingId : string}) {
+export default function Component({ meetingId }: { meetingId: string }) {
   const session = useSession();
   const [isCameraOn, setIsCameraOn] = useState(true);
   const [isBackgroundBlur, setIsBackgroundBlur] = useState(false);
@@ -143,67 +138,67 @@ export default function Component({meetingId} : {meetingId : string}) {
 
   if (!join) {
     return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-neutral-50 rounded-md md:rounded-xl   to-neutral-100 dark:from-black dark:to-mediumdark p-4">
-      <div className="w-full max-w-7xl rounded-xl bg-black dark:bg-neutral-100/5  bg-opacity-5 p-8 shadow-2xl backdrop-blur-xl">
-      <h1 className="mb-8 text-center text-3xl font-bold bg-gradient-to-r from-slate-500 via-white via-30% to-65% to-neutral-500 bg-clip-text text-transparent font-helvetica ">
-  ⎯⎯ Ready to join the Meeting ⎯⎯
-</h1>
+      <div className="flex min-h-screen items-center justify-center rounded-md bg-gradient-to-br from-neutral-50 to-neutral-100 p-4 dark:from-black dark:to-mediumdark md:rounded-xl">
+        <div className="w-full max-w-7xl rounded-xl bg-black bg-opacity-5 p-8 shadow-2xl backdrop-blur-xl dark:bg-neutral-100/5">
+          <h1 className="mb-8 bg-gradient-to-r from-slate-600 via-black via-30% to-neutral-500 to-65% bg-clip-text text-center font-helvetica text-3xl font-bold text-transparent dark:from-slate-500 dark:via-white">
+            ⎯⎯ Ready to join the Meeting ⎯⎯
+          </h1>
 
-        <div className="flex flex-col gap-8 lg:flex-row">
-          <div className="flex-1">
-            <div className="relative mb-4 aspect-video overflow-hidden rounded-2xl bg-black">
-              {isVideoInitialized ? (
-                <video
-                  ref={videoRef}
-                  autoPlay
-                  muted
-                  className={`h-full w-full object-cover ${isBackgroundBlur ? "backdrop-blur-sm" : ""}`}
-                />
-              ) : (
-                <div className="flex h-full w-full items-center justify-center bg-v0dark">
-                  <VideoOff className="h-16 w-16 text-gray-500" />
+          <div className="flex flex-col gap-8 lg:flex-row">
+            <div className="flex-1">
+              <div className="relative mb-4 aspect-video overflow-hidden rounded-2xl bg-black">
+                {isVideoInitialized ? (
+                  <video
+                    ref={videoRef}
+                    autoPlay
+                    muted
+                    className={`h-full w-full object-cover ${isBackgroundBlur ? "backdrop-blur-sm" : ""}`}
+                  />
+                ) : (
+                  <div className="flex h-full w-full items-center justify-center bg-v0dark">
+                    <VideoOff className="h-16 w-16 text-gray-500" />
+                  </div>
+                )}
+                <div className="absolute bottom-4 left-4 flex gap-2">
+                  <Button
+                    variant="secondary"
+                    size="icon"
+                    className="border border-neutral-700 bg-black opacity-70 hover:bg-black hover:opacity-80"
+                    onClick={handleToggleVideo}
+                    aria-label={
+                      isVideoEnabled ? "Turn camera off" : "Turn camera on"
+                    }
+                  >
+                    {isVideoEnabled ? (
+                      <Camera className="size-4" />
+                    ) : (
+                      <VideoOff className="size-4" />
+                    )}
+                  </Button>
+                  <Button
+                    variant="secondary"
+                    size="icon"
+                    className="border border-neutral-700 bg-black opacity-70 hover:bg-black hover:opacity-80"
+                    onClick={handleToggleAudio}
+                    aria-label={
+                      isAudioEnabled
+                        ? "Turn microphone off"
+                        : "Turn microphone on"
+                    }
+                  >
+                    {isAudioEnabled ? (
+                      <Mic className="size-4" />
+                    ) : (
+                      <MicOff className="size-4" />
+                    )}
+                  </Button>
                 </div>
-              )}
-              <div className="absolute bottom-4 left-4 flex gap-2">
-                <Button
-                  variant="secondary"
-                  size="icon"
-                  className="border border-neutral-700 bg-black opacity-70 hover:bg-black hover:opacity-80"
-                  onClick={handleToggleVideo}
-                  aria-label={
-                    isVideoEnabled ? "Turn camera off" : "Turn camera on"
-                  }
-                >
-                  {isVideoEnabled ? (
-                    <Camera className="size-4" />
-                  ) : (
-                    <VideoOff className="size-4" />
-                  )}
-                </Button>
-                <Button
-                  variant="secondary"
-                  size="icon"
-                  className="border border-neutral-700 bg-black opacity-70 hover:bg-black hover:opacity-80"
-                  onClick={handleToggleAudio}
-                  aria-label={
-                    isAudioEnabled
-                      ? "Turn microphone off"
-                      : "Turn microphone on"
-                  }
-                >
-                  {isAudioEnabled ? (
-                    <Mic className="size-4" />
-                  ) : (
-                    <MicOff className="size-4" />
-                  )}
-                </Button>
               </div>
+              <JoinMeetingButton SetMeetingTrue={() => setJoin(true)} />
             </div>
-            <JoinMeetingButton SetMeetingTrue={() => setJoin(true)} />
-          </div>
 
-          <div className="flex-1 space-y-6">
-            {/* <div className="flex items-center justify-between">
+            <div className="flex-1 space-y-6">
+              {/* <div className="flex items-center justify-between">
               <label
                 htmlFor="background-blur"
                 className="flex items-center gap-2 text-white"
@@ -240,28 +235,30 @@ export default function Component({meetingId} : {meetingId : string}) {
               />
             </div> */}
 
-            <div className="h-full rounded-xl bg-white bg-opacity-5 p-4">
-              <h2 className="mb-2 font-semibold dark:text-white">Meeting Tips</h2>
-              <ul className="space-y-1 text-sm md:text-base xl:text-lg dark:text-gray-300">
-                <li>• Ensure you're in a well-lit area</li>
-                <li>• Use a neutral background if possible</li>
-                <li>• Test your audio before joining</li>
-                <li>• Keep your microphone muted when not speaking</li>
-              </ul>
+              <div className="h-full rounded-xl bg-white bg-opacity-5 p-4">
+                <h2 className="mb-2 font-semibold dark:text-white">
+                  Meeting Tips
+                </h2>
+                <ul className="space-y-1 text-sm dark:text-gray-300 md:text-base xl:text-lg">
+                  <li>• Ensure you're in a well-lit area</li>
+                  <li>• Use a neutral background if possible</li>
+                  <li>• Test your audio before joining</li>
+                  <li>• Keep your microphone muted when not speaking</li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    );
+  }
+  return (
+    <VideoPlatform
+      name={session.data?.user.name || "User"}
+      localAudioTrack={localAudioTrack}
+      localVideoTrack={localVideoTrack}
+      userId={session.data?.user.id || ""}
+      meetingId={meetingId}
+    />
   );
-}
-return (
-  <VideoPlatform
-    name={session.data?.user.name || "User"}
-    localAudioTrack={localAudioTrack}
-    localVideoTrack={localVideoTrack}
-    userId={session.data?.user.id || ""}
-    meetingId = {meetingId}
-  />
-);
 }

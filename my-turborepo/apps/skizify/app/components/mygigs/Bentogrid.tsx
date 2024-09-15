@@ -109,7 +109,7 @@ export function EnhancedLuxuryMeetingCard2({
           </CardHeader>
           <CardContent className="relative z-10 mt-6 grid gap-6">
             <div className="relative overflow-hidden rounded-lg bg-gradient-to-br from-white/80 to-neutral-100/40 p-6 shadow-md backdrop-blur-sm transition-all duration-500 ease-in-out group-hover:shadow-lg dark:from-neutral-900/80 dark:to-neutral-800/40">
-              <div className="absolute -right-4 -top-4 h-16 w-16 rounded-full bg-neutral-200/50 transition-all duration-500 ease-in-out group-hover:scale-150 group-hover:bg-neutral-300/50 dark:bg-neutral-700/50 dark:group-hover:bg-neutral-600/50" />
+              <div className="absolute -right-4 -top-4 h-16 w-16 rounded-full bg-neutral-200/50 transition-all duration-500 ease-in-out group-hover:scale-150 group-hover:bg-neutral-300/50 dark:bg-neutral-700/30 dark:group-hover:bg-neutral-600/40" />
               <h4 className="mb-2 truncate text-xl font-semibold text-neutral-900 dark:text-neutral-100">
                 {gig.title}
               </h4>
@@ -137,7 +137,7 @@ export function EnhancedLuxuryMeetingCard2({
                   key={index}
                   className="flex items-center gap-2 transition-all duration-500 ease-in-out group-hover:translate-x-2"
                 >
-                  <div className="rounded-md bg-neutral-200 p-2 transition-all duration-500 ease-in-out group-hover:bg-neutral-300 dark:bg-neutral-800 dark:group-hover:bg-neutral-700">
+                  <div className="rounded-md bg-neutral-200 p-2 transition-all duration-500 ease-in-out group-hover:bg-neutral-300 dark:bg-neutral-800 dark:group-hover:bg-neutral-700/60">
                     {item.icon === "calendar" && (
                       <CalendarRange strokeWidth={1.5} />
                     )}

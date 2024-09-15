@@ -28,6 +28,7 @@ import {
 import { ScrollArea, ScrollBar } from "../../../@/components/ui/scroll-area";
 import ViewProfile from "../mygigspage/viewProfile";
 import { ToolTip } from "@repo/ui/tooltip";
+import JoinButton from "./JoinButton";
 
 // export interface GiguserContent {
 //   id: string,
@@ -66,7 +67,6 @@ export default function EnhancedGigCard({
   const sessionTime = SessionTime(gig.gig.timeneeded);
   const finalTime = formatTime(gig.finalDateTime);
   const finalMonth = Month(gig.finalDateTime);
-  
 
   //   <Avatar
   //   name={gig.user.name || "User"}
@@ -99,7 +99,7 @@ export default function EnhancedGigCard({
           </Badge>
         </div>
       </CardHeader>
-      <Separator className="my-2 mx-4 bg-neutral-200 dark:bg-neutral-800" />
+      <Separator className="mx-4 my-2 bg-neutral-200 dark:bg-neutral-800" />
       <CardContent className="relative space-y-4 p-3">
         <div className="relative overflow-hidden rounded-lg bg-gradient-to-br from-white/80 to-neutral-100/40 p-6 shadow-md backdrop-blur-sm transition-all duration-500 ease-in-out group-hover:shadow-lg dark:from-neutral-900/80 dark:to-neutral-800/40">
           <div className="absolute -right-4 -top-4 h-16 w-16 rounded-full bg-neutral-200/50 transition-all duration-500 ease-in-out group-hover:scale-150 group-hover:bg-neutral-300/50 dark:bg-neutral-700/50 dark:group-hover:bg-neutral-600/50" />
@@ -116,26 +116,28 @@ export default function EnhancedGigCard({
           </div>
         </div>
         <Separator className="my-2 bg-neutral-200 dark:bg-neutral-800" />
-        <div className="grid grid-cols-2 gap-1 text-sm font-medium p-1">
-          <div className="flex cursor-pointer items-center hover:bg-neutral-200 p-2 rounded-md dark:hover:bg-neutral-800  space-x-2 text-neutral-500 transition-all duration-300 group-hover:text-neutral-700 dark:text-neutral-400 dark:group-hover:text-neutral-200">
+        <div className="grid grid-cols-2 gap-1 p-1 text-sm font-medium">
+          <div className="flex cursor-pointer items-center space-x-2 rounded-md p-2 text-neutral-500 transition-all duration-300 hover:bg-neutral-200 group-hover:text-neutral-700 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:group-hover:text-neutral-200">
             <CalendarRange className="h-4 w-4 text-neutral-400 transition-colors duration-300 dark:text-neutral-500" />
             <ToolTip name="Meeting Date">
-              <span>{finalMonth}{" "}{gig.finalDateTime.getDate()}</span>
+              <span>
+                {finalMonth} {gig.finalDateTime.getDate()}
+              </span>
             </ToolTip>
           </div>
-          <div className="flex cursor-pointer items-center hover:bg-neutral-200 p-2 rounded-md dark:hover:bg-neutral-800  space-x-2 text-neutral-500 transition-all duration-300 group-hover:text-neutral-700 dark:text-neutral-400 dark:group-hover:text-neutral-200">
+          <div className="flex cursor-pointer items-center space-x-2 rounded-md p-2 text-neutral-500 transition-all duration-300 hover:bg-neutral-200 group-hover:text-neutral-700 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:group-hover:text-neutral-200">
             <ClockIcon className="h-4 w-4 text-neutral-400 transition-colors duration-300 dark:text-neutral-500" />
             <ToolTip name="Meeting Time">
               <span>{finalTime}</span>
             </ToolTip>
           </div>
-          <div className="flex cursor-pointer items-center hover:bg-neutral-200 p-2 rounded-md dark:hover:bg-neutral-800  space-x-2 text-neutral-500 transition-all duration-300 group-hover:text-neutral-700 dark:text-neutral-400 dark:group-hover:text-neutral-200">
+          <div className="flex cursor-pointer items-center space-x-2 rounded-md p-2 text-neutral-500 transition-all duration-300 hover:bg-neutral-200 group-hover:text-neutral-700 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:group-hover:text-neutral-200">
             <DollarSignIcon className="h-4 w-4 text-neutral-400 transition-colors duration-300 dark:text-neutral-500" />
             <ToolTip name="Buget">
               <span>{gig.budget}</span>
             </ToolTip>
           </div>
-          <div className="flex cursor-pointer items-center hover:bg-neutral-200 p-2 rounded-md dark:hover:bg-neutral-800  space-x-2 text-neutral-500 transition-all duration-300 group-hover:text-neutral-700 dark:text-neutral-400 dark:group-hover:text-neutral-200">
+          <div className="flex cursor-pointer items-center space-x-2 rounded-md p-2 text-neutral-500 transition-all duration-300 hover:bg-neutral-200 group-hover:text-neutral-700 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:group-hover:text-neutral-200">
             <TagIcon className="h-4 w-4 text-neutral-400 transition-colors duration-300 dark:text-neutral-500" />
             <ToolTip name="Session Duration">
               <span>
@@ -146,14 +148,11 @@ export default function EnhancedGigCard({
         </div>
       </CardContent>
       <div className="flex items-center justify-between border-t border-neutral-200 p-6 dark:border-neutral-800/50">
-          <ViewProfile id={gig.gig.authorId} classname="rounded-3xl min-w-36 group-hover:scale-105 dark:opacity-80 hover:dark:opacity-100" />
-        <Button
-          variant={"gooeyLeft"}
-          className="flex items-center space-x-2 rounded-full border border-neutral-500 bg-v0dark px-4 py-2 text-sm text-white shadow-md transition-all duration-300 hover:shadow-lg group-hover:scale-105 dark:border-0 dark:bg-neutral-800/90 dark:text-neutral-100 dark:shadow-md dark:hover:bg-neutral-700 dark:hover:shadow-lg"
-        >
-          <VideoIcon className="h-4 w-4" />
-          <span>Join Meeting</span>
-        </Button>
+        <ViewProfile
+          id={gig.gig.authorId}
+          classname="rounded-3xl min-w-36 group-hover:scale-105 dark:opacity-80 hover:dark:opacity-100"
+        />
+        <JoinButton />
       </div>
     </Card>
   );
