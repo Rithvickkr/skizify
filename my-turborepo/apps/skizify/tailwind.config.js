@@ -26,7 +26,8 @@ module.exports = {
         lightwhite : "#cfcfcf",
         lightdark : "#353535",
         mediumdark : "#1c1c1c",
-        v0dark: "#212125"
+        v0dark: "#212125",
+        lumadark : "#131617"
       },
       backgroundImage: {
         "trail-blue" : "radial-gradient(circle, rgba(7,0,38,0.929030987394958) 36%, rgba(0,0,0,1) 88%)",
