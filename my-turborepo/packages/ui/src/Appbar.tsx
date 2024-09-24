@@ -14,7 +14,13 @@ import { AppbarProps } from "@repo/store/types";
 import SwitchTheme from "../../../apps/skizify/app/components/SwitchTheme";
 import { ToolTip } from "./Tooltip";
 
-export const Appbar = ({ user, onSignout, onSignin, fn, children }: AppbarProps) => {
+export const Appbar = ({
+  user,
+  onSignout,
+  onSignin,
+  fn,
+  children,
+}: AppbarProps) => {
   const name = user?.name || "User";
   return (
     <div className="flex items-center justify-end gap-2">
@@ -37,13 +43,22 @@ export const Appbar = ({ user, onSignout, onSignin, fn, children }: AppbarProps)
             />
           </DropdownMenuTrigger>
           <DropdownMenuContent className="z-30 mr-3 w-60 bg-white p-3 pt-1 shadow-2xl dark:border-neutral-700 dark:bg-black">
-            <DropdownMenuItem className="focus:outline-0 p-2 pl-1">
-              <div className="flex flex-col dark:text-slate-50">
-                <div className="my-1 break-words break-all font-semibold text-base ">
-                  {user?.name}
+            <DropdownMenuItem className="p-2 pl-1 focus:outline-0">
+              <div className="flex items-center gap-2">
+                <div>
+                  <Avatar
+                    photo={user?.photo}
+                    name={name}
+                    classname=" size-9 dark:ring-slate-50 "
+                  />
                 </div>
-                <div className="truncate break-words dark:text-neutral-300  break-all text-xs">
-                  {user?.email}
+                <div className="flex flex-col dark:text-slate-50">
+                  <div className="my-1 break-words break-all text-base font-semibold">
+                    {user?.name}
+                  </div>
+                  <div className="truncate break-words break-all text-xs dark:text-neutral-300">
+                    {user?.email}
+                  </div>
                 </div>
               </div>
             </DropdownMenuItem>

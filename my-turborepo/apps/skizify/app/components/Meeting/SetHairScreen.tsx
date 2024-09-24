@@ -140,7 +140,7 @@ export default function Component({ meetingId }: { meetingId: string }) {
     return (
       <div className="flex min-h-screen items-center justify-center rounded-md bg-gradient-to-br from-neutral-50 to-neutral-100 p-4 dark:from-black dark:to-mediumdark md:rounded-xl">
         <div className="w-full max-w-7xl rounded-xl bg-black bg-opacity-5 p-8 shadow-2xl backdrop-blur-xl dark:bg-neutral-100/5">
-          <h1 className="mb-8 bg-gradient-to-r from-slate-600 via-black via-30% to-neutral-500 to-65% bg-clip-text text-center font-helvetica text-3xl font-bold text-transparent dark:from-slate-500 dark:via-white">
+          <h1 className="mb-8 bg-gradient-to-r from-slate-600 via-black via-30% to-neutral-500 to-65% bg-clip-text text-center font-helvetica text-3xl font-bold text-transparent dark:from-neutral-800 dark:to-neutral-50">
             ⎯⎯ Ready to join the Meeting ⎯⎯
           </h1>
 

@@ -22,6 +22,7 @@ import Meeting from "./MeetingCalendar";
 import { meetingsInfo_interface } from "@repo/store/types";
 import { ScrollArea } from "../../../@/components/ui/scroll-area";
 import { Avatar } from "@repo/ui/avatar";
+import { CalendarRange } from "lucide-react";
 
 function classNames(...classes: (string | boolean | undefined)[]) {
   return classes.filter(Boolean).join(" ");
@@ -110,7 +111,7 @@ export default function Calendar({
             </span>
           </div>
         </div>
-        <div className="group-hover:shadow-glow-blue cursor-pointer rounded-xl border-1 bg-gradient-to-br from-white to-neutral-100/40 p-4 shadow-lg backdrop-blur-sm transition-all duration-300 dark:border-neutral-600 dark:from-neutral-800/50 dark:to-neutral-900/20 hover:dark:border-neutral-500">
+        <div className="group-hover:shadow-glow-blue cursor-pointer rounded-2xl border-1 bg-gradient-to-br from-white to-neutral-100/40 p-4 shadow-lg backdrop-blur-sm transition-all duration-300 dark:border-neutral-700 dark:from-neutral-800/50 dark:to-neutral-800/60 hover:dark:border-neutral-500">
           <div className="ml-1 mt-1 flex items-stretch">
             <div
               className="-ml-4 -mt-4 mb-4 h-24 w-24 rounded-l-lg bg-neutral-800 bg-gradient-to-br object-cover dark:from-neutral-400 dark:to-neutral-600"
@@ -122,19 +123,18 @@ export default function Calendar({
             <div className="flex-grow space-y-2 pl-4">
               <div className="mb-4 flex items-start justify-between">
                 <div>
-                  <p className="text-2xl font-bold">{time}</p>
-                  <p className="text-sm text-gray-400">Sept 18, Wednesday</p>
+                  <p className="md:ext-2xl text-lg font-bold">{time}</p>
                 </div>
                 {price && (
-                  <div className="rounded bg-neutral-300/30 px-2 py-1 text-sm font-semibold text-[#25a755] dark:bg-[#1c1c1c]">
+                  <div className="rounded bg-green-400/10 px-2 py-1 text-xs font-semibold text-[#208645] dark:bg-[#1c1c1c] md:text-sm">
                     {price}
                   </div>
                 )}
               </div>{" "}
-              <h3 className="text-2xl font-bold text-black opacity-80 dark:text-white">
+              <h3 className="md::text-2xl text-lg font-bold text-black opacity-80 dark:text-white">
                 {title}
               </h3>
-              <div className="flex items-center text-neutral-400">
+              <div className="flex items-center text-xs text-neutral-400 md:text-base">
                 <svg
                   className="mr-2 h-4 w-4"
                   fill="currentColor"
@@ -148,7 +148,7 @@ export default function Calendar({
                 </svg>
                 <span>By {organizer}</span>
               </div>
-              <div className="flex items-center text-neutral-400">
+              <div className="flex items-center text-xs text-neutral-400 md:text-base">
                 <svg
                   className="mr-2 h-4 w-4"
                   fill="currentColor"
@@ -161,6 +161,10 @@ export default function Calendar({
                   />
                 </svg>
                 <span>{location}</span>
+              </div>
+              <div className="flex items-center text-xs text-neutral-400 md:text-base">
+                <CalendarRange className="mr-2 h-4 w-4" />
+                <span>Sept 18, Wednesday</span>
               </div>
             </div>
           </div>
@@ -176,17 +180,17 @@ export default function Calendar({
                   <Avatar
                     name={attendee.name}
                     photo={attendee.image}
-                    classname="h-full w-full border dark:border-black ring-2 ring-transparent rounded-full" // No need to change this
+                    classname="h-full w-full border-2 bg-lumadark dark:bg-zinc-300 dark:border-black ring-2 ring-transparent rounded-full" // No need to change this
                   />
                 </div>
               ))}
               {attendees.length > 4 && (
-                <span className="ml-2 text-neutral-400">
+                <div className="relative z-[1] -ml-2 mt-2 flex size-7 items-center justify-center rounded-full border-2 bg-lumadark text-xs font-bold text-white dark:border-black dark:bg-zinc-300 dark:text-black">
                   +{attendees.length - 4}
-                </span>
+                </div>
               )}
             </div>
-          )}{" "}
+          )}
         </div>
       </div>
     </div>
@@ -194,7 +198,7 @@ export default function Calendar({
 
   const Timeline: React.FC = () => {
     return (
-      <div className="sm:m-3 mx-0 my-2 min-h-screen rounded-lg p-3  md:p-5 dark:bg-transparent">
+      <div className="mx-0 my-2 min-h-screen rounded-lg p-3 dark:bg-transparent sm:m-3 md:p-5">
         <TimelineEvent
           date="18 Sept"
           day="Wednesday"
@@ -340,7 +344,7 @@ export default function Calendar({
 
   return (
     <div className="flex h-full w-full justify-center bg-gradient-to-br dark:from-neutral-800/45 dark:via-black dark:to-neutral-800/45">
-      <div className="relative grid h-full w-full grid-cols-1 gap-2 xl:grid-cols-3 md:gap-3 lg:gap-5">
+      <div className="relative grid h-full w-full grid-cols-1 gap-2 md:gap-3 lg:gap-5 xl:grid-cols-3">
         {/* <div className="mb-4 flex-1 rounded border border-black p-3 pl-2 pt-10 dark:border-neutral-600 md:col-span-2 md:mb-0 md:mt-0 md:pl-3 md:pt-0 lg:pl-5">
             <div className="mt-3 truncate text-2xl font-semibold text-neutral-900 dark:text-neutral-200">
               Meetings for
@@ -363,13 +367,13 @@ export default function Calendar({
             </div>
           </div> */}
 
-        <ScrollArea className="mb-4 flex-1 rounded border border-black px-0  md:p-4 pl-2 pt-5 sm:pt-10 dark:border-neutral-600 xl:col-span-2 md:mb-0 md:mt-0 md:pl-3 md:pt-0 lg:pl-5">
+        <ScrollArea className="col-start-0 mb-4 flex-1 rounded-xl border border-black px-0 pl-2 pt-5 dark:border-neutral-600 sm:pt-10 md:mb-0 md:mt-0 md:p-4 md:pl-3 md:pt-0 lg:pl-5 xl:col-span-2">
           <Timeline />
         </ScrollArea>
 
-        <div className="mb-3 h-2/4 rounded-md border border-black pl-2 pr-3 pt-5 dark:border-neutral-600 dark:bg-transparent md:mb-0 md:w-[97%] md:pl-3 lg:w-[94%]">
+        <div className="mb-3 h-2/4 rounded-md border-black pl-2 pr-3 pt-5 dark:border-neutral-600 dark:bg-transparent md:mb-0 md:w-[97%] md:pl-3 lg:w-[94%]">
           <div className="flex items-center">
-            <div className="ml-0 mt-4 flex-auto text-2xl font-semibold text-neutral-900 dark:text-white md:ml-3">
+            <div className="text-neutral-90 ml-0 mt-4 flex-auto text-2xl font-semibold dark:text-white md:ml-3">
               {format(firstDayCurrentMonth, "MMMM yyyy")}
             </div>
             <button
