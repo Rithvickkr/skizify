@@ -2,7 +2,16 @@
 module.exports = {
   transpilePackages: ["@repo/ui"],
   images : {
-    formats : []
+    formats : [],
+    domains: ['images.unsplash.com'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'assets.example.com',
+        port: '',
+        pathname: '/account123/**',
+      },
+    ],
   }
 };
 
