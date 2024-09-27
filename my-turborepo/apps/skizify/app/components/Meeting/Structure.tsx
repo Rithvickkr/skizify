@@ -1,5 +1,6 @@
 "use client";
 import { Avatar } from "@repo/ui/avatar";
+import { motion } from "framer-motion";
 import {
   EllipsisVertical,
   Expand,
@@ -113,22 +114,22 @@ export default function VideoPlatform({
     socket.emit("sessiondetails", { userId, meetingId });
 
     socket.on("send-offer", async ({ roomId }: { roomId: string }) => {
-      // console.log("Send-offer Sir wait Sir");
+      console.log("Send-offer Sir wait Sir");
       //Now we will make Peer Connection
       const pc = new RTCPeerConnection();
       setSendingPC(pc);
 
       if (localAudioTrack) {
-        // console.log("adding Audi0 Track");
+        console.log("adding Audi0 Track");
         pc.addTrack(localAudioTrack);
       }
       if (localVideoTrack) {
-        // console.log("adding Vide0 Track");
+        console.log("adding Vide0 Track");
         pc.addTrack(localVideoTrack);
       }
       //Now we have to create Offer;
       pc.onicecandidate = async (e) => {
-        // console.log("sending Ice from person who SEND offer");
+        console.log("sending Ice from person who SEND offer");
         //we will send these Ice Candidates to the other User
         if (e.candidate) {
           socket.emit("addIceCandidate", {
@@ -149,7 +150,7 @@ export default function VideoPlatform({
     socket.on(
       "offer",
       async ({ roomId, sdp: remotesdp }: { roomId: string; sdp: any }) => {
-        // console.log("Offer Received Sir ----");
+        console.log("Offer Received Sir ----");
         const pc = new RTCPeerConnection();
         setReceivingPC(pc);
         const stream = new MediaStream();
@@ -211,7 +212,7 @@ export default function VideoPlatform({
         await pc.setRemoteDescription(remotesdp);
         pc.onicecandidate = async (e) => {
           if (e.candidate) {
-            // console.log("Sending ICE Candidate...");
+            console.log("Sending ICE Candidate...");
             socket.emit("addIceCandidate", {
               roomId,
               candidate: e.candidate,
@@ -223,7 +224,7 @@ export default function VideoPlatform({
         const answerSdp = await pc.createAnswer();
         await pc.setLocalDescription(answerSdp);
 
-        // console.log("Sending Answer...");
+        console.log("Sending Answer...");
         socket.emit("answer", { roomId, sdp: answerSdp });
       },
     );
@@ -231,14 +232,14 @@ export default function VideoPlatform({
     socket.on(
       "answer",
       async ({ roomId, sdp: remotesdp }: { roomId: string; sdp: any }) => {
-        // console.log("Received answer Sir");
+        console.log("Received answer Sir");
         //we are Directly changing the sdp in the Function THIS IS GOOD
         //this tells
         setSendingPC((pc) => {
           pc?.setRemoteDescription(remotesdp);
           return pc;
         });
-        // console.log("Cycle Completes");
+        console.log("Cycle Completes");
         //AFTER THE CYCLE COMPLETES THEN ALLOWING USER PERMISSION TO CHAT
         setPermissionToChat(true);
       },
@@ -253,7 +254,7 @@ export default function VideoPlatform({
         candidate: any;
         type: "sender" | "receiver";
       }) => {
-        // console.log("Received ICE BY", type);
+        console.log("Received ICE BY", type);
         if (type === "sender") {
           setReceivingPC((pc) => {
             if (!pc) {
@@ -284,7 +285,7 @@ export default function VideoPlatform({
       console.log("Other User has left the meeting", userId);
 
       // Reset remote user states
-      setRemoteUserJoined(false);
+      setRemoteUserJoined(false); //This will remove the Other User Video from the Screen
       setRemoteVideoTrack(null);
       setRemoteAudioTrack(null);
       setRemoteIsScreenSharing(false);
@@ -315,6 +316,7 @@ export default function VideoPlatform({
         }
         return null;
       });
+      setRemoteUserJoined(false);
     });
 
     setSocket(socket);
@@ -652,11 +654,13 @@ export default function VideoPlatform({
       socket.emit("stop-screen-share", { roomId: meetingId });
     }
   };
-  const endMeeting = () => {
+  const endMeeting = async () => {
     if (socket) {
       socket?.emit("leave-meeting", { userId, meetingId });
       socket?.disconnect();
     }
+    setRemoteUserJoined(false);
+
     setSendingPC((pc) => {
       if (pc) pc.close();
       return null;
@@ -778,6 +782,7 @@ export default function VideoPlatform({
     };
   }, []);
 
+
   const renderVideo = (
     index: number,
     reference: RefObject<HTMLVideoElement>,
@@ -798,8 +803,8 @@ export default function VideoPlatform({
     }
 
     if (title == "Remote Screen Share") {
-      // console.log("reference of ", title, reference?.current?.srcObject);
-      // console.log("remoteScreenStream: ", remoteScreenStream);
+      console.log("reference of ", title, reference?.current?.srcObject);
+      console.log("remoteScreenStream: ", remoteScreenStream);
       // If srcObject is null, try setting it again
       if (
         reference?.current &&
@@ -813,7 +818,7 @@ export default function VideoPlatform({
       e.stopPropagation();
       const videoElement = reference.current;
       if (!videoElement) return;
-    
+
       if (!document.fullscreenElement) {
         if (videoElement.requestFullscreen) {
           videoElement.requestFullscreen();
@@ -829,9 +834,9 @@ export default function VideoPlatform({
           (document as any).webkitExitFullscreen();
         }
       }
-    
+
       setIsFullScreen(!isFullScreen);
-    };    
+    };
     const getVideoRefByIndex = (
       index: number,
     ): RefObject<HTMLVideoElement> | null => {
@@ -872,12 +877,19 @@ export default function VideoPlatform({
     };
 
     return (
-      <div
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1.5 }}
         key={`video-container-${index}`}
         className={`relative overflow-hidden rounded-lg border border-neutral-400 dark:border-neutral-700 ${
           pinnedVideo === index
-            ? "h-1/2 w-full sm:h-full sm:w-4/5"
-            : `${pinnedVideo == null ? "h-full w-[65%] sm:w-full" : "h-full w-[45%] sm:w-full"}`
+            ? "h-1/2 w-full sm:h-full sm:w-4/5" /*For the Pinned Video*/
+            : `${
+                pinnedVideo == null
+                  ? "h-full w-[85%] sm:w-full" /*For the Normal Videos*/
+                  : "h-full w-[45%] sm:w-full sm:h-1/3 " /*For the Videos which are not pinned But another Video is Pinned*/
+              }`
         }`}
         onClick={() => togglePinTab(index)}
       >
@@ -885,18 +897,18 @@ export default function VideoPlatform({
           ref={reference}
           autoPlay
           playsInline
-          controls={false}  // Add this line
+          controls={false} // Add this line
           className="absolute inset-0 h-full w-full object-cover"
         />
-        <div className="absolute bottom-2 left-2 rounded bg-black bg-opacity-50 px-2 py-1 text-sm text-white">
+        <motion.div className="absolute bottom-2 left-2 rounded bg-black bg-opacity-50 px-2 py-1 text-sm text-white">
           {title}
-        </div>
+        </motion.div>
         {selectPinTabs[index] && (
-          <div className="absolute left-1/2 top-1/2 flex min-w-28 -translate-x-1/2 -translate-y-1/2 transform items-center justify-between rounded-e-full rounded-s-full bg-black p-2 opacity-40 transition-opacity duration-700 dark:bg-neutral-500 dark:opacity-50">
-            <div
+          <motion.div className="absolute left-1/2 top-1/2 flex min-w-28 -translate-x-1/2 -translate-y-1/2 transform items-center justify-between rounded-e-full rounded-s-full bg-black p-2 opacity-40 transition-opacity duration-700 dark:bg-neutral-500 dark:opacity-50">
+            <motion.div
               className="cursor-pointer rounded-full text-white opacity-60 hover:bg-v0dark hover:dark:bg-neutral-400 hover:dark:opacity-95"
               onClick={(e) => {
-                e.stopPropagation(); //The above Div has also a On click Event , So it willn't Trigger the Onclick event of Parent Element
+                e.stopPropagation(); //The above motion.Div has also a On click Event , So it willn't Trigger the Onclick event of Parent Element
                 handlePin(index);
               }}
             >
@@ -905,15 +917,15 @@ export default function VideoPlatform({
               ) : (
                 <Pin className="m-2 size-5 text-white sm:size-6" />
               )}
-            </div>
-            <div
+            </motion.div>
+            <motion.div
               className="cursor-pointer rounded-full text-white opacity-60 hover:bg-v0dark hover:dark:bg-neutral-400 hover:dark:opacity-95"
               onClick={toggleFullScreen}
             >
               <Fullscreen className="m-2 size-5 text-white sm:size-6" />
-            </div>
+            </motion.div>
             {isPipAvailable && (
-              <div
+              <motion.div
                 className="cursor-pointer rounded-full text-white opacity-60 hover:bg-v0dark hover:dark:bg-neutral-400 hover:dark:opacity-95"
                 onClick={(e) => {
                   e.stopPropagation();
@@ -925,15 +937,15 @@ export default function VideoPlatform({
                 ) : (
                   <PictureInPicture2 className="m-2 size-5 text-white sm:size-6" />
                 )}
-              </div>
+              </motion.div>
             )}
 
-            <div className="cursor-pointer rounded-full text-white opacity-60 hover:bg-v0dark hover:dark:bg-neutral-400 hover:dark:opacity-95">
+            <motion.div className="cursor-pointer rounded-full text-white opacity-60 hover:bg-v0dark hover:dark:bg-neutral-400 hover:dark:opacity-95">
               <EllipsisVertical className="m-2 size-5 text-white sm:size-6" />
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         )}
-      </div>
+      </motion.div>
     );
   };
 
@@ -965,6 +977,9 @@ export default function VideoPlatform({
                 {[0, 1, 2, 3]
                   .filter((i) => i !== pinnedVideo)
                   .map((index) => {
+                    {
+                      /*Selecting Video Ref*/
+                    }
                     const videoRef =
                       index === 0
                         ? localVideoRef
@@ -973,6 +988,10 @@ export default function VideoPlatform({
                           : index === 2
                             ? localscreenShareVideoref
                             : remoteScreenVideoRef;
+
+                    {
+                      /*Selecting Video title*/
+                    }
                     const title =
                       index === 0
                         ? "Your Video"
@@ -1152,6 +1171,18 @@ export default function VideoPlatform({
               }}
               value={message}
               readOnly={!permissionToChat}
+              onKeyDown={(e) => {
+                //Like when Clicked on Enter the message will be Sent
+                if (e.key === "Enter" && permissionToChat && message.trim()) {
+                  e.preventDefault(); // Prevents adding a new line
+                  messageHandler(
+                    e,
+                    session.data?.user.name || "",
+                    session.data?.user.id || "",
+                    session.data?.user.userImage,
+                  );
+                }
+              }}
             />
             <Button
               variant="ghost"
