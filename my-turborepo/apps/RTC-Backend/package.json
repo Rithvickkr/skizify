@@ -3,19 +3,22 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "build" : "npx tsc -b",
-    "start" : "node dist/index.js",
-    "dev"   : "npm run build && npm run start"
+    "build": "npx tsc -b",
+    "start": "node dist/index.js",
+    "dev": "npm run build && npm run start"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@repo/db": "*",
     "@repo/store": "*",
     "@repo/ui": "*",
-    "@repo/db" : "*",
+    "@types/express": "^5.0.0",
     "@types/ws": "^8.5.11",
+    "cors": "^2.8.5",
+    "express": "^4.21.1",
     "socket.io": "^4.7.5",
     "ws": "^8.18.0"
   }

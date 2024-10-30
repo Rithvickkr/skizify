@@ -6,7 +6,7 @@ import { Button } from "../ui/button";
 import VideoPlatform from "./Structure";
 import { JoinMeetingButton } from "./JoinButton";
 
-export default function Component({ meetingId }: { meetingId: string }) {
+export default function SetHairScreen({ meetingId }: { meetingId: string }) {
   const session = useSession();
   const [isCameraOn, setIsCameraOn] = useState(true);
   const [isBackgroundBlur, setIsBackgroundBlur] = useState(false);

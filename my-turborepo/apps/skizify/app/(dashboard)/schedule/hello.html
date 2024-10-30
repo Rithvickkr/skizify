@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Socket Test</title>
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+</head>
+<body>
+    <div id="status">Disconnected</div>
+    <script>
+        const socket = io('http://192.168.1.22:3003', {
+            transports: ['websocket', 'polling']
+        });
+        
+        socket.on('connect', () => {
+            document.getElementById('status').innerHTML = 'Connected';
+        });
+        
+        socket.on('connect_error', (error) => {
+            document.getElementById('status').innerHTML = 'Error: ' + error;
+        });
+    </script>
+</body>
+</html>

@@ -1,5 +1,5 @@
 import { getServerSession } from "next-auth";
-import Example from "../../components/CalendarPage/Calendar";
+import Calendar from "../../components/CalendarPage/Calendar";
 import { getSkizzercalendarMeetingsdetails, getUsercalendarMeetingsdetails } from "../../lib/actions/getcalendarMeetings";
 import { meetingsInfo_interface } from "@repo/store/types";
 import { GigStatus , UserRole } from "@repo/store/types";
@@ -16,7 +16,7 @@ export default async function Home(){
     return (
       
         <div className="h-screen dark:bg-transparent  ">
-            <Example meetings={meetings}/>
+            <Calendar meetings={meetings}/>
         </div>
     )
 }

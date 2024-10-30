@@ -3,6 +3,12 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import bcrypt from 'bcrypt';
 import { NextAuthOptions, Session } from "next-auth";
+import { JWT } from "next-auth/jwt";
+
+// To test the connection
+// db.$connect()
+//   .then(() => console.log('Database connected successfully'))
+//   .catch((e) => console.error('Database connection error:', e));
 
 
 export const authOptions: NextAuthOptions = {
@@ -23,7 +29,6 @@ export const authOptions: NextAuthOptions = {
         if (!credentials?.email || !credentials.password) {
           throw new Error("Missing email or password");
         }
-        const hashedPassword = await bcrypt.hash(credentials.password, 10);
         const existingUser = await db.user.findFirst({
           where: { email: credentials.email },
         });
@@ -62,7 +67,7 @@ export const authOptions: NextAuthOptions = {
   ],
   secret: process.env.JWT_SECRET || "secret",
   callbacks: {
-    async session({ token, session }: { token: any, session: any }) {
+    async session({ token, session }: { token: JWT, session: any }) {
       if (token) {
         session.user.id = token.id;
         session.user.role = token.role;

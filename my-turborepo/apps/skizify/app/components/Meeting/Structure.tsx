@@ -30,7 +30,7 @@ import { Textarea } from "../../../@/components/ui/textarea";
 import { Button } from "../ui/button";
 import ButtonsDock from "./Buttons-dock";
 import { useRouter } from "next/navigation";
-const URL = "http://localhost:3003";
+const URL = "http://192.168.1.22:3003";
 
 export interface Chat {
   message: string;
@@ -108,8 +108,42 @@ export default function VideoPlatform({
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [pipActiveIndex, setPipActiveIndex] = useState<number | null>(null);
 
+
   useEffect(() => {
-    const socket = io(URL);
+    if (socket) {
+      socket.on('connect', () => {
+        console.log('Connected to server');
+        console.log('Transport:', socket.io.engine.transport.name);
+      });
+  
+      // (socket.io.engine as any).on('transportChange', (transport: { name: any; }) => {
+      //   console.log('Transport changed to:', transport.name);
+      // });
+      socket.emit('test', { message: 'Hello Server!' });
+    
+      // Listen for response
+      socket.on('test-response', (data) => {
+        console.log('Server responded:', data);
+      });
+  
+    }
+  }, [socket]);
+  
+  useEffect(() => {
+    const socket = io(URL, {
+      transports: ['websocket', 'polling'],
+      reconnectionAttempts: 5,
+      reconnectionDelay: 1000,
+      timeout: 10000,
+      forceNew: true,           // Force a new connection
+      path: '/socket.io/',      // Match server path
+      query: {                  // Add query parameters for debugging
+        device: 'mobile',
+        version: '1.0.0'
+      },
+      autoConnect: false        // Don't connect automatically
+    });
+  
     // socket.emit("getSession",)
     socket.emit("sessiondetails", { userId, meetingId });
 
