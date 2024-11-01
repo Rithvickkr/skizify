@@ -1,7 +1,7 @@
 
 import prisma from "@repo/db/client";
 import { GigsInterface } from "@repo/store/types";
-import {MygigCard , MygigCard2} from "./Mygigcard";
+import { MygigCard2} from "./Mygigcard";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../lib/auth";
 import getgigs  from "../../lib/actions/getgigs";
@@ -32,7 +32,7 @@ export default async function Userrequests() {
   );
 
   return (
-    <div>
+    <div className="flex justify-center">
       <MygigCard2 gigs={ activeGigs } session={session} />
     </div>
   );

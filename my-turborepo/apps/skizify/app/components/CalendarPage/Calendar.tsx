@@ -190,7 +190,7 @@ export default function Calendar({
   return (
     <div className="flex h-full w-full justify-center bg-gradient-to-br dark:from-neutral-800/45 dark:via-black dark:to-neutral-800/45">
       <div className="relative grid h-full w-full grid-cols-1 gap-2 md:gap-3 lg:gap-5 xl:grid-cols-3">
-        {/* <div className="mb-4 flex-1 rounded border border-black p-3 pl-2 pt-10 dark:border-neutral-600 md:col-span-2 md:mb-0 md:mt-0 md:pl-3 md:pt-0 lg:pl-5">
+        <div className="mb-4 flex-1 rounded border border-black p-3 pl-2 pt-10 dark:border-neutral-600 md:col-span-2 md:mb-0 md:mt-0 md:pl-3 md:pt-0 lg:pl-5">
             <div className="mt-3 truncate text-2xl font-semibold text-neutral-900 dark:text-neutral-200">
               Meetings for
               <time dateTime={format(selectedDay, "yyyy-MM-dd")}>
@@ -210,11 +210,11 @@ export default function Calendar({
                 <p>No meetings for today.</p>
               )}
             </div>
-          </div> */}
+          </div>
 
-        <ScrollArea className="col-start-0 mb-4 flex-1 rounded-xl border border-black px-0 pl-2 pt-5 dark:border-neutral-600 sm:pt-10 md:mb-0 md:mt-0 md:p-4 md:pl-3 md:pt-0 lg:pl-5 xl:col-span-2">
+        {/* <ScrollArea className="col-start-0 mb-4 flex-1 rounded-xl border border-black px-0 pl-2 pt-5 dark:border-neutral-600 sm:pt-10 md:mb-0 md:mt-0 md:p-4 md:pl-3 md:pt-0 lg:pl-5 xl:col-span-2">
           <Timeline />
-        </ScrollArea>
+        </ScrollArea> */}
 
         <div className="mb-3 h-2/4 rounded-md border-black pl-2 pr-3 pt-5 dark:border-neutral-600 dark:bg-transparent md:mb-0 md:w-[97%] md:pl-3 lg:w-[94%]">
           <div className="flex items-center">

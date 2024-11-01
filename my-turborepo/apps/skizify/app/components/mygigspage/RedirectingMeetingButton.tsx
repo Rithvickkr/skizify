@@ -11,20 +11,16 @@ export default function RedirectToMeetingPage({
 }) {
   const router = useRouter();
   return (
-    <div className="w-full">
-      <ToolTip name="Check out Calendar">
-        <div className="my-1 w-full flex place-content-start items-center p-2 sm:my-2 md:my-0">
-          <Button
-            className="w-full bg-black text-white hover:bg-black dark:bg-white dark:text-black hover:dark:bg-white"
-            Icon={ChevronRight}
-            iconPlacement="right"
-            variant="expandIcon"
-            onClick={() => router.push(`/Meetings/${confirmId}`)}
-          >
-            Booked 🎉
-          </Button>
-        </div>
-      </ToolTip>
+    <div className="my-1 flex place-content-start items-center p-2 sm:my-2 md:my-0">
+      <Button
+        className="w-full bg-black text-white hover:bg-black dark:bg-white dark:text-black hover:dark:bg-white"
+        Icon={ChevronRight}
+        iconPlacement="right"
+        variant="expandIcon"
+        onClick={() => router.push(`/Meetings/${confirmId}`)}
+      >
+        Booked🎉
+      </Button>
     </div>
   );
 }

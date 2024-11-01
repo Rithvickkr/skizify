@@ -34,6 +34,7 @@ export async function confirmGig({
           finalDateTime: finalDateTime,
         },
       });
+      //Confitrm the Status of the GigUser
       const updatedRole = await prisma.gigUser.update({
         where: {
           gigId_skizzerId: {

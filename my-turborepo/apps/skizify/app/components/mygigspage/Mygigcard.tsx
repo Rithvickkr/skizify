@@ -28,98 +28,98 @@ interface MygigCardProps {
   gigs: GigsInterface[];
 }
 
-export function MygigCard({
-  gigs,
-  session,
-}: {
-  gigs: GigsInterface[];
-  session: any;
-}) {
-  // const router = useRouter();
-  return (
-    <div className="group/mygiggs space-y-4 pl-3 transition duration-200">
-      {Array.isArray(gigs) && gigs.length > 0 ? (
-        gigs.map((gig) => (
-          <div
-            key={gig.id}
-            className="-800 flex w-full flex-col rounded-md rounded-tl-3xl border border-neutral-300 p-3 shadow-md transition duration-200 hover/mygiggs:translate-x-2 dark:border-2 dark:border-neutral-600 dark:bg-black"
-          >
-            <div className="flex w-full justify-between">
-              <div className="flex space-x-1">
-                <Avatar
-                  name={session?.user.name}
-                  photo={session?.user.userImage}
-                  classname="size-10 text-sm mr-3"
-                />
-                <div className="self-center">
-                  <span className="text-sm text-neutral-500 md:text-base">
-                    {session?.user.name}
-                  </span>
-                </div>
-              </div>
-              <div className="flex self-center">
-                <EditDeleteCard gig={gig} />
-              </div>
-            </div>
-            <hr className="my-1 dark:border-neutral-600" />
-            <div className="my-3 flex">
-              <div className="flex flex-1 flex-col shadow-sm-light">
-                <div className="ml-2 font-display text-lg md:text-xl">
-                  <h1>{gig.title || "Title"}</h1>
-                </div>
-                <div className="h-full">
-                  <ScrollArea className="h-full w-full truncate text-wrap rounded-md border p-2 px-2 text-sm">
-                    {gig.content}
-                    <ScrollBar orientation="horizontal" />
-                  </ScrollArea>
-                </div>
-              </div>
-              <div className="grid flex-1 grid-cols-1 py-2 pl-2 md:grid-cols-2">
-                <div className="my-1 flex cursor-pointer place-content-start items-center rounded-lg p-2 hover:dark:bg-v0dark sm:my-2 md:my-0">
-                  <Clock7
-                    className="mr-3 size-5 cursor-pointer text-xl font-medium text-neutral-400 dark:text-white md:size-6"
-                    strokeWidth={1.5}
-                    absoluteStrokeWidth
-                  />
-                  <div className="text-sm font-medium text-neutral-400 lg:text-base">
-                    {`${Month(gig.startDateTime)} ${gig.startDateTime.getDate()} - ${Month(gig.endDateTime)} ${gig.endDateTime.getDate()}`}
-                  </div>
-                </div>
-                <div className="my-1 flex cursor-pointer place-content-center items-center rounded-lg py-2 pl-2 hover:dark:bg-v0dark sm:my-2 md:my-0">
-                  <CalendarClock
-                    className="mr-3 size-5 cursor-pointer text-xl font-medium dark:text-white md:size-6"
-                    strokeWidth={1.5}
-                    absoluteStrokeWidth
-                  />
-                  <div className="font-base text-xs sm:text-sm lg:text-base">
-                    {`${formatTime(gig.startDateTime)} - ${formatTime(gig.endDateTime)}`}
-                  </div>
-                </div>
-                <div className="my-1 flex cursor-pointer place-content-start items-center rounded-lg p-2 hover:dark:bg-v0dark sm:my-2 md:my-0">
-                  <CalendarRange
-                    className="mr-3 size-5 cursor-pointer text-xl font-medium text-neutral-400 dark:text-white md:size-6"
-                    strokeWidth={1.5}
-                    absoluteStrokeWidth
-                  />
-                  <div className="text-sm font-medium text-neutral-400 md:text-base">
-                    {SessionTime(Number(gig.timeneeded))}
-                  </div>
-                </div>
-                {gig.status === GigStatus.CONFIRMED ? (
-                  <RedirectToMeetingPage confirmId={gig.confirmUserId} />
-                ) : (
-                  <AcceptedBy gig={gig} />
-                )}
-              </div>
-            </div>
-          </div>
-        ))
-      ) : (
-        <div>No gigs available</div>
-      )}
-    </div>
-  );
-}
+// export function MygigCard({
+//   gigs,
+//   session,
+// }: {
+//   gigs: GigsInterface[];
+//   session: any;
+// }) {
+//   // const router = useRouter();
+//   return (
+//     <div className="group/mygiggs space-y-4 pl-3 transition  duration-200">
+//       {Array.isArray(gigs) && gigs.length > 0 ? (
+//         gigs.map((gig) => (
+//           <div
+//             key={gig.id}
+//             className="-800 flex max-w-7xl flex-col rounded-md  rounded-tl-3xl border border-neutral-300 p-3 shadow-md transition duration-200 hover/mygiggs:translate-x-2 dark:border-2 dark:border-neutral-600 dark:bg-black"
+//           >
+//             <div className="flex w-full justify-between">
+//               <div className="flex space-x-1">
+//                 <Avatar
+//                   name={session?.user.name}
+//                   photo={session?.user.userImage}
+//                   classname="size-10 text-sm mr-3"
+//                 />
+//                 <div className="self-center">
+//                   <span className="text-sm text-neutral-500 md:text-base">
+//                     {session?.user.name}
+//                   </span>
+//                 </div>
+//               </div>
+//               <div className="flex self-center">
+//                 <EditDeleteCard gig={gig} />
+//               </div>
+//             </div>
+//             <hr className="my-1 dark:border-neutral-600" />
+//             <div className="my-3 flex">
+//               <div className="flex flex-1 flex-col shadow-sm-light">
+//                 <div className="ml-2 font-display text-lg md:text-xl">
+//                   <h1>{gig.title || "Title"}</h1>
+//                 </div>
+//                 <div className="h-full">
+//                   <ScrollArea className="h-full w-full truncate text-wrap rounded-md border p-2 px-2 text-sm">
+//                     {gig.content}
+//                     <ScrollBar orientation="horizontal" />
+//                   </ScrollArea>
+//                 </div>
+//               </div>
+//               <div className="grid flex-1 grid-cols-1 py-2 pl-2 md:grid-cols-2">
+//                 <div className="my-1 flex cursor-pointer place-content-start items-center rounded-lg p-2 hover:dark:bg-v0dark sm:my-2 md:my-0">
+//                   <Clock7
+//                     className="mr-3 size-5 cursor-pointer text-xl font-medium text-neutral-400 dark:text-white md:size-6"
+//                     strokeWidth={1.5}
+//                     absoluteStrokeWidth
+//                   />
+//                   <div className="text-sm font-medium text-neutral-400 lg:text-base">
+//                     {`${Month(gig.startDateTime)} ${gig.startDateTime.getDate()} - ${Month(gig.endDateTime)} ${gig.endDateTime.getDate()}`}
+//                   </div>
+//                 </div>
+//                 <div className="my-1 flex cursor-pointer place-content-center items-center rounded-lg py-2 pl-2 hover:dark:bg-v0dark sm:my-2 md:my-0">
+//                   <CalendarClock
+//                     className="mr-3 size-5 cursor-pointer text-xl font-medium dark:text-white md:size-6"
+//                     strokeWidth={1.5}
+//                     absoluteStrokeWidth
+//                   />
+//                   <div className="font-base text-xs sm:text-sm lg:text-base">
+//                     {`${formatTime(gig.startDateTime)} - ${formatTime(gig.endDateTime)}`}
+//                   </div>
+//                 </div>
+//                 <div className="my-1 flex cursor-pointer place-content-start items-center rounded-lg p-2 hover:dark:bg-v0dark sm:my-2 md:my-0">
+//                   <CalendarRange
+//                     className="mr-3 size-5 cursor-pointer text-xl font-medium text-neutral-400 dark:text-white md:size-6"
+//                     strokeWidth={1.5}
+//                     absoluteStrokeWidth
+//                   />
+//                   <div className="text-sm font-medium text-neutral-400 md:text-base">
+//                     {SessionTime(Number(gig.timeneeded))}
+//                   </div>
+//                 </div>
+//                 {gig.status === GigStatus.CONFIRMED ? (
+//                   <RedirectToMeetingPage confirmId={gig.confirmUserId} />
+//                 ) : (
+//                   <AcceptedBy gig={gig} />
+//                 )}
+//               </div>
+//             </div>
+//           </div>
+//         ))
+//       ) : (
+//         <div>No gigs available</div>
+//       )}
+//     </div>
+//   );
+// }
 
 export function MygigCard2({
   gigs,
@@ -129,12 +129,12 @@ export function MygigCard2({
   session: any;
 }) {
   return (
-    <div className="space-y-4 pl-3 transition duration-200">
+    <div className="flex w-full flex-col items-center space-y-4 pl-3 transition duration-200">
       {Array.isArray(gigs) && gigs.length > 0 ? (
         gigs.map((gig, index) => (
           <Card
             key={index}
-            className="group relative w-full overflow-hidden bg-neutral-100 text-white shadow-2xl dark:bg-black"
+            className="group relative max-w-7xl overflow-hidden bg-neutral-100 text-white shadow-2xl dark:bg-black"
           >
             <div className="absolute inset-0 bg-gradient-to-br from-neutral-50 via-neutral-100 to-neutral-50 opacity-50 dark:from-neutral-800 dark:via-black dark:to-neutral-700" />
             <div className="absolute inset-0 backdrop-blur-[2px]" />
@@ -166,7 +166,7 @@ export function MygigCard2({
                   {gig.title}
                 </h4>
                 <div className="text-sm leading-relaxed text-neutral-600 transition-all duration-500 ease-in-out dark:text-neutral-400">
-                  <ScrollArea className="h-12 w-full border-0 rounded-md shadow-none">
+                  <ScrollArea className="h-12 w-full rounded-md border-0 shadow-none">
                     <p className="whitespace-normal break-words pr-4">
                       {gig.content}
                     </p>
@@ -175,8 +175,8 @@ export function MygigCard2({
                 </div>
               </div>
 
-              <div className="p-1 duration-400  mb-3 grid grid-cols-1 gap-4 sm:grid-cols-2">
-                <div className="shadow-sm mx-1 border dark:border-0 transform cursor-pointer rounded-lg bg-white bg-opacity-5 p-2 backdrop-filter transition-transform duration-300 hover:scale-105 sm:p-4">
+              <div className="mb-3 grid grid-cols-1 gap-4 p-1 duration-400 sm:grid-cols-2">
+                <div className="mx-1 transform cursor-pointer rounded-lg border bg-white bg-opacity-5 p-2 shadow-sm backdrop-filter transition-transform duration-300 hover:scale-105 dark:border-0 sm:p-4">
                   <div className="mb-2 flex items-center text-sm">
                     <CalendarRange className="mr-2 size-4 text-neutral-800 opacity-85 hover:opacity-100 dark:text-neutral-400" />
                     <span className="font-medium text-neutral-800 opacity-85 hover:opacity-100 dark:text-neutral-200">
@@ -187,7 +187,7 @@ export function MygigCard2({
                     {`${Month(gig.startDateTime)} ${gig.startDateTime.getDate()} - ${Month(gig.endDateTime)} ${gig.endDateTime.getDate()}`}
                   </p>
                 </div>
-                <div className="shadow-sm mx-1 border dark:border-0 transform cursor-pointer rounded-lg bg-white bg-opacity-5 p-2 backdrop-filter transition-transform duration-300 hover:scale-105 sm:p-4">
+                <div className="mx-1 transform cursor-pointer rounded-lg border bg-white bg-opacity-5 p-2 shadow-sm backdrop-filter transition-transform duration-300 hover:scale-105 dark:border-0 sm:p-4">
                   <div className="mb-2 flex items-center text-sm">
                     <Clock7Icon className="mr-2 size-4 text-neutral-800 opacity-85 hover:opacity-100 dark:text-neutral-400" />
                     <span className="font-medium text-neutral-800 opacity-85 hover:opacity-100 dark:text-neutral-200">
@@ -200,9 +200,9 @@ export function MygigCard2({
                 </div>
               </div>
 
-              <div className=" cursor-pointer  shadow-md hover:shadow-lg  mb-3 transform rounded-lg bg-neutral-200 from-lightdark to-mediumdark p-2 transition-all duration-300 hover:scale-100    dark:bg-gradient-to-r">
+              <div className="mb-3 transform cursor-pointer rounded-lg bg-neutral-200 from-lightdark to-mediumdark p-2 shadow-md transition-all duration-300 hover:scale-100 hover:shadow-lg dark:bg-gradient-to-r">
                 <div className="flex flex-col flex-wrap items-center gap-1 text-xs sm:flex-row sm:justify-around sm:gap-2">
-                  <div className="bg-gradient-to-r flex-1 sm:flex-initial from-black to-v0dark bg-clip-text text-base font-semibold text-transparent dark:from-neutral-300 dark:to-white sm:text-lg">
+                  <div className="flex-1 bg-gradient-to-r from-black to-v0dark bg-clip-text text-base font-semibold text-transparent dark:from-neutral-300 dark:to-white sm:flex-initial sm:text-lg">
                     Session Details
                   </div>
                   <div>

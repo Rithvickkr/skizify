@@ -113,13 +113,13 @@ export default function SkizzerselectCard({
                 budget: info.budget,
               });
               if (change) {
-                SendingEmails({
-                  to: info.Skizzer.email || "rithvickkumar27@gmail.com",
-                  to2: session?.user.email || " ",
-                  name: info.Skizzer.name || "Rithvick",
-                  subject: "Gig Confirmation",
-                  body: "Congratulations! Your gig has been confirmed. You can now view the details in your dashboard.",
-                });
+                // SendingEmails({
+                //   to: info.Skizzer.email || "rithvickkumar27@gmail.com",
+                //   to2: session?.user.email || " ",
+                //   name: info.Skizzer.name || "Rithvick",
+                //   subject: "Gig Confirmation",
+                //   body: "Congratulations! Your gig has been confirmed. You can now view the details in your dashboard.",
+                // });
 
                 console.log("Gig confirmed successfully");
                 // toast({

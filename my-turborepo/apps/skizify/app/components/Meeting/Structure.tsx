@@ -30,7 +30,7 @@ import { Textarea } from "../../../@/components/ui/textarea";
 import { Button } from "../ui/button";
 import ButtonsDock from "./Buttons-dock";
 import { useRouter } from "next/navigation";
-const URL = "http://192.168.1.22:3003";
+const URL = "http://localhost:3003";
 
 export interface Chat {
   message: string;

@@ -29,7 +29,7 @@ export default function EditDeleteCard({ gig }: { gig: GigsInterface }) {
 
   return (
     <div className="flex gap-2 sm:gap-1">
-      <ToolTip name="Edit">
+      {/* <ToolTip name="Edit">
         <Button
           variant="outline"
           size="icon"
@@ -38,7 +38,7 @@ export default function EditDeleteCard({ gig }: { gig: GigsInterface }) {
           <EditIcon className="size-3 sm:size-4" />
           <span className="sr-only">Edit</span>
         </Button>
-      </ToolTip>
+      </ToolTip> */}
       <ToolTip
         name="Delete"
         className="bg-red-600 text-white dark:bg-red-600 dark:text-white"

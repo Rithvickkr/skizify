@@ -68,7 +68,7 @@ model Reviews {
 
 model GigUser {
   id            String    @id @default(uuid())
-  gig           Gigs      @relation(fields: [gigId], references: [id], onDelete: Cascade)
+  gig           Gigs      @relation(fields: [gigId], references: [id], onDelete: Cascade) // onDelete: Cascade ensures that if the related gig is deleted, the corresponding GigUser record is also deleted.
   gigId         String    @unique
   user          User      @relation(name: "UserCreatedGig", fields: [UserId], references: [id])
   Skizzer       User      @relation(name: "UserAccptedGig", fields: [skizzerId], references: [id])
@@ -77,19 +77,32 @@ model GigUser {
   status        GigStatus @default(PENDING)
   budget        Int
   finalDateTime DateTime
-  meeting       meeting?
+  meeting       meeting? //This is the Meeting Record One on One Because we will make a meeting Record when the 2 users are Confirmed that they will have a meeting
 
   //@@unique([skizzerId, UserId]) This means they can never build realtion in future
   @@unique([gigId, skizzerId]) //There will be Unique relation B/w gigid and Skizer
 }
 
-model meeting {
-  id        String        @id @default(uuid())
-  gigUserId String        @unique
-  status    MeetingStatus @default(UNBOOKED_PENDING) //This is the Status of the Meeting, If it is Pending or Ended
-  GigUser   GigUser       @relation(fields: [gigUserId], references: [id])
+//We will make a meeting Record when the 2 users are Confirmed that they will have a meeting //That's why we will make a meeting Record
 
+//These are the meeting Records which will be Related to the
+model meeting {
+  id            String        @id @default(uuid())
+  gigUserId     String        @unique
+  status        MeetingStatus @default(UNBOOKED_PENDING) //This is the Status of the Meeting, If it is Pending or Ended
+  GigUser       GigUser       @relation(fields: [gigUserId], references: [id])
+  createdAt     DateTime      @default(now())
   @@index([gigUserId])
+}
+  // meetingId     String        //This is the Meeting Id of the Meeting
+
+model InstantMeeting {
+  id            String        @id @default(uuid())
+  meetingId     String        //This is the Meeting Id of the Meeting //they will be generated at a Time of Meeting
+  hostId        String        //This is the Host Id of the Meeting
+  guestId       String?       //This is the Guest Id of the Meeting //Not necessary because Other Person can Join or Not
+  status        MeetingStatus @default(UNBOOKED_PENDING) //This is the Status of the Meeting, If it is Pending or Ended
+  createdAt     DateTime      @default(now())
 }
 
 enum MeetingStatus {
