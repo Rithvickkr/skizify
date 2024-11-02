@@ -98,11 +98,14 @@ model meeting {
 
 model InstantMeeting {
   id            String        @id @default(uuid())
-  meetingId     String        //This is the Meeting Id of the Meeting //they will be generated at a Time of Meeting
+  meetingId     String        @unique//This is the Meeting Id of the Meeting //they will be generated at a Time of Meeting
   hostId        String        //This is the Host Id of the Meeting
   guestId       String?       //This is the Guest Id of the Meeting //Not necessary because Other Person can Join or Not
   status        MeetingStatus @default(UNBOOKED_PENDING) //This is the Status of the Meeting, If it is Pending or Ended
   createdAt     DateTime      @default(now())
+  expiresAt     DateTime?     // New field for expiration date
+  @@index([meetingId])
+
 }
 
 enum MeetingStatus {

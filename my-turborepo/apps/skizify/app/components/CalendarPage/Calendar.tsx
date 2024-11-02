@@ -1,7 +1,7 @@
 "use client";
-import { Menu, Transition } from "@headlessui/react";
-import { DotsVerticalIcon } from "@heroicons/react/outline";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/solid";
+import { meetingsInfo_interface } from "@repo/store/types";
+import { Avatar } from "@repo/ui/avatar";
 import {
   add, //On Bottom of the page
   eachDayOfInterval, //Return the array of dates within the specified time interval
@@ -16,13 +16,10 @@ import {
   parseISO, // Bottom of the page, convert String into Dateobject
   startOfToday, //Return the start of today.
 } from "date-fns";
-import { Fragment, useState } from "react";
+import { CalendarRange } from "lucide-react";
+import { useState } from "react";
 import { Button } from "../ui/button";
 import Meeting from "./MeetingCalendar";
-import { meetingsInfo_interface } from "@repo/store/types";
-import { ScrollArea } from "../../../@/components/ui/scroll-area";
-import { Avatar } from "@repo/ui/avatar";
-import { CalendarRange } from "lucide-react";
 
 function classNames(...classes: (string | boolean | undefined)[]) {
   return classes.filter(Boolean).join(" ");
@@ -211,6 +208,7 @@ export default function Calendar({
               )}
             </div>
           </div>
+          
 
         {/* <ScrollArea className="col-start-0 mb-4 flex-1 rounded-xl border border-black px-0 pl-2 pt-5 dark:border-neutral-600 sm:pt-10 md:mb-0 md:mt-0 md:p-4 md:pl-3 md:pt-0 lg:pl-5 xl:col-span-2">
           <Timeline />

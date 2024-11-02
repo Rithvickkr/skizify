@@ -135,12 +135,12 @@ export const LogoIcon = () => {
 // Dummy dashboard component with content
 const Dashboard = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="flex min-h-screen w-full flex-col gap-2 rounded-tl-2xl border border-neutral-200 bg-white p-2 dark:border-neutral-700 dark:bg-black">
+    <div className="flex min-h-screen w-full flex-col gap-2 rounded-tl-2xl border border-neutral-200 bg-black/5 p-2 dark:border-neutral-700 dark:bg-black ">
       {/* AppBar at the top */}
       <AppbarClient />
 
       {/* Main content */}
-      <div className="no-scrollbar flex-1 overflow-y-auto p-2">{children}</div>
+      <div className="no-scrollbar flex-1 rounded-xl overflow-y-auto p-2 bg-white dark:bg-black">{children}</div>
 
       {/* Footer */}
       <hr className="dark:opacity-50 " />

@@ -117,7 +117,7 @@ export default function Footer() {
   }
 
   return (
-    <Section className=" rounded-tl-lg rounded-tr-lg border-black px-2 pb-2 pl-4 pt-2 dark:border-white dark:bg-black opacity-95 md:pb-0">
+    <Section className=" rounded-tl-lg bg-white rounded-tr-lg border-black px-2 pb-2 pl-4 pt-2 dark:border-white dark:bg-black opacity-95 md:pb-0">
       <div className=" gap-2 md:gap-4 border dark:border-0 inline-block p-3 rounded-lg shadow-md  ">
         <Form {...form}>
           <form

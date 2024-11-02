@@ -1,12 +1,13 @@
 {
   "name": "my-turborepo",
   "private": true,
-  "scripts": {
-    "build": "turbo build",
-    "dev": "turbo dev",
-    "lint": "turbo lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
-  },
+"scripts": {
+  "build": "turbo build",
+  "dev": "concurrently \"turbo dev\" \"npm run cleanup\"",
+  "lint": "turbo lint",
+  "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+  "cleanup": "node apps/backend/server.js" 
+},
   "devDependencies": {
     "@repo/eslint-config": "*",
     "@repo/typescript-config": "*",
