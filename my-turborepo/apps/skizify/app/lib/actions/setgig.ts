@@ -40,7 +40,7 @@ export async function GigSet(
       return gig;
     }
   } catch (err) {
-    console.log("Error posting Gig");
-    console.log(err);
+    console.log("Error posting Gig",err);
+    throw new Error("Error posting Gig");
   }
 }

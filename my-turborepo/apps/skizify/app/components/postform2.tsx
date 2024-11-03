@@ -1,11 +1,4 @@
 "use client";
-import { useSession } from "next-auth/react";
-import { useTheme } from "next-themes";
-import { useState } from "react";
-import { Input } from "../../@/components/ui/input";
-import { Label } from "../../@/components/ui/label";
-import { Textarea } from "../../@/components/ui/textarea";
-import { Button } from "./ui/button";
 import { DatePicker, PickerValidDate, TimePicker } from "@mui/x-date-pickers";
 import { AnimatePresence, motion } from "framer-motion";
 import {
@@ -13,6 +6,11 @@ import {
   ChevronLeftIcon,
   ChevronRightIcon,
 } from "lucide-react";
+import { useSession } from "next-auth/react";
+import { useTheme } from "next-themes";
+import { useState } from "react";
+import { Input } from "../../@/components/ui/input";
+import { Label } from "../../@/components/ui/label";
 import {
   Popover,
   PopoverContent,
@@ -25,7 +23,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../@/components/ui/select";
+import { Textarea } from "../../@/components/ui/textarea";
 import { GigSet } from "../lib/actions/setgig";
+import { Button } from "./ui/button";
+import { ToastAction } from "../../@/components/ui/toast";
+import { toast } from "../../@/components/ui/use-toast";
 
 // Particle background component
 
@@ -134,7 +136,7 @@ export default function Postform() {
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    if (true) {
+    try {
       await GigSet(
         formData.Title,
         formData.description,
@@ -146,20 +148,38 @@ export default function Postform() {
         formData.category,
       );
       console.log("Form submitted:", formData);
+      // {
+      //   Title: ';KNE;RKNG',
+      //   startdate: 'Mon Dec 30 2024 00:00:00 GMT+0530 (India Standard Time)',
+      //   starttime: 'Sun Nov 03 2024 04:00:00 GMT+0530 (India Standard Time)',
+      //   enddate: 'Tue Dec 31 2024 00:00:00 GMT+0530 (India Standard Time)',
+      //   endtime: 'Sun Nov 03 2024 08:00:00 GMT+0530 (India Standard Time)',
+      //   description: 'ELRKGNLWKEG',
+      //   category: 'Art'
+      // }
+
       setIsSubmitted(true);
       setTimeout(() => {
         setIsSubmitted(false);
-      }, 3000);
-      setFormData({
-        Title: "",
-        startdate: "",
-        starttime: "",
-        enddate: "",
-        endtime: "",
-        category: "",
-        description: "",
-      });
+        setFormData({
+          Title: "",
+          startdate: "",
+          starttime: "",
+          enddate: "",
+          endtime: "",
+          category: "",
+          description: "",
+        });
+      }, 50000);
       setCurrentStep(0);
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      toast("Error", "There was a problem with your request.", {
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: "There was a problem with your request.",
+        action: <ToastAction altText="Try again">Try again</ToastAction>,
+      });
     }
   };
 
@@ -340,8 +360,8 @@ export default function Postform() {
                                             variant="default"
                                             className={`border-[#d1d5d8] px-2 py-1 text-xs ${
                                               selectedTime === time
-                                                ? "bg-black text-white dark:bg-white dark:text-black border-neutral-500 hover:bg-black hover:text-white hover:border hover:border-neutral-500"
-                                                : "bg-white text-black dark:bg-neutral-800 dark:text-white hover:bg-black opacity-80 hover:opacity-100 hover:text-white hover:border hover:border-neutral-500"
+                                                ? "border-neutral-500 bg-black text-white hover:border hover:border-neutral-500 hover:bg-black hover:text-white dark:bg-white dark:text-black"
+                                                : "bg-white text-black opacity-80 hover:border hover:border-neutral-500 hover:bg-black hover:text-white hover:opacity-100 dark:bg-neutral-800 dark:text-white"
                                             }`}
                                             onClick={() => {
                                               setTimeneed(time);
@@ -547,11 +567,53 @@ export default function Postform() {
       {isSubmitted && (
         <motion.div
           initial={{ opacity: 0 }}
+          exit={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
-          className="fixed bottom-4 right-4 rounded-lg bg-purple-600 px-4 py-2 text-white shadow-lg"
+          className="w-80% fixed bottom-4 right-4 flex max-w-lg items-center justify-between rounded-lg border bg-transparent px-5 py-3 text-black shadow-lg dark:border-white/20 dark:text-white"
         >
-          Form submitted successfully!
+          <div className="text-sm">
+            <div className="flex flex-col">
+              <div className="text-base font-medium">
+                Meeting: {formData.Title}
+              </div>
+              <div className="mt-2 flex gap-1 text-xs text-gray-500 dark:text-gray-400">
+                <div>
+                  {new Date(formData.startdate).toLocaleDateString("en-US", {
+                    weekday: "short",
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                  })}{" "}
+                  {new Date(formData.starttime).toLocaleTimeString("en-US", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </div>
+                {"⎯"}
+                <div>
+                  {new Date(formData.enddate).toLocaleDateString("en-US", {
+                    weekday: "short",
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                  })}{" "}
+                  {new Date(formData.endtime).toLocaleTimeString("en-US", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <Button
+              className="ml-4 rounded-lg border bg-white px-3 py-1 text-black opacity-90 hover:bg-black/20 hover:opacity-100 dark:border-white/20 dark:bg-black dark:text-white dark:opacity-90 dark:hover:opacity-100"
+              onClick={() => setIsSubmitted(false)}
+            >
+              Close
+            </Button>
+          </div>
         </motion.div>
       )}
     </div>

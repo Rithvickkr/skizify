@@ -136,7 +136,7 @@ export function MygigCard2({
             key={index}
             className="group relative max-w-7xl overflow-hidden bg-neutral-100 text-white shadow-2xl dark:bg-black"
           >
-            <div className="absolute inset-0 bg-gradient-to-br from-neutral-50 via-neutral-100 to-neutral-50 opacity-50 dark:from-neutral-800 dark:via-black dark:to-neutral-700" />
+            <div className="absolute inset-0 bg-gradient-to-br from-neutral-50 via-neutral-100 to-neutral-50 opacity-50 dark:from-neutral-800 dark:via-neutral-800/90 dark:to-neutral-700" />
             <div className="absolute inset-0 backdrop-blur-[2px]" />
             <div className="relative z-10 p-2 sm:p-3 md:p-4">
               <div className="mb-3 flex flex-col items-center justify-between space-y-4 sm:mb-5 sm:flex-row sm:items-center sm:space-y-0">

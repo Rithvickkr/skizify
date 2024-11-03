@@ -94,7 +94,7 @@ io.on("connection", (socket: Socket) => {
 
 
 
-server.listen(3003, '0.0.0.0', () => {
+server.listen(3003, () => {
   console.log("listening on *:3003");
 });
 
