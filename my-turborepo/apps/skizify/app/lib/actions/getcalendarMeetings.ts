@@ -52,14 +52,14 @@ export async function getUsercalendarMeetingsdetails() {
         user: {
           select: {
             id: true,
-            name: true, //name of the user
+            name: true,
             userImage: true,
           },
         },
         Skizzer: {
           select: {
             id: true,
-            name: true, //name of the user
+            name: true,
             userImage: true,
           },
         },
@@ -70,6 +70,10 @@ export async function getUsercalendarMeetingsdetails() {
             timeneeded: true
           },
         },
+      },
+      //This will get me Meetings in the Ascending Order
+      orderBy: {
+        finalDateTime: 'asc',
       },
     });
     if (meetings) {
@@ -103,14 +107,14 @@ export async function getSkizzercalendarMeetingsdetails() {
         user: {
           select: {
             id: true,
-            name: true, //name of the user
+            name: true,
             userImage: true,
           },
         },
         Skizzer: {
           select: {
             id: true,
-            name: true, //name of the user
+            name: true,
             userImage: true,
           },
         },
@@ -121,6 +125,9 @@ export async function getSkizzercalendarMeetingsdetails() {
             timeneeded: true
           },
         },
+      },
+      orderBy: {
+        finalDateTime: 'asc',
       },
     });
     if (meetings) {
