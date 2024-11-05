@@ -14,6 +14,8 @@ import { CircleCheckBig, Link } from "lucide-react";
 import { Label } from "../../../@/components/ui/label";
 import { Input } from "../../../@/components/ui/input";
 import { Clipboard } from "lucide-react";
+import { BorderBeam } from "../../../@/components/ui/border-beam";
+
 
 export default function CreateMeetingLinkButton() {
   const session = useSession();
@@ -69,7 +71,7 @@ export default function CreateMeetingLinkButton() {
       <Dialog>
         <DialogTrigger asChild>
           <Button
-            className="flex h-40 w-full flex-col items-center justify-center border border-black/60 bg-transparent text-black opacity-75 hover:bg-black/5 hover:opacity-100 dark:border-white/50 dark:text-white dark:hover:bg-white/10"
+            className="relative flex h-40 w-full flex-col items-center justify-center border border-black/60 bg-transparent text-black opacity-75 hover:bg-black/5 hover:opacity-100 dark:border-white/50 dark:text-white dark:hover:bg-white/10"
             onClick={() => {
               try {
                 handleCreateMeeting();
@@ -81,6 +83,8 @@ export default function CreateMeetingLinkButton() {
           >
             <Link className="mb-2 h-6 w-6" />
             Share Link
+            <BorderBeam size={200} duration={12} delay={2} colorFrom="white" colorTo="gray" />
+
           </Button>
         </DialogTrigger>
         <DialogContent className="rounded-lg border-2 border-black dark:border dark:border-neutral-600 dark:bg-lumadark/30 dark:bg-opacity-5 dark:backdrop-blur-sm">

@@ -76,14 +76,9 @@ export default function SkizzerselectCard({
         })}
       </div>
       <div className="mt-4 flex justify-between space-x-4">
+        
         <Button
-          className="m-1 flex-1 border border-white bg-white text-black shadow hover:bg-white hover:ring-black dark:bg-white dark:text-black dark:hover:bg-white dark:hover:text-black dark:hover:ring-white"
-          variant="ringHover"
-        >
-          Messages
-        </Button>
-        <Button
-          className="col-span-1 m-1 w-full flex-1 bg-black text-white dark:border dark:border-white dark:bg-black"
+          className=" m-1 w-full flex-1 dark:bg-white dark:text-black bg-black text-white dark:border dark:border-white "
           variant="gooeyLeft"
           onClick={async () => {
             const info = SKizzersInfo.find((x: any) => {

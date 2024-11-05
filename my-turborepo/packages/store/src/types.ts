@@ -55,11 +55,13 @@ export interface GigsInterface {
       id: string;
       name: string | null;
       userImage: string | null;
+      email : string | null;
     };
     Skizzer: {
       id: string;
       name: string | null;
       userImage: string | null;
+      email : string | null;
     };
     gig: {
       title: string;

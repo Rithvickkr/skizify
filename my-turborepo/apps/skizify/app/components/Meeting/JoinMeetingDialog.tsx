@@ -10,14 +10,17 @@ import {
   CredenzaFooter,
   CredenzaTrigger,
 } from "../ui/Credenza";
+import { BorderBeam } from "../../../@/components/ui/border-beam";
+
 
 const JoinMeetingCredenza = () => {
   return (
     <Credenza>
       <CredenzaTrigger asChild>
-        <Button className="col-span-1 flex h-auto flex-col items-center justify-center border border-black/60 bg-transparent text-black opacity-75 hover:bg-black/5 hover:opacity-100 dark:border-white/50 dark:text-white dark:hover:bg-white/10">
+        <Button className="col-span-1 relative flex h-auto flex-col items-center justify-center border border-black/60 bg-transparent text-black opacity-75 hover:bg-black/5 hover:opacity-100 dark:border-white/50 dark:text-white dark:hover:bg-white/10">
           <Video className="mb-2 h-6 w-6" />
           Join Meeting
+          <BorderBeam size={200} duration={12} delay={8} colorFrom="white" colorTo="gray" />
         </Button>
       </CredenzaTrigger>
       <CredenzaContent className="p-6 max-w-md mx-auto bg-neutral-50 dark:bg-white/5 backdrop-blur-xl  shadow-lg rounded-lg border border-neutral-200 dark:border-neutral-800">

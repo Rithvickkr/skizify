@@ -69,7 +69,7 @@ export async function Skizzer_acceptedGig(gigId: string){
         }
       }
     })
-    return Users
+    return Users;
     }catch(err){
     console.log("Error fetching Skizzer's who accepted Request",err);
   }

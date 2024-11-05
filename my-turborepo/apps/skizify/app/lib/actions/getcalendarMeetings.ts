@@ -54,6 +54,7 @@ export async function getUsercalendarMeetingsdetails() {
             id: true,
             name: true,
             userImage: true,
+            email : true
           },
         },
         Skizzer: {
@@ -61,6 +62,7 @@ export async function getUsercalendarMeetingsdetails() {
             id: true,
             name: true,
             userImage: true,
+            email : true
           },
         },
         gig: {
@@ -109,6 +111,7 @@ export async function getSkizzercalendarMeetingsdetails() {
             id: true,
             name: true,
             userImage: true,
+            email : true
           },
         },
         Skizzer: {
@@ -116,6 +119,7 @@ export async function getSkizzercalendarMeetingsdetails() {
             id: true,
             name: true,
             userImage: true,
+            email : true
           },
         },
         gig: {

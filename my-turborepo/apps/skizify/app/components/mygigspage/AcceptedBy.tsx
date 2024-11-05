@@ -16,7 +16,7 @@ import SkizzerselectCard from "./SkizzerSelectCard";
 
 export default async function AcceptedBy({ gig }: { gig: GigsInterface }) {
   //Fetch the Users Reveiws , ratings , Budget Proposed , time Proposed
-  const SKizzersInfo = await Skizzer_acceptedGig(gig.id);
+  const SKizzersInfo = (await Skizzer_acceptedGig(gig.id)) || [];
   return (
     <div>
       <Credenza>
@@ -41,14 +41,21 @@ export default async function AcceptedBy({ gig }: { gig: GigsInterface }) {
             </CredenzaTitle>
             <CredenzaDescription>
               <div className="text-lg bg-gradient-to-r from-neutral-800 to-neutral-300 bg-clip-text">
-                Request accepted by Skizzers
+                Requests by Skizzers
               </div>
             </CredenzaDescription>
           </CredenzaHeader>
 
-          <CredenzaBody>
+          {SKizzersInfo?.length > 0 ? (
+
+            <CredenzaBody>
             <SkizzerselectCard SKizzersInfo={SKizzersInfo} />
           </CredenzaBody>
+          ) : (
+            <div className="p-2 border-1 border-black dark:border-white rounded ">
+        
+            </div>
+          )}
 
           {/* <CredenzaFooter className="flex justify-between space-x-4">
             <Button
