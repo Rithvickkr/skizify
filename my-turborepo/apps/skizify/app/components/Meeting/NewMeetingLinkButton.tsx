@@ -40,7 +40,7 @@ export default function CreateMeetingLinkButton() {
     console.log("newMeeting: ", newMeeting);
 
     // Generate the meeting link
-    const link = `${window.location.origin}/meeting/${newMeeting.meetingId}`;
+    const link = `${window.location.origin}/instant-meeting/${newMeeting.meetingId}`;
     setMeetingLink(link); // Set the meeting link in state
   };
 

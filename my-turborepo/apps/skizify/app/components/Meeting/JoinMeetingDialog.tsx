@@ -11,6 +11,7 @@ import {
   CredenzaTrigger,
 } from "../ui/Credenza";
 import { BorderBeam } from "../../../@/components/ui/border-beam";
+import CheckMeetingCode from "./CheckMeetingCode";
 
 
 const JoinMeetingCredenza = () => {
@@ -33,18 +34,7 @@ const JoinMeetingCredenza = () => {
     </CredenzaDescription>
   </CredenzaHeader>
   
-  <Input
-    placeholder="Meeting code"
-    className="w-full px-5 py-6 bg-neutral-800 border text-lg border-neutral-600 rounded-lg text-neutral-200 placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-neutral-500"
-  />
-
-  <div className="flex justify-center">
-    <Button
-    variant={"outline"} 
-    className="w-full px-6 py-5 text-center hover:dark:ring-2  dark:ring-white bg-white text-neutral-900 border-2 border-neutral-800/40 rounded-lg hover:bg-black/5 dark:hover:bg-neutral-100  text-lg font-medium   dark:bg-white dark:text-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-500 transition-all">
-      Join
-    </Button>
-  </div>
+  <CheckMeetingCode />
 
 </CredenzaContent>
     </Credenza>

@@ -19,7 +19,6 @@ const Router = useRouter()
                 }
             }}
         >
-            {/* Add your button content here */}
             {children}
         </div>
     );
