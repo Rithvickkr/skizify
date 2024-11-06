@@ -1,13 +1,7 @@
-import {
-  Calendar,
-  ChevronRight,
-  Clock,
-  User,
-  Users,
-  Video,
-} from "lucide-react";
+import { meetingsInfo_interface } from "@repo/store/types";
 import { Avatar } from "@repo/ui/avatar";
-import { Button } from "../../../@/components/ui/button";
+import { format } from "date-fns";
+import { Calendar, ChevronRight, Clock, User } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -15,11 +9,10 @@ import {
   CardTitle,
 } from "../../../@/components/ui/card";
 import { ScrollArea } from "../../../@/components/ui/scroll-area";
-import NewMeetingLinkButton from "./NewMeetingLinkButton";
-import { meetingsInfo_interface, UserRole } from "@repo/store/types";
-import PushtoExplore from "./PushtoExplore";
+// import AvatarUploader from "../AvatarUploader";
 import JoinMeetingCredenza from "./JoinMeetingDialog";
-import { format } from "date-fns";
+import NewMeetingLinkButton from "./NewMeetingLinkButton";
+import PushtoExplore from "./PushtoExplore";
 import PushtoProfileButton from "./PushtoProfileButton";
 export default function MeetingDashboard({
   meetings,
@@ -119,10 +112,10 @@ export default function MeetingDashboard({
                   <div className="space-y-1 text-neutral-700 dark:text-neutral-300">
                     <h3 className="font-semibold"></h3>
                     <p className="text-muted-foreground text-sm">
-                        {meetings[0]?.finalDateTime
+                      {meetings[0]?.finalDateTime
                         ? format(
-                          new Date(meetings[0].finalDateTime),
-                          "dd MMM yyyy, hh:mm a",
+                            new Date(meetings[0].finalDateTime),
+                            "dd MMM yyyy, hh:mm a",
                           )
                         : "Date not available"}
                     </p>
@@ -140,11 +133,10 @@ export default function MeetingDashboard({
                       {meetings[0]?.Skizzer.name}
                     </span>
                     <PushtoProfileButton meeting={meetings[0]}>
-
-                    <span className="text-sm text-neutral-600 dark:text-neutral-400">
-                      {meetings[0]?.Skizzer.email}
-                    </span>
-                    <ChevronRight className="h-5 w-5 text-neutral-500 transition-transform duration-300 group-hover:translate-x-2" />
+                      <span className="text-sm text-neutral-600 dark:text-neutral-400">
+                        {meetings[0]?.Skizzer.email}
+                      </span>
+                      <ChevronRight className="h-5 w-5 text-neutral-500 transition-transform duration-300 group-hover:translate-x-2" />
                     </PushtoProfileButton>
                   </div>
                 </div>
@@ -187,28 +179,35 @@ export default function MeetingDashboard({
               <ScrollArea className="no-scrollbar max-h-96 w-full space-y-3 overflow-auto">
                 {meetings.map((meeting, index) => (
                   <div
-                  key={index}
-                  className="hover:black-10 group my-2 flex cursor-pointer items-center justify-between rounded-lg bg-neutral-200/40 p-4 transition-all duration-300 dark:bg-gradient-to-r dark:from-neutral-800 dark:to-neutral-900"
+                    key={index}
+                    className="hover:black-10 group my-2 flex cursor-pointer items-center justify-between rounded-lg bg-neutral-200/40 p-4 transition-all duration-300 dark:bg-gradient-to-r dark:from-neutral-800 dark:to-neutral-900"
                   >
-                  <div className="flex items-center gap-4">
-                    <Calendar className="h-5 w-5 text-black dark:text-white" />
-                    <div>
-                    <h3 className="font-semibold">{meeting.gig.title}</h3>
-                    <div className="text-muted-foreground flex items-center gap-2 text-sm">
-                      <Clock className="h-4 w-4" />
-                      <span>{format(new Date(meeting.finalDateTime), "dd MMM yyyy")}</span>
-                      <span>•</span>
-                      <span>{format(new Date(meeting.finalDateTime), "hh:mm a")}</span>
+                    <div className="flex items-center gap-4">
+                      <Calendar className="h-5 w-5 text-black dark:text-white" />
+                      <div>
+                        <h3 className="font-semibold">{meeting.gig.title}</h3>
+                        <div className="text-muted-foreground flex items-center gap-2 text-sm">
+                          <Clock className="h-4 w-4" />
+                          <span>
+                            {format(
+                              new Date(meeting.finalDateTime),
+                              "dd MMM yyyy",
+                            )}
+                          </span>
+                          <span>•</span>
+                          <span>
+                            {format(new Date(meeting.finalDateTime), "hh:mm a")}
+                          </span>
+                        </div>
+                        <div className="mt-1 flex items-center gap-1">
+                          <User className="h-4 w-4 text-black dark:text-white" />
+                          <span className="text-muted-foreground text-sm">
+                            {meeting.user.name}
+                          </span>
+                        </div>
+                      </div>
                     </div>
-                    <div className="mt-1 flex items-center gap-1">
-                      <User className="h-4 w-4 text-black dark:text-white" />
-                      <span className="text-muted-foreground text-sm">
-                      {meeting.user.name}
-                      </span>
-                    </div>
-                    </div>
-                  </div>
-                  <ChevronRight className="h-5 w-5 text-black text-black/50 transition-colors duration-300 dark:text-white group-hover:dark:text-white" />
+                    <ChevronRight className="h-5 w-5 text-black text-black/50 transition-colors duration-300 dark:text-white group-hover:dark:text-white" />
                   </div>
                 ))}
               </ScrollArea>
