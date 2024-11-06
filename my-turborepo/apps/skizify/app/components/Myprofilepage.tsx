@@ -31,7 +31,7 @@ import {
 } from "lucide-react";
 import { Avatar } from "@repo/ui/avatar";
 
-export default function EnhancedMyProfileSection() {
+export default function EnhancedMyProfileSection(datauser: any) {
   const [isEditingProfile, setIsEditingProfile] = useState(false);
   const [isAddingSkill, setIsAddingSkill] = useState(false);
   const [showAllActivity, setShowAllActivity] = useState(false);
@@ -66,6 +66,8 @@ export default function EnhancedMyProfileSection() {
     location: "",
     Achievement: "",
   });
+  const userdata=datauser.datauser;
+ 
   const handleAddSkill = () => {
     if (newSkill.trim() !== "") {
       setSkills([...skills, newSkill.trim()]);
@@ -73,6 +75,7 @@ export default function EnhancedMyProfileSection() {
       setIsAddingSkill(false);
     }
   };
+
 
   return (
     <div className="mx-auto max-w-4xl rounded-xl p-6 shadow-lg transition-all duration-300">
@@ -101,8 +104,8 @@ export default function EnhancedMyProfileSection() {
         transition={{ duration: 0.5 }}
         className="mb-8 text-center"
       >
-        <h1 className="mb-2 text-3xl font-bold dark:text-gray-100">{name}</h1>
-        <p className="text-muted-foreground mb-4 dark:text-gray-300">{bio}</p>
+        <h1 className="mb-2 text-3xl font-bold dark:text-gray-100">{userdata.name}</h1>
+        <p className="text-muted-foreground mb-4 dark:text-gray-300">{userdata.bio}</p>
         <Button variant="darky" onClick={() => setIsEditingProfile(true)}>
           Edit Profile
         </Button>
