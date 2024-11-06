@@ -1,14 +1,10 @@
 import { GigsInterface } from "@repo/store/types";
-import { Search, SearchIcon } from "lucide-react";
 import { getServerSession } from "next-auth";
 import GigStructure from "../../components/mygigs/Gig";
+import SearchBar from "../../components/mygigs/SearchBar";
 import filtergigs from "../../lib/actions/Filters";
 import { getAllgigs } from "../../lib/actions/getgigs";
 import { authOptions } from "../../lib/auth";
-import { Label } from "../../components/ui/label";
-import { Button } from "../../components/ui/button";
-import { Input } from "../../components/ui/input";
-import SearchBar from "../../components/mygigs/SearchBar";
 
 export default async function Page({
   searchParams,
@@ -18,7 +14,8 @@ export default async function Page({
   const page = searchParams["page"] ?? "1";
   const per_page = searchParams["per_page"] ?? "12";
   const gigs: GigsInterface[] =
-    (await getAllgigs()) as unknown as GigsInterface[];
+  (await getAllgigs()) as unknown as GigsInterface[];
+  console.log("gigs: ", gigs);
   const session = await getServerSession(authOptions);
   const filteredGigs = filtergigs(gigs, session);
   return (

@@ -13,7 +13,8 @@ export interface GigsInterface {
     Interval: any; //as it is a JSON vlaue
     status: GigStatus;
     timeneeded: number;
-    category : string
+    category : string;
+    acceptedUsers : any;
   }
 
   export interface Datetimepackage {
