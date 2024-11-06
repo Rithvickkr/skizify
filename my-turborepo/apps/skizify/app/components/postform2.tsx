@@ -170,7 +170,7 @@ export default function Postform() {
           category: "",
           description: "",
         });
-      }, 50000);
+      }, 3000);
       setCurrentStep(0);
     } catch (error) {
       console.error("Error submitting form:", error);

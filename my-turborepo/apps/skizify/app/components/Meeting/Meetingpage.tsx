@@ -1,8 +1,8 @@
 import SetHairScreen from "./SetHairScreen"
-export default function MeetingPage(){
+export function MeetingLanding({meetingId}: {meetingId: string}) {
     return (
         <div>
-            <SetHairScreen meetingId="1"/>
+            <SetHairScreen meetingId={meetingId}/>
         </div>
     )
 }
