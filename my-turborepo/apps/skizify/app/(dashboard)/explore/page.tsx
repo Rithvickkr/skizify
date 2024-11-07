@@ -15,7 +15,6 @@ export default async function Page({
   const per_page = searchParams["per_page"] ?? "12";
   const gigs: GigsInterface[] =
   (await getAllgigs()) as unknown as GigsInterface[];
-  console.log("gigs: ", gigs);
   const session = await getServerSession(authOptions);
   const filteredGigs = filtergigs(gigs, session);
   return (

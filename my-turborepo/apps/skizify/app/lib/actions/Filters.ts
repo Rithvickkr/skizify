@@ -3,7 +3,6 @@
 import { GigsInterface, GigStatus } from "@repo/store/types";
 
 export default function filtergigs(gigs: GigsInterface[], session: any) {
-  console.log("gigs: ", gigs);
   const currentDate = new Date();
   const filtergigs = gigs.filter(
     (gig) => new Date(gig.endDateTime) >= currentDate,
@@ -18,16 +17,17 @@ export default function filtergigs(gigs: GigsInterface[], session: any) {
   //Filtering Gigs Whose Status is already Confirmed
   const filtergigs3 = filtergigs2.filter((gig) => gig.status !== GigStatus.CONFIRMED);
 
-  //Also filtering the Gigs which we have already requested to join
-  // const filtergigs4 = filtergigs3.filter((gig) => {
-  //   console.log("gig.acceptedUsers: ", gig.acceptedUsers);
-  //   if (gig.acceptedUsers) {
-  //     return !gig.acceptedUsers.some(
-  //       (user: { UserId: any; }) => user.UserId === session?.user.id,
-  //     );
-  //   }
-  //   return true;
-  // })
+  // Filter out gigs where the user has already applied
+  const filtergigs4 = filtergigs3.filter((gig) => {
+    if (gig.acceptedUsers && gig.acceptedUsers.length > 0) {
+      // Return false if user has already applied, true if they haven't
+      return !gig.acceptedUsers.some(
+        (user: { UserId: string }) => user.UserId === session?.user?.id
+      );
+    }
+    // Include gigs with no applicants
+    return true;
+  });
   
-  return filtergigs3;
+  return filtergigs4;
 }

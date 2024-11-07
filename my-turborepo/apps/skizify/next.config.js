@@ -1,9 +1,9 @@
 /** @type {import('next').NextConfig} */
-module.exports = {
+const nextConfig = {
   transpilePackages: ["@repo/ui"],
-  images : {
-    formats : [],
-    domains: ['images.unsplash.com'],
+  images: {
+    formats: [],
+    domains: ['images.unsplash.com', 'www.gravatar.com'],
     remotePatterns: [
       {
         protocol: 'https',
@@ -12,12 +12,8 @@ module.exports = {
         pathname: '/account123/**',
       },
     ],
-  }
+  },
+  reactStrictMode: false, // Disable strict mode to prevent double rendering
 };
 
-//Removing Strict Mode preventing Screen to rendering Twice
-const nextConfig = {
-  reactStrictMode: false
-}
-
-module.exports = nextConfig
+module.exports = nextConfig;
