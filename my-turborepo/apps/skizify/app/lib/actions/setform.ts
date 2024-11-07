@@ -25,7 +25,9 @@ export async function setformy(
             name: name as string,
             username: username as string,
             bio: bio as string,
-            education: education as string,
+            education: {
+              set: education.split(',').map((edu) => edu.trim()).join(', '),
+            },
             skills: {
               set: skills,
             },
@@ -34,6 +36,7 @@ export async function setformy(
             },
             qualification: qualifications as string,
             profession: profession as string,
+            skizzer: true,
           },
         });
 
