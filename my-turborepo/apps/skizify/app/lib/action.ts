@@ -1,32 +1,39 @@
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3"
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner"
+// import './envConfig.ts'
 
 
 
-const s3Client = new S3Client({
-  region: process.env.AWS_BUCKET_REGION!,
-  credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY!,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!,
-  },
-})
-
-console.log("process.env.AWS_ACCESS_KEY: ", process.env.AWS_ACCESS_KEY);
-console.log("process.env.AWS_BUCKET_REGION: ", process.env.AWS_BUCKET_REGION);
 
 type SignedURLResponse = Promise<
 { failure?: undefined; success: { url: string } }
 | { failure: string; success?: undefined }
 >
 
-export async function getSignedURL({session} : {session : any}): SignedURLResponse {
+export async function getSignedURL({session, region , accessKey , secretAccessKey , bucketName} : {session: any, region: string, accessKey: string, secretAccessKey: string, bucketName: string}): SignedURLResponse {
+  console.log("bucketName: ", bucketName);
+  console.log("secretAccessKey: ", secretAccessKey);
+  console.log("accessKey: ", accessKey);
+  console.log("region: ", region);
+  
   if (!session) {
     console.log({ failure: "not authenticated" });
     return { failure: "not authenticated" }
   }
+  if (!region || !accessKey || !secretAccessKey || !bucketName) {
+    console.log({ failure: "missing AWS configuration" });
+    return { failure: "missing AWS configuration" }
+  }
+  const s3Client = new S3Client({
+    region,
+    credentials: {
+      accessKeyId: accessKey,
+      secretAccessKey,
+    },
+  })
   
   const putObjectCommand = new PutObjectCommand({
-    Bucket: process.env.AWS_BUCKET_NAME!,
+    Bucket: bucketName,
     Key: "test-file",
   })
   console.log("putObjectCommand: ", putObjectCommand);
