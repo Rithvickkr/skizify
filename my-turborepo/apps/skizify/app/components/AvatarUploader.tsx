@@ -5,7 +5,6 @@ import { useState } from "react";
 import { twMerge } from "tailwind-merge";
 import { getSignedURL } from "../lib/action";
 import { useSession } from "next-auth/react";
-
 export default function AvatarUploader({
   user,
 }: {
