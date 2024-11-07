@@ -59,7 +59,7 @@ export default function AvatarUploader({
   return (
     <>
       <form
-        className="border border-neutral-500 rounded-lg px-6 py-4"
+        className="border border-neutral-500 rounded-lg px-6 py-4 w-full "
         onSubmit={handleSubmit}
       >
         {statusMessage && (
@@ -84,7 +84,7 @@ export default function AvatarUploader({
 
             <label className="w-full">
               <input
-                className="bg-transparent flex-1 border-none outline-none"
+                className="bg-transparent flex-1 w-full border-none outline-none"
                 type="text"
                 placeholder="Post a thing..."
                 value={content}

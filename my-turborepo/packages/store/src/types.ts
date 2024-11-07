@@ -14,7 +14,9 @@ export interface GigsInterface {
     status: GigStatus;
     timeneeded: number;
     category : string;
-    acceptedUsers : any;
+    acceptedUsers : {
+      skizzerId : string
+    }[];
   }
 
   export interface Datetimepackage {
@@ -83,7 +85,6 @@ export interface GigsInterface {
         title: string;
         content: string;
         timeneeded : number;
-        acceptedUsers: AcceptedUser[];
         authorId: string;
     };
     user: {

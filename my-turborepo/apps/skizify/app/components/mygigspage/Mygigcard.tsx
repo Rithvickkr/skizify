@@ -1,20 +1,17 @@
 import { GigStatus } from "@repo/store/types";
 import { Avatar } from "@repo/ui/avatar";
 
-import { CalendarRange, Clock7Icon, EditIcon, TrashIcon } from "lucide-react";
+import { CalendarRange, Clock7Icon } from "lucide-react";
 import { Card } from "../../../@/components/ui/card";
-import { ToolTip } from "@repo/ui/tooltip";
 
 // import { useRouter } from "next/navigation";
 import { GigsInterface } from "@repo/store/types";
-import { CalendarClock, Clock7 } from "lucide-react";
 import { ScrollArea, ScrollBar } from "../../../@/components/ui/scroll-area";
 import {
   Month,
   SessionTime,
   formatTime,
 } from "../../lib/actions/ConvertgigInfo";
-import { Button } from "../ui/button";
 import AcceptedBy from "./AcceptedBy";
 import EditDeleteCard from "./EditDeletecard";
 import RedirectToMeetingPage from "./RedirectingMeetingButton";

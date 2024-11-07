@@ -20,7 +20,7 @@ export default  function ViewProfile({id , classname}: {id : string , classname?
 <span className="relative z-10 group">
   View Profile
 </span>
-      <span className="absolute inset-0 z-0 bg-gradient-to-r from-neutral-800 via-neutral-700 to-neutral-600 opacity-0 transition-opacity duration-500 ease-in-out group-hover:opacity-50 dark:from-neutral-200 dark:via-neutral-300 dark:to-neutral-400" />
+      <span className="absolute inset-0 z-0 bg-gradient-to-r from-neutral-800 via-neutral-700 to-neutral-600 opacity-0 transition-opacity duration-500 ease-in-out " />
     </ButtonE>
     </div>
   );

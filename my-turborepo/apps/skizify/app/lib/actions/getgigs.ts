@@ -39,9 +39,9 @@ export async function getAllgigs() {
       status: true,
       timeneeded: true,
       category: true,
-      acceptedUsers : {
-        where : {
-          UserId : session.user.id
+      acceptedUsers: {
+        select: {
+          skizzerId: true
         }
       },
     }

@@ -76,6 +76,12 @@ export default function SkizzerselectCard({
         })}
       </div>
       <div className="mt-4 flex justify-between space-x-4">
+      <Button
+          className=" m-1 w-full flex-1 dark:bg-white dark:text-black bg-black text-white dark:border dark:border-white "
+          variant="gooeyRight"
+        >
+          Messages
+        </Button>
         
         <Button
           className=" m-1 w-full flex-1 dark:bg-white dark:text-black bg-black text-white dark:border dark:border-white "
