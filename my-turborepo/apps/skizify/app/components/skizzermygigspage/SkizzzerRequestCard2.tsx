@@ -103,7 +103,7 @@ export default function EnhancedGigCard({
       <CardContent className="relative space-y-4 p-3">
         <div className="relative overflow-hidden rounded-lg bg-gradient-to-br from-white/80 to-neutral-100/40 p-6 shadow-md backdrop-blur-sm transition-all duration-500 ease-in-out group-hover:shadow-lg dark:from-neutral-900/80 dark:to-neutral-800/40">
           <div className="absolute -right-4 -top-4 h-16 w-16 rounded-full bg-neutral-200/50 transition-all duration-500 ease-in-out group-hover:scale-150 group-hover:bg-neutral-300/50 dark:bg-neutral-700/50 dark:group-hover:bg-neutral-600/50" />
-          <h4 className="mb-2 truncate text-xl font-semibold text-neutral-900 dark:text-neutral-100">
+          <h4 className="mb-2 truncate text-lg sm:text-xl font-semibold text-neutral-900 dark:text-neutral-100">
             {gig.gig.title}
           </h4>
           <div className="text-sm leading-relaxed text-neutral-600 transition-all duration-500 ease-in-out dark:text-neutral-400">
@@ -150,8 +150,7 @@ export default function EnhancedGigCard({
       <div className="flex items-center justify-between border-t border-neutral-200 p-6 dark:border-neutral-800/50">
         <ViewProfile
           id={gig.gig.authorId}
-          classname="rounded-3xl min-w-36 group-hover:scale-105 dark:opacity-80 hover:dark:opacity-100"
-        />
+          classname="flex items-center space-x-2 rounded-full border border-neutral-500 bg-v0dark px-4 py-2 text-sm text-white shadow-md transition-all duration-300 hover:shadow-lg  dark:border-0 dark:bg-neutral-800/90 dark:text-neutral-100 dark:shadow-md dark:hover:bg-neutral-700 dark:hover:shadow-lg"        />
         <JoinButton />
       </div>
     </Card>

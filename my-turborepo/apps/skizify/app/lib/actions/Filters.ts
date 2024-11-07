@@ -19,14 +19,16 @@ export default function filtergigs(gigs: GigsInterface[], session: any) {
 
   // Filter out gigs where the user has already applied
   const filtergigs4 = filtergigs3.filter((gig) => {
-    if (gig.acceptedUsers && gig.acceptedUsers.length > 0) {
-      // Return false if user has already applied, true if they haven't
-      return !gig.acceptedUsers.some(
-        (user: { UserId: string }) => user.UserId === session?.user?.id
-      );
+    // Check if acceptedUsers exists and has entries
+    if (!gig.acceptedUsers || gig.acceptedUsers.length === 0) {
+      return true; // Include gigs with no applicants
     }
-    // Include gigs with no applicants
-    return true;
+    
+    // Return false if user has already applied (filter out those gigs)
+    const hasUserApplied = gig.acceptedUsers.some(
+      (user: { skizzerId: string }) => user.skizzerId === session?.user?.id
+    );
+    return !hasUserApplied;
   });
   
   return filtergigs4;

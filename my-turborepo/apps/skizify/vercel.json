@@ -2,7 +2,11 @@
     "version": 2,
     "env": {
       "DATABASE_URL": "@database_url",
-      "JWT_SECRET": "@jwt_secret"
+      "JWT_SECRET": "@jwt_secret",
+      "AWS_BUCKET_NAME": "@aws_bucket_name",
+      "AWS_BUCKET_REGION": "@aws_bucket_region",
+      "AWS_ACCESS_KEY": "@aws_access_key",
+      "AWS_SECRET_ACCESS_KEY": "@aws_secret_access_key"
     },
     "build": {
       "env": {

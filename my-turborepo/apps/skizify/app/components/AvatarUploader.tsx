@@ -3,13 +3,15 @@
 import Image from "next/image";
 import { useState } from "react";
 import { twMerge } from "tailwind-merge";
-// import { getSignedURL } from "../lib/action";
+import { getSignedURL } from "../lib/action";
+import { useSession } from "next-auth/react";
 
 export default function AvatarUploader({
   user,
 }: {
     user: { name?: string | null; userImage?: string | null };
 }) {
+  const session = useSession();
   const [content, setContent] = useState("");
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>(null);
@@ -29,8 +31,8 @@ export default function AvatarUploader({
     // Do all the image upload and everything
     console.log({content, file});
 
-    // const signedURLResult = await getSignedURL();
-    // console.log(signedURLResult.success?.url);
+    const signedURLResult = await getSignedURL({ session });
+    console.log(signedURLResult.success?.url);
 
 
     setStatusMessage("created");
@@ -59,7 +61,7 @@ export default function AvatarUploader({
   return (
     <>
       <form
-        className="border border-neutral-500 rounded-lg px-6 py-4"
+        className="border border-neutral-500 rounded-lg px-6 py-4 w-full "
         onSubmit={handleSubmit}
       >
         {statusMessage && (
@@ -84,7 +86,7 @@ export default function AvatarUploader({
 
             <label className="w-full">
               <input
-                className="bg-transparent flex-1 border-none outline-none"
+                className="bg-transparent flex-1 w-full border-none outline-none"
                 type="text"
                 placeholder="Post a thing..."
                 value={content}
@@ -113,6 +115,7 @@ export default function AvatarUploader({
                 name="media"
                 type="file"
                 accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm"
+                onChange={handleFileChange}
               />
             </label>
           </div>
