@@ -48,6 +48,11 @@ export default function EnhancedMyProfileSection(datauser: any) {
     "React",
     "Node.js",
     "TypeScript",
+    "GraphQL",
+    "Tailwind CSS",
+    "Figma",
+    "Adobe XD",
+    "Photoshop",
     
   ]);
   const [newSkill, setNewSkill] = useState("");

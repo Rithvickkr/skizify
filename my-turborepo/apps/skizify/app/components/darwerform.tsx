@@ -1,49 +1,48 @@
 import * as React from "react";
 
-import { cn } from "../utils/cn";
-import { useMediaQuery } from "../hooks/useMediaQuery";
-import { Button } from "../../@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "../../@/components/ui/dialog";
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "../../@/components/ui/drawer";
-import { Input } from "../../@/components/ui/input";
-import { Label } from "../../@/components/ui/label";
 import { motion } from "framer-motion";
 import { Linkedin, Plus, X } from "lucide-react";
 import { useState } from "react";
-import { Textarea } from "../../@/components/ui/textarea";
+import { Button } from "../../@/components/ui/button";
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "../../@/components/ui/dialog";
+import {
+    Drawer,
+    DrawerClose,
+    DrawerContent,
+    DrawerDescription,
+    DrawerFooter,
+    DrawerHeader,
+    DrawerTitle,
+    DrawerTrigger,
+} from "../../@/components/ui/drawer";
+import { Input } from "../../@/components/ui/input";
+import { Label } from "../../@/components/ui/label";
 import { ScrollArea, ScrollBar } from "../../@/components/ui/scroll-area";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
 } from "../../@/components/ui/select";
+import { Textarea } from "../../@/components/ui/textarea";
+import { useMediaQuery } from "../hooks/useMediaQuery";
+import { cn } from "../utils/cn";
 import languages from "../utils/languages";
 
+import {
+    GitHubLogoIcon,
+    InstagramLogoIcon
+} from "@radix-ui/react-icons";
 import { BorderBeam } from "../../@/components/ui/border-beam";
 import { Switch } from "../../@/components/ui/switch";
-import {
-  GitHubLogoIcon,
-  InstagramLogoIcon,
-  TwitterLogoIcon,
-} from "@radix-ui/react-icons";
 export function DrawerDialogDemo({ skills }: { skills: string[] }) {
   const [open, setOpen] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
@@ -141,11 +140,7 @@ function ProfileForm({
     setForm(updatedForm);
   }
 
-  const [isOn, setIsOn] = useState(false);
-
-  const handleSwitchChange = () => {
-    setIsOn(!isOn);
-  };
+  
 
   return (
     <ScrollArea className="h-96">
