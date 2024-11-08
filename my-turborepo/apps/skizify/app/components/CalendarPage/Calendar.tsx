@@ -1,7 +1,11 @@
 "use client";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/solid";
 import { meetingsInfo_interface } from "@repo/store/types";
-import { Avatar } from "@repo/ui/avatar";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "../../../@/components/ui/avatar";
 import {
   add, //On Bottom of the page
   eachDayOfInterval, //Return the array of dates within the specified time interval
@@ -39,10 +43,6 @@ export default function Calendar({
   let [selectedDay, setSelectedDay] = useState(today);
   let [currentMonth, setCurrentMonth] = useState(format(today, "MMM-yyyy"));
   let firstDayCurrentMonth = parse(currentMonth, "MMM-yyyy", new Date());
-  //for June Month , this is logging   new Date('2024-05-31T18:30:00.000Z') 🥶🥶🥶🥶// THIS IS DISPLAYING Time acc to UTC 🥶🥶🥶🥶
-  //if you are in India, your time zone is UTC+5:30. This means your local time is 5 hours and 30 minutes ahead of UTC.
-
-  // If your local time zone is ahead of UTC, midnight in your local time can appear as the previous day in UTC.
 
   let days = eachDayOfInterval({
     start: firstDayCurrentMonth,
@@ -59,11 +59,9 @@ export default function Calendar({
     setCurrentMonth(format(firstDayNextMonth, "MMM-yyyy"));
   }
 
-  //It will filter the Today meeetings
   let selectedDayMeetings = meetings.filter((meeting) =>
     isSameDay(parseISO(meeting.finalDateTime.toISOString()), selectedDay),
   );
-
 
   const TimelineEvent: React.FC<TimelineEventProps> = ({
     date,
@@ -159,15 +157,14 @@ export default function Calendar({
               {attendees.slice(0, 4).map((attendee, index) => (
                 <div
                   key={index}
-                  className={`relative -ml-3 size-7 rounded-full first:ml-0 ${
+                  className={`relative -ml-3 first:ml-0 ${
                     index > 0 ? "z-[" + (4 - index) + "]" : ""
                   }`}
                 >
-                  <Avatar
-                    name={attendee.name}
-                    photo={attendee.image}
-                    classname="h-full w-full border-2 bg-lumadark dark:bg-zinc-300 dark:border-black ring-2 ring-transparent rounded-full" // No need to change this
-                  />
+                  <Avatar className="h-7 w-7 border-2 bg-lumadark ring-2 ring-transparent dark:border-black dark:bg-zinc-300">
+                    <AvatarImage src={attendee.image} alt={attendee.name} />
+                    <AvatarFallback>{attendee.name.charAt(0)}</AvatarFallback>
+                  </Avatar>
                 </div>
               ))}
               {attendees.length > 4 && (
@@ -182,33 +179,30 @@ export default function Calendar({
     </div>
   );
 
-  
-
   return (
     <div className="flex h-full w-full justify-center bg-gradient-to-br dark:from-neutral-800/45 dark:via-black dark:to-neutral-800/45">
       <div className="relative grid h-full w-full grid-cols-1 gap-2 md:gap-3 lg:gap-5 xl:grid-cols-3">
         <div className="mb-4 flex-1 rounded border border-black p-3 pl-2 pt-10 dark:border-neutral-600 md:col-span-2 md:mb-0 md:mt-0 md:pl-3 md:pt-0 lg:pl-5">
-            <div className="mt-3 truncate text-2xl font-semibold text-neutral-900 dark:text-neutral-200">
-              Meetings for
-              <time dateTime={format(selectedDay, "yyyy-MM-dd")}>
-                {format(selectedDay, "MMM dd, yyy")}
-              </time>
-            </div>
-            <div className="mt-4 cursor-pointer space-y-1 text-sm leading-6 text-neutral-500">
-              {selectedDayMeetings.length > 0 ? (
-                <div className="h-[330px] overflow-y-auto rounded-md">
-                  {selectedDayMeetings.map((meeting) => (
-                    <div key={meeting.id}>
-                      <Meeting meeting={meeting} />
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <p>No meetings for today.</p>
-              )}
-            </div>
+          <div className="mt-3 truncate text-2xl font-semibold text-neutral-900 dark:text-neutral-200">
+            Meetings for
+            <time dateTime={format(selectedDay, "yyyy-MM-dd")}>
+              {format(selectedDay, "MMM dd, yyy")}
+            </time>
           </div>
-          
+          <div className="mt-4 cursor-pointer space-y-1 text-sm leading-6 text-neutral-500">
+            {selectedDayMeetings.length > 0 ? (
+              <div className="h-[330px] overflow-y-auto rounded-md">
+                {selectedDayMeetings.map((meeting) => (
+                  <div key={meeting.id}>
+                    <Meeting meeting={meeting} />
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p>No meetings for today.</p>
+            )}
+          </div>
+        </div>
 
         {/* <ScrollArea className="col-start-0 mb-4 flex-1 rounded-xl border border-black px-0 pl-2 pt-5 dark:border-neutral-600 sm:pt-10 md:mb-0 md:mt-0 md:p-4 md:pl-3 md:pt-0 lg:pl-5 xl:col-span-2">
           <Timeline />
@@ -246,69 +240,62 @@ export default function Calendar({
             <div>Sat</div>
           </div>
           <div className="mt-2 grid grid-cols-7 text-sm">
-            {days.map(
-              (
-                day,
-                dayIdx, //dayIdx is like start from 0 --> end of Monthnumber, watch this as I don't know where dayIdx came from ,as It is also not in array
-              ) => (
-                <div
-                  key={day.toString()}
+            {days.map((day, dayIdx) => (
+              <div
+                key={day.toString()}
+                className={classNames(
+                  dayIdx === 0 && colStartClasses[getDay(day)],
+                  "",
+                )}
+              >
+                <Button
+                  variant="outline"
+                  type="button"
+                  onClick={() => setSelectedDay(day)}
                   className={classNames(
-                    //GREAT LOGIC :- at start dayIdx will be zero , thus we will change the starting of column
-                    dayIdx === 0 && colStartClasses[getDay(day)], //means it will start from that column of the grid associated with week day
-                    "",
+                    isEqual(day, selectedDay) &&
+                      "text-white dark:bg-white dark:text-black",
+                    isEqual(day, selectedDay) &&
+                      !isToday(day) &&
+                      "bg-black dark:bg-white dark:text-black",
+                    !isEqual(day, selectedDay) &&
+                      isToday(day) &&
+                      "text-red-500 dark:bg-red-800",
+                    !isEqual(day, selectedDay) &&
+                      !isToday(day) &&
+                      isSameMonth(day, firstDayCurrentMonth) &&
+                      "text-neutral-900",
+                    !isEqual(day, selectedDay) &&
+                      !isToday(day) &&
+                      !isSameMonth(day, firstDayCurrentMonth) &&
+                      "text-neutral-400 dark:text-white",
+                    isEqual(day, selectedDay) &&
+                      isToday(day) &&
+                      "bg-red-700 dark:bg-red-800 dark:text-white",
+                    !isEqual(day, selectedDay) &&
+                      "hover:bg-neutral-100 dark:text-white dark:hover:bg-lightdark",
+                    (isEqual(day, selectedDay) || isToday(day)) &&
+                      "font-semibold",
+                    "flex h-12 w-full items-center justify-center rounded ring-1 ring-black transition-all duration-500 hover:scale-[1.03]",
                   )}
                 >
-                  <Button
-                    variant="outline"
-                    type="button"
-                    onClick={() => setSelectedDay(day)}
-                    className={classNames(
-                      //This is How to put conditions in Classname in tailwind
-                      isEqual(day, selectedDay) &&
-                        "text-white dark:bg-white dark:text-black",
-                      isEqual(day, selectedDay) &&
-                        !isToday(day) &&
-                        "bg-black dark:bg-white dark:text-black",
-                      !isEqual(day, selectedDay) &&
-                        isToday(day) &&
-                        "text-red-500 dark:bg-red-800",
-                      !isEqual(day, selectedDay) &&
-                        !isToday(day) &&
-                        isSameMonth(day, firstDayCurrentMonth) &&
-                        "text-neutral-900",
-                      !isEqual(day, selectedDay) &&
-                        !isToday(day) &&
-                        !isSameMonth(day, firstDayCurrentMonth) &&
-                        "text-neutral-400 dark:text-white",
-                      isEqual(day, selectedDay) &&
-                        isToday(day) &&
-                        "bg-red-700 dark:bg-red-800 dark:text-white",
-                      !isEqual(day, selectedDay) &&
-                        "hover:bg-neutral-100 dark:text-white dark:hover:bg-lightdark",
-                      (isEqual(day, selectedDay) || isToday(day)) &&
-                        "font-semibold",
-                      "flex h-12 w-full items-center justify-center rounded ring-1 ring-black transition-all duration-500 hover:scale-[1.03]",
-                    )}
-                  >
-                    <time dateTime={format(day, "yyyy-MM-dd")}>
-                      {format(day, "d")}
-                    </time>
-                  </Button>
+                  <time dateTime={format(day, "yyyy-MM-dd")}>
+                    {format(day, "d")}
+                  </time>
+                </Button>
 
-                  <div className="mx-auto mb-1 h-1 w-1">
-                    {meetings.some((meeting) =>
-                      isSameDay(
-                        parseISO(meeting.finalDateTime.toISOString()),
-                        day,
-                      ),
-                    ) && (
-                      <div className="mt-1 h-1 w-1 rounded-full bg-sky-500"></div> //Display dot below calendar
-                    )}
-                  </div>
+                <div className="mx-auto mb-1 h-1 w-1">
+                  {meetings.some((meeting) =>
+                    isSameDay(
+                      parseISO(meeting.finalDateTime.toISOString()),
+                      day,
+                    ),
+                  ) && (
+                    <div className="mt-1 h-1 w-1 rounded-full bg-sky-500"></div>
+                  )}
                 </div>
-              ),
-            )}
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -325,34 +312,6 @@ let colStartClasses = [
   "col-start-6",
   "col-start-7",
 ];
-
-// const result = add(new Date(2014, 8, 1, 10, 19, 50), {
-//   years: 2,
-//   months: 9,
-//   weeks: 1,
-//   days: 7,
-//   hours: 5,\\-7
-//   minutes: 9,
-//   seconds: 30,
-// })
-// //=> Thu Jun 15 2017 15:29:20
-
-//new Date(2014, 8, 1, 10, 19, 50)
-// Year: 2014
-// Month: September
-// Day: 1
-// Hour: 10 AM
-// Minutes: 19
-// Seconds: 50
-
-// parse is used to create a Date object from a string
-// format is used to create a string from a Date object
-
-//parseISO  => convert normal string into DateObject
-// const result1 = parseISO('2023-06-23T18:45:00');
-// //=> Fri Jun 23 2023 18:45:00
-
-
 
 const Timeline: React.FC = () => {
   return (
@@ -500,7 +459,6 @@ const Timeline: React.FC = () => {
   );
 };
 
-
 interface TimelineEventProps {
   date: string;
   day: string;
@@ -512,9 +470,6 @@ interface TimelineEventProps {
   attendees?: Attendee[];
   image: string;
 }
-
-
-
 
 const TimelineEvent: React.FC<TimelineEventProps> = ({
   date,
@@ -610,15 +565,14 @@ const TimelineEvent: React.FC<TimelineEventProps> = ({
             {attendees.slice(0, 4).map((attendee, index) => (
               <div
                 key={index}
-                className={`relative -ml-4 size-7 rounded-full first:ml-0 ${
+                className={`relative -ml-4 first:ml-0 ${
                   index > 0 ? "z-[" + (4 - index) + "]" : ""
                 }`}
               >
-                <Avatar
-                  name={attendee.name}
-                  photo={attendee.image}
-                  classname="h-full w-full border-2 bg-lumadark dark:bg-zinc-300 dark:border-black ring-2 ring-transparent rounded-full" // No need to change this
-                />
+                <Avatar className="h-7 w-7 border-2 bg-lumadark ring-2 ring-transparent dark:border-black dark:bg-zinc-300">
+                  <AvatarImage src={attendee.image} alt={attendee.name} />
+                  <AvatarFallback>{attendee.name.charAt(0)}</AvatarFallback>
+                </Avatar>
               </div>
             ))}
             {attendees.length > 4 && (

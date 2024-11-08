@@ -1,5 +1,5 @@
 import { Bell, BellRing, Cog, LogOutIcon, WandSparkles } from "lucide-react";
-import { Avatar } from "./Avatar";
+import { Avatar, AvatarImage, AvatarFallback } from "../../@/components/ui/avatar";
 
 import {
   DropdownMenu,
@@ -7,12 +7,12 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "../../../apps/skizify/@/components/ui/dropdown-menu";
+} from "../../@/components/ui/dropdown-menu";
 
 import { UserRole } from "@repo/store/types";
 import { AppbarProps } from "@repo/store/types";
-import SwitchTheme from "../../../apps/skizify/app/components/SwitchTheme";
-import { ToolTip } from "./Tooltip";
+import SwitchTheme from "./SwitchTheme";
+import { ToolTip } from "../../../../packages/ui/src/Tooltip";
 
 export const Appbar = ({
   user,
@@ -36,21 +36,19 @@ export const Appbar = ({
       <div>
         <DropdownMenu>
           <DropdownMenuTrigger>
-            <Avatar
-              photo={user?.photo}
-              name={name}
-              classname="ring-2 ring-black dark:ring-slate-50 "
-            />
+            <Avatar className="ring-2 ring-black dark:ring-slate-50">
+              <AvatarImage src={user?.userImage ?? undefined} alt={name} />
+              <AvatarFallback>{name.charAt(0)}</AvatarFallback>
+            </Avatar>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="z-30 mr-3 w-60 bg-white p-3 pt-1 shadow-2xl dark:border-neutral-700 dark:bg-black">
             <DropdownMenuItem className="p-2 pl-1 focus:outline-0">
               <div className="flex items-center gap-2">
                 <div>
-                  <Avatar
-                    photo={user?.photo}
-                    name={name}
-                    classname=" size-9 dark:ring-slate-50 "
-                  />
+                  <Avatar className="size-9 ring-2 ring-black dark:ring-slate-50">
+                    <AvatarImage src={user?.userImage || undefined} alt={name} />
+                    <AvatarFallback>{name.charAt(0)}</AvatarFallback>
+                  </Avatar>
                 </div>
                 <div className="flex flex-col dark:text-slate-50">
                   <div className="my-1 break-words break-all text-base font-semibold">

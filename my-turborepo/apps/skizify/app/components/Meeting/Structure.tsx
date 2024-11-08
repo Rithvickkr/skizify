@@ -1,5 +1,5 @@
 "use client";
-import { Avatar } from "@repo/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "../../../@/components/ui/avatar";
 import { motion } from "framer-motion";
 import {
   EllipsisVertical,
@@ -1258,19 +1258,17 @@ const ChatStructure: React.FC<{ data: Chat }> = ({ data }) => {
             <p className="break-words break-all">{data.message}</p>
             <div className="mt-1 text-xs">2:35 PM</div>
           </div>
-          <Avatar
-            name={data.name}
-            classname="size-8 shadow-sm mr-1 md:mr-2 bg-neutral-200 text-sm  text-black border border-black"
-            photo={data.userImage}
-          />
+          <Avatar>
+            <AvatarImage src={data.userImage} alt={data.name} className="size-8 shadow-sm mr-1 md:mr-2 bg-neutral-200 text-sm text-black border border-black" />
+            <AvatarFallback>{data.name.charAt(0)}</AvatarFallback>
+          </Avatar>
         </div>
       ) : (
         <div className="flex items-start gap-3">
-          <Avatar
-            name={data.name}
-            classname="size-8 shadow-sm  bg-neutral-200 text-sm  text-black border border-black"
-            photo={data.userImage}
-          />
+          <Avatar>
+            <AvatarImage src={data.userImage} alt={data.name} className="size-8 shadow-sm bg-neutral-200 text-sm text-black border border-black" />
+            <AvatarFallback>{data.name.charAt(0)}</AvatarFallback>
+          </Avatar>
           <div className="min-w-32 rounded-lg rounded-bl-none bg-[#272729] p-4 text-base text-[#e2e8f0] dark:bg-[#f4f4f4] dark:text-black">
             <p className="break-words break-all">{data.message}</p>
             <div className="mt-1 text-xs text-white dark:text-black">

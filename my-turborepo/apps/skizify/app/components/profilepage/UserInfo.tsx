@@ -1,5 +1,5 @@
 "use client";
-import { Avatar } from "@repo/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "../../../@/components/ui/avatar";
 
 import { Separator } from "../../../@/components/ui/separator";
 import { Button } from "../../../@/components/ui/button";
@@ -129,11 +129,10 @@ export default function UserInfo({
           <div className="container grid gap-10 px-4 md:px-6 lg:grid-cols-2 lg:gap-16">
             <div className="grid gap-6">
               <div className="flex-col items-center gap-6">
-                <Avatar
-                  name={name}
-                  photo={userImage}
-                  classname="size-48 text-8xl mb-5  "
-                />
+                <Avatar className="size-48 text-8xl mb-5">
+                  <AvatarImage src={userImage || undefined} alt={name} />
+                  <AvatarFallback>{name[0]}</AvatarFallback>
+                </Avatar>
                 <div className="grid gap-1">
                   <h1 className="text-3xl font-bold">{name}</h1>
                   <p className="text-muted-foreground">@{username}</p>
@@ -269,11 +268,10 @@ export default function UserInfo({
                 reviewsToShow.map((review) => (
                   <div key={review.id} className="grid gap-6">
                     <div className="flex gap-4 p-2 ">
-                      <Avatar
-                        name={review.givenbyUser.name}
-                        photo={review.givenbyUser.userImage}
-                        classname="size-16 text-2xl  "
-                      />
+                      <Avatar className="size-16 text-2xl">
+                        <AvatarImage src={review.givenbyUser.userImage || undefined} alt={review.givenbyUser.name} />
+                        <AvatarFallback>{review.givenbyUser.name[0]}</AvatarFallback>
+                      </Avatar>
                       <div className="grid gap-1  ">
                         <div className="flex items-center gap-2 text-sm font-medium">
                           {review.givenbyUser.name}

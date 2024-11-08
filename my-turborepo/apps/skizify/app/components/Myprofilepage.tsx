@@ -1,39 +1,140 @@
 "use client";
 
-import { AwaitedReactNode, JSXElementConstructor, Key, ReactElement, ReactNode, ReactPortal, useState } from "react";
-import { motion, AnimatePresence, MotionValue } from "framer-motion";
-import { Button } from "../../@/components/ui/button";
-import { useSession } from "next-auth/react";
-
+import { Avatar, AvatarImage, AvatarFallback } from "../../@/components/ui/avatar";
+import { AnimatePresence, motion } from "framer-motion";
 import {
-  X,
-  Upload,
-  Github,
-  Twitter,
-  Linkedin,
-  Mail,
-  Phone,
-  MapPin,
-  Plus,
   Activity,
-  ChevronRight,
-  LogOut,
-  Trash2,
+  Aperture,
   Award,
   BookOpen,
-  Code,
-  School,
-  GraduationCap,
   Briefcase,
+  ChevronRight,
+  Code,
+  Github,
+  GraduationCap,
   Languages,
+  Linkedin,
+  LogOut,
+  Mail,
+  MapPin,
+  School,
+  Trash2,
+  Twitter,
+  Upload
 } from "lucide-react";
-import { Avatar } from "@repo/ui/avatar";
+import { useRef, useState, ReactElement } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "../../@/components/ui/dialog";
 import { DrawerDialogDemo } from "./darwerform";
+import { getSignedURL } from "../lib/action";
+import setImageInDB from "../lib/actions/setImage_in_DB";
+import { useSession } from "next-auth/react";
+import { Button } from "./ui/button";
 
 export default function EnhancedMyProfileSection(datauser: any) {
-  
   const [showAllActivity, setShowAllActivity] = useState(false);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+  const [avatarSrc, setAvatarSrc] = useState<string | null>(null);
+  const [isHovered, setIsHovered] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const session = useSession();
+  const [loading, setLoading] = useState(false);
+  const [statusMessage, setStatusMessage] = useState("");
+
+  const computeSHA256 = async (file: File) => {
+    const buffer = await file.arrayBuffer();
+    const hashBuffer = await crypto.subtle.digest("SHA-256", buffer);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const hashHex = hashArray
+      .map((b) => b.toString(16).padStart(2, "0"))
+      .join("");
+    return hashHex;
+  };
+
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setLoading(true);
+      setStatusMessage("Uploading...");
+
+      try {
+        const signedURLResult = await getSignedURL({
+          session,
+          region: process.env.NEXT_PUBLIC_AWS_REGION || "",
+          accessKey: process.env.NEXT_PUBLIC_AWS_ACCESS_KEY_ID || "",
+          secretAccessKey: process.env.NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY || "",
+          bucketName: process.env.NEXT_PUBLIC_AWS_BUCKET_NAME || "",
+          fileSize: file.size,
+          fileType: file.type,
+          checksum: await computeSHA256(file),
+        });
+
+        if (signedURLResult.failure) {
+          setStatusMessage(signedURLResult.failure);
+          setLoading(false);
+          return;
+        }
+
+        const url = signedURLResult.success?.url;
+
+        if (!url) {
+          setStatusMessage("Failed to get signed URL");
+          setLoading(false);
+          return;
+        }
+
+        await fetch(url, {
+          method: "PUT",
+          headers: {
+            "Content-Type": file.type,
+          },
+          body: file,
+        });
+
+        if (session.data?.user.id) {
+          await setImageInDB({ userId: session.data.user.id, url });
+          setAvatarSrc(url);
+          setStatusMessage("Upload complete!");
+        }
+
+      } catch (error) {
+        setStatusMessage("Upload failed");
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
+
+  const handleDrop = async (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    setIsDragging(false);
+    const file = event.dataTransfer.files[0];
+    if (file) {
+      const fakeEvent = {
+        target: {
+          files: [file]
+        }
+      } as unknown as React.ChangeEvent<HTMLInputElement>;
+      await handleFileChange(fakeEvent);
+    }
+  };
+
+  const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = () => {
+    setIsDragging(false);
+  };
 
   // const [name, setName] = useState("Jane Doe");
   // const [bio, setBio] = useState(
@@ -58,30 +159,71 @@ export default function EnhancedMyProfileSection(datauser: any) {
     Achievement: "",
   });
   const userdata=datauser.datauser;
-  const session = useSession();
   console.log(userdata);
  
 
 
   return (
     <div className="mx-auto max-w-4xl rounded-xl p-6 shadow-2xl transition-all duration-300">
-      <div className="relative mb-8">
-        <motion.div
-          className="  mx-auto flex items-center justify-center h-32 w-32 overflow-hidden rounded-full border-4 border-white shadow-lg dark:border-gray-700"
-          whileHover={{ scale: 1.05 }}
+      <div className="relative mb-8 flex justify-center">
+      <Dialog>
+        <DialogTrigger asChild>
+        <div
+          className="relative inline-block cursor-pointer"
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
         >
-          {/* <img src="A" alt="Profile" className="w-full h-full object-cover" /> */}
-          <Avatar 
-          name="J"
-          classname=" h-32 w-32 text-7xl " />
-        </motion.div>
-        <motion.div
-          className="absolute bottom-0 right-0 cursor-pointer rounded-full bg-white p-2 text-primary-foreground"
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
-        >
-          <Upload  className=" text-black"size={20} />
-        </motion.div>
+            <Avatar className="size-64 cursor-pointer text-4xl bg-neutral-800 dark:bg-neutral-200">
+            <AvatarImage src={session.data?.user.userImage || ""} alt="Yash" />
+            <AvatarFallback className="text-neutral-200 text-5xl dark:text-neutral-800">
+              {"Yash".charAt(0)}
+            </AvatarFallback>
+            </Avatar>
+          {isHovered && (
+          <div className="absolute inset-0 flex items-center justify-center rounded-full bg-black bg-opacity-50">
+            <Upload className="text-white opacity-65 size-10" />
+          </div>
+          )}
+        </div>
+        </DialogTrigger>
+        <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Upload Avatar</DialogTitle>
+          <DialogDescription>
+          Drag and drop an image or click to select a file.
+          </DialogDescription>
+        </DialogHeader>
+            {statusMessage && (
+              <p className="text-sm text-yellow-600">{statusMessage}</p>
+            )}
+            <div
+              className={`mt-4 rounded-lg border-2 border-dashed p-8 text-center ${
+                isDragging ? "border-primary" : "border-gray-300"
+              }`}
+              onDrop={handleDrop}
+              onDragOver={handleDragOver}
+              onDragLeave={handleDragLeave}
+            >
+              <input
+                type="file"
+                ref={fileInputRef}
+                onChange={handleFileChange}
+                className="hidden"
+                accept="image/*"
+              />
+              <Button
+                onClick={() => fileInputRef.current?.click()}
+                variant="outline"
+                disabled={loading}
+              >
+                {loading ? "Uploading..." : "Select Image"}
+              </Button>
+              <p className="mt-2 text-sm text-gray-500">
+                or drag and drop your image here
+              </p>
+            </div>
+          </DialogContent>
+        </Dialog>
       </div>
 
       <motion.div
@@ -94,8 +236,6 @@ export default function EnhancedMyProfileSection(datauser: any) {
         <p className="text-muted-foreground mb-4 dark:text-gray-300">{userdata.bio}</p>
         <DrawerDialogDemo skills={userdata.skills} langs={userdata.languages}/>
       </motion.div>
-
-      
 
       <div className="mb-8 grid grid-cols-1 gap-8 md:grid-cols-2">
         <motion.div
@@ -159,10 +299,10 @@ export default function EnhancedMyProfileSection(datauser: any) {
         >
           <h2 className="mb-4 text-xl font-semibold">Skills</h2>
           <div className="mb-4 flex flex-wrap gap-2">
-            {userdata.skills.map((skill: string | number | bigint | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<AwaitedReactNode> | MotionValue<number> | MotionValue<string> | null | undefined, index: Key | null | undefined) => (
+            {userdata.skills.map((skill: any, index: number) => (
               <motion.span
                 key={index}
-                className="flex items-center rounded-full bg-primary/10 px-3 py-1   text-primary dark:bg-primary/20 dark:text-primary-foreground"
+                className="flex items-center cursor-pointer rounded-full bg-primary/10 px-3 py-1   text-primary dark:bg-primary/20 dark:text-primary-foreground"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -252,29 +392,6 @@ export default function EnhancedMyProfileSection(datauser: any) {
         )}
       </motion.div>
 
-      {/* <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 1 }}
-        className="bg-card dark:bg-gray-800 text-card-foreground dark:text-gray-100 p-6 rounded-lg shadow mb-8"
-      >
-        <h2 className="text-xl font-semibold mb-4">Account Settings</h2>
-        <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <span>Email Notifications</span>
-            <Switch />
-          </div>
-          <div className="flex items-center justify-between">
-            <span>Two-Factor Authentication</span>
-            <Switch />
-          </div>
-          <div className="flex items-center justify-between">
-            <span>Profile Visibility</span>
-            <Switch />
-          </div>
-        </div>
-      </motion.div> */}
-
       {/* New section: Achievements */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -314,8 +431,6 @@ export default function EnhancedMyProfileSection(datauser: any) {
         </div>
       </motion.div>
 
-      {/* New section: Profile Completion */}
-
       <div className="flex items-center justify-between">
         <Button
           variant="destructive"
@@ -323,7 +438,7 @@ export default function EnhancedMyProfileSection(datauser: any) {
         >
           <Trash2 size={20} className="mr-2" /> Delete Account
         </Button>
-        <Button variant="darky">
+        <Button >
           <LogOut size={20} className="mr-2" /> Log Out
         </Button>
       </div>
@@ -351,7 +466,6 @@ export default function EnhancedMyProfileSection(datauser: any) {
               </p>
               <div className="flex justify-end space-x-4">
                 <Button
-                  variant="darky"
                   onClick={() => setShowDeleteConfirmation(false)}
                 >
                   Cancel

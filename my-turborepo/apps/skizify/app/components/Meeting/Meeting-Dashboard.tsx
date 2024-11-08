@@ -1,5 +1,5 @@
 import { meetingsInfo_interface } from "@repo/store/types";
-import { Avatar } from "@repo/ui/avatar";
+import { Avatar, AvatarImage, AvatarFallback } from "../../../@/components/ui/avatar";
 import { format } from "date-fns";
 import { Calendar, ChevronRight, Clock, User } from "lucide-react";
 import {
@@ -123,11 +123,10 @@ export default function MeetingDashboard({
                 </div>
                 <div className="group flex cursor-pointer items-center space-x-3 rounded-lg bg-neutral-200/40 p-3 text-neutral-500 hover:bg-black/5 dark:bg-gradient-to-r dark:from-neutral-800 dark:to-neutral-900 dark:text-neutral-400">
                   {/* Attendee Avatars */}
-                  <Avatar
-                    name={meetings[0]?.Skizzer.name}
-                    photo={meetings[0]?.user.userImage}
-                    classname="rounded-md border-1 ring-2 ring-neutral-500 "
-                  />
+                  <Avatar className="rounded-md border-1 ring-2 ring-neutral-500">
+                    <AvatarImage src={meetings[0]?.user.userImage || ""} alt={meetings[0]?.Skizzer.name || "User"} />
+                    <AvatarFallback>{(meetings[0]?.Skizzer.name || "User").charAt(0)}</AvatarFallback>
+                  </Avatar>
                   <div className="flex flex-col">
                     <span className="font-semibold">
                       {meetings[0]?.Skizzer.name}

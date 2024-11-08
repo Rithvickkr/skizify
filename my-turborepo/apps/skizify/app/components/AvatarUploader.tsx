@@ -5,6 +5,7 @@ import { useState } from "react";
 import { twMerge } from "tailwind-merge";
 import { getSignedURL } from "../lib/action";
 import { useSession } from "next-auth/react";
+import setImageInDB from "../lib/actions/setImage_in_DB";
 export default function AvatarUploader({
   user,
   region,
@@ -23,29 +24,89 @@ export default function AvatarUploader({
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>(null);
 
-
   const [statusMessage, setStatusMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const length = content.length;
+  console.log("length: ", length);
   const buttonDisabled = content.length < 1 || loading;
+
+  const computeSHA256 = async (file: File) => {
+    const buffer = await file.arrayBuffer();
+    const hashBuffer = await crypto.subtle.digest("SHA-256", buffer);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const hashHex = hashArray
+      .map((b) => b.toString(16).padStart(2, "0"))
+      .join("");
+    return hashHex;
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    setStatusMessage("creating");
     setLoading(true);
+    setStatusMessage("creating");
+    try {
+      // Do all the image upload and everything
+      console.log({ content, file });
 
-    // Do all the image upload and everything
-    console.log({content, file});
+      console.log("file: ", file);
+      if (!file) {
+        setStatusMessage("No file selected");
+        setLoading(false);
+        return;
+      }
 
-    const signedURLResult = await getSignedURL({ session, region, accessKey, secretAccessKey, bucketName });
-    console.log(signedURLResult.success?.url);
+      const signedURLResult = await getSignedURL({
+        session,
+        region,
+        accessKey,
+        secretAccessKey,
+        bucketName,
+        fileSize: file.size,
+        fileType: file.type,
+        checksum: await computeSHA256(file),
+      });
+      if (signedURLResult.failure) {
+        setStatusMessage(signedURLResult.failure);
+        setLoading(false);
+        return;
+      }
 
+      console.log("signedURLResult.success?.url", signedURLResult.success?.url);
+      const url = signedURLResult.success?.url;
 
-    setStatusMessage("created");
-    setLoading(false);
+      if (!url) {
+        setStatusMessage("Failed to get signed URL");
+        setLoading(false);
+        return;
+      }
 
+      //Here we are Pushing the file to the S3 Bucket
+      await fetch(url, {
+        method: "PUT",
+        headers: {
+          "Content-Type": file?.type ?? "",
+        },
+        body: file,
+      });
 
+      if (url) {
+        if (session.data?.user.id) {
+          await setImageInDB({ userId: session.data.user.id, url });
+        } else {
+          setStatusMessage("You");
+        }
+
+        setStatusMessage("created & uploaded in the Bucket");
+        setLoading(false);
+      }
+    } catch (error) {
+      console.error(error);
+      setStatusMessage("Post failed");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -62,23 +123,21 @@ export default function AvatarUploader({
       setPreviewUrl(null);
     }
   };
-  
-  
 
   return (
     <>
       <form
-        className="border border-neutral-500 rounded-lg px-6 py-4 w-full "
+        className="w-full rounded-lg border border-neutral-500 px-6 py-4"
         onSubmit={handleSubmit}
       >
         {statusMessage && (
-          <p className="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 mb-4 rounded relative">
+          <p className="relative mb-4 rounded border border-yellow-400 bg-yellow-100 px-4 py-3 text-yellow-700">
             {statusMessage}
           </p>
         )}
 
-        <div className="flex gap-4 items-start pb-4 w-full">
-          <div className="rounded-full h-12 w-12 overflow-hidden relative">
+        <div className="flex w-full items-start gap-4 pb-4">
+          <div className="relative h-12 w-12 overflow-hidden rounded-full">
             <Image
               className="object-cover"
               src={user.userImage || "https://www.gravatar.com/avatar/?d=mp"}
@@ -88,12 +147,12 @@ export default function AvatarUploader({
             />
           </div>
 
-          <div className="flex flex-col gap-2 w-full">
+          <div className="flex w-full flex-col gap-2">
             <div>{user.name}</div>
 
             <label className="w-full">
               <input
-                className="bg-transparent flex-1 w-full border-none outline-none"
+                className="w-full flex-1 border-none bg-transparent outline-none"
                 type="text"
                 placeholder="Post a thing..."
                 value={content}
@@ -105,7 +164,7 @@ export default function AvatarUploader({
 
             <label className="flex">
               <svg
-                className="w-5 h-5 hover:cursor-pointer transform-gpu active:scale-75 transition-all text-neutral-500"
+                className="h-5 w-5 transform-gpu text-neutral-500 transition-all hover:cursor-pointer active:scale-75"
                 aria-label="Attach media"
                 role="img"
                 viewBox="0 0 20 20"
@@ -118,7 +177,7 @@ export default function AvatarUploader({
               </svg>
 
               <input
-                className="bg-transparent flex-1 border-none outline-none hidden"
+                className="hidden flex-1 border-none bg-transparent outline-none"
                 name="media"
                 type="file"
                 accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm"
@@ -127,27 +186,23 @@ export default function AvatarUploader({
             </label>
           </div>
         </div>
-        {
-  previewUrl && file && (
-    <div className="mt-4">
-      {file.type.startsWith("image/") ? (
-        <img src={previewUrl} alt="Selected file" />
-      ) : file.type.startsWith("video/") ? (
-        <video src={previewUrl} controls />
-      ) : null}
-    </div>
-  )
-}
+        {previewUrl && file && (
+          <div className="mt-4">
+            {file.type.startsWith("image/") ? (
+              <img src={previewUrl} alt="Selected file" />
+            ) : file.type.startsWith("video/") ? (
+              <video src={previewUrl} controls />
+            ) : null}
+          </div>
+        )}
 
-
-
-        <div className="flex justify-between items-center mt-5">
+        <div className="mt-5 flex items-center justify-between">
           <div className="text-neutral-500">Characters: {content.length}</div>
           <button
             type="submit"
             className={twMerge(
-              "border rounded-xl px-4 py-2 disabled",
-              buttonDisabled && "opacity-50 cursor-not-allowed"
+              "disabled rounded-xl border px-4 py-2",
+              buttonDisabled && "cursor-not-allowed opacity-50",
             )}
             disabled={buttonDisabled}
             aria-disabled={buttonDisabled}

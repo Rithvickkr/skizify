@@ -1,6 +1,6 @@
 "use client";
 
-import { Avatar } from "@repo/ui/avatar";
+import { Avatar, AvatarImage, AvatarFallback } from "../../../@/components/ui/avatar";
 import { Skizzerinfo } from "../../lib/actions/Skizzer-accept-gig";
 import { useState } from "react";
 import { CalendarDays, CheckCheck, Star } from "lucide-react";
@@ -47,10 +47,10 @@ export default function SkizzerselectCard({
             >
               <div className="flex">
                 <div className="self-center justify-self-center">
-                  <Avatar
-                    name={skizzer.Skizzer.name}
-                    classname="size-11 shadow-sm mr-3 bg-gray-200 text-xl text-black border border-black"
-                  />
+                  <Avatar className="size-11 shadow-sm mr-3 bg-gray-200 text-xl text-black border border-black">
+                    <AvatarImage src={skizzer.Skizzer.userImage} alt={skizzer.Skizzer.name} />
+                    <AvatarFallback>{skizzer.Skizzer.name.charAt(0)}</AvatarFallback>
+                  </Avatar>
                 </div>
                 <div className="flex flex-col self-center truncate">
                   <div className="text-md mb-1 truncate font-semibold">

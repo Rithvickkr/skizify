@@ -1,5 +1,4 @@
 import { Datetimepackage, GigsInterface } from "@repo/store/types";
-import { Avatar } from "@repo/ui/avatar";
 import { Clock7 } from "lucide-react";
 import { ScrollArea, ScrollBar } from "../../../@/components/ui/scroll-area";
 import { Button as ButtonE } from "../ui/button";
@@ -13,6 +12,8 @@ import {
   CredenzaTrigger
 } from "../ui/Credenza";
 import { SelectDATE } from "./SelectDate";
+import { Avatar, AvatarImage, AvatarFallback } from "../../../@/components/ui/avatar";
+
 export function BookButton2({
   gig,
   poster,
@@ -38,11 +39,10 @@ export function BookButton2({
             <CredenzaTitle>
               <div className="flex justify-between">
                 <div className="flex items-center space-x-2">
-                  <Avatar
-                    name={poster.name}
-                    photo={poster.userImage}
-                    classname="size-10 text-md"
-                  />
+                  <Avatar className="size-10">
+                    <AvatarImage src={poster.userImage} alt={poster.name} />
+                    <AvatarFallback>{poster.name.charAt(0)}</AvatarFallback>
+                  </Avatar>
                   <div>
                     <h3 className="text-lg font-bold">{poster.name}</h3>
                   </div>

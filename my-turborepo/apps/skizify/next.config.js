@@ -3,7 +3,7 @@ const nextConfig = {
   transpilePackages: ["@repo/ui"],
   images: {
     formats: [],
-    domains: ['images.unsplash.com', 'www.gravatar.com'],
+    domains: ['images.unsplash.com', 'www.gravatar.com', 'skizify-bucket.s3.ap-south-1.amazonaws.com'],
     remotePatterns: [
       {
         protocol: 'https',

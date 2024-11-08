@@ -4,7 +4,7 @@
     "outDir": "dist",
     // "rootDir": "src"  remove Commented Because it will produce Error in Packages folder files, if file is imported from Outsode folder
   },
-  "include": ["src"],
+  "include": ["src", "../../apps/skizify/app/components/Appbar.tsx"],
   
   "exclude": ["node_modules", "dist"]
 }

@@ -11,12 +11,14 @@ export default async function Page({
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
+  
   const page = searchParams["page"] ?? "1";
   const per_page = searchParams["per_page"] ?? "12";
   const gigs: GigsInterface[] =
   (await getAllgigs()) as unknown as GigsInterface[];
   const session = await getServerSession(authOptions);
   const filteredGigs = filtergigs(gigs, session);
+  console.log(session?.user.userImage);
   return (
     <div className="flex h-fit w-full flex-col items-center rounded-lg pb-4">
       <div className="mt-4 w-full">

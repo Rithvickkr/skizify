@@ -1,7 +1,6 @@
 "use client";
 import { signIn, signOut } from "next-auth/react";
 import { useSession } from "next-auth/react";
-import { Appbar } from "@repo/ui/appbar";
 import { setRole } from "../lib/actions/setRole";
 
 import { useRecoilState, RecoilState } from "recoil";
@@ -11,6 +10,7 @@ import { Bell } from "lucide-react";
 import WarningPage from "./ui/WarningPage";
 import getInfos from "../lib/actions/getinfos";
 import { ToolTip } from "@repo/ui/tooltip";
+import { Appbar } from "./Appbar";
 export function AppbarClient() {
   const session = useSession();
   // const [roly, setRoly] = useRecoilState(userRoleState);
