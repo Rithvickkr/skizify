@@ -32,12 +32,6 @@ import { Label } from "../../@/components/ui/label";
 import { ScrollArea, ScrollBar } from "../../@/components/ui/scroll-area";
 import languages from "../utils/languages";
 
-const achievements = [
-  "Hackathon Winner",
-  "Open Source Contributor",
-  "Tech Conference Speaker",
-];
-
 const MotionCard = motion(Card);
 
 interface SectionProps {
@@ -89,13 +83,8 @@ const Section = ({ title, children, isOpen, toggleOpen }: SectionProps) => (
 );
 
 export default function EnhancedUXProfileCreation() {
-  
-  
   const { register, control, handleSubmit, watch } = useForm();
   const [newSkill, setNewSkill] = useState("");
-  const [selectedAchievements, setSelectedAchievements] = useState<string[]>(
-    [],
-  );
   const [socialToggles, setSocialToggles] = useState({
     linkedin: false,
     github: false,
@@ -104,7 +93,7 @@ export default function EnhancedUXProfileCreation() {
   });
   const [isAddingSkill, setIsAddingSkill] = useState(false);
   const [skillsList, setSkillsList] = useState<string[]>([]);
-  const[language, setlanguage] = useState("");
+  const [language, setlanguage] = useState("");
 
   const [openSections, setOpenSections] = useState({
     basicInfo: true,
@@ -128,13 +117,7 @@ export default function EnhancedUXProfileCreation() {
     console.log(skillsList);
   };
 
-  const toggleAchievement = (achievement: string) => {
-    setSelectedAchievements((prev) =>
-      prev.includes(achievement)
-        ? prev.filter((a) => a !== achievement)
-        : [...prev, achievement],
-    );
-  };
+
 
   const toggleSocial = (
     platform: "linkedin" | "github" | "twitter" | "instagram",
@@ -158,7 +141,7 @@ export default function EnhancedUXProfileCreation() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background to-secondary/10 text-foreground transition-colors duration-300">
+    <div className="min-h-screen bg-black from-background to-secondary/10 text-foreground transition-colors duration-300">
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="mx-auto max-w-4xl space-y-8 p-4 sm:p-6"
@@ -170,7 +153,7 @@ export default function EnhancedUXProfileCreation() {
           transition={{ duration: 0.5 }}
         >
           <div className="mb-4 text-center sm:mb-0 sm:text-left">
-            <h1 className="mb-2 bg-gradient-to-r from-primary to-secondary bg-clip-text text-3xl font-bold text-transparent sm:text-4xl">
+            <h1 className="bg-gradient-to-r from-black to-black/60 bg-clip-text text-4xl font-bold text-transparent dark:from-white dark:to-white/15">
               Create Your Profile
             </h1>
             <p className="text-muted-foreground">
@@ -331,7 +314,7 @@ export default function EnhancedUXProfileCreation() {
           </Section>
 
           <Section
-            title="Skills and Achievements"
+            title="Skills"
             isOpen={openSections.skillsAchievements}
             toggleOpen={() => toggleSection("skillsAchievements")}
           >
@@ -385,27 +368,6 @@ export default function EnhancedUXProfileCreation() {
                 </div>
               </div>
               <Separator className="bg-muted/50" />
-              <div>
-                <label className="mb-2 block text-sm font-medium">
-                  Achievements
-                </label>
-                <div className="flex flex-wrap gap-2">
-                  {achievements.map((achievement) => (
-                    <Badge
-                      key={achievement}
-                      variant={
-                        selectedAchievements.includes(achievement)
-                          ? "default"
-                          : "outline"
-                      }
-                      className="cursor-pointer px-2 py-1 text-sm transition-all duration-300 hover:bg-primary hover:text-primary-foreground"
-                      onClick={() => toggleAchievement(achievement)}
-                    >
-                      {achievement}
-                    </Badge>
-                  ))}
-                </div>
-              </div>
             </div>
           </Section>
 
@@ -422,7 +384,6 @@ export default function EnhancedUXProfileCreation() {
                 Select Languages
               </label>
               <div>
-                
                 <Select
                   onValueChange={(value) => {
                     setlanguage(value);

@@ -92,7 +92,7 @@ export default function EnhancedMyProfileSection(datauser: any) {
       >
         <h1 className="mb-2 text-3xl font-bold dark:text-gray-100">{userdata.name}</h1>
         <p className="text-muted-foreground mb-4 dark:text-gray-300">{userdata.bio}</p>
-        <DrawerDialogDemo skills={userdata.skills} />
+        <DrawerDialogDemo skills={userdata.skills} langs={userdata.languages}/>
       </motion.div>
 
       
