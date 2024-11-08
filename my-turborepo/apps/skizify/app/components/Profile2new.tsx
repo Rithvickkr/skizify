@@ -43,6 +43,7 @@ export default function Newprofile({isVisible} : {isVisible: boolean}) {
     languages: string;
     qualification: string;
     profession: string;
+    location: string;
   }
 
   const { data: session } = useSession();
@@ -63,6 +64,7 @@ export default function Newprofile({isVisible} : {isVisible: boolean}) {
     languages: "",
     qualification: "",
     profession: "",
+    location: "",
   });
 
   const formFields = [
@@ -79,6 +81,7 @@ export default function Newprofile({isVisible} : {isVisible: boolean}) {
       type: "text",
       placeholder: "University of Technology",
     },
+    { label: "Location", type: "text", placeholder: "Delhi, India" },
   ];
 
   useEffect(() => {
@@ -105,6 +108,7 @@ export default function Newprofile({isVisible} : {isVisible: boolean}) {
       [form.languages], // Wrap the form.languages in an array
       form.qualification,
       form.profession,
+      form.location
     );
     console.log(form);
   };

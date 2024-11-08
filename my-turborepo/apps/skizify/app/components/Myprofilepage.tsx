@@ -1,7 +1,15 @@
 "use client";
 
+<<<<<<< HEAD
 import { Avatar, AvatarImage, AvatarFallback } from "../../@/components/ui/avatar";
 import { AnimatePresence, motion } from "framer-motion";
+=======
+import { AwaitedReactNode, JSXElementConstructor, Key, ReactElement, ReactNode, ReactPortal, useState } from "react";
+import { motion, AnimatePresence, MotionValue } from "framer-motion";
+import { Button } from "../../@/components/ui/button";
+import { useSession } from "next-auth/react";
+
+>>>>>>> 26806d194f44b6d45b49c09bb0041d5ebd8d96de
 import {
   Activity,
   Aperture,
@@ -136,6 +144,7 @@ export default function EnhancedMyProfileSection(datauser: any) {
     setIsDragging(false);
   };
 
+<<<<<<< HEAD
   const [name, setName] = useState("Jane Doe");
   const [bio, setBio] = useState(
     "Full-stack developer passionate about creating beautiful and functional web applications.",
@@ -154,6 +163,15 @@ export default function EnhancedMyProfileSection(datauser: any) {
     "Photoshop",
   ]);
   const [newSkill, setNewSkill] = useState("");
+=======
+  // const [name, setName] = useState("Jane Doe");
+  // const [bio, setBio] = useState(
+  //   "Full-stack developer passionate about creating beautiful and functional web applications.",
+  // );
+ 
+  
+ 
+>>>>>>> 26806d194f44b6d45b49c09bb0041d5ebd8d96de
   const [activities] = useState([
     { id: 1, text: "Completed a new project", date: "2 days ago" },
     { id: 2, text: "Added a new skill", date: "1 week ago" },
@@ -169,7 +187,15 @@ export default function EnhancedMyProfileSection(datauser: any) {
     location: "",
     Achievement: "",
   });
+<<<<<<< HEAD
   const userdata = datauser.datauser;
+=======
+  const userdata=datauser.datauser;
+  const session = useSession();
+  console.log(userdata);
+ 
+
+>>>>>>> 26806d194f44b6d45b49c09bb0041d5ebd8d96de
 
   return (
     <div className="mx-auto max-w-4xl rounded-xl p-6 shadow-2xl transition-all duration-300">
@@ -240,9 +266,9 @@ export default function EnhancedMyProfileSection(datauser: any) {
         transition={{ duration: 0.5 }}
         className="mb-8 text-center"
       >
-        <h1 className="mb-2 text-3xl font-bold dark:text-gray-100">{name}</h1>
-        <p className="text-muted-foreground mb-4 dark:text-gray-300">{bio}</p>
-        <DrawerDialogDemo skills={skills} />
+        <h1 className="mb-2 text-3xl font-bold dark:text-gray-100">{userdata.name}</h1>
+        <p className="text-muted-foreground mb-4 dark:text-gray-300">{userdata.bio}</p>
+        <DrawerDialogDemo skills={userdata.skills} />
       </motion.div>
 
       <div className="mb-8 grid grid-cols-1 gap-8 md:grid-cols-2">
@@ -259,7 +285,7 @@ export default function EnhancedMyProfileSection(datauser: any) {
                 size={20}
                 className="text-muted-foreground mr-2 dark:text-gray-400"
               />
-              <span>{email}</span>
+              <span>{session.data?.user.email}</span>
             </div>
             <div className="flex items-center">
               <School
@@ -280,21 +306,21 @@ export default function EnhancedMyProfileSection(datauser: any) {
                 size={20}
                 className="text-muted-foreground mr-2 dark:text-gray-400"
               />
-              <span>Engineer</span>
+              <span>{userdata.profession}</span>
             </div>
             <div className="flex items-center">
               <Languages
                 size={20}
                 className="text-muted-foreground mr-2 dark:text-gray-400"
               />
-              <span>Hindi, English</span>
+              <span>{userdata.languages}</span>
             </div>
             <div className="flex items-center">
               <MapPin
                 size={20}
                 className="text-muted-foreground mr-2 dark:text-gray-400"
               />
-              <span>{location}</span>
+              <span>{userdata.location}</span>
             </div>
           </div>
         </motion.div>
@@ -307,7 +333,7 @@ export default function EnhancedMyProfileSection(datauser: any) {
         >
           <h2 className="mb-4 text-xl font-semibold">Skills</h2>
           <div className="mb-4 flex flex-wrap gap-2">
-            {skills.map((skill, index) => (
+            {userdata.skills.map((skill: string | number | bigint | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<AwaitedReactNode> | MotionValue<number> | MotionValue<string> | null | undefined, index: Key | null | undefined) => (
               <motion.span
                 key={index}
                 className="flex items-center cursor-pointer rounded-full bg-primary/10 px-3 py-1   text-primary dark:bg-primary/20 dark:text-primary-foreground"
