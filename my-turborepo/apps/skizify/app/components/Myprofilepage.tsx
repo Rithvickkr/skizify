@@ -1,15 +1,7 @@
 "use client";
 
-<<<<<<< HEAD
 import { Avatar, AvatarImage, AvatarFallback } from "../../@/components/ui/avatar";
 import { AnimatePresence, motion } from "framer-motion";
-=======
-import { AwaitedReactNode, JSXElementConstructor, Key, ReactElement, ReactNode, ReactPortal, useState } from "react";
-import { motion, AnimatePresence, MotionValue } from "framer-motion";
-import { Button } from "../../@/components/ui/button";
-import { useSession } from "next-auth/react";
-
->>>>>>> 26806d194f44b6d45b49c09bb0041d5ebd8d96de
 import {
   Activity,
   Aperture,
@@ -30,8 +22,7 @@ import {
   Twitter,
   Upload
 } from "lucide-react";
-import { useRef, useState } from "react";
-import { Button } from "../../@/components/ui/button";
+import { useRef, useState, ReactElement } from "react";
 import {
   Dialog,
   DialogContent,
@@ -41,9 +32,10 @@ import {
   DialogTrigger,
 } from "../../@/components/ui/dialog";
 import { DrawerDialogDemo } from "./darwerform";
-import { useSession } from "next-auth/react";
 import { getSignedURL } from "../lib/action";
 import setImageInDB from "../lib/actions/setImage_in_DB";
+import { useSession } from "next-auth/react";
+import { Button } from "./ui/button";
 
 export default function EnhancedMyProfileSection(datauser: any) {
   const [showAllActivity, setShowAllActivity] = useState(false);
@@ -144,26 +136,6 @@ export default function EnhancedMyProfileSection(datauser: any) {
     setIsDragging(false);
   };
 
-<<<<<<< HEAD
-  const [name, setName] = useState("Jane Doe");
-  const [bio, setBio] = useState(
-    "Full-stack developer passionate about creating beautiful and functional web applications.",
-  );
-  const [email, setEmail] = useState("jane.doe@example.com");
-  const [phone, setPhone] = useState("+1 (555) 123-4567");
-  const [location, setLocation] = useState("San Francisco, CA");
-  const [skills, setSkills] = useState([
-    "React",
-    "Node.js", 
-    "TypeScript",
-    "GraphQL",
-    "Tailwind CSS",
-    "Figma",
-    "Adobe XD",
-    "Photoshop",
-  ]);
-  const [newSkill, setNewSkill] = useState("");
-=======
   // const [name, setName] = useState("Jane Doe");
   // const [bio, setBio] = useState(
   //   "Full-stack developer passionate about creating beautiful and functional web applications.",
@@ -171,7 +143,6 @@ export default function EnhancedMyProfileSection(datauser: any) {
  
   
  
->>>>>>> 26806d194f44b6d45b49c09bb0041d5ebd8d96de
   const [activities] = useState([
     { id: 1, text: "Completed a new project", date: "2 days ago" },
     { id: 2, text: "Added a new skill", date: "1 week ago" },
@@ -187,15 +158,10 @@ export default function EnhancedMyProfileSection(datauser: any) {
     location: "",
     Achievement: "",
   });
-<<<<<<< HEAD
-  const userdata = datauser.datauser;
-=======
   const userdata=datauser.datauser;
-  const session = useSession();
   console.log(userdata);
  
 
->>>>>>> 26806d194f44b6d45b49c09bb0041d5ebd8d96de
 
   return (
     <div className="mx-auto max-w-4xl rounded-xl p-6 shadow-2xl transition-all duration-300">
@@ -333,7 +299,7 @@ export default function EnhancedMyProfileSection(datauser: any) {
         >
           <h2 className="mb-4 text-xl font-semibold">Skills</h2>
           <div className="mb-4 flex flex-wrap gap-2">
-            {userdata.skills.map((skill: string | number | bigint | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<AwaitedReactNode> | MotionValue<number> | MotionValue<string> | null | undefined, index: Key | null | undefined) => (
+            {userdata.skills.map((skill: any, index: number) => (
               <motion.span
                 key={index}
                 className="flex items-center cursor-pointer rounded-full bg-primary/10 px-3 py-1   text-primary dark:bg-primary/20 dark:text-primary-foreground"
@@ -472,7 +438,7 @@ export default function EnhancedMyProfileSection(datauser: any) {
         >
           <Trash2 size={20} className="mr-2" /> Delete Account
         </Button>
-        <Button variant="darky">
+        <Button >
           <LogOut size={20} className="mr-2" /> Log Out
         </Button>
       </div>
@@ -500,7 +466,6 @@ export default function EnhancedMyProfileSection(datauser: any) {
               </p>
               <div className="flex justify-end space-x-4">
                 <Button
-                  variant="darky"
                   onClick={() => setShowDeleteConfirmation(false)}
                 >
                   Cancel
