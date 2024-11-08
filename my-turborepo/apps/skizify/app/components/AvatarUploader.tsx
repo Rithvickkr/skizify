@@ -5,11 +5,18 @@ import { useState } from "react";
 import { twMerge } from "tailwind-merge";
 import { getSignedURL } from "../lib/action";
 import { useSession } from "next-auth/react";
-
 export default function AvatarUploader({
   user,
+  region,
+  accessKey,
+  secretAccessKey,
+  bucketName,
 }: {
-    user: { name?: string | null; userImage?: string | null };
+  user: { name?: string | null; userImage?: string | null };
+  region: string;
+  accessKey: string;
+  secretAccessKey: string;
+  bucketName: string;
 }) {
   const session = useSession();
   const [content, setContent] = useState("");
@@ -31,7 +38,7 @@ export default function AvatarUploader({
     // Do all the image upload and everything
     console.log({content, file});
 
-    const signedURLResult = await getSignedURL({ session });
+    const signedURLResult = await getSignedURL({ session, region, accessKey, secretAccessKey, bucketName });
     console.log(signedURLResult.success?.url);
 
 
