@@ -32,6 +32,10 @@ model User {
   qualification   String?
   profession      String?
   skizzer        Boolean   @default(false)
+  location        String?
+  linkedin        String?
+  github          String?
+  X              String?
 }
 
 model Gigs {

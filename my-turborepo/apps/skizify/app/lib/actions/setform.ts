@@ -11,6 +11,7 @@ export async function setformy(
   languages: string[],
   qualifications: string,
   profession: string,
+  location: string
 
 ) {
   const user = await prisma.user.findUnique({
@@ -37,6 +38,7 @@ export async function setformy(
             qualification: qualifications as string,
             profession: profession as string,
             skizzer: true,
+            location: location as string,
           },
         });
 
