@@ -1,5 +1,5 @@
 import { GigStatus } from "@repo/store/types";
-import { Avatar } from "@repo/ui/avatar";
+import { Avatar, AvatarImage, AvatarFallback } from "../../../@/components/ui/avatar";
 
 import { CalendarRange, Clock7Icon } from "lucide-react";
 import { Card } from "../../../@/components/ui/card";
@@ -139,11 +139,12 @@ export function MygigCard2({
               <div className="mb-3 flex flex-col items-center justify-between space-y-4 sm:mb-5 sm:flex-row sm:items-center sm:space-y-0">
                 <div className="flex flex-col items-center space-y-1 sm:flex-row sm:items-start sm:space-x-4 sm:space-y-0">
                   <div className="relative">
-                    <Avatar
-                      name={session?.user.name}
-                      photo={session?.user.userImage}
-                      classname="sm:size-16 size-14 sm:rounded-xl rounded-lg border-4 border-white dark:border-neutral-800 shadow-xl transition-all duration-500 ease-in-out group-hover:scale-105 group-hover:rotate-6 "
-                    />
+                    <Avatar className="sm:size-16 size-14 sm:rounded-xl rounded-lg border-4 bg-black text-white dark:bg-white dark:text-black border-white dark:border-neutral-800 shadow-xl transition-all duration-500 ease-in-out group-hover:scale-105 group-hover:rotate-6">
+                      <AvatarImage src={session?.user.userImage} alt={session?.user.name} />
+                        <AvatarFallback className="bg-black text-white dark:bg-white dark:text-black">
+                        {session?.user.name?.charAt(0)}
+                        </AvatarFallback>
+                    </Avatar>
                   </div>
                   <div>
                     <h2 className="mb-1 bg-gradient-to-r from-neutral-400 to-neutral-500 bg-clip-text text-xl font-semibold text-transparent dark:to-neutral-200 sm:text-2xl">

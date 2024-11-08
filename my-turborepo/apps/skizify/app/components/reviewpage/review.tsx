@@ -15,7 +15,7 @@ import { Label } from "../../../@/components/ui/label";
 import { Textarea } from "../../../@/components/ui/textarea";
 import { useSession } from "next-auth/react";
 import { Credenza } from "../ui/Credenza";
-import { Avatar } from "@repo/ui/avatar";
+// import { Avatar } from "@repo/ui/avatar";
 import setreview from "../../lib/actions/setreview";
 
 export default function Reviewpage() {
@@ -50,13 +50,13 @@ export default function Reviewpage() {
               Please share your feedback to help us improve.
             </DialogDescription>
             <div className="flex-row self-center p-5">
-              <div>
+              {/* <div>
                 <Avatar
                   name={session?.user?.name || ""}
                   photo={Avatar || ""}
                   classname="size-24 text-5xl self-center"
                 />
-              </div>
+              </div> */}
               <div className="mt-2 text-2xl font-bold text-gray-900 dark:text-gray-100">
                 {session?.user?.name}
               </div>

@@ -1,5 +1,5 @@
 import React from "react";
-import { Avatar } from "@repo/ui/avatar";
+import { Avatar, AvatarImage, AvatarFallback } from "../../../@/components/ui/avatar";
 import { Badge } from "../../../@/components/ui/badge";
 import { Button } from "../ui/button";
 import {
@@ -79,11 +79,10 @@ export default function EnhancedGigCard({
       <div className="absolute inset-0 bg-gradient-to-r from-neutral-200/60 via-transparent to-neutral-300/60 opacity-0 transition-opacity duration-500 ease-in-out group-hover:opacity-100 dark:from-neutral-800/10 dark:to-neutral-700/10" />
       <CardHeader className="relative p-3">
         <div className="flex items-center space-x-4">
-          <Avatar
-            name={gig.user.name || "User"}
-            photo={gig.user.userImage}
-            classname="size-14 rounded-xl border-4 border-white dark:border-neutral-800 shadow-xl transition-all duration-500 ease-in-out group-hover:scale-105 group-hover:rotate-3"
-          />
+          <Avatar className="size-14 rounded-xl border-4 border-white dark:border-neutral-800 shadow-xl transition-all duration-500 ease-in-out group-hover:scale-105 group-hover:rotate-3">
+            <AvatarImage src={gig.user.userImage || ""} alt={gig.user.name || "User"} />
+            <AvatarFallback>{(gig.user.name || "User").charAt(0)}</AvatarFallback>
+          </Avatar>
           <div className="flex-grow space-y-1">
             <h2 className="text-xl font-semibold text-neutral-800 dark:text-neutral-100">
               {gig.user.name || "Anonymous"}

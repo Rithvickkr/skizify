@@ -1,5 +1,5 @@
 "use client";
-import { Avatar } from "@repo/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "../../../@/components/ui/avatar";
 import {
   EllipsisVertical,
   MessageSquare,
@@ -652,19 +652,17 @@ const ChatStructure: React.FC<{ data: Chat }> = ({ data }) => {
               2:35 PM
             </div>
           </div>
-          <Avatar
-            name={data.name}
-            classname="size-8 shadow-sm mr-1 md:mr-2 bg-neutral-200 text-sm  text-black border border-black"
-            photo={data.userImage}
-          />
+          <Avatar className="size-8 shadow-sm mr-1 md:mr-2 bg-neutral-200 text-sm text-black border border-black">
+            <AvatarImage src={data.userImage} alt={data.name} />
+            <AvatarFallback>{data.name?.charAt(0)}</AvatarFallback>
+          </Avatar>
         </div>
       ) : (
         <div className="flex items-start gap-3">
-          <Avatar
-            name={data.name}
-            classname="size-8 shadow-sm bg-neutral-200 text-sm  text-black border border-black"
-            photo={data.userImage}
-          />
+          <Avatar className="size-8 shadow-sm bg-neutral-200 text-sm text-black border border-black">
+            <AvatarImage src={data.userImage} alt={data.name} />
+            <AvatarFallback>{data.name?.charAt(0)}</AvatarFallback>
+          </Avatar>
           <div className="min-w-32 rounded-md bg-lightdark p-2 text-sm text-[#e2e8f0]">
             <p className="break-words break-all">{data.message}</p>
             <div className="mt-1 text-xs text-neutral-200">2:36 PM</div>

@@ -38,6 +38,7 @@ export interface GigsInterface {
       photo?: any;
       email?: string | null;
       role?: UserRole;
+      userImage?: string | null;
     };
     onSignin: any;
     onSignout: any;

@@ -1,5 +1,5 @@
 "use client";
-import { Avatar } from "@repo/ui/avatar";
+import { Avatar, AvatarImage, AvatarFallback } from "../../../@/components/ui/avatar";
 
 import { Button } from "../ui/button";
 import {
@@ -160,17 +160,15 @@ export default function JoinMeetingPage({
                 <div className="m-1 flex rounded border border-black p-1 px-2 dark:border-white">
                   <div className="pr-2 pt-1">
                     {session.data?.user.role === UserRole.SKIZZER ? (
-                      <Avatar
-                        photo={meeting.user.userImage}
-                        name={meeting.user.name}
-                        classname="size-8 ring-2 ring-black dark:ring-white"
-                      />
+                      <Avatar className="size-8 ring-2 ring-black dark:ring-white">
+                        <AvatarImage src={meeting.user.userImage || ""} alt={meeting.user.name || "User"} />
+                        <AvatarFallback>{(meeting.user.name || "User").charAt(0)}</AvatarFallback>
+                      </Avatar>
                     ) : (
-                      <Avatar
-                        photo={meeting.Skizzer.userImage}
-                        name={meeting.Skizzer.name}
-                        classname="size-8 ring-2 ring-black dark:ring-white"
-                      />
+                      <Avatar className="size-8 ring-2 ring-black dark:ring-white">
+                        <AvatarImage src={meeting.Skizzer.userImage || ""} alt={meeting.Skizzer.name || "User"} />
+                        <AvatarFallback>{(meeting.Skizzer.name || "User").charAt(0)}</AvatarFallback>
+                      </Avatar>
                     )}
                   </div>
                   <div className="flex flex-col">

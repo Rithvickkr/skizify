@@ -7,7 +7,6 @@ import {
 import { Fragment, useState } from "react";
 import { Button } from "../ui/button";
 import { meetingsInfo_interface } from "@repo/store/types";
-import { Avatar } from "@repo/ui/avatar";
 import { ToolTip } from "@repo/ui/tooltip"
 import JoinMeetingPage from "./JoinMeetingPage";
 
