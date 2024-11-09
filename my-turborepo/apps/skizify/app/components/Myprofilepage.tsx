@@ -1,7 +1,12 @@
 "use client";
 
-import { Avatar, AvatarImage, AvatarFallback } from "../../@/components/ui/avatar";
+import {
+  Avatar,
+  AvatarImage,
+  AvatarFallback,
+} from "../../@/components/ui/avatar";
 import { AnimatePresence, motion } from "framer-motion";
+
 import {
   Activity,
   Aperture,
@@ -20,9 +25,9 @@ import {
   School,
   Trash2,
   Twitter,
-  Upload
+  Upload,
 } from "lucide-react";
-import { useRef, useState, ReactElement } from "react";
+import { useRef, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -36,8 +41,15 @@ import { getSignedURL } from "../lib/action";
 import setImageInDB from "../lib/actions/setImage_in_DB";
 import { useSession } from "next-auth/react";
 import { Button } from "./ui/button";
+import { ProfilePageProps } from "../(dashboard)/profile/page";
 
-export default function EnhancedMyProfileSection(datauser: any) {
+export default function EnhancedMyProfileSection({
+  info,
+  datauser,
+}: {
+  info: ProfilePageProps;
+  datauser: any;
+}) {
   const [showAllActivity, setShowAllActivity] = useState(false);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const [avatarSrc, setAvatarSrc] = useState<string | null>(null);
@@ -58,19 +70,22 @@ export default function EnhancedMyProfileSection(datauser: any) {
     return hashHex;
   };
 
-  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     const file = event.target.files?.[0];
     if (file) {
+      console.log("file: ", file);
       setLoading(true);
       setStatusMessage("Uploading...");
 
       try {
         const signedURLResult = await getSignedURL({
           session,
-          region: process.env.NEXT_PUBLIC_AWS_REGION || "",
-          accessKey: process.env.NEXT_PUBLIC_AWS_ACCESS_KEY_ID || "",
-          secretAccessKey: process.env.NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY || "",
-          bucketName: process.env.NEXT_PUBLIC_AWS_BUCKET_NAME || "",
+          region: info.region,
+          accessKey: info.accessKey,
+          secretAccessKey: info.secretAccessKey,
+          bucketName: info.bucketName,
           fileSize: file.size,
           fileType: file.type,
           checksum: await computeSHA256(file),
@@ -103,7 +118,6 @@ export default function EnhancedMyProfileSection(datauser: any) {
           setAvatarSrc(url);
           setStatusMessage("Upload complete!");
         }
-
       } catch (error) {
         setStatusMessage("Upload failed");
         console.error(error);
@@ -120,8 +134,8 @@ export default function EnhancedMyProfileSection(datauser: any) {
     if (file) {
       const fakeEvent = {
         target: {
-          files: [file]
-        }
+          files: [file],
+        },
       } as unknown as React.ChangeEvent<HTMLInputElement>;
       await handleFileChange(fakeEvent);
     }
@@ -140,9 +154,7 @@ export default function EnhancedMyProfileSection(datauser: any) {
   // const [bio, setBio] = useState(
   //   "Full-stack developer passionate about creating beautiful and functional web applications.",
   // );
- 
-  
- 
+
   const [activities] = useState([
     { id: 1, text: "Completed a new project", date: "2 days ago" },
     { id: 2, text: "Added a new skill", date: "1 week ago" },
@@ -158,47 +170,51 @@ export default function EnhancedMyProfileSection(datauser: any) {
     location: "",
     Achievement: "",
   });
-  const userdata=datauser.datauser;
-  console.log(userdata);
- 
-
+  const userdata = datauser;
 
   return (
     <div className="mx-auto max-w-4xl rounded-xl p-6 shadow-2xl transition-all duration-300">
       <div className="relative mb-8 flex justify-center">
-      <Dialog>
-        <DialogTrigger asChild>
-        <div
-          className="relative inline-block cursor-pointer"
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-        >
-            <Avatar className="size-64 cursor-pointer text-4xl bg-neutral-800 dark:bg-neutral-200">
-            <AvatarImage src={session.data?.user.userImage || ""} alt="Yash" />
-            <AvatarFallback className="text-neutral-200 text-5xl dark:text-neutral-800">
-              {"Yash".charAt(0)}
-            </AvatarFallback>
-            </Avatar>
-          {isHovered && (
-          <div className="absolute inset-0 flex items-center justify-center rounded-full bg-black bg-opacity-50">
-            <Upload className="text-white opacity-65 size-10" />
-          </div>
-          )}
-        </div>
-        </DialogTrigger>
-        <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Upload Avatar</DialogTitle>
-          <DialogDescription>
-          Drag and drop an image or click to select a file.
-          </DialogDescription>
-        </DialogHeader>
-            {statusMessage && (
-              <p className="text-sm text-yellow-600">{statusMessage}</p>
-            )}
+        <Dialog>
+          <DialogTrigger asChild>
+            <div
+              className="relative inline-block cursor-pointer"
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
+            >
+              <Avatar className="size-32 border-2 ring-2 ring-neutral-200 dark:ring-neutral-900 cursor-pointer bg-neutral-800 text-4xl dark:bg-neutral-200">
+                <AvatarImage
+                  src={session.data?.user.userImage || ""}
+                  alt={session.data?.user.name || ""}
+                />
+                <AvatarFallback className="text-5xl text-neutral-200 dark:text-neutral-800">
+                  {session.data?.user.name?.charAt(0).toUpperCase() || ""}
+                </AvatarFallback>
+              </Avatar>
+              {isHovered && (
+                <div className="absolute inset-0 flex items-center justify-center rounded-full bg-black bg-opacity-50">
+                  <Upload className="size-10 text-white opacity-65" />
+                </div>
+              )}
+            </div>
+          </DialogTrigger>
+          <DialogContent className="max-w-xl rounded-lg text-neutral-800 dark:border-neutral-400/50 dark:text-zinc-200">
+            <DialogHeader>
+              <DialogTitle>Upload Avatar</DialogTitle>
+              <DialogDescription>
+                Drag and drop an image or click to select a file.
+              </DialogDescription>
+            </DialogHeader>
+            {/* {statusMessage && (
+              <p className="relative border rounded-md border-neutral-300 bg-neutral-100 px-4 py-3 text-sm text-neutral-700 dark:border-neutral-700 dark:bg-neutral-900/50 dark:text-neutral-300 transition-all duration-300 animate-pulse">
+                {statusMessage}
+              </p>
+            )} */}
             <div
               className={`mt-4 rounded-lg border-2 border-dashed p-8 text-center ${
-                isDragging ? "border-primary" : "border-gray-300"
+                isDragging
+                  ? "border-black border-dashed dark:border-white "
+                  : "border-gray-300 dark:dark:border-neutral-400/50"
               }`}
               onDrop={handleDrop}
               onDragOver={handleDragOver}
@@ -207,20 +223,25 @@ export default function EnhancedMyProfileSection(datauser: any) {
               <input
                 type="file"
                 ref={fileInputRef}
-                onChange={handleFileChange}
+                onChange={(e) => {
+                  handleFileChange(e);
+                }}
                 className="hidden"
                 accept="image/*"
               />
               <Button
                 onClick={() => fileInputRef.current?.click()}
                 variant="outline"
+                className={`border-neutral-500 opacity-80 hover:opacity-100 dark:border-white dark:text-white ${loading ? "animate-pulse" : ""}`}
                 disabled={loading}
               >
                 {loading ? "Uploading..." : "Select Image"}
               </Button>
-              <p className="mt-2 text-sm text-gray-500">
-                or drag and drop your image here
-              </p>
+              {loading ? "" :  (
+                <p className="mt-2 text-sm text-gray-500">
+                  or drag and drop your image here
+                </p>
+              )}
             </div>
           </DialogContent>
         </Dialog>
@@ -302,16 +323,14 @@ export default function EnhancedMyProfileSection(datauser: any) {
             {userdata.skills.map((skill: any, index: number) => (
               <motion.span
                 key={index}
-                className="flex items-center cursor-pointer rounded-full bg-primary/10 px-3 py-1   text-primary dark:bg-primary/20 dark:text-primary-foreground"
+                className="flex cursor-pointer items-center rounded-full bg-primary/10 px-3 py-1 text-primary dark:bg-primary/20 dark:text-primary-foreground"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                {skill} 
-                
+                {skill}
               </motion.span>
             ))}
           </div>
-          
         </motion.div>
       </div>
 
@@ -438,7 +457,7 @@ export default function EnhancedMyProfileSection(datauser: any) {
         >
           <Trash2 size={20} className="mr-2" /> Delete Account
         </Button>
-        <Button >
+        <Button>
           <LogOut size={20} className="mr-2" /> Log Out
         </Button>
       </div>
@@ -465,9 +484,7 @@ export default function EnhancedMyProfileSection(datauser: any) {
                 be undone.
               </p>
               <div className="flex justify-end space-x-4">
-                <Button
-                  onClick={() => setShowDeleteConfirmation(false)}
-                >
+                <Button onClick={() => setShowDeleteConfirmation(false)}>
                   Cancel
                 </Button>
                 <Button variant="destructive">Delete Account</Button>
