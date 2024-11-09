@@ -14,7 +14,6 @@ export default async function Home(){
     meetings = await getUsercalendarMeetingsdetails() as meetingsInfo_interface[];
   }
     return (
-      
         <div className="h-screen dark:bg-transparent  ">
             <Calendar meetings={meetings}/>
         </div>

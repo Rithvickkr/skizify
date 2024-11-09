@@ -38,7 +38,7 @@ export const Appbar = ({
           <DropdownMenuTrigger>
             <Avatar className="ring-2 ring-black dark:ring-slate-50">
               <AvatarImage src={user?.userImage ?? undefined} alt={name} />
-              <AvatarFallback>{name.charAt(0)}</AvatarFallback>
+              <AvatarFallback className="">{name.charAt(0).toUpperCase()}</AvatarFallback>
             </Avatar>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="z-30 mr-3 w-60 bg-white p-3 pt-1 shadow-2xl dark:border-neutral-700 dark:bg-black">
@@ -47,7 +47,7 @@ export const Appbar = ({
                 <div>
                   <Avatar className="size-9 ring-2 ring-black dark:ring-slate-50">
                     <AvatarImage src={user?.userImage || undefined} alt={name} />
-                    <AvatarFallback>{name.charAt(0)}</AvatarFallback>
+                    <AvatarFallback>{name.charAt(0).toUpperCase()}</AvatarFallback>
                   </Avatar>
                 </div>
                 <div className="flex flex-col dark:text-slate-50">
