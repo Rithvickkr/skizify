@@ -252,13 +252,9 @@ export default function EnhancedMyProfileSection({
         transition={{ duration: 0.5 }}
         className="mb-8 text-center"
       >
-        <h1 className="mb-2 text-3xl font-bold dark:text-gray-100">
-          {userdata?.name || "User"}
-        </h1>
-        <p className="text-muted-foreground mb-4 dark:text-gray-300">
-          {userdata?.bio || "Bio"}
-        </p>
-        <DrawerDialogDemo skills={userdata.skills} />
+        <h1 className="mb-2 text-3xl font-bold dark:text-gray-100">{userdata.name}</h1>
+        <p className="text-muted-foreground mb-4 dark:text-gray-300">{userdata.bio}</p>
+        <DrawerDialogDemo skills={userdata.skills} langs={userdata.languages}/>
       </motion.div>
 
       <div className="mb-8 grid grid-cols-1 gap-8 md:grid-cols-2">

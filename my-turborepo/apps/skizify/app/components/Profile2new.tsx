@@ -7,6 +7,7 @@ import {
   ChevronRight,
   Globe,
   GraduationCap,
+  Linkedin,
   Loader2,
   Shield,
   Upload,
@@ -31,8 +32,12 @@ import {
 import { Textarea } from "../../@/components/ui/textarea";
 import { setformy } from "../lib/actions/setform";
 import { BottomGradient } from "./SignupForm";
+import languages from "../utils/languages";
+import { ScrollArea } from "../../@/components/ui/scroll-area";
+import { Switch } from "../../@/components/ui/switch";
+import { GitHubLogoIcon, InstagramLogoIcon } from "@radix-ui/react-icons";
 
-export default function Newprofile({isVisible} : {isVisible: boolean}) {
+export default function Newprofile({ isVisible }: { isVisible: boolean }) {
   if (!isVisible) return null;
   interface form {
     name: string;
@@ -40,7 +45,6 @@ export default function Newprofile({isVisible} : {isVisible: boolean}) {
     bio: string;
     institute: string;
     session: any;
-    languages: string;
     qualification: string;
     profession: string;
     location: string;
@@ -51,9 +55,11 @@ export default function Newprofile({isVisible} : {isVisible: boolean}) {
   const [photo, setPhoto] = useState<string | null>(null);
   const [currentStep, setCurrentStep] = useState(0);
   const [skills, setSkills] = useState<string[]>([]);
+  const [langs, setlangs] = useState<string[]>([]);
   const [currentSkill, setCurrentSkill] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const { theme, setTheme } = useTheme();
+  const [currentlang, setCurrentlang] = useState("");
+
   const controls = useAnimation();
   const [form, setform] = useState<form>({
     name: "",
@@ -61,33 +67,57 @@ export default function Newprofile({isVisible} : {isVisible: boolean}) {
     bio: "",
     institute: "",
     session: session,
-    languages: "",
     qualification: "",
     profession: "",
     location: "",
   });
-
+  const heads = [
+    {
+      head: "Personal Information",
+      subhead: "Enter your personal information",
+    },
+    {
+      head: "Professional information",
+      subhead: "Enter your professional information",
+    },
+  ]
+  const subtopics = [
+    [
+      { label: "Username", type: "text", placeholder: "johndoe" },
+      { label: "Bio", type: "text", placeholder: "johndoe" },
+      { label: "Location", type: "text", placeholder: "Delhi, India" },
+    ],
+    [
+      {
+        label: "Qualification",
+        type: "text",
+        placeholder: "Bachelor's in Computer Science",
+      },
+      {
+        label: "Institute",
+        type: "text",
+        placeholder: "University of Technology",
+      },
+    ],
+  ];
   const formFields = [
     { label: "Name", type: "text", placeholder: "John Doe" },
-    { label: "Username", type: "text", placeholder: "johndoe" },
     { label: "profession", type: "text", placeholder: "Software Engineer" },
-    {
-      label: "Qualification",
-      type: "text",
-      placeholder: "Bachelor's in Computer Science",
-    },
-    {
-      label: "Institute",
-      type: "text",
-      placeholder: "University of Technology",
-    },
-    { label: "Location", type: "text", placeholder: "Delhi, India" },
   ];
 
   useEffect(() => {
     controls.start({ opacity: 1, y: 0 });
   }, [controls]);
 
+  const [isLinkedIn, setIsLinkedIn] = useState(false);
+  const [isGitHub, setIsGitHub] = useState(false);
+  const [isInstagram, setIsInstagram] = useState(false);
+  const [isX, setIsX] = useState(false);
+
+  const handleLinkedInChange = () => setIsLinkedIn(!isLinkedIn);
+  const handleGitHubChange = () => setIsGitHub(!isGitHub);
+  const handleInstagramChange = () => setIsInstagram(!isInstagram);
+  const handleXChange = () => setIsX(!isX);
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
@@ -105,10 +135,10 @@ export default function Newprofile({isVisible} : {isVisible: boolean}) {
       form.institute,
       session,
       skills,
-      [form.languages], // Wrap the form.languages in an array
+      langs, 
       form.qualification,
       form.profession,
-      form.location
+      form.location,
     );
     console.log(form);
   };
@@ -142,13 +172,22 @@ export default function Newprofile({isVisible} : {isVisible: boolean}) {
       setCurrentSkill("");
     }
   };
+  const addlang = () => {
+    if (currentlang && !langs.includes(currentSkill)) {
+      setlangs([...langs, currentlang]);
+      setCurrentlang("");
+    }
+  };
 
   const removeSkill = (skillToRemove: string) => {
     setSkills(skills.filter((skill) => skill !== skillToRemove));
   };
+  const removelang = (langToRemove: string) => {
+    setlangs(langs.filter((lang) => lang !== langToRemove));
+  };
 
   return (
-    <div className="flex min-h-screen items-center justify-center p-4  ">
+    <div className="flex min-h-screen items-center justify-center p-4">
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -272,6 +311,10 @@ export default function Newprofile({isVisible} : {isVisible: boolean}) {
                 >
                   {currentStep < formFields.length ? (
                     <div>
+                      <h1 className="text-2xl">{heads[currentStep]?.head}</h1>
+                      <p className="mb-2 text-sm">
+                        {heads[currentStep]?.subhead}
+                      </p>
                       <Label
                         htmlFor={formFields[currentStep]?.label
                           ?.toLowerCase()
@@ -280,6 +323,7 @@ export default function Newprofile({isVisible} : {isVisible: boolean}) {
                       >
                         {formFields[currentStep]?.label ?? ""}
                       </Label>
+
                       <Input
                         type={formFields[currentStep]?.type ?? ""}
                         id={
@@ -297,37 +341,112 @@ export default function Newprofile({isVisible} : {isVisible: boolean}) {
                               .replace(" ", "-") || ""]: e.target.value,
                           })
                         }
-                        required
+                      
                       />
+                      {subtopics[currentStep]?.map((block) => (
+                        <div className="mt-2" key={block.label}>
+                          <Label className="text-base font-medium md:text-lg">
+                            {block.label}
+                          </Label>
+                          {block.label == "Bio" ? (
+                            <Textarea
+                              id="bio"
+                              placeholder="Tell us about yourself and your professional journey"
+                              className="mt-2 text-base md:text-lg"
+                              onChange={(e) =>
+                                setform({ ...form, bio: e.target.value })
+                              }
+                              rows={4}
+                            />
+                          ) : (
+                            <Input
+                              type={block.type}
+                              placeholder={block.placeholder}
+                              className="mt-2 text-base md:text-lg"
+                              onChange={(e) =>
+                                setform({
+                                  ...form,
+                                  [block.label as string]: e.target.value,
+                                })
+                              }
+                            
+                            />
+                          )}
+                        </div>
+                      ))}
                     </div>
                   ) : currentStep === formFields.length ? (
                     <div>
-                      <Label
-                        htmlFor="language"
-                        className="text-base font-medium md:text-lg"
-                      >
-                        Preferred Language
-                      </Label>
-                      <Select
-                        onValueChange={(value) => {
-                          setform({ ...form, languages: value });
-                        }}
-                      >
-                        <SelectTrigger className="mt-2 w-full text-base md:text-lg">
-                          <SelectValue placeholder="Select your preferred language" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="en">English</SelectItem>
-                          <SelectItem value="hi">Hindi</SelectItem>
-                          <SelectItem value="es">Spanish</SelectItem>
-                          <SelectItem value="fr">French</SelectItem>
-                          <SelectItem value="de">German</SelectItem>
-                          <SelectItem value="zh">Chinese</SelectItem>
-                        </SelectContent>
-                      </Select>
+                      <div>
+                        <h1 className="text-2xl"> Languages</h1>
+                        <p className="mb-4">Enter your preferred language</p>
+                        <Label
+                          htmlFor="language"
+                          className="text-base font-medium md:text-lg"
+                        >
+                          Preferred Language
+                        </Label>
+                        <div className="mt-2 flex items-center justify-center space-x-4">
+                        <Select
+                          onValueChange={(value) => {
+                            setCurrentlang(value);
+                            
+                          }}
+                        >
+                          <SelectTrigger className="mt-2  text-base md:text-lg">
+                            <SelectValue placeholder="Select your preferred language" />
+                          </SelectTrigger>
+                          <SelectContent className="bg-white dark:bg-black">
+                            <ScrollArea className="h-44 rounded-md">
+                              <div className="mb-2 mt-2">
+                                {languages.map((language) => (
+                                  <SelectItem
+                                    className="break-words bg-white text-black dark:bg-black dark:text-white"
+                                    key={language.alpha2}
+                                    value={language.English}
+                                  >
+                                    {language.English}
+                                    <br />
+                                  </SelectItem>
+                                ))}
+                              </div>
+                            </ScrollArea>
+                          </SelectContent>
+                        </Select>
+                        <Button
+                          className=" mt-3 relative bg-black text-white dark:bg-white dark:text-black dark:shadow-[0px_0px_1px_1px_var(--neutral-800)] md:h-10 md:px-4 md:py-2"
+                          type="button"
+                          onClick={addlang}
+                        >
+                          Add
+                        </Button>
+                        </div>
+                      </div>
+                      <div className="mt-4 flex flex-wrap gap-2">
+                        {langs.map((lang, index) => (
+                          <motion.span
+                            key={index}
+                            initial={{ opacity: 0, scale: 0.8 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.8 }}
+                            className="flex items-center rounded-full bg-primary px-3 py-1 text-sm text-primary-foreground"
+                          >
+                            {lang}
+                            <button
+                              type="button"
+                              onClick={() => removelang(lang)}
+                              className="ml-2 focus:outline-none"
+                            >
+                              <X className="h-4 w-4" />
+                            </button>
+                          </motion.span>
+                        ))}
+                      </div>
                     </div>
                   ) : currentStep === formFields.length + 1 ? (
                     <div>
+                      <h1 className="text-2xl"> Skills</h1>
+                      <p className="mb-4">Enter your posessed skills</p>
                       <Label
                         htmlFor="skills"
                         className="text-base font-medium md:text-lg"
@@ -343,7 +462,11 @@ export default function Newprofile({isVisible} : {isVisible: boolean}) {
                           placeholder="Enter a skill"
                           className="mr-2 text-base md:text-lg"
                         />
-                        <Button type="button" onClick={addSkill}>
+                        <Button
+                          className="group/btn relative bg-black text-white dark:bg-white dark:text-black dark:shadow-[0px_0px_1px_1px_var(--neutral-800)] md:h-10 md:px-4 md:py-2"
+                          type="button"
+                          onClick={addSkill}
+                        >
                           Add
                         </Button>
                       </div>
@@ -370,21 +493,74 @@ export default function Newprofile({isVisible} : {isVisible: boolean}) {
                     </div>
                   ) : (
                     <div>
-                      <Label
-                        htmlFor="bio"
-                        className="text-base font-medium md:text-lg"
-                      >
-                        Bio
-                      </Label>
-                      <Textarea
-                        id="bio"
-                        placeholder="Tell us about yourself and your professional journey"
-                        className="mt-2 text-base md:text-lg"
-                        onChange={(e) =>
-                          setform({ ...form, bio: e.target.value })
-                        }
-                        rows={4}
-                      />
+                      <div className="">
+          <Label className="mb-2 text-2xl" htmlFor="Socialmedia">
+            Social media
+          </Label>
+          <div className=" mb-4 mt-4 flex items-center justify-center space-x-10">
+            <div className="flex items-center justify-center space-x-2">
+              <Linkedin size={28} />
+              <Switch
+                id="LK"
+                checked={isLinkedIn}
+                onCheckedChange={handleLinkedInChange}
+                className={` transition-colors duration-300 ${isLinkedIn ? "bg-white" : "bg-gray-400"}`}
+              />
+            </div>
+            <div className="flex items-center justify-center space-x-2">
+              <GitHubLogoIcon width={28} height={28} />
+              <Switch
+                checked={isGitHub}
+                onCheckedChange={handleGitHubChange}
+                className={`transition-colors duration-300 ${isGitHub ? "bg-white" : "bg-gray-400"}`}
+              />
+            </div>
+            <div className="flex items-center justify-center space-x-2">
+              <X size={28} />
+              <Switch
+                checked={isX}
+                onCheckedChange={handleXChange}
+                className={`transition-colors duration-300 ${isX ? "bg-white" : "bg-gray-400"}`}
+              />
+            </div>
+            <div className="flex items-center justify-center space-x-2">
+              <InstagramLogoIcon width={28} height={28} />
+              <Switch
+                checked={isInstagram}
+                onCheckedChange={handleInstagramChange}
+                className={`transition-colors duration-300 ${isInstagram ? "bg-white" : "bg-gray-400"}`}
+              />
+            </div>
+          </div>
+          <div className="mb-4">
+            {isLinkedIn && (
+              <div className="flex items-center space-x-2">
+                <Input placeholder="Enter LinkedIn URL" />
+              </div>
+            )}
+          </div>
+          <div className="mb-4">
+            {isGitHub && (
+              <div className="flex items-center space-x-2">
+                <Input placeholder="Enter GitHub URL" />
+              </div>
+            )}
+          </div>
+          <div className="mb-4">
+            {isX && (
+              <div className="flex items-center space-x-2">
+                <Input placeholder="Enter X URL" />
+              </div>
+            )}
+          </div>
+          <div className="mb-4">
+            {isInstagram && (
+              <div className="flex items-center space-x-2">
+                <Input placeholder="Enter Instagram URL" />
+              </div>
+            )}
+          </div>
+        </div>
                     </div>
                   )}
                 </motion.div>
@@ -400,15 +576,14 @@ export default function Newprofile({isVisible} : {isVisible: boolean}) {
                   Back
                 </Button>
                 {currentStep < formFields.length + 2 ? (
-                   <Button
-                   onClick={nextStep}
-                   variant="gooeyLeft"
-                   className="group/btn relative bg-black dark:bg-white dark:text-black text-white dark:shadow-[0px_0px_1px_1px_var(--neutral-800)] md:h-10 md:px-4 md:py-2"
-                   
-                 >
-                  Next
-                   <BottomGradient />
-                 </Button>
+                  <Button
+                    onClick={nextStep}
+                    variant="gooeyLeft"
+                    className="group/btn relative bg-black text-white dark:bg-white dark:text-black dark:shadow-[0px_0px_1px_1px_var(--neutral-800)] md:h-10 md:px-4 md:py-2"
+                  >
+                    Next
+                    <BottomGradient />
+                  </Button>
                 ) : (
                   <Button
                     type="button"

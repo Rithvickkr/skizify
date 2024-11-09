@@ -5,45 +5,42 @@ import { Linkedin, Plus, X } from "lucide-react";
 import { useState } from "react";
 import { Button } from "../../@/components/ui/button";
 import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
 } from "../../@/components/ui/dialog";
 import {
-    Drawer,
-    DrawerClose,
-    DrawerContent,
-    DrawerDescription,
-    DrawerFooter,
-    DrawerHeader,
-    DrawerTitle,
-    DrawerTrigger,
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
 } from "../../@/components/ui/drawer";
 import { Input } from "../../@/components/ui/input";
 import { Label } from "../../@/components/ui/label";
 import { ScrollArea, ScrollBar } from "../../@/components/ui/scroll-area";
 import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from "../../@/components/ui/select";
 import { Textarea } from "../../@/components/ui/textarea";
 import { useMediaQuery } from "../hooks/useMediaQuery";
 import { cn } from "../utils/cn";
 import languages from "../utils/languages";
 
-import {
-    GitHubLogoIcon,
-    InstagramLogoIcon
-} from "@radix-ui/react-icons";
+import { GitHubLogoIcon, InstagramLogoIcon } from "@radix-ui/react-icons";
 import { BorderBeam } from "../../@/components/ui/border-beam";
 import { Switch } from "../../@/components/ui/switch";
-export function DrawerDialogDemo({ skills }: { skills: string[] }) {
+export function DrawerDialogDemo({ skills,langs }: { skills: string[]  ,langs:string[]}) {
   const [open, setOpen] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
 
@@ -67,7 +64,7 @@ export function DrawerDialogDemo({ skills }: { skills: string[] }) {
               Make changes to your profile here. Click save when you're done.
             </DialogDescription>
           </DialogHeader>
-          <ProfileForm skills={skills} />
+          <ProfileForm skills={skills} langs={langs} />
         </DialogContent>
       </Dialog>
     );
@@ -92,7 +89,7 @@ export function DrawerDialogDemo({ skills }: { skills: string[] }) {
             Make changes to your profile here. Click save when you're done.
           </DrawerDescription>
         </DrawerHeader>
-        <ProfileForm className="px-4" skills={skills} />
+        <ProfileForm className="px-4" skills={skills} langs={langs} />
         <DrawerFooter className="pt-2">
           <DrawerClose asChild>
             <Button variant="outline">Cancel</Button>
@@ -106,9 +103,11 @@ export function DrawerDialogDemo({ skills }: { skills: string[] }) {
 function ProfileForm({
   className,
   skills,
+  langs
 }: {
   className?: string;
   skills: string[];
+  langs: string[];
 }) {
   const [skillsList, setSkillsList] = useState(skills);
   const [newSkill, setNewSkill] = useState("");
@@ -117,6 +116,8 @@ function ProfileForm({
   const [isGitHub, setIsGitHub] = useState(false);
   const [isInstagram, setIsInstagram] = useState(false);
   const [isX, setIsX] = useState(false);
+  const [langList,setLanglist]=useState(langs);
+  const [newLang, setNewlang] = useState("");
 
   const handleLinkedInChange = () => setIsLinkedIn(!isLinkedIn);
   const handleGitHubChange = () => setIsGitHub(!isGitHub);
@@ -133,14 +134,22 @@ function ProfileForm({
       setIsAddingSkill(false);
     }
   }
+  function handleAddlang(
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ): void {
+    event.preventDefault();
+    if (newLang.trim() !== "") {
+      setLanglist([...langList, newLang.trim()]);
+      setNewlang("");
+      
+    }
+  }
 
   const [form, setForm] = useState({ languages: "" });
 
   function setform(updatedForm: any) {
     setForm(updatedForm);
   }
-
-  
 
   return (
     <ScrollArea className="h-96">
@@ -185,7 +194,7 @@ function ProfileForm({
             </Label>
             <Select
               onValueChange={(value) => {
-                setform({ ...form, languages: value });
+                setNewlang( value );
               }}
             >
               <SelectTrigger className="mt-2 w-full text-base md:text-sm">
@@ -198,7 +207,7 @@ function ProfileForm({
                       <SelectItem
                         className="break-words bg-white text-black dark:bg-black dark:text-white"
                         key={language.alpha2}
-                        value={language.alpha2}
+                        value={language.English}
                       >
                         {language.English}
                         <br />
@@ -213,6 +222,12 @@ function ProfileForm({
                 </ScrollArea>
               </SelectContent>
             </Select>
+            <div className="flex items-center space-x-2">
+            
+              <Button variant="darky" onClick={handleAddlang}>
+                Add
+              </Button>
+            </div>
           </div>
         </div>
         <div className="grid gap-2">
@@ -223,7 +238,7 @@ function ProfileForm({
           <Label className="mb-2" htmlFor="Socialmedia">
             Social media
           </Label>
-          <div className=" mb-2 mt-2 flex items-center justify-center space-x-4">
+          <div className="mb-2 mt-2 flex items-center justify-center space-x-4">
             <div className="flex items-center justify-center space-x-2">
               <Linkedin size={24} />
               <Switch

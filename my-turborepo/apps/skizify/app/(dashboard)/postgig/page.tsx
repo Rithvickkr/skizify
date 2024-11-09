@@ -3,6 +3,7 @@ import Profileform from "../../components/newprofileform";
 import Component from "../../components/Profile2new";
 import AnimatedResponsiveProfileCreation from "../../components/profile3new";
 
+
 export default function Home() {
-  return <AnimatedResponsiveProfileCreation />;
+  return <Component isVisible={true} />;
 }
