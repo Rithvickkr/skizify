@@ -45,7 +45,6 @@ export async function getSignedURL({
     return { failure: "You are not Authenticated" };
   }
   if (!region || !accessKey || !secretAccessKey || !bucketName) {
-    console.log({ failure: "missing AWS configuration" });
     return { failure: "missing AWS configuration" };
   }
 

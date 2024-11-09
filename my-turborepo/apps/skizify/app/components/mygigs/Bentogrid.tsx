@@ -92,9 +92,9 @@ export function EnhancedLuxuryMeetingCard2({
               </Badge>
             </div>
             <div className="flex flex-col items-center space-y-4 sm:flex-row sm:justify-between sm:space-y-0">
-              <Avatar className="size-12 rounded-xl border-4 border-white dark:border-neutral-800 shadow-xl transition-all duration-500 ease-in-out group-hover:scale-105 group-hover:rotate-3">
+              <Avatar className="size-16 rounded-xl border-4 border-white dark:border-neutral-800 shadow-xl transition-all duration-500 ease-in-out group-hover:scale-105 group-hover:rotate-3">
                 <AvatarImage src={poster.userImage} alt={poster.name} />
-                <AvatarFallback>{poster.name.charAt(0)}</AvatarFallback>
+                <AvatarFallback className="sm:text-2xl text-lg ">{poster.name.charAt(0).toUpperCase()}</AvatarFallback>
               </Avatar>
               <div className="text-center sm:text-right">
                 <h3 className="bg-gradient-to-r from-neutral-700 via-neutral-900 to-black bg-clip-text text-2xl font-bold text-transparent transition-all duration-500 ease-in-out group-hover:tracking-wider dark:from-neutral-300 dark:via-neutral-100 dark:to-white">
