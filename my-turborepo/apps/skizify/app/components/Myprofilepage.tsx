@@ -6,6 +6,7 @@ import {
   AvatarFallback,
 } from "../../@/components/ui/avatar";
 import { AnimatePresence, motion } from "framer-motion";
+
 import {
   Activity,
   Aperture,
