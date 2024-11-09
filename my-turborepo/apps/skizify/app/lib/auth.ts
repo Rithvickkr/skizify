@@ -72,27 +72,27 @@ export const authOptions: NextAuthOptions = {
         session.user.id = token.id;
         session.user.role = token.role;
         session.user.userImage = token.userImage;
+        session.user.isSksizzer = token.isSksizzer;
       }
       return session;
     },
-    async jwt({ token }) {
-      const dbUser= await db.user.findFirst({
-        where : {
-          email : token.email || "",
+    async jwt({ token }: { token: JWT }) {
+      const dbUser = await db.user.findFirst({
+        where: {
+          email: token.email || "",
         },
-      })
+      });
 
-      if(!dbUser){
-        return token
+      if (!dbUser) {
+        return token;
       }
 
-      return {
-        id : dbUser.id ,
-        name : dbUser.name,
-        email : dbUser.email,
-        userImage : dbUser.userImage || "",
-        role : dbUser.role
-      };
+      token.id = dbUser.id;
+      token.name = dbUser.name;
+      token.email = dbUser.email;
+      token.userImage = dbUser.userImage || "";
+      token.isSksizzer = dbUser.skizzer;
+      return token;
     }
 
   },

@@ -37,8 +37,8 @@ import { ScrollArea } from "../../@/components/ui/scroll-area";
 import { Switch } from "../../@/components/ui/switch";
 import { GitHubLogoIcon, InstagramLogoIcon } from "@radix-ui/react-icons";
 
-export default function Newprofile({ isVisible }: { isVisible: boolean }) {
-  if (!isVisible) return null;
+export default function Newprofile() {
+
   interface form {
     name: string;
     username: string;
@@ -80,7 +80,7 @@ export default function Newprofile({ isVisible }: { isVisible: boolean }) {
       head: "Professional information",
       subhead: "Enter your professional information",
     },
-  ]
+  ];
   const subtopics = [
     [
       { label: "Username", type: "text", placeholder: "johndoe" },
@@ -100,6 +100,7 @@ export default function Newprofile({ isVisible }: { isVisible: boolean }) {
       },
     ],
   ];
+  window.alert("hi");
   const formFields = [
     { label: "Name", type: "text", placeholder: "John Doe" },
     { label: "profession", type: "text", placeholder: "Software Engineer" },
@@ -135,7 +136,7 @@ export default function Newprofile({ isVisible }: { isVisible: boolean }) {
       form.institute,
       session,
       skills,
-      langs, 
+      langs,
       form.qualification,
       form.profession,
       form.location,
@@ -341,7 +342,6 @@ export default function Newprofile({ isVisible }: { isVisible: boolean }) {
                               .replace(" ", "-") || ""]: e.target.value,
                           })
                         }
-                      
                       />
                       {subtopics[currentStep]?.map((block) => (
                         <div className="mt-2" key={block.label}>
@@ -366,10 +366,10 @@ export default function Newprofile({ isVisible }: { isVisible: boolean }) {
                               onChange={(e) =>
                                 setform({
                                   ...form,
-                                  [block.label as string]: e.target.value,
+                                  [block.label.toLowerCase()
+                                    .replace(" ", "-") ?? ""]: e.target.value,
                                 })
                               }
-                            
                             />
                           )}
                         </div>
@@ -386,40 +386,39 @@ export default function Newprofile({ isVisible }: { isVisible: boolean }) {
                         >
                           Preferred Language
                         </Label>
-                        <div className="mt-2 flex items-center justify-center space-x-4">
-                        <Select
-                          onValueChange={(value) => {
-                            setCurrentlang(value);
-                            
-                          }}
-                        >
-                          <SelectTrigger className="mt-2  text-base md:text-lg">
-                            <SelectValue placeholder="Select your preferred language" />
-                          </SelectTrigger>
-                          <SelectContent className="bg-white dark:bg-black">
-                            <ScrollArea className="h-44 rounded-md">
-                              <div className="mb-2 mt-2">
-                                {languages.map((language) => (
-                                  <SelectItem
-                                    className="break-words bg-white text-black dark:bg-black dark:text-white"
-                                    key={language.alpha2}
-                                    value={language.English}
-                                  >
-                                    {language.English}
-                                    <br />
-                                  </SelectItem>
-                                ))}
-                              </div>
-                            </ScrollArea>
-                          </SelectContent>
-                        </Select>
-                        <Button
-                          className=" mt-3 relative bg-black text-white dark:bg-white dark:text-black dark:shadow-[0px_0px_1px_1px_var(--neutral-800)] md:h-10 md:px-4 md:py-2"
-                          type="button"
-                          onClick={addlang}
-                        >
-                          Add
-                        </Button>
+                        <div className="mt-2 flex flex-wrap  items-center justify-end space-x-4 ">
+                          <Select
+                            onValueChange={(value) => {
+                              setCurrentlang(value);
+                            }}
+                          >
+                            <SelectTrigger className="mt-2 text-base md:text-lg sm:text-sm">
+                              <SelectValue placeholder="Select your preferred language" />
+                            </SelectTrigger>
+                            <SelectContent className="bg-white dark:bg-black">
+                              <ScrollArea className="h-44 rounded-md ">
+                                <div>
+                                  {languages.map((language) => (
+                                    <SelectItem
+                                      className="break-words bg-white text-black dark:bg-black dark:text-white"
+                                      key={language.alpha2}
+                                      value={language.English}
+                                    >
+                                      {language.English}
+                                      <br />
+                                    </SelectItem>
+                                  ))}
+                                </div>
+                              </ScrollArea>
+                            </SelectContent>
+                          </Select>
+                          <Button
+                            className=" group/btn relative mt-3 bg-black text-white dark:bg-white dark:text-black dark:shadow-[0px_0px_1px_1px_var(--neutral-800)] md:h-10 md:px-4 md:py-2"
+                            type="button"
+                            onClick={addlang}
+                          >
+                            Add
+                          </Button>
                         </div>
                       </div>
                       <div className="mt-4 flex flex-wrap gap-2">
@@ -494,73 +493,73 @@ export default function Newprofile({ isVisible }: { isVisible: boolean }) {
                   ) : (
                     <div>
                       <div className="">
-          <Label className="mb-2 text-2xl" htmlFor="Socialmedia">
-            Social media
-          </Label>
-          <div className=" mb-4 mt-4 flex items-center justify-center space-x-10">
-            <div className="flex items-center justify-center space-x-2">
-              <Linkedin size={28} />
-              <Switch
-                id="LK"
-                checked={isLinkedIn}
-                onCheckedChange={handleLinkedInChange}
-                className={` transition-colors duration-300 ${isLinkedIn ? "bg-white" : "bg-gray-400"}`}
-              />
-            </div>
-            <div className="flex items-center justify-center space-x-2">
-              <GitHubLogoIcon width={28} height={28} />
-              <Switch
-                checked={isGitHub}
-                onCheckedChange={handleGitHubChange}
-                className={`transition-colors duration-300 ${isGitHub ? "bg-white" : "bg-gray-400"}`}
-              />
-            </div>
-            <div className="flex items-center justify-center space-x-2">
-              <X size={28} />
-              <Switch
-                checked={isX}
-                onCheckedChange={handleXChange}
-                className={`transition-colors duration-300 ${isX ? "bg-white" : "bg-gray-400"}`}
-              />
-            </div>
-            <div className="flex items-center justify-center space-x-2">
-              <InstagramLogoIcon width={28} height={28} />
-              <Switch
-                checked={isInstagram}
-                onCheckedChange={handleInstagramChange}
-                className={`transition-colors duration-300 ${isInstagram ? "bg-white" : "bg-gray-400"}`}
-              />
-            </div>
-          </div>
-          <div className="mb-4">
-            {isLinkedIn && (
-              <div className="flex items-center space-x-2">
-                <Input placeholder="Enter LinkedIn URL" />
-              </div>
-            )}
-          </div>
-          <div className="mb-4">
-            {isGitHub && (
-              <div className="flex items-center space-x-2">
-                <Input placeholder="Enter GitHub URL" />
-              </div>
-            )}
-          </div>
-          <div className="mb-4">
-            {isX && (
-              <div className="flex items-center space-x-2">
-                <Input placeholder="Enter X URL" />
-              </div>
-            )}
-          </div>
-          <div className="mb-4">
-            {isInstagram && (
-              <div className="flex items-center space-x-2">
-                <Input placeholder="Enter Instagram URL" />
-              </div>
-            )}
-          </div>
-        </div>
+                        <Label className="mb-2 text-2xl" htmlFor="Socialmedia">
+                          Social media
+                        </Label>
+                        <div className="mb-4 mt-4 flex items-center justify-center space-x-10">
+                          <div className="flex items-center justify-center space-x-2">
+                            <Linkedin size={28} />
+                            <Switch
+                              id="LK"
+                              checked={isLinkedIn}
+                              onCheckedChange={handleLinkedInChange}
+                              className={`transition-colors duration-300 ${isLinkedIn ? "bg-white" : "bg-gray-400"}`}
+                            />
+                          </div>
+                          <div className="flex items-center justify-center space-x-2">
+                            <GitHubLogoIcon width={28} height={28} />
+                            <Switch
+                              checked={isGitHub}
+                              onCheckedChange={handleGitHubChange}
+                              className={`transition-colors duration-300 ${isGitHub ? "bg-white" : "bg-gray-400"}`}
+                            />
+                          </div>
+                          <div className="flex items-center justify-center space-x-2">
+                            <X size={28} />
+                            <Switch
+                              checked={isX}
+                              onCheckedChange={handleXChange}
+                              className={`transition-colors duration-300 ${isX ? "bg-white" : "bg-gray-400"}`}
+                            />
+                          </div>
+                          <div className="flex items-center justify-center space-x-2">
+                            <InstagramLogoIcon width={28} height={28} />
+                            <Switch
+                              checked={isInstagram}
+                              onCheckedChange={handleInstagramChange}
+                              className={`transition-colors duration-300 ${isInstagram ? "bg-white" : "bg-gray-400"}`}
+                            />
+                          </div>
+                        </div>
+                        <div className="mb-4">
+                          {isLinkedIn && (
+                            <div className="flex items-center space-x-2">
+                              <Input placeholder="Enter LinkedIn URL" />
+                            </div>
+                          )}
+                        </div>
+                        <div className="mb-4">
+                          {isGitHub && (
+                            <div className="flex items-center space-x-2">
+                              <Input placeholder="Enter GitHub URL" />
+                            </div>
+                          )}
+                        </div>
+                        <div className="mb-4">
+                          {isX && (
+                            <div className="flex items-center space-x-2">
+                              <Input placeholder="Enter X URL" />
+                            </div>
+                          )}
+                        </div>
+                        <div className="mb-4">
+                          {isInstagram && (
+                            <div className="flex items-center space-x-2">
+                              <Input placeholder="Enter Instagram URL" />
+                            </div>
+                          )}
+                        </div>
+                      </div>
                     </div>
                   )}
                 </motion.div>

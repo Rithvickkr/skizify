@@ -21,7 +21,7 @@ export default function Component() {
   const [theme, setTheme] = useState("light");
   const [skills, setSkills] = useState<string[]>([]);
   const [newSkill, setNewSkill] = useState("");
-
+ 
 
 
   const addSkill = (e: React.FormEvent) => {
