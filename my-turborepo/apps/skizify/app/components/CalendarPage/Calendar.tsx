@@ -47,12 +47,13 @@ interface MeetingDetailsProps {
 
 const MeetingDetails: React.FC<MeetingDetailsProps> = ({ meeting }) => {
   const meetingDate = new Date(meeting.finalDateTime);
-
+ 
   return (
     <SheetContent
       side="right" 
       className="animate-in slide-in-from-right fixed w-full md:w-[600px] translate-x-0 transform overflow-y-auto border-l bg-white p-0 text-neutral-900 transition-transform duration-1000 ease-in-out motion-reduce:transition-none dark:border-neutral-800 dark:bg-[#18181B] dark:text-white"
     >
+      
       <div className="animate-in slide-in-from-right flex h-full flex-col duration-300">
         {/* Header Section */}
         <div className="sticky top-0 z-10 flex flex-col sm:flex-row items-start sm:items-center justify-between border-b border-neutral-200 bg-white p-3 dark:border-neutral-800 dark:bg-[#18181B]">
