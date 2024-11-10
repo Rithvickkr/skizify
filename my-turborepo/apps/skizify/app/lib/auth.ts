@@ -1,7 +1,7 @@
 import db from "@repo/db/client";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
-import bcrypt from 'bcrypt';
+import bcrypt from "bcrypt";
 import { NextAuthOptions, Session } from "next-auth";
 import { JWT } from "next-auth/jwt";
 
@@ -10,20 +10,23 @@ import { JWT } from "next-auth/jwt";
 //   .then(() => console.log('Database connected successfully'))
 //   .catch((e) => console.error('Database connection error:', e));
 
-
 export const authOptions: NextAuthOptions = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_ID || "",
       clientSecret: process.env.GOOGLE_SECRET || "",
-    }
-    ) ,
+    }),
     CredentialsProvider({
-      name: 'Credentials',
+      name: "Credentials",
       credentials: {
-        email: { label: "Email", type: "text", placeholder: "1231231231", required: true },
+        email: {
+          label: "Email",
+          type: "text",
+          placeholder: "1231231231",
+          required: true,
+        },
         password: { label: "Password", type: "password", required: true },
-        name: { label: "Name", type: "text" }
+        name: { label: "Name", type: "text" },
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials.password) {
@@ -34,14 +37,18 @@ export const authOptions: NextAuthOptions = {
         });
 
         if (existingUser) {
-          const passwordValidation = await bcrypt.compare(credentials.password, existingUser.password);
+          const passwordValidation = await bcrypt.compare(
+            credentials.password,
+            existingUser.password,
+          );
           if (passwordValidation) {
             return {
               id: existingUser.id.toString(),
               name: existingUser.name,
               email: existingUser.email,
             };
-          } return null;
+          }
+          return null;
         }
 
         try {
@@ -67,7 +74,7 @@ export const authOptions: NextAuthOptions = {
   ],
   secret: process.env.JWT_SECRET || "secret",
   callbacks: {
-    async session({ token, session }: { token: JWT, session: any }) {
+    async session({ token, session }: { token: JWT; session: any }) {
       if (token) {
         session.user.id = token.id;
         session.user.role = token.role;
@@ -76,7 +83,7 @@ export const authOptions: NextAuthOptions = {
       }
       return session;
     },
-    async jwt({ token }: { token: JWT }) {
+    async jwt({ token }) {
       const dbUser = await db.user.findFirst({
         where: {
           email: token.email || "",
@@ -87,16 +94,17 @@ export const authOptions: NextAuthOptions = {
         return token;
       }
 
-      token.id = dbUser.id;
-      token.name = dbUser.name;
-      token.email = dbUser.email;
-      token.userImage = dbUser.userImage || "";
-      token.isSksizzer = dbUser.skizzer;
-      return token;
-    }
-
+      return {
+        id: dbUser.id,
+        name: dbUser.name,
+        email: dbUser.email,
+        userImage: dbUser.userImage || "",
+        role: dbUser.role,
+        isSksizzer: dbUser.skizzer,
+      };
+    },
   },
   pages: {
-    signIn: '/signin',
+    signIn: "/signin",
   },
 };
