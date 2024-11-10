@@ -48,11 +48,11 @@ const MeetingDetails: React.FC<MeetingDetailsProps> = ({ meeting }) => {
     <SheetContent side="right" className="w-[400px] bg-gradient-to-b from-neutral-900 to-black">
       <div className="flex flex-col h-full p-6">
         <div className="relative w-full h-48 mb-6 rounded-lg bg-neutral-300 dark:bg-neutral-900 animate-pulse overflow-hidden">
-          {/* <img 
-            src={meeting.gig.image || "/placeholder-event.jpg"}
+          <img 
+            src={"https://skizify-bucket.s3.ap-south-1.amazonaws.com/Screenshot+2024-11-09+at+10.53.03%E2%80%AFPM.png"}
             alt={meeting.gig.title}
             className="object-cover w-full h-full"
-          /> */}
+          />
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
           <h2 className="absolute bottom-4 left-4 text-2xl font-serif text-white">
             {meeting.gig.title}
@@ -245,7 +245,7 @@ export default function Calendar({
                 <span className="text-2xl font-bold text-neutral-800 dark:text-neutral-200">
                   {time}
                 </span>
-                <span className="text-sm text-neutral-500 dark:text-neutral-200">
+                <span className="text-sm text-neutral-500 dark:text-neutral-400">
                   {date} • {day}
                 </span>
               </div>
@@ -255,7 +255,9 @@ export default function Calendar({
               <div className="rounded-lg border border-neutral-200 bg-gradient-to-tr from-white to-neutral-50 p-4 shadow-lg transition-all duration-300 hover:shadow-xl dark:border-neutral-700 dark:from-neutral-900 dark:to-black">
                 <div className="flex gap-4">
                   <div className="h-24 w-24 overflow-hidden animate-pulse rounded-lg bg-neutral-300 dark:bg-neutral-900">
-                    {/* <img src={image} alt={title} className="h-full w-full object-cover" /> */}
+                  <img 
+            src={"https://skizify-bucket.s3.ap-south-1.amazonaws.com/Screenshot+2024-11-09+at+10.53.03%E2%80%AFPM.png"}
+                    alt={title} className="h-full w-full object-cover" />
                   </div>
                   <div className="flex-1">
                     <div className="mb-2 flex items-start justify-between">
