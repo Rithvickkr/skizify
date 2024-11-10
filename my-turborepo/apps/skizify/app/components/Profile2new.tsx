@@ -7,9 +7,11 @@ import {
   ChevronRight,
   Globe,
   GraduationCap,
+  Link,
   Linkedin,
   Loader2,
   Shield,
+  Smile,
   Upload,
   User,
   Users,
@@ -17,7 +19,6 @@ import {
   Zap,
 } from "lucide-react";
 import { useSession } from "next-auth/react";
-import { useTheme } from "next-themes";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "./ui/button";
 import { Input } from "../../@/components/ui/input";
@@ -36,9 +37,9 @@ import languages from "../utils/languages";
 import { ScrollArea } from "../../@/components/ui/scroll-area";
 import { Switch } from "../../@/components/ui/switch";
 import { GitHubLogoIcon, InstagramLogoIcon } from "@radix-ui/react-icons";
+import Timelinecompo from "./timeline";
 
 export default function Newprofile() {
-
   interface form {
     name: string;
     username: string;
@@ -59,6 +60,8 @@ export default function Newprofile() {
   const [currentSkill, setCurrentSkill] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [currentlang, setCurrentlang] = useState("");
+  const [activeStep, setActiveStep] = useState(currentStep);
+  const [completedSteps, setCompletedSteps] = useState<number[]>([]);
 
   const controls = useAnimation();
   const [form, setform] = useState<form>({
@@ -100,7 +103,40 @@ export default function Newprofile() {
       },
     ],
   ];
-  window.alert("hi");
+  const steps = [
+    {
+      title: "Personal Information Setup",
+      description: "Provide your name, email, and upload a profile picture.",
+      icon: User,
+    },
+    {
+      title: "Professional Details",
+      description: "Enter your job title, company, and a brief bio.",
+      icon: Briefcase,
+    },
+    {
+      title: "Language Preferences",
+      description: "Select the languages you are proficient in.",
+      icon: Globe,
+    },
+    {
+      title: "Skills Selection",
+      description: "Choose the skills you possess or want to learn.",
+      icon: Zap,
+    },
+    {
+      title: "Social Media Links",
+      description: "Link your social profiles (LinkedIn, GitHub, etc.).",
+      icon: Link,
+    },
+    {
+      title: "Account Created",
+      description:
+        "🎉 Congratulations! Your account has been successfully created.",
+      icon: Smile,
+    },
+  ];
+
   const formFields = [
     { label: "Name", type: "text", placeholder: "John Doe" },
     { label: "profession", type: "text", placeholder: "Software Engineer" },
@@ -123,12 +159,6 @@ export default function Newprofile() {
     e.preventDefault();
     setIsLoading(true);
     await controls.start({ opacity: 0, y: 20 });
-    // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    setIsLoading(false);
-    await controls.start({ opacity: 1, y: 0 });
-
-    console.log(form);
     await setformy(
       form.name,
       form.username,
@@ -141,6 +171,18 @@ export default function Newprofile() {
       form.profession,
       form.location,
     );
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+    if (activeStep < steps.length - 1) {
+      setTimeout(() => {
+        setActiveStep(activeStep + 1);
+      }, 2000);
+      setCompletedSteps((prev) => [...prev, activeStep]); // Delay of 1 second
+    }
+    setIsLoading(false);
+    await controls.start({ opacity: 1, y: 0 });
+
+    console.log(form);
+
     console.log(form);
   };
 
@@ -156,12 +198,30 @@ export default function Newprofile() {
   };
 
   const nextStep = () => {
-    if (currentStep < formFields.length + 2) {
-      setCurrentStep(currentStep + 1);
+    if (
+      form.name !== "" ||
+      form.username !== "" ||
+      form.bio !== "" ||
+      form.location !== ""
+    ) {
+      if (activeStep < steps.length - 1) {
+        setTimeout(() => {
+          setActiveStep(activeStep + 1);
+        }, 1000);
+        setCompletedSteps((prev) => [...prev, activeStep]);
+      }
+      if (currentStep < formFields.length + 2) {
+        setCurrentStep(currentStep + 1);
+          // Delay of 1 second
+      }
     }
+    window.alert("Please fill in all the fields");
   };
 
   const prevStep = () => {
+    if (activeStep > 0) {
+      setActiveStep(activeStep - 1);
+    }
     if (currentStep > 0) {
       setCurrentStep(currentStep - 1);
     }
@@ -188,30 +248,35 @@ export default function Newprofile() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center p-4">
+    <div className="flex min-h-screen flex-col-reverse items-center p-4 md:items-start md:justify-center lg:flex-row-reverse">
+      <div className="w-full bg-black p-4 text-primary-foreground md:p-2 lg:w-1/3">
+        <Timelinecompo
+          currentStep={currentStep}
+          activeStep={activeStep}
+          completedSteps={completedSteps}
+          steps={steps}
+        />
+      </div>
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5 }}
-        className="bg-card text-card-foreground relative w-full max-w-4xl overflow-hidden rounded-2xl shadow-2xl"
+        className="flex flex-col items-center text-center"
       >
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-secondary/5 to-background opacity-30" />
-        <div className="relative flex flex-col md:flex-row">
+        <div className="relative flex w-full flex-col md:flex-row">
           <motion.div
             initial={{ x: -50, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ delay: 0.2, duration: 0.5 }}
-            className="flex flex-col justify-between bg-black p-6 text-primary-foreground md:w-1/3 md:p-8"
+            className="flex flex-col justify-evenly bg-black text-primary-foreground md:mr-8 md:w-1/3 md:p-2"
           >
-            <div>
-              <h2 className="mb-2 text-2xl font-bold md:mb-4 md:text-3xl">
-                Your Professional Profile
-              </h2>
-              <p className="mb-6 text-sm opacity-90">
-                Showcase your qualifications, skills, and expertise to the
-                world.
-              </p>
-            </div>
+            <h2 className="mb-2 text-2xl font-bold md:mb-4 md:text-3xl">
+              Your Professional Profile
+            </h2>
+            <p className="mb-6 text-sm opacity-90">
+              Showcase your qualifications, skills, and expertise to the world.
+            </p>
+
             <motion.div
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
@@ -224,7 +289,7 @@ export default function Newprofile() {
                 className="relative mx-auto h-32 w-32 cursor-pointer md:h-40 md:w-40"
                 onClick={() => fileInputRef.current?.click()}
               >
-                <div className="flex h-full w-full items-center justify-center overflow-hidden rounded-full border-4 border-primary-foreground bg-secondary">
+                <div className="border-grey-700 flex h-full w-full items-center justify-center overflow-hidden rounded-full border-4 bg-white">
                   {photo ? (
                     <img
                       src={photo}
@@ -232,7 +297,7 @@ export default function Newprofile() {
                       className="h-full w-full object-cover"
                     />
                   ) : (
-                    <User className="h-1/2 w-1/2 text-secondary-foreground" />
+                    <User className="h-1/2 w-1/2 text-black" />
                   )}
                 </div>
                 <motion.div
@@ -288,7 +353,7 @@ export default function Newprofile() {
               >
                 <Users className="h-6 w-6" />
                 <div>
-                  <h3 className="font-semibold">Connect with Peers</h3>
+                  <h3 className="text-md font-semibold">Connect with Peers</h3>
                   <p className="text-xs opacity-75">Expand your network</p>
                 </div>
               </motion.div>
@@ -298,9 +363,9 @@ export default function Newprofile() {
             initial={{ x: 50, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ delay: 0.4, duration: 0.5 }}
-            className="flex flex-col p-6 md:w-2/3 md:p-8"
+            className="text-card-foreground w-full flex-1 p-6 shadow-2xl lg:max-w-4xl"
           >
-            <form onSubmit={handleSubmit} className="flex-grow space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-10">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={currentStep}
@@ -366,7 +431,8 @@ export default function Newprofile() {
                               onChange={(e) =>
                                 setform({
                                   ...form,
-                                  [block.label.toLowerCase()
+                                  [block.label
+                                    .toLowerCase()
                                     .replace(" ", "-") ?? ""]: e.target.value,
                                 })
                               }
@@ -386,17 +452,17 @@ export default function Newprofile() {
                         >
                           Preferred Language
                         </Label>
-                        <div className="mt-2 flex flex-wrap  items-center justify-end space-x-4 ">
+                        <div className="mt-2 flex flex-wrap items-center justify-end space-x-4">
                           <Select
                             onValueChange={(value) => {
                               setCurrentlang(value);
                             }}
                           >
-                            <SelectTrigger className="mt-2 text-base md:text-lg sm:text-sm">
+                            <SelectTrigger className="mt-2 text-base sm:text-sm md:text-lg">
                               <SelectValue placeholder="Select your preferred language" />
                             </SelectTrigger>
                             <SelectContent className="bg-white dark:bg-black">
-                              <ScrollArea className="h-44 rounded-md ">
+                              <ScrollArea className="h-44 rounded-md">
                                 <div>
                                   {languages.map((language) => (
                                     <SelectItem
@@ -413,7 +479,7 @@ export default function Newprofile() {
                             </SelectContent>
                           </Select>
                           <Button
-                            className=" group/btn relative mt-3 bg-black text-white dark:bg-white dark:text-black dark:shadow-[0px_0px_1px_1px_var(--neutral-800)] md:h-10 md:px-4 md:py-2"
+                            className="group/btn relative mt-3 bg-black text-white dark:bg-white dark:text-black dark:shadow-[0px_0px_1px_1px_var(--neutral-800)] md:h-10 md:px-4 md:py-2"
                             type="button"
                             onClick={addlang}
                           >
@@ -601,55 +667,8 @@ export default function Newprofile() {
                 )}
               </div>
             </form>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.9, duration: 0.5 }}
-              className="border-border mt-8 border-t pt-8"
-            >
-              <h3 className="mb-4 text-lg font-semibold">
-                Why Complete Your Profile?
-              </h3>
-              <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-                <div className="flex items-start space-x-3">
-                  <Briefcase className="mt-1 h-5 w-5 text-primary" />
-                  <div>
-                    <h4 className="font-medium">Career Opportunities</h4>
-                    <p className="text-muted-foreground text-sm">
-                      Attract potential employers
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-start space-x-3">
-                  <GraduationCap className="mt-1 h-5 w-5 text-primary" />
-                  <div>
-                    <h4 className="font-medium">Showcase Expertise</h4>
-                    <p className="text-muted-foreground text-sm">
-                      Highlight your skills and knowledge
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-start space-x-3">
-                  <Globe className="mt-1 h-5 w-5 text-primary" />
-                  <div>
-                    <h4 className="font-medium">Global Networking</h4>
-                    <p className="text-muted-foreground text-sm">
-                      Connect with professionals worldwide
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
           </motion.div>
         </div>
-        <motion.div
-          className="absolute bottom-0 left-0 h-1 w-full bg-primary"
-          initial={{ width: "0%" }}
-          animate={{
-            width: `${((currentStep + 1) / (formFields.length + 3)) * 100}%`,
-          }}
-          transition={{ duration: 0.3 }}
-        />
       </motion.div>
     </div>
   );
