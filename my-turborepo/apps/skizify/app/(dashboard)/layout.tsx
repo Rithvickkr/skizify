@@ -1,5 +1,6 @@
 import { JSX } from "react";
 import { SidebarDemo } from "../components/SideBar/SidebarDemo";
+import MyPage from "../components/dummymodel";
 
 
 //Use font-display for displaying special font
@@ -8,9 +9,12 @@ export default function Layout({
 }: {
   children: React.ReactNode;
 }): JSX.Element {
+ 
   return (
     <div className="h-full">
       <SidebarDemo children={children} />
+      {/* <MyPage  /> */}
+      
     </div>
   );
 }

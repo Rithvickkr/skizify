@@ -40,7 +40,13 @@ import languages from "../utils/languages";
 import { GitHubLogoIcon, InstagramLogoIcon } from "@radix-ui/react-icons";
 import { BorderBeam } from "../../@/components/ui/border-beam";
 import { Switch } from "../../@/components/ui/switch";
-export function DrawerDialogDemo({ skills,langs }: { skills: string[]  ,langs:string[]}) {
+export function DrawerDialogDemo({
+  skills,
+  langs,
+}: {
+  skills: string[];
+  langs: string[];
+}) {
   const [open, setOpen] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
 
@@ -103,7 +109,7 @@ export function DrawerDialogDemo({ skills,langs }: { skills: string[]  ,langs:st
 function ProfileForm({
   className,
   skills,
-  langs
+  langs,
 }: {
   className?: string;
   skills: string[];
@@ -116,7 +122,7 @@ function ProfileForm({
   const [isGitHub, setIsGitHub] = useState(false);
   const [isInstagram, setIsInstagram] = useState(false);
   const [isX, setIsX] = useState(false);
-  const [langList,setLanglist]=useState(langs);
+  const [langList, setLanglist] = useState(langs);
   const [newLang, setNewlang] = useState("");
 
   const handleLinkedInChange = () => setIsLinkedIn(!isLinkedIn);
@@ -141,8 +147,9 @@ function ProfileForm({
     if (newLang.trim() !== "") {
       setLanglist([...langList, newLang.trim()]);
       setNewlang("");
-      
     }
+    console.log(langList);
+    console.log(newLang);
   }
 
   const [form, setForm] = useState({ languages: "" });
@@ -192,18 +199,28 @@ function ProfileForm({
             >
               Preferred Language
             </Label>
+            <div className="flex items-center justify-center  space-x-4">
             <Select
               onValueChange={(value) => {
-                setNewlang( value );
+                setNewlang(value);
               }}
             >
-              <SelectTrigger className="mt-2 w-full text-base md:text-sm">
+              <SelectTrigger className="mt-2 text-base md:text-sm">
                 <SelectValue placeholder="Select your preferred language" />
               </SelectTrigger>
-              <SelectContent className="bg-white dark:bg-black">
-                <ScrollArea className="h-44 rounded-md">
-                  <div className="mb-2 mt-2">
+              <SelectContent className="bg-white dark:bg-black ">
+                <ScrollArea className="h-44 rounded-md"
+                onWheel={(e) => {
+                  e.stopPropagation(); // Prevent outer ScrollArea from capturing events
+                  e.currentTarget.scrollTop += e.deltaY; 
+                   // Manually scroll based on wheel movement
+                }}
+                tabIndex={0}>
+                 
+                  <div className="">
+                 
                     {languages.map((language) => (
+                      
                       <SelectItem
                         className="break-words bg-white text-black dark:bg-black dark:text-white"
                         key={language.alpha2}
@@ -212,21 +229,41 @@ function ProfileForm({
                         {language.English}
                         <br />
                       </SelectItem>
+                      
                     ))}
+                      <ScrollBar orientation="vertical"
+                  className="h-2 bg-gray-400 rounded-full transition-all duration-300 hover:bg-gray-600" />
                   </div>
-
-                  <ScrollBar
-                    className="bg-black dark:bg-zinc-900"
-                    orientation="vertical"
-                  />
+                 
                 </ScrollArea>
               </SelectContent>
             </Select>
-            <div className="flex items-center space-x-2">
-            
-              <Button variant="darky" onClick={handleAddlang}>
+
+            <div className=" relative mt-2">
+              <Button type="button" variant="darky" onClick={handleAddlang}>
                 Add
               </Button>
+            </div>
+            </div>
+            <div className="mb-2  mt-4 flex flex-wrap gap-2">
+              {Array.isArray(langList) &&
+                langList.map((lang, index) => (
+                  <motion.span
+                    key={index}
+                    className="flex items-center rounded-full bg-primary/10 px-3 py-1 text-sm text-primary dark:bg-primary/20 dark:text-primary-foreground"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    {lang} {}
+                    <X
+                      size={16}
+                      className="ml-1 cursor-pointer"
+                      onClick={() =>
+                        setLanglist(langList.filter((s) => s !== lang))
+                      }
+                    />
+                  </motion.span>
+                ))}
             </div>
           </div>
         </div>

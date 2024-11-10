@@ -110,3 +110,29 @@
   pointer-events: none;
 }
 /* video::-webkit-media-controls-panel,video::-webkit-media-controls-play-button,video::-webkit-media-controls-start-playback-button {  display: none !important;  -webkit-appearance: none;} */
+
+/* Custom Scrollbar for scrollable areas */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px; /* Set width of the scrollbar */
+  height: 8px; /* Set height for horizontal scrollbar */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #888; /* Thumb color */
+  border-radius: 10px; /* Rounded edges */
+  transition: background-color 0.3s ease; /* Smooth transition */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: #555; /* Thumb color on hover */
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background-color: #f1f1f1; /* Track color */
+  border-radius: 10px; /* Rounded track */
+}
+
+/* Optional: Style for horizontal scrollbar */
+.custom-scrollbar::-webkit-scrollbar-horizontal {
+  height: 8px;
+}

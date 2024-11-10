@@ -9,7 +9,8 @@ declare module "next-auth/jwt" {
   interface JWT {
     id: UserId;
     userImage : string ,
-    role : UserRole
+    role : UserRole,
+    isSksizzer : boolean
   }
 }
 
@@ -18,7 +19,8 @@ declare module "next-auth" {
     user: User & {
       id: UserId;
       userImage? : string ,
-      role? : UserRole
+      role? : UserRole,
+      isSksizzer? : boolean
     } & DefaultSession['user'];
   }
 }
