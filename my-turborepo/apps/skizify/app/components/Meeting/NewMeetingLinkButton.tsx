@@ -71,7 +71,7 @@ export default function CreateMeetingLinkButton() {
       <Dialog>
         <DialogTrigger asChild>
           <Button
-            className="relative flex h-40 w-full flex-col items-center justify-center border border-black/60 bg-transparent text-black opacity-75 hover:bg-black/5 hover:opacity-100 dark:border-white/50 dark:text-white dark:hover:bg-white/10"
+            className="col-span-1 relative flex h-40 w-full flex-col items-center justify-center border border-black/60 bg-transparent text-black opacity-75 hover:bg-black/5 hover:opacity-100 dark:border-white/50 dark:text-white dark:hover:bg-white/10"
             onClick={() => {
               try {
                 handleCreateMeeting();
@@ -83,7 +83,7 @@ export default function CreateMeetingLinkButton() {
           >
             <Link className="mb-2 h-6 w-6" />
             Share Link
-            <BorderBeam size={200} duration={12} delay={2} colorFrom="white" colorTo="#484848" />
+            <BorderBeam size={200} duration={12} delay={1} colorFrom="white" colorTo="#484848" />
 
           </Button>
         </DialogTrigger>

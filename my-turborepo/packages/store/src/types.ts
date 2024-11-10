@@ -70,7 +70,8 @@ export interface GigsInterface {
     gig: {
       title: string;
       content: string;
-      timeneeded : number
+      timeneeded : number;
+      category : string;
     };
   }
 

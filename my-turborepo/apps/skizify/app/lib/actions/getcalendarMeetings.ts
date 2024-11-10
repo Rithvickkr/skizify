@@ -69,7 +69,8 @@ export async function getUsercalendarMeetingsdetails() {
           select: {
             title: true,
             content: true,
-            timeneeded: true
+            timeneeded: true,
+            category: true
           },
         },
       },
@@ -126,7 +127,8 @@ export async function getSkizzercalendarMeetingsdetails() {
           select: {
             title: true,
             content: true,
-            timeneeded: true
+            timeneeded: true,
+            category: true
           },
         },
       },
