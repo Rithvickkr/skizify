@@ -137,6 +137,8 @@ export default function Newprofile() {
     },
   ];
 
+  type FormField = keyof form;
+
   const formFields = [
     { label: "Name", type: "text", placeholder: "John Doe" },
     { label: "profession", type: "text", placeholder: "Software Engineer" },
@@ -180,10 +182,7 @@ export default function Newprofile() {
     }
     setIsLoading(false);
     await controls.start({ opacity: 1, y: 0 });
-
-    console.log(form);
-
-    console.log(form);
+    console.log("Form submitted");
   };
 
   const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -199,23 +198,25 @@ export default function Newprofile() {
 
   const nextStep = () => {
     if (
-      form.name !== "" ||
-      form.username !== "" ||
-      form.bio !== "" ||
+      form.name !== "" &&
+      form.username !== "" &&
+      form.bio !== "" &&
       form.location !== ""
     ) {
+      console.log(activeStep);
       if (activeStep < steps.length - 1) {
         setTimeout(() => {
           setActiveStep(activeStep + 1);
+          console.log(activeStep);
         }, 1000);
         setCompletedSteps((prev) => [...prev, activeStep]);
       }
       if (currentStep < formFields.length + 2) {
         setCurrentStep(currentStep + 1);
-          // Delay of 1 second
+        // Delay of 1 second
       }
     }
-    window.alert("Please fill in all the fields");
+    console.log("fill first");
   };
 
   const prevStep = () => {
@@ -249,7 +250,7 @@ export default function Newprofile() {
 
   return (
     <div className="flex min-h-screen flex-col-reverse items-center p-4 md:items-start md:justify-center lg:flex-row-reverse">
-      <div className="w-full bg-black p-4 text-primary-foreground md:p-2 lg:w-1/3">
+      <div className="w-full p-4 text-primary-foreground md:p-2 lg:w-1/3">
         <Timelinecompo
           currentStep={currentStep}
           activeStep={activeStep}
@@ -268,7 +269,7 @@ export default function Newprofile() {
             initial={{ x: -50, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ delay: 0.2, duration: 0.5 }}
-            className="flex flex-col justify-evenly bg-black text-primary-foreground md:mr-8 md:w-1/3 md:p-2"
+            className="flex flex-col justify-evenly bg-black text-primary-foreground md:mr-6 md:w-1/3 md:p-2"
           >
             <h2 className="mb-2 text-2xl font-bold md:mb-4 md:text-3xl">
               Your Professional Profile
@@ -365,7 +366,7 @@ export default function Newprofile() {
             transition={{ delay: 0.4, duration: 0.5 }}
             className="text-card-foreground w-full flex-1 p-6 shadow-2xl lg:max-w-4xl"
           >
-            <form onSubmit={handleSubmit} className="space-y-10">
+            <form className="space-y-10">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={currentStep}
@@ -392,13 +393,15 @@ export default function Newprofile() {
 
                       <Input
                         type={formFields[currentStep]?.type ?? ""}
+                        placeholder={formFields[currentStep]?.placeholder ?? ""}
                         id={
                           formFields[currentStep]?.label
                             ?.toLowerCase()
                             .replace(" ", "-") ?? ""
                         }
-                        placeholder={formFields[currentStep]?.placeholder ?? ""}
+                        value={form[formFields[currentStep]?.label?.toLowerCase().replace(" ", "-") as FormField]}
                         className="mt-2 text-base md:text-lg"
+                       
                         onChange={(e) =>
                           setform({
                             ...form,
@@ -407,6 +410,7 @@ export default function Newprofile() {
                               .replace(" ", "-") || ""]: e.target.value,
                           })
                         }
+                        
                       />
                       {subtopics[currentStep]?.map((block) => (
                         <div className="mt-2" key={block.label}>
@@ -416,6 +420,7 @@ export default function Newprofile() {
                           {block.label == "Bio" ? (
                             <Textarea
                               id="bio"
+                              value={form.bio}
                               placeholder="Tell us about yourself and your professional journey"
                               className="mt-2 text-base md:text-lg"
                               onChange={(e) =>
@@ -428,6 +433,8 @@ export default function Newprofile() {
                               type={block.type}
                               placeholder={block.placeholder}
                               className="mt-2 text-base md:text-lg"
+                              value={form[block.label.toLowerCase().replace(" ", "-") as keyof form]}
+                              
                               onChange={(e) =>
                                 setform({
                                   ...form,
@@ -642,6 +649,7 @@ export default function Newprofile() {
                 </Button>
                 {currentStep < formFields.length + 2 ? (
                   <Button
+                    type="button"
                     onClick={nextStep}
                     variant="gooeyLeft"
                     className="group/btn relative bg-black text-white dark:bg-white dark:text-black dark:shadow-[0px_0px_1px_1px_var(--neutral-800)] md:h-10 md:px-4 md:py-2"

@@ -1,4 +1,4 @@
-import { Check, User, Briefcase, Globe, Zap, Link, Smile } from "lucide-react";
+import { Check } from "lucide-react";
 
 import { motion } from "framer-motion";
 
@@ -13,7 +13,7 @@ export default function Timelinecompo({
   steps: { title: string; description: string; icon: any }[];
 }) {
   return (
-    <div className="h-full w-full overflow-hidden rounded-lg bg-black p-6 text-white shadow-lg  hidden sm:block lg:block    ">
+    <div className="hidden h-full w-full overflow-hidden rounded-lg bg-black p-5 text-white shadow-lg sm:block lg:block">
       <div className="space-y-6">
         {/* Animated steps */}
         <div className="flex flex-col space-y-8">
@@ -47,7 +47,7 @@ export default function Timelinecompo({
                     whileHover={{ scale: 1.25 }} // Hover effect for the icon
                   >
                     {completedSteps.includes(index) ? (
-                      <Check className="h-7 w-7 text-black " />
+                      <Check className="h-7 w-7 text-black" />
                     ) : (
                       <step.icon className={`h-7 w-7 text-gray-500`} />
                     )}
