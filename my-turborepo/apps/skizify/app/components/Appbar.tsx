@@ -1,5 +1,5 @@
-import { Bell, BellRing, Cog, LogOutIcon, WandSparkles } from "lucide-react";
-import { Avatar, AvatarImage, AvatarFallback } from "../../@/components/ui/avatar";
+import { Cog, LogOutIcon, WandSparkles } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "../../@/components/ui/avatar";
 
 import {
   DropdownMenu,
@@ -9,10 +9,8 @@ import {
   DropdownMenuTrigger,
 } from "../../@/components/ui/dropdown-menu";
 
-import { UserRole } from "@repo/store/types";
-import { AppbarProps } from "@repo/store/types";
+import { AppbarProps, UserRole } from "@repo/store/types";
 import SwitchTheme from "./SwitchTheme";
-import { ToolTip } from "../../../../packages/ui/src/Tooltip";
 
 export const Appbar = ({
   user,
