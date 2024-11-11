@@ -1,5 +1,9 @@
 "use client";
-import { Avatar, AvatarFallback, AvatarImage } from "../../../@/components/ui/avatar";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "../../../@/components/ui/avatar";
 import { motion } from "framer-motion";
 import {
   EllipsisVertical,
@@ -52,6 +56,7 @@ export default function VideoPlatform({
   meetingId: string;
   userId: string;
 }) {
+  console.log("localVideoTrack: ", localVideoTrack);
   const session = useSession();
   const router = useRouter();
   const [socket, setSocket] = useState<Socket | null>(null);
@@ -108,42 +113,9 @@ export default function VideoPlatform({
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [pipActiveIndex, setPipActiveIndex] = useState<number | null>(null);
 
+  useEffect(() => {
+    const socket = io(URL);
 
-  useEffect(() => {
-    if (socket) {
-      socket.on('connect', () => {
-        console.log('Connected to server');
-        console.log('Transport:', socket.io.engine.transport.name);
-      });
-  
-      // (socket.io.engine as any).on('transportChange', (transport: { name: any; }) => {
-      //   console.log('Transport changed to:', transport.name);
-      // });
-      socket.emit('test', { message: 'Hello Server!' });
-    
-      // Listen for response
-      socket.on('test-response', (data) => {
-        console.log('Server responded:', data);
-      });
-  
-    }
-  }, [socket]);
-  
-  useEffect(() => {
-    const socket = io(URL, {
-      transports: ['websocket', 'polling'],
-      reconnectionAttempts: 5,
-      reconnectionDelay: 1000,
-      timeout: 10000,
-      forceNew: true,           // Force a new connection
-      path: '/socket.io/',      // Match server path
-      query: {                  // Add query parameters for debugging
-        device: 'mobile',
-        version: '1.0.0'
-      },
-      autoConnect: false        // Don't connect automatically
-    });
-  
     // socket.emit("getSession",)
     socket.emit("sessiondetails", { userId, meetingId });
 
@@ -714,7 +686,16 @@ export default function VideoPlatform({
     if (screenTrackVideo) {
       screenTrackVideo.stop();
     }
-    router.push("./meeting/end");
+
+    // Get current path
+    const currentPath = window.location.pathname;
+    
+    // Check if path starts with instant-meeting or meeting
+    if (currentPath.startsWith('/instant-meeting/')) {
+      router.push('./instant-meeting/end');
+    } else if (currentPath.startsWith('/meeting/')) {
+      router.push('./meeting/end');
+    }
   };
 
   const toggleChat = () => {
@@ -816,13 +797,13 @@ export default function VideoPlatform({
     };
   }, []);
 
-
   const renderVideo = (
     index: number,
     reference: RefObject<HTMLVideoElement>,
     title: string,
   ) => {
     const isPipAvailable = "pictureInPictureEnabled" in document;
+    console.log("reference: ", index);
 
     if (title === "Remote Screen Share" && !remoteIsScreenSharing) {
       return null; // Don't render anything if screen sharing has stopped
@@ -848,6 +829,8 @@ export default function VideoPlatform({
         reference.current.srcObject = remoteScreenStream;
       }
     }
+
+
     const toggleFullScreen = (e: React.MouseEvent) => {
       e.stopPropagation();
       const videoElement = reference.current;
@@ -871,6 +854,8 @@ export default function VideoPlatform({
 
       setIsFullScreen(!isFullScreen);
     };
+
+    
     const getVideoRefByIndex = (
       index: number,
     ): RefObject<HTMLVideoElement> | null => {
@@ -922,7 +907,7 @@ export default function VideoPlatform({
             : `${
                 pinnedVideo == null
                   ? "h-full w-[85%] sm:w-full" /*For the Normal Videos*/
-                  : "h-full w-[45%] sm:w-full sm:h-1/3 " /*For the Videos which are not pinned But another Video is Pinned*/
+                  : "h-full w-[45%] sm:h-1/3 sm:w-full" /*For the Videos which are not pinned But another Video is Pinned*/
               }`
         }`}
         onClick={() => togglePinTab(index)}
@@ -984,9 +969,8 @@ export default function VideoPlatform({
   };
 
   return (
-    <div className="flex h-[85%] w-full rounded-xl from-neutral-900 via-black to-neutral-900 dark:bg-gradient-to-r sm:h-[92%]">
+    <div className="flex h-[calc(100vh-120px)] w-full rounded-xl from-neutral-900 via-black to-neutral-900 dark:bg-gradient-to-r">
       <div className="flex h-full w-full flex-1 flex-col items-center justify-between p-1 pb-2">
-        {/* {remoteUserJoined ? ( */}
         <div className="flex h-full w-full flex-col gap-1 sm:flex-row">
           {pinnedVideo !== null ? (
             <>
@@ -1007,7 +991,7 @@ export default function VideoPlatform({
                       ? "Your Screen Share"
                       : "Remote Screen Share",
               )}
-              <div className="ml-2 flex h-1/2 flex-col items-center gap-1 sm:h-full sm:w-1/5">
+              <div className="ml-2 flex h-full flex-col items-center gap-1 sm:w-1/5">
                 {[0, 1, 2, 3]
                   .filter((i) => i !== pinnedVideo)
                   .map((index) => {
@@ -1259,14 +1243,22 @@ const ChatStructure: React.FC<{ data: Chat }> = ({ data }) => {
             <div className="mt-1 text-xs">2:35 PM</div>
           </div>
           <Avatar>
-            <AvatarImage src={data.userImage} alt={data.name} className="size-8 shadow-sm mr-1 md:mr-2 bg-neutral-200 text-sm text-black border border-black" />
+            <AvatarImage
+              src={data.userImage}
+              alt={data.name}
+              className="mr-1 size-8 border border-black bg-neutral-200 text-sm text-black shadow-sm md:mr-2"
+            />
             <AvatarFallback>{data.name.charAt(0)}</AvatarFallback>
           </Avatar>
         </div>
       ) : (
         <div className="flex items-start gap-3">
           <Avatar>
-            <AvatarImage src={data.userImage} alt={data.name} className="size-8 shadow-sm bg-neutral-200 text-sm text-black border border-black" />
+            <AvatarImage
+              src={data.userImage}
+              alt={data.name}
+              className="size-8 border border-black bg-neutral-200 text-sm text-black shadow-sm"
+            />
             <AvatarFallback>{data.name.charAt(0)}</AvatarFallback>
           </Avatar>
           <div className="min-w-32 rounded-lg rounded-bl-none bg-[#272729] p-4 text-base text-[#e2e8f0] dark:bg-[#f4f4f4] dark:text-black">

@@ -15,7 +15,14 @@ import {
   parseISO,
   startOfToday,
 } from "date-fns";
-import { CalendarRange, Clock7, Copy, ExternalLink, Share2, Tag } from "lucide-react";
+import {
+  CalendarRange,
+  Clock7,
+  Copy,
+  ExternalLink,
+  Share2,
+  Tag,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import {
@@ -30,7 +37,12 @@ import {
   SheetTrigger,
 } from "../../../@/components/ui/sheet";
 import { Button } from "../ui/button";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../../../@/components/ui/tooltip";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "../../../@/components/ui/tooltip";
 
 function classNames(...classes: (string | boolean | undefined)[]) {
   return classes.filter(Boolean).join(" ");
@@ -47,18 +59,17 @@ interface MeetingDetailsProps {
 
 const MeetingDetails: React.FC<MeetingDetailsProps> = ({ meeting }) => {
   const meetingDate = new Date(meeting.finalDateTime);
- 
+
   return (
     <SheetContent
-      side="right" 
-      className="animate-in slide-in-from-right fixed w-full md:w-[600px] translate-x-0 transform overflow-y-auto border-l bg-white p-0 text-neutral-900 transition-transform duration-1000 ease-in-out motion-reduce:transition-none dark:border-neutral-800 dark:bg-[#18181B] dark:text-white"
+      side="right"
+      className="animate-in slide-in-from-right fixed w-full translate-x-0 transform overflow-y-auto border-l bg-white p-0 text-neutral-900 transition-transform duration-1000 ease-in-out motion-reduce:transition-none dark:border-neutral-800 dark:bg-[#18181B] dark:text-white md:w-[600px]"
     >
-      
       <div className="animate-in slide-in-from-right flex h-full flex-col duration-300">
         {/* Header Section */}
-        <div className="sticky top-0 z-10 flex flex-col sm:flex-row items-start sm:items-center justify-between border-b border-neutral-200 bg-white p-3 dark:border-neutral-800 dark:bg-[#18181B]">
-          <div className="flex items-center space-x-3 w-full sm:w-auto">
-            <Avatar className="h-8 w-8 sm:h-10 sm:w-10 bg-neutral-100 dark:bg-neutral-800">
+        <div className="sticky top-0 z-10 flex flex-col items-start justify-between border-b border-neutral-200 bg-white p-3 dark:border-neutral-800 dark:bg-[#18181B] sm:flex-row sm:items-center">
+          <div className="flex w-full items-center space-x-3 sm:w-auto">
+            <Avatar className="h-8 w-8 bg-neutral-100 dark:bg-neutral-800 sm:h-10 sm:w-10">
               <AvatarImage
                 src={meeting.Skizzer.userImage || "/placeholder-logo.png"}
                 alt="Skizzer Avatar"
@@ -68,8 +79,10 @@ const MeetingDetails: React.FC<MeetingDetailsProps> = ({ meeting }) => {
               </AvatarFallback>
             </Avatar>
             <div className="flex-1">
-              <h2 className="font-semibold text-sm sm:text-base">{meeting.Skizzer.name}</h2>
-              <p className="truncate text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 max-w-[180px] sm:max-w-none">
+              <h2 className="text-sm font-semibold sm:text-base">
+                {meeting.Skizzer.name}
+              </h2>
+              <p className="max-w-[180px] truncate text-xs text-neutral-600 dark:text-neutral-400 sm:max-w-none sm:text-sm">
                 {meeting.Skizzer.email}
               </p>
             </div>
@@ -83,21 +96,23 @@ const MeetingDetails: React.FC<MeetingDetailsProps> = ({ meeting }) => {
                     size="sm"
                     onClick={() => {
                       navigator.clipboard.writeText(window.location.href);
-                      const button = document.getElementById('copyButton');
+                      const button = document.getElementById("copyButton");
                       if (button) {
-                        button.innerHTML = 'Copied!';
+                        button.innerHTML = "Copied!";
                         setTimeout(() => {
-                          button.innerHTML = 'Copy Link';
+                          button.innerHTML = "Copy Link";
                         }, 2000);
                       }
                     }}
                     className="group relative text-neutral-600 transition-all duration-300 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white"
                   >
-                    <Copy className="h-4 w-4 sm:h-5 sm:w-5 transition-transform group-hover:scale-110" />
-                    <span id="copyButton" className="sr-only">Copy Link</span>
+                    <Copy className="h-4 w-4 transition-transform group-hover:scale-110 sm:h-5 sm:w-5" />
+                    <span id="copyButton" className="sr-only">
+                      Copy Link
+                    </span>
                   </Button>
                 </TooltipTrigger>
-                <TooltipContent className="dark:bg-white px-2 dark:text-black bg-black text-white">
+                <TooltipContent className="bg-black px-2 text-white dark:bg-white dark:text-black">
                   <p>Copy meeting link</p>
                 </TooltipContent>
               </Tooltip>
@@ -109,7 +124,7 @@ const MeetingDetails: React.FC<MeetingDetailsProps> = ({ meeting }) => {
         <ScrollArea className="flex-1">
           <div className="space-y-4 p-3 sm:p-4">
             {/* Event Image */}
-            <div className="aspect-video sm:aspect-square w-full overflow-hidden rounded-lg">
+            <div className="aspect-video w-full overflow-hidden rounded-lg sm:aspect-square">
               <img
                 src={
                   "https://skizify-bucket.s3.ap-south-1.amazonaws.com/Screenshot+2024-11-09+at+10.53.03%E2%80%AFPM.png"
@@ -121,7 +136,9 @@ const MeetingDetails: React.FC<MeetingDetailsProps> = ({ meeting }) => {
 
             {/* Event Title */}
             <div className="text-left">
-              <h1 className="text-lg sm:text-2xl font-bold">{meeting.gig.title}</h1>
+              <h1 className="text-lg font-bold sm:text-2xl">
+                {meeting.gig.title}
+              </h1>
               <p className="mt-1 text-sm text-neutral-600 dark:text-neutral-400">
                 {meeting.gig.category}
               </p>
@@ -130,21 +147,21 @@ const MeetingDetails: React.FC<MeetingDetailsProps> = ({ meeting }) => {
             {/* Date and Location */}
             <div className="space-y-3 rounded-lg dark:bg-neutral-900">
               <div className="flex items-center space-x-3 rounded-lg bg-neutral-200 p-3 dark:bg-neutral-800">
-                <CalendarRange className="h-4 w-4 sm:h-5 sm:w-5 text-neutral-600 dark:text-neutral-400" />
+                <CalendarRange className="h-4 w-4 text-neutral-600 dark:text-neutral-400 sm:h-5 sm:w-5" />
                 <div>
-                  <p className="font-medium text-sm sm:text-base">
+                  <p className="text-sm font-medium sm:text-base">
                     {format(meetingDate, "EEEE dd MMMM")}
                   </p>
-                  <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400">
+                  <p className="text-xs text-neutral-600 dark:text-neutral-400 sm:text-sm">
                     {format(meetingDate, "h:mm a")}
                   </p>
                 </div>
               </div>
               <div className="flex items-center space-x-3 rounded-lg bg-neutral-200 p-3 dark:bg-neutral-800">
-                <Clock7 className="h-4 w-4 sm:h-5 sm:w-5 text-neutral-600 dark:text-neutral-400" />
+                <Clock7 className="h-4 w-4 text-neutral-600 dark:text-neutral-400 sm:h-5 sm:w-5" />
                 <div>
-                  <p className="font-medium text-sm sm:text-base">Duration</p>
-                  <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400">
+                  <p className="text-sm font-medium sm:text-base">Duration</p>
+                  <p className="text-xs text-neutral-600 dark:text-neutral-400 sm:text-sm">
                     {meeting.gig.timeneeded} minutes
                   </p>
                 </div>
@@ -153,8 +170,10 @@ const MeetingDetails: React.FC<MeetingDetailsProps> = ({ meeting }) => {
 
             {/* Registration */}
             <div className="space-y-3 rounded-lg bg-neutral-100 p-3 dark:bg-neutral-900">
-              <h3 className="font-medium text-sm sm:text-base">Meeting Details</h3>
-              <p className="rounded-lg bg-gradient-to-r from-green-100 to-green-200 px-3 py-2 text-sm sm:text-base font-medium text-green-800 dark:from-green-900 dark:to-green-800 dark:text-green-100">
+              <h3 className="text-sm font-medium sm:text-base">
+                Meeting Details
+              </h3>
+              <p className="rounded-lg bg-gradient-to-r from-green-100 to-green-200 px-3 py-2 text-sm font-medium text-green-800 dark:from-green-900 dark:to-green-800 dark:text-green-100 sm:text-base">
                 Budget: ${meeting.budget}
               </p>
               <div className="flex items-center space-x-3 rounded-lg bg-white p-3 dark:bg-neutral-800">
@@ -172,7 +191,7 @@ const MeetingDetails: React.FC<MeetingDetailsProps> = ({ meeting }) => {
               </div>
               <Button
                 variant={"gooeyLeft"}
-                className="w-full bg-neutral-900 text-white hover:bg-neutral-800 dark:bg-white dark:text-black dark:hover:bg-neutral-200 py-4 text-sm sm:text-base"
+                className="w-full bg-neutral-900 py-4 text-sm text-white hover:bg-neutral-800 dark:bg-white dark:text-black dark:hover:bg-neutral-200 sm:text-base"
               >
                 Join Meeting
               </Button>
@@ -180,8 +199,10 @@ const MeetingDetails: React.FC<MeetingDetailsProps> = ({ meeting }) => {
 
             {/* About Meeting */}
             <div className="space-y-3 pb-4">
-              <h3 className="font-medium text-sm sm:text-base">About Meeting</h3>
-              <p className="leading-relaxed text-xs sm:text-sm text-neutral-600 dark:text-neutral-400">
+              <h3 className="text-sm font-medium sm:text-base">
+                About Meeting
+              </h3>
+              <p className="text-xs leading-relaxed text-neutral-600 dark:text-neutral-400 sm:text-sm">
                 {meeting.gig.content}
               </p>
             </div>
@@ -390,8 +411,11 @@ export default function Calendar({
   return (
     <div className="flex h-full w-full justify-center dark:bg-black">
       <div className="relative grid h-full w-full grid-cols-1 gap-2 md:gap-3 lg:gap-5 xl:grid-cols-3">
-        <ScrollArea className="col-start-0 mb-4 flex-1 rounded-xl border border-black px-0 pl-2 pt-5 dark:border-neutral-600 sm:pt-10 md:mb-0 md:mt-0 md:p-4 md:pl-3 md:pt-0 lg:pl-5 xl:col-span-2">
-          <div className="mx-0 my-2 rounded-lg p-3 dark:bg-transparent sm:m-3 md:p-5">
+        <ScrollArea className="col-start-0 mb-4 flex-1 rounded-xl border border-black px-0 pl-2 pt-5 dark:border-neutral-600 sm:pt-10 md:mb-0 md:mt-0 md:p-4 md:pl-2 md:pt-0 xl:col-span-2">
+            <h1 className="bg-gradient-to-r from-neutral-900 mt-3 ml-3 via-neutral-600 to-neutral-400 bg-clip-text text-2xl font-bold text-transparent dark:from-white dark:via-neutral-300 dark:to-neutral-900 sm:text-4xl">
+            Meeting Dashboard
+            </h1>
+          <div className="mx-0 my-1  rounded-lg dark:bg-transparent sm:m-3">
             {displayedMeetings.length > 0 ? (
               displayedMeetings.map((meeting) => {
                 const meetingDate = new Date(meeting.finalDateTime);

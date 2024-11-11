@@ -20,7 +20,6 @@ export default function MeetingDashboard({
 }: {
   meetings: meetingsInfo_interface[];
 }) {
-  console.log("meetings: ", meetings);
   return (
     <div className={`min-h-screen p-0 sm:p-6 transition-colors duration-300`}>
       <div className="mx-auto max-w-7xl space-y-6 sm:space-y-8">

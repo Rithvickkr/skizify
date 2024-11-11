@@ -30,19 +30,15 @@ export default function SetHairScreen({ meetingId }: { meetingId: string }) {
         video: true,
         audio: true,
       });
-      // Do something with the stream
       const videotrack = stream.getVideoTracks()[0];
       const audiotrack = stream.getAudioTracks()[0];
       setlocalVideoTrack(videotrack);
       setLocalAudioTrack(audiotrack);
 
-      console.log("videoRef: ", videoRef);
-      console.log("videoRef.current: ", videoRef.current);
       if (videotrack && videoRef && videoRef.current) {
         videoRef.current.srcObject = new MediaStream([videotrack]);
         videoRef.current.play();
       }
-      // Reset permission denied state
       setPermissionDenied(false);
     } catch (err) {
       console.error("Permissions Denied:", err);
@@ -85,8 +81,6 @@ export default function SetHairScreen({ meetingId }: { meetingId: string }) {
   };
 
   useEffect(() => {
-    console.log("videoRef: ", videoRef);
-    console.log("videoRef.current: ", videoRef.current);
     if (videoRef && videoRef.current) {
       getCam();
     }
@@ -96,9 +90,8 @@ export default function SetHairScreen({ meetingId }: { meetingId: string }) {
     if (permissionDenied) {
       const retryInterval = setInterval(() => {
         getCam();
-      }, 15000); // Retry every 15 seconds
-
-      return () => clearInterval(retryInterval); // Clear interval after cleanup
+      }, 15000);
+      return () => clearInterval(retryInterval);
     }
   }, [permissionDenied]);
 
@@ -132,64 +125,56 @@ export default function SetHairScreen({ meetingId }: { meetingId: string }) {
     }
   };
 
-  // if (session.status === "unauthenticated") {
-  //   return <div>You are not Signed In</div>;
-  // }
-
   if (!join) {
     return (
-      <div className="flex min-h-screen items-center justify-center rounded-md bg-gradient-to-br from-neutral-50 to-neutral-100 p-4 dark:from-black dark:to-mediumdark md:rounded-xl">
-        <div className="w-full max-w-7xl rounded-xl bg-black bg-opacity-5 p-8 shadow-2xl backdrop-blur-xl dark:bg-neutral-100/5">
-          <h1 className="mb-8 bg-gradient-to-r from-slate-600 via-black via-30% to-neutral-500 to-65% bg-clip-text text-center font-helvetica text-3xl font-bold text-transparent dark:from-neutral-800 dark:to-neutral-50">
-            ⎯⎯ Ready to join the Meeting ⎯⎯
+      <div className="min-h-screen bg-gradient-to-br from-neutral-50 via-neutral-100 to-white dark:from-neutral-900 dark:via-neutral-800 dark:to-black p-4 flex items-center justify-center transition-colors duration-300">
+        <div className="w-full max-w-7xl rounded-2xl bg-white/80 dark:bg-neutral-800/50 p-8 shadow-2xl backdrop-blur-xl border border-neutral-200 dark:border-neutral-700 transition-all duration-300">
+          <h1 className="mb-8 text-center font-helvetica text-4xl font-bold text-neutral-800 dark:text-white animate-pulse">
+            Ready to Join the Meeting
           </h1>
 
           <div className="flex flex-col gap-8 lg:flex-row">
             <div className="flex-1">
-              <div className="relative mb-4 aspect-video overflow-hidden rounded-2xl bg-black">
+              <div className="relative mb-4 aspect-video overflow-hidden rounded-2xl bg-neutral-100 dark:bg-neutral-900 shadow-lg">
                 {isVideoInitialized ? (
                   <video
                     ref={videoRef}
                     autoPlay
                     muted
-                    className={`h-full w-full object-cover ${isBackgroundBlur ? "backdrop-blur-sm" : ""}`}
+                    className={`h-full w-full object-cover transition-all duration-300 ${
+                      isBackgroundBlur ? "backdrop-blur-sm" : ""
+                    } `}
                   />
                 ) : (
-                  <div className="flex h-full w-full items-center justify-center bg-v0dark">
-                    <VideoOff className="h-16 w-16 text-gray-500" />
+                  <div className="flex h-full w-full items-center justify-center bg-neutral-200 dark:bg-neutral-900">
+                    <VideoOff className="h-16 w-16 text-neutral-400 dark:text-neutral-500 animate-pulse" />
                   </div>
                 )}
                 <div className="absolute bottom-4 left-4 flex gap-2">
                   <Button
                     variant="secondary"
                     size="icon"
-                    className="border border-neutral-700 bg-black opacity-70 hover:bg-black hover:opacity-80"
+                    className="bg-white/90 dark:bg-neutral-900/80 hover:bg-neutral-100 dark:hover:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 backdrop-blur-sm transition-all duration-300 hover:scale-105"
                     onClick={handleToggleVideo}
-                    aria-label={
-                      isVideoEnabled ? "Turn camera off" : "Turn camera on"
-                    }
+                    aria-label={isVideoEnabled ? "Turn camera off" : "Turn camera on"}
                   >
                     {isVideoEnabled ? (
-                      <Camera className="size-4" />
+                      <Camera className="size-4 text-neutral-700 dark:text-white" />
                     ) : (
-                      <VideoOff className="size-4" />
+                      <VideoOff className="size-4 text-neutral-700 dark:text-white" />
                     )}
                   </Button>
                   <Button
                     variant="secondary"
                     size="icon"
-                    className="border border-neutral-700 bg-black opacity-70 hover:bg-black hover:opacity-80"
+                    className="bg-white/90 dark:bg-neutral-900/80 hover:bg-neutral-100 dark:hover:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 backdrop-blur-sm transition-all duration-300 hover:scale-105"
                     onClick={handleToggleAudio}
-                    aria-label={
-                      isAudioEnabled
-                        ? "Turn microphone off"
-                        : "Turn microphone on"
-                    }
+                    aria-label={isAudioEnabled ? "Turn microphone off" : "Turn microphone on"}
                   >
                     {isAudioEnabled ? (
-                      <Mic className="size-4" />
+                      <Mic className="size-4 text-neutral-700 dark:text-white" />
                     ) : (
-                      <MicOff className="size-4" />
+                      <MicOff className="size-4 text-neutral-700 dark:text-white" />
                     )}
                   </Button>
                 </div>
@@ -198,52 +183,27 @@ export default function SetHairScreen({ meetingId }: { meetingId: string }) {
             </div>
 
             <div className="flex-1 space-y-6">
-              {/* <div className="flex items-center justify-between">
-              <label
-                htmlFor="background-blur"
-                className="flex items-center gap-2 text-white"
-              >
-                <ImageIcon className="h-5 w-5" />
-                Background blur
-              </label>
-              <Switch
-                id="background-blur"
-                checked={isBackgroundBlur}
-                onCheckedChange={setIsBackgroundBlur}
-              />
-            </div>
-
-            <div className="space-y-2">
-              <label
-                htmlFor="touch-up"
-                className="flex items-center gap-2 text-white"
-              >
-                <Sparkles className="h-5 w-5" />
-                Touch up my appearance
-              </label>
-              <Slider
-                id="touch-up"
-                max={100}
-                step={1}
-                value={[touchUpLevel]}
-                onValueChange={(value) => {
-                  if (value[0] !== undefined) {
-                    setTouchUpLevel(value[0]);
-                  }
-                }}
-                className="w-full"
-              />
-            </div> */}
-
-              <div className="h-full rounded-xl bg-white bg-opacity-5 p-4">
-                <h2 className="mb-2 font-semibold dark:text-white">
+              <div className="h-full rounded-xl bg-neutral-50/80 dark:bg-neutral-800/30 p-6 border border-neutral-200 dark:border-neutral-700/50 shadow-lg backdrop-blur-sm">
+                <h2 className="mb-4 font-semibold text-neutral-800 dark:text-white text-xl">
                   Meeting Tips
                 </h2>
-                <ul className="space-y-1 text-sm dark:text-gray-300 md:text-base xl:text-lg">
-                  <li>• Ensure you're in a well-lit area</li>
-                  <li>• Use a neutral background if possible</li>
-                  <li>• Test your audio before joining</li>
-                  <li>• Keep your microphone muted when not speaking</li>
+                <ul className="space-y-3 text-base">
+                  <li className="flex items-center text-neutral-600 dark:text-neutral-300 hover:text-neutral-800 dark:hover:text-white transition-colors">
+                    <span className="mr-2 text-neutral-400 dark:text-neutral-500">•</span>
+                    Ensure you're in a well-lit area
+                  </li>
+                  <li className="flex items-center text-neutral-600 dark:text-neutral-300 hover:text-neutral-800 dark:hover:text-white transition-colors">
+                    <span className="mr-2 text-neutral-400 dark:text-neutral-500">•</span>
+                    Use a neutral background if possible
+                  </li>
+                  <li className="flex items-center text-neutral-600 dark:text-neutral-300 hover:text-neutral-800 dark:hover:text-white transition-colors">
+                    <span className="mr-2 text-neutral-400 dark:text-neutral-500">•</span>
+                    Test your audio before joining
+                  </li>
+                  <li className="flex items-center text-neutral-600 dark:text-neutral-300 hover:text-neutral-800 dark:hover:text-white transition-colors">
+                    <span className="mr-2 text-neutral-400 dark:text-neutral-500">•</span>
+                    Keep your microphone muted when not speaking
+                  </li>
                 </ul>
               </div>
             </div>

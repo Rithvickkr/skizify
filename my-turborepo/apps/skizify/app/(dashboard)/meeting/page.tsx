@@ -6,6 +6,7 @@ import {
 } from "../../lib/actions/getcalendarMeetings";
 import { authOptions } from "../../lib/auth";
 import { meetingsInfo_interface, UserRole } from "@repo/store/types";
+import VideoPlatform from "../../components/Meeting/Structure";
 // import SetHairScreen from "../../components/Meeting/SetHairScreen";
 export default async function Meeting() {
   const session = await getServerSession(authOptions);
@@ -24,6 +25,7 @@ export default async function Meeting() {
       {/* <SetHairScreen meetingId={"1"} /> */}
       <MeetingDashboard meetings={meetings} />
       {/* <VideoPlatform /> */}
+      
     </div>
   );
 }

@@ -28,20 +28,9 @@ const server = createServer(app);
 const io = new Server(server, {
   cors: {
     origin: "*",
-    methods: ["GET", "POST"],
-    credentials: true,
-    allowedHeaders: ["*"], // Allow all headers for better mobile compatibility
   },
-  pingTimeout: 20000,      // Reduced ping timeout for faster failure detection
-  pingInterval: 10000,     // More frequent ping interval
-  transports: ['websocket', 'polling'], // Keep both transport methods
-  allowEIO3: true,
-  connectTimeout: 5000,    // Connection timeout in ms
-  // Add path for explicit WebSocket endpoint
-  path: '/socket.io/',
-  // Additional options for better mobile support
-  cookie: false,           // Disable socket.io cookie
-  serveClient: false,      // Don't serve client files
+  connectionStateRecovery: {}
+
 });
 
 const userManager = new UserManager();
@@ -56,16 +45,6 @@ io.on("connection", (socket: Socket) => {
   console.log("Connection Established");
   console.log("socket");
 
-  const clientInfo = {
-    id: socket.id,
-    transport: socket.conn.transport.name,
-    ip: socket.handshake.address,
-    userAgent: socket.handshake.headers['user-agent'],
-    query: socket.handshake.query, // Log query parameters
-    timestamp: new Date().toISOString()
-  };
-
-  console.log("New connection:", clientInfo);
 
   socket.emit('debug', {
     message: 'Connected successfully',
@@ -86,9 +65,6 @@ io.on("connection", (socket: Socket) => {
     }
   );
 
-  socket.conn.on("upgrade", (transport) => {
-    console.log("Transport upgraded:", transport.name);
-  });
 
 });
 
