@@ -6,6 +6,7 @@ import {
 } from "../../../@/components/ui/avatar";
 import { motion } from "framer-motion";
 import {
+  Check,
   EllipsisVertical,
   Expand,
   Fullscreen,
@@ -34,13 +35,16 @@ import { Textarea } from "../../../@/components/ui/textarea";
 import { Button } from "../ui/button";
 import ButtonsDock from "./Buttons-dock";
 import { useRouter } from "next/navigation";
-const URL = "http://localhost:3003";
+// const URL = "http://localhost:3003";
+const URL = "wss://skizify-ws-server.onrender.com"; // Use wss (WebSocket Secure)
+
 
 export interface Chat {
   message: string;
   name: string;
   userId: string;
   userImage?: string;
+  messageTime : string;
 }
 
 export default function VideoPlatform({
@@ -281,6 +285,7 @@ export default function VideoPlatform({
       },
     );
 
+    //Socket When a Message Comes to the Backend
     socket.on("receive-message", (data: Chat) => {
       console.log("Bro I got something from the Backend", data);
       setMessages((messages: Chat[]) => [...messages, data]);
@@ -727,6 +732,7 @@ export default function VideoPlatform({
     }
   };
 
+  //This will send the message to the backend
   const messageHandler = (
     e: any,
     name: string,
@@ -739,7 +745,9 @@ export default function VideoPlatform({
     if (message === "") {
       return;
     }
-    socket?.emit("send-message", { message, name, userImage, userId });
+    //I also have to send the Time of Message
+    const messageTime = new Date().toISOString();
+    socket?.emit("send-message", { message, name, userImage, userId, messageTime });
   };
 
   const togglePinTab = (index: number) => {
@@ -1006,7 +1014,6 @@ export default function VideoPlatform({
                           : index === 2
                             ? localscreenShareVideoref
                             : remoteScreenVideoRef;
-
                     {
                       /*Selecting Video title*/
                     }
@@ -1154,61 +1161,77 @@ export default function VideoPlatform({
             : "fixed -right-full w-0 opacity-0 lg:w-0 lg:opacity-100"
         } `}
       >
-        <div className="flex h-full flex-col overflow-hidden rounded-lg border bg-mediumdark dark:border-1 dark:border-neutral-800 dark:bg-white">
-          <div className="flex items-center justify-between px-4 py-3 dark:border-neutral-700">
-            <div className="text-xl font-medium text-white opacity-70 dark:text-v0dark">
-              In-call messages
+        <div className="flex h-full flex-col overflow-hidden rounded-2xl border-2 bg-gradient-to-b from-neutral-900 to-neutral-800 shadow-2xl dark:from-white dark:to-neutral-100 dark:border-neutral-200">
+          <div className="flex items-center justify-between border-b border-neutral-700/50 px-6 py-4 dark:border-neutral-300/50">
+            <div className="flex items-center gap-2">
+              <MessageSquare className="size-5 text-white/70 dark:text-neutral-700" />
+              <div className="text-lg font-semibold text-white/90 dark:text-neutral-800">
+                Chat Room
+              </div>
+              <span className="ml-2 text-sm text-white/50 dark:text-neutral-600">
+                {messages.length} messages
+              </span>
             </div>
             <Button
               variant="ghost"
               size="icon"
-              className="rounded-full text-neutral-200 hover:bg-neutral-500 dark:text-mediumdark dark:hover:bg-neutral-300"
+              className="rounded-full hover:bg-white/10 dark:hover:bg-neutral-200/80"
               onClick={() => setIsChatBarVisible(false)}
             >
-              <X className="size-5" />
+              <X className="size-5 text-white/70 dark:text-neutral-700" />
             </Button>
           </div>
-          <div className="no-scrollbar flex-1 overflow-y-auto p-2 pt-4">
-            <div className="space-y-4">
-              {messages.map((data: Chat, index: any) => (
-                <div key={index}>
-                  <ChatStructure data={data} />
+          <div className="no-scrollbar flex-1 overflow-y-auto p-4 pt-6">
+            <div className="space-y-6">
+              {messages.length === 0 ? (
+                <div className="flex flex-col items-center justify-center space-y-3 py-10 text-center">
+                  <MessageSquareOff className="size-12 text-neutral-500" />
+                  <p className="text-neutral-500">No messages yet. Start the conversation!</p>
                 </div>
-              ))}
-              {/* <div ref={messagesEndRef} /> */}
+              ) : (
+                messages.map((data: Chat, index: any) => (
+                  <div key={index}>
+                    <ChatStructure data={data} />
+                  </div>
+                ))
+              )}
             </div>
           </div>
-          <div className="flex items-center gap-2 border-t p-4 dark:border-neutral-700">
-            <Textarea
-              placeholder={`${!permissionToChat ? "Chat is diabled, Let the person Join" : "Type your message..."}`}
-              className={`${!permissionToChat ? "cursor-not-allowed opacity-60" : ""} flex-1 resize-none rounded-lg text-white focus:border-none focus:outline-none focus:ring-2 focus:ring-neutral-500 dark:text-black`}
-              onChange={(e) => {
-                if (permissionToChat) {
-                  setMessage(e.target.value);
-                }
-              }}
-              value={message}
-              readOnly={!permissionToChat}
-              onKeyDown={(e) => {
-                //Like when Clicked on Enter the message will be Sent
-                if (e.key === "Enter" && permissionToChat && message.trim()) {
-                  e.preventDefault(); // Prevents adding a new line
-                  messageHandler(
-                    e,
-                    session.data?.user.name || "",
-                    session.data?.user.id || "",
-                    session.data?.user.userImage,
-                  );
-                }
-              }}
-            />
-            <Button
-              variant="ghost"
-              size="icon"
-              className="hover:bg-neutral-700 dark:hover:bg-neutral-200"
-            >
-              <Send
-                className="size-5 text-white dark:text-black"
+          <div className="border-t border-neutral-700/50 bg-neutral-900/50 p-4 backdrop-blur-sm dark:border-neutral-300/50 dark:bg-white/50">
+            <div className="flex items-center gap-3">
+              <Textarea
+                placeholder={`${!permissionToChat ? "Chat is disabled, waiting for others to join..." : "Type a message..."}`}
+                className={`${
+                  !permissionToChat ? "cursor-not-allowed opacity-60" : ""
+                } flex-1 resize-none rounded-xl border-neutral-700 bg-neutral-800 text-white placeholder:text-neutral-400 focus:border-neutral-600 focus:ring-1 focus:ring-neutral-600 dark:bg-white dark:text-neutral-800 dark:border-neutral-300 dark:placeholder:text-neutral-500 dark:focus:border-neutral-400 dark:focus:ring-neutral-400`}
+                onChange={(e) => {
+                  if (permissionToChat) {
+                    setMessage(e.target.value);
+                  }
+                }}
+                value={message}
+                readOnly={!permissionToChat}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && !e.shiftKey && permissionToChat && message.trim()) {
+                    e.preventDefault();
+                    messageHandler(
+                      e,
+                      session.data?.user.name || "",
+                      session.data?.user.id || "",
+                      session.data?.user.userImage,
+                    );
+                  }
+                }}
+              />
+              <Button
+                variant="ghost"
+                size="icon"
+                disabled={!message.trim() || !permissionToChat}
+                className={`rounded-xl ${
+                  message.trim() && permissionToChat
+                    ? "bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600"
+                    : "bg-neutral-700 dark:bg-neutral-200"
+                }`}
                 onClick={(e) =>
                   messageHandler(
                     e,
@@ -1217,54 +1240,76 @@ export default function VideoPlatform({
                     session.data?.user.userImage,
                   )
                 }
-              />
-              <span className="sr-only">Send</span>
-            </Button>
+              >
+                <Send className="size-5 text-white dark:text-white" />
+                <span className="sr-only">Send</span>
+              </Button>
+            </div>
           </div>
         </div>
       </div>
     </div>
   );
 }
-const formattedTime = new Date().toLocaleTimeString("en-US", {
-  hour: "numeric",
-  minute: "2-digit",
-  hour12: true,
-});
 
 const ChatStructure: React.FC<{ data: Chat }> = ({ data }) => {
+  console.log("data: ", data);
   const session = useSession();
+  // const messageTime = new Date(data.createdAt || new Date()).toLocaleTimeString("en-US", {
+  //   hour: "numeric", 
+  //   minute: "2-digit",
+  //   hour12: true,
+  // });
+
   return (
-    <div className="">
+    <div>
       {data.userId === session.data?.user.id ? (
-        <div className="flex items-start justify-end gap-2">
-          <div className="min-w-32 rounded-lg rounded-br-none bg-white p-4 text-base text-black dark:bg-black dark:text-white">
-            <p className="break-words break-all">{data.message}</p>
-            <div className="mt-1 text-xs">2:35 PM</div>
+        <div className="flex items-end justify-end gap-3">
+          <div className="group relative max-w-[85%] space-y-1">
+            <div className="rounded-2xl rounded-br-sm bg-blue-600 p-4 text-white shadow-md hover:bg-blue-700 transition-colors">
+              <p className="break-words text-[15px] leading-relaxed">{data.message}</p>
+            </div>
+            <div className="flex items-center justify-end gap-2">
+              {/* <span className="text-xs text-neutral-400 dark:text-neutral-500">{messageTime}</span> */}
+              {/* {data.seen && (
+                <span className="text-xs text-blue-400">
+                  <Check className="size-4" />
+                </span>
+              )} */}
+            </div>
           </div>
-          <Avatar>
+          <Avatar className="h-8 w-8 ring-2 ring-blue-600 dark:ring-blue-500 transition-transform hover:scale-110">
             <AvatarImage
               src={data.userImage}
               alt={data.name}
-              className="mr-1 size-8 border border-black bg-neutral-200 text-sm text-black shadow-sm md:mr-2"
+              className="rounded-full object-cover"
             />
-            <AvatarFallback>{data.name.charAt(0)}</AvatarFallback>
+            <AvatarFallback className="bg-blue-100 text-sm font-medium text-blue-800">
+              {data.name.charAt(0)}
+            </AvatarFallback>
           </Avatar>
         </div>
       ) : (
-        <div className="flex items-start gap-3">
-          <Avatar>
+        <div className="flex items-end gap-3">
+          <Avatar className="h-8 w-8 ring-2 ring-neutral-700 dark:ring-neutral-300 transition-transform hover:scale-110">
             <AvatarImage
               src={data.userImage}
               alt={data.name}
-              className="size-8 border border-black bg-neutral-200 text-sm text-black shadow-sm"
+              className="rounded-full object-cover"
             />
-            <AvatarFallback>{data.name.charAt(0)}</AvatarFallback>
+            <AvatarFallback className="bg-neutral-200 text-sm font-medium text-neutral-800">
+              {data.name.charAt(0)}
+            </AvatarFallback>
           </Avatar>
-          <div className="min-w-32 rounded-lg rounded-bl-none bg-[#272729] p-4 text-base text-[#e2e8f0] dark:bg-[#f4f4f4] dark:text-black">
-            <p className="break-words break-all">{data.message}</p>
-            <div className="mt-1 text-xs text-white dark:text-black">
-              2:36 PM
+          <div className="group relative max-w-[85%] space-y-1">
+            <div className="flex flex-col gap-1">
+              <span className="text-xs text-neutral-400 dark:text-neutral-500">{data.name}</span>
+              <div className="rounded-2xl rounded-bl-sm bg-neutral-700 p-4 text-white shadow-md dark:bg-neutral-200 dark:text-neutral-800 hover:bg-neutral-600 dark:hover:bg-neutral-300 transition-colors">
+                <p className="break-words text-[15px] leading-relaxed">{data.message}</p>
+              </div>
+            </div>
+            <div className="flex justify-start">
+              <span className="text-xs text-neutral-400 dark:text-neutral-500">{data.messageTime}</span>
             </div>
           </div>
         </div>

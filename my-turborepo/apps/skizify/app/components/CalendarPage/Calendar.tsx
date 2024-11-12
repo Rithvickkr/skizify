@@ -412,8 +412,8 @@ export default function Calendar({
     <div className="flex h-full w-full justify-center dark:bg-black">
       <div className="relative grid h-full w-full grid-cols-1 gap-2 md:gap-3 lg:gap-5 xl:grid-cols-3">
         <ScrollArea className="col-start-0 mb-4 flex-1 rounded-xl border border-black px-0 pl-2 pt-5 dark:border-neutral-600 sm:pt-10 md:mb-0 md:mt-0 md:p-4 md:pl-2 md:pt-0 xl:col-span-2">
-            <h1 className="bg-gradient-to-r from-neutral-900 mt-3 ml-3 via-neutral-600 to-neutral-400 bg-clip-text text-2xl font-bold text-transparent dark:from-white dark:via-neutral-300 dark:to-neutral-900 sm:text-4xl">
-            Meeting Dashboard
+            <h1 className="bg-gradient-to-r from-neutral-900 mt-3 sm:mb-10 mb-6 sm:mt-5 ml-6 sm:ml-5 via-neutral-600 to-neutral-400 bg-clip-text text-2xl font-bold text-transparent dark:from-white dark:via-neutral-300 dark:to-neutral-900 sm:text-4xl">
+            Scheduled Meetings
             </h1>
           <div className="mx-0 my-1  rounded-lg dark:bg-transparent sm:m-3">
             {displayedMeetings.length > 0 ? (

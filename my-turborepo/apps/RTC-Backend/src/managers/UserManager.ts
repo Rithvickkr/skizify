@@ -1,6 +1,5 @@
 import { Server, Socket } from "socket.io";
 import { RoomManager } from "./RoomManager";
-import prisma from "@repo/db/index";
 export interface User {
   socket: Socket;
   userId: string;
