@@ -1,20 +1,14 @@
 "use client";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "../../../@/components/ui/avatar";
 import { motion } from "framer-motion";
 import {
   Check,
+  CheckCheck,
   EllipsisVertical,
-  Expand,
   Fullscreen,
   MessageSquare,
   MessageSquareOff,
   MicIcon,
   MicOffIcon,
-  Minimize,
   PhoneIcon,
   PictureInPicture,
   PictureInPicture2,
@@ -25,27 +19,35 @@ import {
   Send,
   Video,
   VideoOff,
-  X,
+  X
 } from "lucide-react";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { RefObject, useEffect, useRef, useState } from "react";
 import { Socket, io } from "socket.io-client";
 import { Dock, DockIcon } from "../../../@/components/magicui/dock";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "../../../@/components/ui/avatar";
 import { Textarea } from "../../../@/components/ui/textarea";
 import { Button } from "../ui/button";
 import ButtonsDock from "./Buttons-dock";
-import { useRouter } from "next/navigation";
 // const URL = "http://localhost:3003";
-const URL = "wss://skizify-ws-server.onrender.com"; // Use wss (WebSocket Secure)
+const URL = "wss://skizify-ws-server.onrender.com";
 
 
 export interface Chat {
+  id : number;
   message: string;
   name: string;
   userId: string;
   userImage?: string;
   messageTime : string;
+  seenStatus : boolean;
 }
+
 
 export default function VideoPlatform({
   name,
@@ -291,6 +293,22 @@ export default function VideoPlatform({
       setMessages((messages: Chat[]) => [...messages, data]);
       console.log("Data is not become", messages);
     });
+
+    socket?.on("messages-seen-update", ({ messageIds, userId } : {messageIds : number[] , userId : string}) => {
+      // Update messages where IDs match and seenStatus is false
+      setMessages(prevMessages => 
+        prevMessages.map(message => {
+          if (messageIds.includes(message.id) && !message.seenStatus) {
+            return {
+              ...message,
+              seenStatus: true
+            };
+          }
+          return message;
+        })
+      );
+    });
+
 
     socket.on("leave-meeting", async ({ userId }: { userId: string }) => {
       console.log("Other User has left the meeting", userId);
@@ -737,7 +755,8 @@ export default function VideoPlatform({
     e: any,
     name: string,
     userId: string,
-    userImage?: string,
+    seenStatus: boolean,
+    userImage?: string
   ) => {
     e.preventDefault();
     console.log(message);
@@ -745,9 +764,14 @@ export default function VideoPlatform({
     if (message === "") {
       return;
     }
+    let incrementMessageId = 0;
+    if (messages && messages.length > 0) {
+      incrementMessageId = messages[messages.length - 1]?.id ?? 0;
+    }
+    incrementMessageId++;
     //I also have to send the Time of Message
     const messageTime = new Date().toISOString();
-    socket?.emit("send-message", { message, name, userImage, userId, messageTime });
+    socket?.emit("send-message", {incrementMessageId , message, name, userImage, userId, messageTime , seenStatus });
   };
 
   const togglePinTab = (index: number) => {
@@ -976,6 +1000,33 @@ export default function VideoPlatform({
     );
   };
 
+  const updateMessagesSeen = () => {
+    // Update seen status for all unread messages from other users
+    console.log("updateMessagesSeen: ", "I have been called");
+    const unseenMessages = messages.filter(m => !m.seenStatus && m.userId !== session.data?.user.id);
+    
+    if (unseenMessages.length > 0) {
+      // Emit socket event to update seen status
+      socket?.emit("update-messages-seen", {
+        incrementMessageId: unseenMessages.map(m => m.id), // Maps message IDs from unseen messages array
+        userId: session.data?.user.id
+      });
+
+      // Update local messages state
+      const updatedMessages = messages.map(message => {
+        if (!message.seenStatus && message.userId !== session.data?.user.id) {
+          return {
+            ...message,
+            seenStatus: true
+          };
+        }
+        return message;
+      });
+
+      setMessages(updatedMessages);
+    }
+  };
+
   return (
     <div className="flex h-[calc(100vh-120px)] w-full rounded-xl from-neutral-900 via-black to-neutral-900 dark:bg-gradient-to-r">
       <div className="flex h-full w-full flex-1 flex-col items-center justify-between p-1 pb-2">
@@ -1136,18 +1187,33 @@ export default function VideoPlatform({
               </ButtonsDock>
             </DockIcon>
             <DockIcon>
-              <ButtonsDock shortcut="Ctrl C" name="Chat" onClick={toggleChat}>
-                {isChatBarVisible ? (
-                  <MessageSquareOff
-                    strokeWidth={1.7}
-                    className="size-4 lg:size-5 xl:size-6"
-                  />
-                ) : (
-                  <MessageSquare
-                    strokeWidth={1.7}
-                    className="size-4 lg:size-5 xl:size-6"
-                  />
-                )}
+              <ButtonsDock 
+                shortcut="Ctrl C" 
+                name="Chat" 
+                onClick={() => {
+                  toggleChat();
+                  // Mark messages as seen when chat is opened
+                  if (!isChatBarVisible && messages.some(m => !m.seenStatus && m.userId !== session.data?.user.id)) {
+                    updateMessagesSeen();
+                  }
+                }}
+              >
+                <div className="relative">
+                  {messages.some(m => !m.seenStatus && m.userId !== session.data?.user.id) && (
+                    <div className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-white/80 shadow-[0_0_10px_rgba(255,255,255,0.7)]" />
+                  )}
+                  {isChatBarVisible ? (
+                    <MessageSquareOff
+                      strokeWidth={1.7}
+                      className="size-4 lg:size-5 xl:size-6 text-white/90"
+                    />
+                  ) : (
+                    <MessageSquare
+                      strokeWidth={1.7} 
+                      className="size-4 lg:size-5 xl:size-6 text-white/90"
+                    />
+                  )}
+                </div>
               </ButtonsDock>
             </DockIcon>
           </Dock>
@@ -1161,32 +1227,37 @@ export default function VideoPlatform({
             : "fixed -right-full w-0 opacity-0 lg:w-0 lg:opacity-100"
         } `}
       >
-        <div className="flex h-full flex-col overflow-hidden rounded-2xl border-2 bg-gradient-to-b from-neutral-900 to-neutral-800 shadow-2xl dark:from-white dark:to-neutral-100 dark:border-neutral-200">
-          <div className="flex items-center justify-between border-b border-neutral-700/50 px-6 py-4 dark:border-neutral-300/50">
+        <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-black shadow-[0_0_30px_rgba(255,255,255,0.1)] backdrop-blur-sm">
+          <div className="flex items-center justify-between border-b border-white/10 px-6 py-4">
             <div className="flex items-center gap-2">
-              <MessageSquare className="size-5 text-white/70 dark:text-neutral-700" />
-              <div className="text-lg font-semibold text-white/90 dark:text-neutral-800">
+              <MessageSquare className="size-5 text-white/70" />
+              <div className="text-lg font-semibold text-white/90">
                 Chat Room
               </div>
-              <span className="ml-2 text-sm text-white/50 dark:text-neutral-600">
-                {messages.length} messages
-              </span>
             </div>
             <Button
               variant="ghost"
               size="icon"
-              className="rounded-full hover:bg-white/10 dark:hover:bg-neutral-200/80"
+              className="rounded-full hover:bg-white/10"
               onClick={() => setIsChatBarVisible(false)}
             >
-              <X className="size-5 text-white/70 dark:text-neutral-700" />
+              <X className="size-5 text-white/70" />
             </Button>
           </div>
-          <div className="no-scrollbar flex-1 overflow-y-auto p-4 pt-6">
+          <div 
+            className="no-scrollbar flex-1 overflow-y-auto p-4 pt-6"
+            onScroll={(e) => {
+              const target = e.target as HTMLDivElement;
+              if (messages.some(m => !m.seenStatus && m.userId !== session.data?.user.id)) {
+                updateMessagesSeen();
+              }
+            }}
+          >
             <div className="space-y-6">
               {messages.length === 0 ? (
                 <div className="flex flex-col items-center justify-center space-y-3 py-10 text-center">
-                  <MessageSquareOff className="size-12 text-neutral-500" />
-                  <p className="text-neutral-500">No messages yet. Start the conversation!</p>
+                  <MessageSquareOff className="size-12 text-white/30" />
+                  <p className="text-white/50">No messages yet. Start the conversation!</p>
                 </div>
               ) : (
                 messages.map((data: Chat, index: any) => (
@@ -1197,13 +1268,13 @@ export default function VideoPlatform({
               )}
             </div>
           </div>
-          <div className="border-t border-neutral-700/50 bg-neutral-900/50 p-4 backdrop-blur-sm dark:border-neutral-300/50 dark:bg-white/50">
+          <div className="border-t border-white/10 bg-white/5 p-4 backdrop-blur-sm">
             <div className="flex items-center gap-3">
               <Textarea
                 placeholder={`${!permissionToChat ? "Chat is disabled, waiting for others to join..." : "Type a message..."}`}
                 className={`${
                   !permissionToChat ? "cursor-not-allowed opacity-60" : ""
-                } flex-1 resize-none rounded-xl border-neutral-700 bg-neutral-800 text-white placeholder:text-neutral-400 focus:border-neutral-600 focus:ring-1 focus:ring-neutral-600 dark:bg-white dark:text-neutral-800 dark:border-neutral-300 dark:placeholder:text-neutral-500 dark:focus:border-neutral-400 dark:focus:ring-neutral-400`}
+                } flex-1 resize-none rounded-xl border-white/20 bg-black/50 text-white placeholder:text-white/40 focus:border-white/30 focus:ring-1 focus:ring-white/30 shadow-[inset_0_0_20px_rgba(255,255,255,0.05)]`}
                 onChange={(e) => {
                   if (permissionToChat) {
                     setMessage(e.target.value);
@@ -1218,6 +1289,7 @@ export default function VideoPlatform({
                       e,
                       session.data?.user.name || "",
                       session.data?.user.id || "",
+                      false,
                       session.data?.user.userImage,
                     );
                   }
@@ -1229,19 +1301,20 @@ export default function VideoPlatform({
                 disabled={!message.trim() || !permissionToChat}
                 className={`rounded-xl ${
                   message.trim() && permissionToChat
-                    ? "bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600"
-                    : "bg-neutral-700 dark:bg-neutral-200"
+                    ? "bg-white/90 hover:bg-white shadow-[0_0_20px_rgba(255,255,255,0.3)]"
+                    : "bg-white/20"
                 }`}
                 onClick={(e) =>
                   messageHandler(
                     e,
                     session.data?.user.name || "",
                     session.data?.user.id || "",
+                    false,
                     session.data?.user.userImage,
                   )
                 }
               >
-                <Send className="size-5 text-white dark:text-white" />
+                <Send className="size-5 text-black" />
                 <span className="sr-only">Send</span>
               </Button>
             </div>
@@ -1255,61 +1328,60 @@ export default function VideoPlatform({
 const ChatStructure: React.FC<{ data: Chat }> = ({ data }) => {
   console.log("data: ", data);
   const session = useSession();
-  // const messageTime = new Date(data.createdAt || new Date()).toLocaleTimeString("en-US", {
-  //   hour: "numeric", 
-  //   minute: "2-digit",
-  //   hour12: true,
-  // });
 
   return (
     <div>
       {data.userId === session.data?.user.id ? (
         <div className="flex items-end justify-end gap-3">
           <div className="group relative max-w-[85%] space-y-1">
-            <div className="rounded-2xl rounded-br-sm bg-blue-600 p-4 text-white shadow-md hover:bg-blue-700 transition-colors">
+            <div className="rounded-2xl rounded-br-sm bg-white/90 p-4 text-black shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:bg-white transition-all">
               <p className="break-words text-[15px] leading-relaxed">{data.message}</p>
             </div>
             <div className="flex items-center justify-end gap-2">
-              {/* <span className="text-xs text-neutral-400 dark:text-neutral-500">{messageTime}</span> */}
-              {/* {data.seen && (
-                <span className="text-xs text-blue-400">
+              <span className="text-xs text-white/50">{new Date(data.messageTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+              <span className="text-xs text-white/70">
+                {data.seenStatus ? (
+                  <div className="flex">
+                    <CheckCheck />
+                  </div>
+                ) : (
                   <Check className="size-4" />
-                </span>
-              )} */}
+                )}
+              </span>
             </div>
           </div>
-          <Avatar className="h-8 w-8 ring-2 ring-blue-600 dark:ring-blue-500 transition-transform hover:scale-110">
+          <Avatar className="h-8 w-8 ring-2 ring-white/30 transition-transform hover:scale-110 shadow-[0_0_10px_rgba(255,255,255,0.2)]">
             <AvatarImage
               src={data.userImage}
               alt={data.name}
               className="rounded-full object-cover"
             />
-            <AvatarFallback className="bg-blue-100 text-sm font-medium text-blue-800">
+            <AvatarFallback className="bg-white/10 text-sm font-medium text-white">
               {data.name.charAt(0)}
             </AvatarFallback>
           </Avatar>
         </div>
       ) : (
         <div className="flex items-end gap-3">
-          <Avatar className="h-8 w-8 ring-2 ring-neutral-700 dark:ring-neutral-300 transition-transform hover:scale-110">
+          <Avatar className="h-8 w-8 ring-2 ring-white/30 transition-transform hover:scale-110 shadow-[0_0_10px_rgba(255,255,255,0.2)]">
             <AvatarImage
               src={data.userImage}
               alt={data.name}
               className="rounded-full object-cover"
             />
-            <AvatarFallback className="bg-neutral-200 text-sm font-medium text-neutral-800">
+            <AvatarFallback className="bg-white/10 text-sm font-medium text-white">
               {data.name.charAt(0)}
             </AvatarFallback>
           </Avatar>
           <div className="group relative max-w-[85%] space-y-1">
             <div className="flex flex-col gap-1">
-              <span className="text-xs text-neutral-400 dark:text-neutral-500">{data.name}</span>
-              <div className="rounded-2xl rounded-bl-sm bg-neutral-700 p-4 text-white shadow-md dark:bg-neutral-200 dark:text-neutral-800 hover:bg-neutral-600 dark:hover:bg-neutral-300 transition-colors">
+              <span className="text-xs text-white/50">{data.name}</span>
+              <div className="rounded-2xl rounded-bl-sm bg-white/20 p-4 text-white shadow-[0_0_15px_rgba(255,255,255,0.1)] hover:bg-white/30 transition-all">
                 <p className="break-words text-[15px] leading-relaxed">{data.message}</p>
               </div>
             </div>
             <div className="flex justify-start">
-              <span className="text-xs text-neutral-400 dark:text-neutral-500">{data.messageTime}</span>
+              <span className="text-xs text-white/50">{new Date(data.messageTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
             </div>
           </div>
         </div>
