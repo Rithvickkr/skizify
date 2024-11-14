@@ -154,7 +154,7 @@ export default function SetHairScreen({ meetingId }: { meetingId: string }) {
                   <Button
                     variant="secondary"
                     size="icon"
-                    className="bg-white/90 dark:bg-neutral-900/80 hover:bg-neutral-100 dark:hover:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 backdrop-blur-sm transition-all duration-300 hover:scale-105"
+                    className="bg-white/70 dark:bg-neutral-900/80 hover:bg-neutral-100 dark:hover:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 backdrop-blur-sm transition-all duration-300 hover:scale-105"
                     onClick={handleToggleVideo}
                     aria-label={isVideoEnabled ? "Turn camera off" : "Turn camera on"}
                   >
@@ -167,7 +167,7 @@ export default function SetHairScreen({ meetingId }: { meetingId: string }) {
                   <Button
                     variant="secondary"
                     size="icon"
-                    className="bg-white/90 dark:bg-neutral-900/80 hover:bg-neutral-100 dark:hover:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 backdrop-blur-sm transition-all duration-300 hover:scale-105"
+                    className="bg-white/70 dark:bg-neutral-900/80 hover:bg-neutral-100 dark:hover:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 backdrop-blur-sm transition-all duration-300 hover:scale-105"
                     onClick={handleToggleAudio}
                     aria-label={isAudioEnabled ? "Turn microphone off" : "Turn microphone on"}
                   >

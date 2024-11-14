@@ -17,6 +17,7 @@ import {
   ScreenShare,
   ScreenShareOff,
   Send,
+  UserCircle,
   Video,
   VideoOff,
   X
@@ -62,7 +63,7 @@ export default function VideoPlatform({
   meetingId: string;
   userId: string;
 }) {
-  console.log("localVideoTrack: ", localVideoTrack);
+  // console.log("localVideoTrack: ", localVideoTrack);
   const session = useSession();
   const router = useRouter();
   const [socket, setSocket] = useState<Socket | null>(null);
@@ -202,17 +203,17 @@ export default function VideoPlatform({
             setRemoteAudioTrack(track);
             stream.addTrack(track);
           }
-          console.log("stream: ", stream);
-          console.log(remoteMediaStream);
+          // console.log("stream: ", stream);
+          // console.log(remoteMediaStream);
           // Ensure the video plays once a track is added
-          console.log("remoteVideoRef.current: ", remoteVideoRef.current);
+          // console.log("remoteVideoRef.current: ", remoteVideoRef.current);
           remoteVideoRef.current?.play().catch((error) => {
             console.error("Error playing video:", error);
           });
 
           // Indicate that a remote user has joined
           setRemoteUserJoined(true);
-          console.log(remoteUserJoined);
+          // console.log(remoteUserJoined);
         };
 
         // Set up ICE candidate handling
@@ -236,7 +237,7 @@ export default function VideoPlatform({
         const answerSdp = await pc.createAnswer();
         await pc.setLocalDescription(answerSdp);
 
-        console.log("Sending Answer...");
+        // console.log("Sending Answer...");
         socket.emit("answer", { roomId, sdp: answerSdp });
       },
     );
@@ -244,14 +245,14 @@ export default function VideoPlatform({
     socket.on(
       "answer",
       async ({ roomId, sdp: remotesdp }: { roomId: string; sdp: any }) => {
-        console.log("Received answer Sir");
+        // console.log("Received answer Sir");
         //we are Directly changing the sdp in the Function THIS IS GOOD
         //this tells
         setSendingPC((pc) => {
           pc?.setRemoteDescription(remotesdp);
           return pc;
         });
-        console.log("Cycle Completes");
+        // console.log("Cycle Completes");
         //AFTER THE CYCLE COMPLETES THEN ALLOWING USER PERMISSION TO CHAT
         setPermissionToChat(true);
       },
@@ -266,7 +267,7 @@ export default function VideoPlatform({
         candidate: any;
         type: "sender" | "receiver";
       }) => {
-        console.log("Received ICE BY", type);
+        // console.log("Received ICE BY", type);
         if (type === "sender") {
           setReceivingPC((pc) => {
             if (!pc) {
@@ -290,22 +291,23 @@ export default function VideoPlatform({
     //Socket When a Message Comes to the Backend
     socket.on("receive-message", (data: Chat) => {
       console.log("Bro I got something from the Backend", data);
+      console.log("isChatBarVisible: ", isChatBarVisible);
+      if(!isChatBarVisible){ // Jugaad Lagaya hai bhai yaha pe
+        console.log("Bro I am calling the updateMessagesSeen");
+          updateMessagesSeen();
+          console.log("I have called the function ");
+      }
       setMessages((messages: Chat[]) => [...messages, data]);
-      console.log("Data is not become", messages);
+      // If chat bar is visible, mark message as seen immediately
     });
 
-    socket?.on("messages-seen-update", ({ messageIds, userId } : {messageIds : number[] , userId : string}) => {
-      // Update messages where IDs match and seenStatus is false
+    socket.on("messages-seen-update", ({ seenStatus } : {seenStatus : boolean}) => {
+      // Update all messages sent by current user to seen
       setMessages(prevMessages => 
-        prevMessages.map(message => {
-          if (messageIds.includes(message.id) && !message.seenStatus) {
-            return {
-              ...message,
-              seenStatus: true
-            };
-          }
-          return message;
-        })
+        prevMessages.map(message => ({
+          ...message,
+          seenStatus: true
+        }))
       );
     });
 
@@ -371,17 +373,17 @@ export default function VideoPlatform({
 
   // useEffect(() => {
   //   if (remoteScreenStream && remoteScreenVideoRef.current) {
-  //     console.log("Attempting to play remote screen share");
+      // console.log("Attempting to play remote screen share");
   //     remoteScreenVideoRef.current.srcObject = remoteScreenStream;
   //     remoteScreenVideoRef.current.play()
-  //       .then(() => console.log("Remote screen share playing successfully"))
+        // .then(() => console.log("Remote screen share playing successfully"))
   //       .catch(error => {
   //         console.error("Error playing remote screen:", error);
   //         // Attempt to play without user interaction
   //         if(remoteScreenVideoRef.current){
   //           remoteScreenVideoRef.current.muted = true;
   //           remoteScreenVideoRef.current.play()
-  //             .then(() => console.log("Remote screen share playing successfully (muted)"))
+              // .then(() => console.log("Remote screen share playing successfully (muted)"))
   //             .catch(err => console.error("Error playing muted remote screen:", err));
   //         }
   //       });
@@ -400,7 +402,7 @@ export default function VideoPlatform({
           sdp: RTCSessionDescriptionInit;
         }) => {
           try {
-            console.log("Received screen-offer");
+            // console.log("Received screen-offer");
             const pc = new RTCPeerConnection();
             setRemoteScreenSharePC(pc);
 
@@ -409,24 +411,24 @@ export default function VideoPlatform({
 
             pc.ontrack = (e) => {
               const { track } = e;
-              console.log("Received remote screen track", track);
+              // console.log("Received remote screen track", track);
 
               if (track.kind === "video" || track.kind === "audio") {
                 stream.addTrack(track);
-                console.log(
-                  `Added ${track.kind} track to screen sharing stream`,
-                );
+                // console.log(
+                //   `Added ${track.kind} track to screen sharing stream`,
+                // );
               }
 
               setRemoteScreenStream(stream);
               setRemoteIsScreenSharing(true);
 
-              console.log("setRemoteScreenStream: ", remoteScreenStream);
-              console.log("setRemoteIsScreenSharing: ", remoteIsScreenSharing);
-              console.log(
-                "remoteScreenVideoRef.current: ",
-                remoteScreenVideoRef.current,
-              );
+              // console.log("setRemoteScreenStream: ", remoteScreenStream);
+              // console.log("setRemoteIsScreenSharing: ", remoteIsScreenSharing);
+              // console.log(
+              //   "remoteScreenVideoRef.current: ",
+              //   remoteScreenVideoRef.current,
+              // );
 
               if (remoteScreenVideoRef.current) {
                 remoteScreenVideoRef.current.srcObject = stream;
@@ -553,11 +555,11 @@ export default function VideoPlatform({
     remoteIsScreenSharing,
   ]);
 
-  useEffect(() => {
-    console.log("remoteIsScreenSharing:", remoteIsScreenSharing);
-    console.log("remoteScreenStream:", remoteScreenStream);
-    console.log("remoteScreenVideoRef:", remoteScreenVideoRef.current);
-  }, [remoteIsScreenSharing, remoteScreenStream]);
+  // useEffect(() => {
+  //   console.log("remoteIsScreenSharing:", remoteIsScreenSharing);
+  //   console.log("remoteScreenStream:", remoteScreenStream);
+  //   console.log("remoteScreenVideoRef:", remoteScreenVideoRef.current);
+  // }, [remoteIsScreenSharing, remoteScreenStream]);
 
   // useEffect(() => {
 
@@ -571,7 +573,7 @@ export default function VideoPlatform({
   }, [localVideoRef, remoteUserJoined, pinnedVideo]);
 
   useEffect(() => {
-    console.log("isScreenSharing: ", isScreenSharing);
+    // console.log("isScreenSharing: ", isScreenSharing);
     if (
       isScreenSharing &&
       localscreenShareVideoref.current &&
@@ -587,9 +589,9 @@ export default function VideoPlatform({
   }, [isScreenSharing, screenTrackVideo, pinnedVideo]);
 
   // useEffect(() => {
-  //   console.log("isScreenSharing:", isScreenSharing);
-  //   console.log("screenTrackVideo:", screenTrackVideo);
-  //   console.log("localscreenShareVideoref:", localscreenShareVideoref.current);
+    // console.log("isScreenSharing:", isScreenSharing);
+    // console.log("screenTrackVideo:", screenTrackVideo);
+    // console.log("localscreenShareVideoref:", localscreenShareVideoref.current);
   // }, [isScreenSharing, screenTrackVideo, remoteUserJoined]);
 
   // useEffect(() => {
@@ -616,19 +618,19 @@ export default function VideoPlatform({
 
         // Add the screen track to the new peer connection
         if (screenTrackVideo) {
-          console.log("adding Vide0 Track");
-          screenPC.addTrack(screenTrackVideo);
+          // console.log("adding Vide0 Track");
+          // screenPC.addTrack(screenTrackVideo);
         }
         if (screenTrackAudio) {
-          console.log("adding Audi0 Track");
-          screenPC.addTrack(screenTrackAudio);
+          // console.log("adding Audi0 Track");
+          // screenPC.addTrack(screenTrackAudio);
         }
         // Set up ICE candidate handling for the screen share PC
 
         // Create and send offer for the screen share track
 
         screenPC.onicecandidate = (e) => {
-          console.log("sending Ice from person who SEND offer");
+          // console.log("sending Ice from person who SEND offer");
           if (e.candidate) {
             socket.emit("screen-ice-candidate", {
               roomId: meetingId,
@@ -653,7 +655,7 @@ export default function VideoPlatform({
   useEffect(() => {
     if (screenTrackVideo) {
       const handleTrackEnded = () => {
-        console.log("Screen sharing track ended");
+        // console.log("Screen sharing track ended");
         stopScreenShare();
       };
 
@@ -731,25 +733,6 @@ export default function VideoPlatform({
       setIsAudioMuted(!localAudioTrack.enabled);
     }
   };
-
-  const toggleVideo = () => {
-    if (localVideoTrack) {
-      localVideoTrack.enabled = !localVideoTrack.enabled;
-      setIsVideoMuted(!localVideoTrack.enabled);
-
-      if (localVideoRef.current) {
-        //Is the Now Video Available then we will make a Stream to display to user
-        if (localVideoTrack.enabled) {
-          localVideoRef.current.srcObject = new MediaStream([localVideoTrack]);
-          localVideoRef.current.play();
-        } else {
-          //if the localVideoTrack.enabled is now set to fasle then we wll remove the the Videotrack
-          localVideoRef.current.srcObject = null;
-        }
-      }
-    }
-  };
-
   //This will send the message to the backend
   const messageHandler = (
     e: any,
@@ -771,7 +754,10 @@ export default function VideoPlatform({
     incrementMessageId++;
     //I also have to send the Time of Message
     const messageTime = new Date().toISOString();
-    socket?.emit("send-message", {incrementMessageId , message, name, userImage, userId, messageTime , seenStatus });
+    // Set initial seenStatus based on whether receiver's chat is open
+    socket?.emit("send-message", {incrementMessageId , message, name, userImage, userId, messageTime , seenStatus: false });
+    // Clear the message input after sending
+    setMessage("");
   };
 
   const togglePinTab = (index: number) => {
@@ -829,13 +815,32 @@ export default function VideoPlatform({
     };
   }, []);
 
+  const toggleVideo = () => {
+    if (localVideoTrack) {
+      // The logic for toggling the video track's enabled state is correct
+      localVideoTrack.enabled = !localVideoTrack.enabled;
+      setIsVideoMuted(!localVideoTrack.enabled); //Video Muted Nahi hai
+
+      if (localVideoRef.current) {
+        // This part could be simplified since MediaStream tracks are live
+        // When enabled=false, the track will automatically show black frames
+        // No need to create new MediaStream or set srcObject to null
+        if (!localVideoRef.current.srcObject) {
+          localVideoRef.current.srcObject = new MediaStream([localVideoTrack]);
+          localVideoRef.current.play();
+        }
+      }
+    }
+  };
+
+
   const renderVideo = (
     index: number,
     reference: RefObject<HTMLVideoElement>,
     title: string,
   ) => {
     const isPipAvailable = "pictureInPictureEnabled" in document;
-    console.log("reference: ", index);
+    // console.log("reference: ", index);
 
     if (title === "Remote Screen Share" && !remoteIsScreenSharing) {
       return null; // Don't render anything if screen sharing has stopped
@@ -850,8 +855,8 @@ export default function VideoPlatform({
     }
 
     if (title == "Remote Screen Share") {
-      console.log("reference of ", title, reference?.current?.srcObject);
-      console.log("remoteScreenStream: ", remoteScreenStream);
+      // console.log("reference of ", title, reference?.current?.srcObject);
+      // console.log("remoteScreenStream: ", remoteScreenStream);
       // If srcObject is null, try setting it again
       if (
         reference?.current &&
@@ -1001,32 +1006,23 @@ export default function VideoPlatform({
   };
 
   const updateMessagesSeen = () => {
-    // Update seen status for all unread messages from other users
-    console.log("updateMessagesSeen: ", "I have been called");
-    const unseenMessages = messages.filter(m => !m.seenStatus && m.userId !== session.data?.user.id);
-    
-    if (unseenMessages.length > 0) {
-      // Emit socket event to update seen status
+    // Get all messages that are not seen and not from current user
+      // Emit socket event to update seen status on other clients
+      console.log("Hallo I have been Called");
       socket?.emit("update-messages-seen", {
-        incrementMessageId: unseenMessages.map(m => m.id), // Maps message IDs from unseen messages array
-        userId: session.data?.user.id
+        seenStatus: true,
       });
 
-      // Update local messages state
-      const updatedMessages = messages.map(message => {
-        if (!message.seenStatus && message.userId !== session.data?.user.id) {
-          return {
-            ...message,
-            seenStatus: true
-          };
-        }
-        return message;
-      });
-
-      setMessages(updatedMessages);
-    }
+      // Update all unseen messages to seen in local state
+      setMessages(prevMessages => 
+        prevMessages.map(message => ({
+          ...message,
+          seenStatus: message.userId !== session.data?.user.id ? true : message.seenStatus
+        }))
+      );
   };
 
+  
   return (
     <div className="flex h-[calc(100vh-120px)] w-full rounded-xl from-neutral-900 via-black to-neutral-900 dark:bg-gradient-to-r">
       <div className="flex h-full w-full flex-1 flex-col items-center justify-between p-1 pb-2">
@@ -1199,18 +1195,18 @@ export default function VideoPlatform({
                 }}
               >
                 <div className="relative">
-                  {messages.some(m => !m.seenStatus && m.userId !== session.data?.user.id) && (
-                    <div className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-white/80 shadow-[0_0_10px_rgba(255,255,255,0.7)]" />
+                  {!isChatBarVisible && messages.some(m => !m.seenStatus && m.userId !== session.data?.user.id) && (
+                    <div className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-black animate-pulse dark:bg-white/80 shadow-[0_0_10px_rgba(255,255,255,0.7)]" />
                   )}
                   {isChatBarVisible ? (
                     <MessageSquareOff
                       strokeWidth={1.7}
-                      className="size-4 lg:size-5 xl:size-6 text-white/90"
+                      className="size-4 lg:size-5 xl:size-6 dark:text-white/90"
                     />
                   ) : (
                     <MessageSquare
                       strokeWidth={1.7} 
-                      className="size-4 lg:size-5 xl:size-6 text-white/90"
+                      className="size-4 lg:size-5 xl:size-6 dark:text-white/90"
                     />
                   )}
                 </div>
@@ -1227,8 +1223,8 @@ export default function VideoPlatform({
             : "fixed -right-full w-0 opacity-0 lg:w-0 lg:opacity-100"
         } `}
       >
-        <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-black shadow-[0_0_30px_rgba(255,255,255,0.1)] backdrop-blur-sm">
-          <div className="flex items-center justify-between border-b border-white/10 px-6 py-4">
+        <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 dark:border-white/70 bg-black shadow-[0_0_30px_rgba(255,255,255,0.1)] backdrop-blur-sm">
+          <div className="flex items-center justify-between border-b border-white/60 dark:border-white/10 px-6 py-4">
             <div className="flex items-center gap-2">
               <MessageSquare className="size-5 text-white/70" />
               <div className="text-lg font-semibold text-white/90">
@@ -1245,9 +1241,13 @@ export default function VideoPlatform({
             </Button>
           </div>
           <div 
-            className="no-scrollbar flex-1 overflow-y-auto p-4 pt-6"
+            className="no-scrollbar flex-1 overflow-y-auto p-4 pt-6 max-h-[calc(100vh-300px)]"
+            style={{
+              overflowY: messages.length > 4 ? 'auto' : 'visible',
+              minHeight: '200px'
+            }}
             onScroll={(e) => {
-              const target = e.target as HTMLDivElement;
+              console.log("Yeah i AM CALLED , ON SCROLL");
               if (messages.some(m => !m.seenStatus && m.userId !== session.data?.user.id)) {
                 updateMessagesSeen();
               }
@@ -1256,7 +1256,7 @@ export default function VideoPlatform({
             <div className="space-y-6">
               {messages.length === 0 ? (
                 <div className="flex flex-col items-center justify-center space-y-3 py-10 text-center">
-                  <MessageSquareOff className="size-12 text-white/30" />
+                  <MessageSquareOff className="size-12 text-white" />
                   <p className="text-white/50">No messages yet. Start the conversation!</p>
                 </div>
               ) : (
@@ -1325,8 +1325,8 @@ export default function VideoPlatform({
   );
 }
 
+
 const ChatStructure: React.FC<{ data: Chat }> = ({ data }) => {
-  console.log("data: ", data);
   const session = useSession();
 
   return (
@@ -1341,11 +1341,11 @@ const ChatStructure: React.FC<{ data: Chat }> = ({ data }) => {
               <span className="text-xs text-white/50">{new Date(data.messageTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
               <span className="text-xs text-white/70">
                 {data.seenStatus ? (
-                  <div className="flex">
-                    <CheckCheck />
+                  <div className="flex items-center">
+                    <CheckCheck className="size-4 text-blue-400" />
                   </div>
                 ) : (
-                  <Check className="size-4" />
+                  <Check className="size-4 text-gray-400" />
                 )}
               </span>
             </div>
