@@ -120,6 +120,30 @@ export default function VideoPlatform({
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [pipActiveIndex, setPipActiveIndex] = useState<number | null>(null);
 
+
+  // const [videoLayouts, setVideoLayouts] = useState<{
+  //   refs: {
+  //     [key: number]: React.RefObject<HTMLVideoElement>;
+  //   };
+  //   streams: {
+  //     [key: number]: MediaStream | null;
+  //   };
+  // }>({
+  //   refs: {
+  //     0: localVideoRef,
+  //     1: remoteVideoRef,
+  //     2: localscreenShareVideoref,
+  //     3: remoteScreenVideoRef
+  //   },
+  //   streams: {
+  //     0: localVideoTrack ? new MediaStream([localVideoTrack]) : null,
+  //     1: remoteMediaStream,
+  //     2: screenTrackVideo ? new MediaStream([screenTrackVideo]) : null,
+  //     3: remoteScreenStream
+  //   }
+  // });
+  
+
   useEffect(() => {
     const socket = io(URL);
 
@@ -167,16 +191,16 @@ export default function VideoPlatform({
         const pc = new RTCPeerConnection();
         setReceivingPC(pc);
         const stream = new MediaStream();
-        console.log("stream: ", stream);
+        // console.log("stream: ", stream);
 
         // Attach stream to video element if reference exists
-        console.log("remoteVideoRef.current: ", remoteVideoRef.current);
+        // console.log("remoteVideoRef.current: ", remoteVideoRef.current);
         if (remoteVideoRef.current) {
           remoteVideoRef.current.srcObject = stream;
-          console.log(
-            "remoteVideoRef.current: ",
-            remoteVideoRef.current.srcObject,
-          );
+          // console.log(
+          //   "remoteVideoRef.current: ",
+          //   remoteVideoRef.current.srcObject,
+          // );
         }
 
         // Store the remote media stream in the state
@@ -245,14 +269,15 @@ export default function VideoPlatform({
     socket.on(
       "answer",
       async ({ roomId, sdp: remotesdp }: { roomId: string; sdp: any }) => {
-        // console.log("Received answer Sir");
+        console.log("Received answer Sir");
         //we are Directly changing the sdp in the Function THIS IS GOOD
         //this tells
+        
         setSendingPC((pc) => {
           pc?.setRemoteDescription(remotesdp);
           return pc;
         });
-        // console.log("Cycle Completes");
+        console.log("Cycle Completes");
         //AFTER THE CYCLE COMPLETES THEN ALLOWING USER PERMISSION TO CHAT
         setPermissionToChat(true);
       },
@@ -619,11 +644,11 @@ export default function VideoPlatform({
         // Add the screen track to the new peer connection
         if (screenTrackVideo) {
           // console.log("adding Vide0 Track");
-          // screenPC.addTrack(screenTrackVideo);
+          screenPC.addTrack(screenTrackVideo);
         }
         if (screenTrackAudio) {
           // console.log("adding Audi0 Track");
-          // screenPC.addTrack(screenTrackAudio);
+          screenPC.addTrack(screenTrackAudio);
         }
         // Set up ICE candidate handling for the screen share PC
 
@@ -833,6 +858,28 @@ export default function VideoPlatform({
     }
   };
 
+  
+
+  // const handlePin = (index: number) => {
+  //   // Only update the layout state without affecting the connections
+  //   console.log("I ahave been CLICKED");
+  //   setPinnedVideo((prevPinned) => {
+  //     const newPinnedState = prevPinned === index ? null : index;
+      
+  //     // Ensure all existing connections and streams remain intact
+  //     Object.entries(videoLayouts.streams).forEach(([streamIndex, stream]) => {
+  //       if (stream) {
+  //         const ref = videoLayouts.refs[parseInt(streamIndex)]?.current;
+  //         if (ref && !ref.srcObject) {
+  //           ref.srcObject = stream;
+  //           ref.play().catch(err => console.error("Error playing video:", err));
+  //         }
+  //       }
+  //     });
+      
+  //     return newPinnedState;
+  //   });
+  // };
 
   const renderVideo = (
     index: number,

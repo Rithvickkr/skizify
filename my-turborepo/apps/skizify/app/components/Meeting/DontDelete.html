@@ -1,0 +1,52 @@
+<!-- {pinnedVideo !== null ? (
+    <>
+      {renderVideo(
+        pinnedVideo,
+        pinnedVideo === 0
+          ? localVideoRef
+          : pinnedVideo === 1
+            ? remoteVideoRef
+            : pinnedVideo === 2
+              ? localscreenShareVideoref
+              : remoteScreenVideoRef,
+        pinnedVideo === 0
+          ? "Your Video"
+          : pinnedVideo === 1
+            ? "Remote Video"
+            : pinnedVideo === 2
+              ? "Your Screen Share"
+              : "Remote Screen Share",
+      )}
+      <div className="ml-2 flex h-full flex-col items-center gap-1 sm:w-1/5">
+        {[0, 1, 2, 3]
+          .filter((i) => i !== pinnedVideo)
+          .map((index) => {
+            {
+              /*Selecting Video Ref*/
+            }
+            const videoRef =
+              index === 0
+                ? localVideoRef
+                : index === 1
+                  ? remoteVideoRef
+                  : index === 2
+                    ? localscreenShareVideoref
+                    : remoteScreenVideoRef;
+            {
+              /*Selecting Video title*/
+            }
+            const title =
+              index === 0
+                ? "Your Video"
+                : index === 1
+                  ? "Remote Video"
+                  : index === 2
+                    ? "Your Screen Share"
+                    : "Remote Screen Share";
+            return renderVideo(index, videoRef, title);
+          })}
+      </div>
+    </>
+  ) : (
+    <div></div>
+  )} -->
