@@ -1,130 +1,69 @@
-"use client"
-import React, { useState, useRef } from 'react';
-import { motion } from 'framer-motion';
-import { Pin, PinOff, Fullscreen, PictureInPicture, PictureInPicture2, EllipsisVertical } from 'lucide-react';
+"use client";
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import { Pin, PinOff } from "lucide-react";
 
-const VideoGrid = () => {
-  const [pinnedVideo, setPinnedVideo] = useState(null);
-  const [selectPinTabs, setSelectPinTabs] = useState([false, false, false, false]);
-  const [pipActiveIndex, setPipActiveIndex] = useState(null);
-  const [isFullScreen, setIsFullScreen] = useState(false);
+const VideoMeeting = () => {
+  const [pinnedVideo, setPinnedVideo] = useState<number | null>(null);
 
-  const videoRefs = [
-    useRef(null),
-    useRef(null),
-    useRef(null),
-    useRef(null)
-  ];
-
-  const togglePinTab = (index : any) => {
-    const newSelectPinTabs = selectPinTabs.map((_, i) => i === index);
-    setSelectPinTabs(newSelectPinTabs);
-  };
-
-  const handlePin = (index : any) => {
+  const togglePin = (index: number) => {
     setPinnedVideo(pinnedVideo === index ? null : index);
   };
 
-  const renderVideo = (index : any, title : any) => {
-    const isPipAvailable = "pictureInPictureEnabled" in document;
+  const renderVideo = (index: number, title: string, totalVideos: number) => {
     const isPinned = pinnedVideo === index;
+    const hasPinnedVideo = pinnedVideo !== null;
+
+    // Base styles for all screen sizes
+    let videoStyles = "relative rounded-lg border border-gray-600 bg-black";
 
     return (
       <motion.div
+        key={`video-container-${index}`}
+        className={`${videoStyles} ${
+          isPinned
+            ? "md:col-span-1 md:row-span-3 h-64 md:h-auto" // Added fixed height for mobile
+            : `w-full ${hasPinnedVideo ?  " h-40" : " h-auto"} md:h-auto ${hasPinnedVideo ? "md:w-full" : "w-full"}` // Modified width and height for mobile
+        }`}
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.3 }}
-        key={`video-container-${index}`}
-        className={`relative overflow-hidden rounded-lg border border-neutral-400 dark:border-neutral-700 ${
-          isPinned
-            ? "col-span-1 h-full w-full" // Pinned video container
-            : pinnedVideo !== null
-            ? "h-full w-full" // Unpinned videos when there's a pinned video
-            : "h-full w-full" // Normal state videos
-        }`}
-        onClick={() => togglePinTab(index)}
+        style={{
+          order: hasPinnedVideo ? (isPinned ? -1 : index) : index,
+          gridColumn: hasPinnedVideo && window.innerWidth >= 768 ? (isPinned ? 1 : 2) : "auto"
+        }}
       >
-        <video
-          ref={videoRefs[index]}
-          autoPlay
-          playsInline
-          controls={false}
-          className="absolute inset-0 h-full w-full object-cover"
-        />
-        <motion.div 
-          className="absolute bottom-2 left-2 rounded bg-black bg-opacity-50 px-2 py-1 text-sm text-white"
-          initial={false}
-          animate={{ opacity: selectPinTabs[index] ? 0 : 1 }}
-        >
+        <div className="absolute bottom-2 left-2 py-1 px-2 rounded bg-neutral-800 text-white flex items-center justify-center">
           {title}
-        </motion.div>
-        
-        {/* Hover controls */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: selectPinTabs[index] ? 1 : 0 }}
-          className="absolute inset-0 bg-black bg-opacity-40 transition-opacity duration-200"
+        </div>
+
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            togglePin(index);
+          }}
+          className="absolute top-2 right-2 rounded-full bg-gray-700 p-2 text-white hover:bg-gray-500"
         >
-          <motion.div className="absolute left-1/2 top-1/2 flex min-w-28 -translate-x-1/2 -translate-y-1/2 transform items-center justify-between gap-2 rounded-full bg-black/70 p-2 backdrop-blur-sm">
-            <motion.button
-              className="rounded-full p-2 text-white transition-colors hover:bg-white/20"
-              onClick={(e) => {
-                e.stopPropagation();
-                handlePin(index);
-              }}
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              {isPinned ? (
-                <PinOff className="size-5 sm:size-6" />
-              ) : (
-                <Pin className="size-5 sm:size-6" />
-              )}
-            </motion.button>
-
-
-            <motion.button
-              className="rounded-full p-2 text-white transition-colors hover:bg-white/20"
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <EllipsisVertical className="size-5 sm:size-6" />
-            </motion.button>
-          </motion.div>
-        </motion.div>
+          {isPinned ? <PinOff size={20} /> : <Pin size={20} />}
+        </button>
       </motion.div>
     );
   };
 
   return (
-    <div className="flex h-[calc(100vh-120px)] w-full rounded-xl bg-gradient-to-r from-neutral-900 via-black to-neutral-900">
-      <div className="flex h-full w-full flex-col p-4 lg:flex-row lg:gap-4">
-        {pinnedVideo !== null ? (
-          // Layout when a video is pinned
-          <>
-            {/* Pinned video section - 80% width on desktop */}
-            <div className="h-[60vh] w-full lg:h-full lg:w-4/5">
-              {renderVideo(pinnedVideo, `Video ${pinnedVideo + 1}`)}
-            </div>
-            
-            {/* Sidebar with other videos - 20% width on desktop */}
-            <div className="mt-4 flex h-[30vh] w-full flex-row gap-2 overflow-x-auto lg:mt-0 lg:h-full lg:w-1/5 lg:flex-col lg:overflow-y-auto">
-              {[0, 1, 2, 3].filter(index => index !== pinnedVideo).map(index => (
-                <div key={index} className="h-full w-[200px] flex-none lg:h-1/3 lg:w-full">
-                  {renderVideo(index, `Video ${index + 1}`)}
-                </div>
-              ))}
-            </div>
-          </>
-        ) : (
-          // Grid layout when no video is pinned
-          <div className="grid h-full w-full grid-cols-1 gap-4 sm:grid-cols-2">
-            {[0, 1, 2, 3].map(index => renderVideo(index, `Video ${index + 1}`))}
-          </div>
-        )}
+    <div className="flex justify-center">
+      <div 
+        className={`
+          w-full p-1 gap-4 h-screen
+          ${pinnedVideo !== null 
+            ? "flex flex-col md:grid md:grid-cols-[3fr_1fr]" // Use flex column for mobile when pinned
+            : "grid grid-cols-1 md:grid-cols-2"} // Grid for unpinned state
+        `}
+      >
+        {[0, 1, 2, 3].map((index) => renderVideo(index, `Video ${index + 1}`, 4))}
       </div>
     </div>
   );
 };
 
-export default VideoGrid;
+export default VideoMeeting;

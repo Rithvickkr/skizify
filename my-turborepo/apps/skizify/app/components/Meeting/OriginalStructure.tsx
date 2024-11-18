@@ -914,11 +914,6 @@ export default function VideoPlatform({
       }
     }
 
-    const isPinned = pinnedVideo === index;
-    const hasPinnedVideo = pinnedVideo !== null;
-
-    // Base styles for all screen sizes
-    let videoStyles = "relative rounded-lg border border-gray-600 bg-black";
 
     const toggleFullScreen = (e: React.MouseEvent) => {
       e.stopPropagation();
@@ -944,6 +939,7 @@ export default function VideoPlatform({
       setIsFullScreen(!isFullScreen);
     };
 
+    
     const getVideoRefByIndex = (
       index: number,
     ): RefObject<HTMLVideoElement> | null => {
@@ -985,42 +981,41 @@ export default function VideoPlatform({
 
     return (
       <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1.5 }}
         key={`video-container-${index}`}
-        className={`${videoStyles} ${
-          isPinned
-            ? "md:col-span-1 md:row-span-3 h-64 md:h-auto"
-            : `w-full ${hasPinnedVideo ? " h-40" : " h-auto"} md:h-auto ${hasPinnedVideo ? "md:w-full" : "w-full"}`
+        className={`relative overflow-hidden rounded-lg border border-neutral-400 dark:border-neutral-700 ${
+          pinnedVideo === index
+            ? "h-1/2 w-full sm:h-full sm:w-4/5" /*For the Pinned Video*/
+            : `${
+                pinnedVideo == null
+                  ? "h-full w-[85%] sm:w-full" /*For the Normal Videos*/
+                  : "h-full w-[45%] sm:h-1/3 sm:w-full" /*For the Videos which are not pinned But another Video is Pinned*/
+              }`
         }`}
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.3 }}
-        style={{
-          order: hasPinnedVideo ? (isPinned ? -1 : index) : index,
-          gridColumn: hasPinnedVideo && window.innerWidth >= 768 ? (isPinned ? 1 : 2) : "auto"
-        }}
         onClick={() => togglePinTab(index)}
       >
         <video
           ref={reference}
           autoPlay
           playsInline
-          controls={false}
+          controls={false} // Add this line
           className="absolute inset-0 h-full w-full object-cover"
         />
-        <div className="absolute bottom-2 left-2 py-1 px-2 rounded bg-neutral-800 text-white flex items-center justify-center">
+        <motion.div className="absolute bottom-2 left-2 rounded bg-black bg-opacity-50 px-2 py-1 text-sm text-white">
           {title}
-        </div>
-
+        </motion.div>
         {selectPinTabs[index] && (
           <motion.div className="absolute left-1/2 top-1/2 flex min-w-28 -translate-x-1/2 -translate-y-1/2 transform items-center justify-between rounded-e-full rounded-s-full bg-black p-2 opacity-40 transition-opacity duration-700 dark:bg-neutral-500 dark:opacity-50">
             <motion.div
               className="cursor-pointer rounded-full text-white opacity-60 hover:bg-v0dark hover:dark:bg-neutral-400 hover:dark:opacity-95"
               onClick={(e) => {
-                e.stopPropagation();
+                e.stopPropagation(); //The above motion.Div has also a On click Event , So it willn't Trigger the Onclick event of Parent Element
                 handlePin(index);
               }}
             >
-              {isPinned ? (
+              {pinnedVideo === index ? (
                 <PinOff className="m-2 size-5 text-white sm:size-6" />
               ) : (
                 <Pin className="m-2 size-5 text-white sm:size-6" />
@@ -1056,6 +1051,7 @@ export default function VideoPlatform({
       </motion.div>
     );
   };
+
   const updateMessagesSeen = () => {
     // Get all messages that are not seen and not from current user
       // Emit socket event to update seen status on other clients
@@ -1075,8 +1071,59 @@ export default function VideoPlatform({
 
   
   return (
+    <div className="flex h-[calc(100vh-120px)] w-full rounded-xl from-neutral-900 via-black to-neutral-900 dark:bg-gradient-to-r">
       <div className="flex h-full w-full flex-1 flex-col items-center justify-between p-1 pb-2">
         <div className="flex h-full w-full flex-col gap-1 sm:flex-row">
+          {pinnedVideo !== null ? (
+            <>
+              {renderVideo(
+                pinnedVideo,
+                pinnedVideo === 0
+                  ? localVideoRef
+                  : pinnedVideo === 1
+                    ? remoteVideoRef
+                    : pinnedVideo === 2
+                      ? localscreenShareVideoref
+                      : remoteScreenVideoRef,
+                pinnedVideo === 0
+                  ? "Your Video"
+                  : pinnedVideo === 1
+                    ? "Remote Video"
+                    : pinnedVideo === 2
+                      ? "Your Screen Share"
+                      : "Remote Screen Share",
+              )}
+              <div className="ml-2 flex h-full flex-col items-center gap-1 sm:w-1/5">
+                {[0, 1, 2, 3]
+                  .filter((i) => i !== pinnedVideo)
+                  .map((index) => {
+                    {
+                      /*Selecting Video Ref*/
+                    }
+                    const videoRef =
+                      index === 0
+                        ? localVideoRef
+                        : index === 1
+                          ? remoteVideoRef
+                          : index === 2
+                            ? localscreenShareVideoref
+                            : remoteScreenVideoRef;
+                    {
+                      /*Selecting Video title*/
+                    }
+                    const title =
+                      index === 0
+                        ? "Your Video"
+                        : index === 1
+                          ? "Remote Video"
+                          : index === 2
+                            ? "Your Screen Share"
+                            : "Remote Screen Share";
+                    return renderVideo(index, videoRef, title);
+                  })}
+              </div>
+            </>
+          ) : (
             <div
               className={`flex h-full w-full flex-col items-center gap-3 pt-2 sm:grid ${
                 (isScreenSharing && screenTrackVideo) ||
@@ -1095,6 +1142,7 @@ export default function VideoPlatform({
               {remoteIsScreenSharing &&
                 renderVideo(3, remoteScreenVideoRef, "Remote Screen Share")}
             </div>
+          )}
         </div>
         {/*) : (
           <div className="relative h-full w-full overflow-hidden rounded-xl border border-neutral-400 dark:border-neutral-700">
@@ -1212,6 +1260,7 @@ export default function VideoPlatform({
               </ButtonsDock>
             </DockIcon>
           </Dock>
+        </div>
       </div>
 
       <div
