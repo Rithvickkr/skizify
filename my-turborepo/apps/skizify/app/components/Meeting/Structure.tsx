@@ -394,7 +394,7 @@ export default function VideoPlatform({
         screenTrackVideo.stop();
       }
     };
-  }, [remoteUserJoined, pinnedVideo]);
+  }, [remoteUserJoined]);
 
   // useEffect(() => {
   //   if (remoteScreenStream && remoteScreenVideoRef.current) {
@@ -595,7 +595,7 @@ export default function VideoPlatform({
       localVideoRef.current.srcObject = new MediaStream([localVideoTrack]);
       localVideoRef.current.play();
     }
-  }, [localVideoRef, remoteUserJoined, pinnedVideo]);
+  }, [localVideoRef, remoteUserJoined]);
 
   useEffect(() => {
     // console.log("isScreenSharing: ", isScreenSharing);
@@ -611,7 +611,7 @@ export default function VideoPlatform({
         .play()
         .catch((error) => console.error("Error playing video:", error));
     }
-  }, [isScreenSharing, screenTrackVideo, pinnedVideo]);
+  }, [isScreenSharing, screenTrackVideo]);
 
   // useEffect(() => {
     // console.log("isScreenSharing:", isScreenSharing);
@@ -793,10 +793,6 @@ export default function VideoPlatform({
     });
   };
 
-  const handlePin = (index: number) => {
-    setPinnedVideo((prevPinned) => (prevPinned === index ? null : index));
-  };
-
   useEffect(() => {
     const handleKeyDown = (event: any) => {
       // Example: Detect Ctrl + S (or Command + S on Mac)
@@ -881,14 +877,83 @@ export default function VideoPlatform({
   //   });
   // };
 
+  const isPipAvailable = "pictureInPictureEnabled" in document;
+  const toggleFullScreen = (e: React.MouseEvent, reference: RefObject<HTMLVideoElement>) => {
+    e.stopPropagation();
+    const videoElement = reference.current;
+    if (!videoElement) return;
+
+    if (!document.fullscreenElement) {
+      if (videoElement.requestFullscreen) {
+        videoElement.requestFullscreen();
+      } else if ((videoElement as any).webkitRequestFullscreen) {
+        // Safari
+        (videoElement as any).webkitRequestFullscreen();
+      }
+    } else {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      } else if ((document as any).webkitExitFullscreen) {
+        // Safari
+        (document as any).webkitExitFullscreen();
+      }
+    }
+
+    setIsFullScreen(!isFullScreen);
+  };
+
+  const getVideoRefByIndex = (
+    index: number,
+  ): RefObject<HTMLVideoElement> | null => {
+    switch (index) {
+      case 0:
+        return localVideoRef;
+      case 1:
+        return remoteVideoRef;
+      case 2:
+        return localscreenShareVideoref;
+      case 3:
+        return remoteScreenVideoRef;
+      default:
+        return null;
+    }
+  };
+
+  const togglePictureInPicture = async (index: number) => {
+    const videoElement = getVideoRefByIndex(index)?.current;
+    if (!videoElement) return;
+
+    try {
+      if (pipActiveIndex !== index) {
+        if (document.pictureInPictureElement) {
+          await document.exitPictureInPicture();
+        }
+        await videoElement.requestPictureInPicture();
+        setPipActiveIndex(index);
+      } else {
+        if (document.pictureInPictureElement) {
+          await document.exitPictureInPicture();
+        }
+        setPipActiveIndex(null);
+      }
+    } catch (error) {
+      console.error("Failed to toggle picture-in-picture mode:", error);
+    }
+  };
+
+
+  const handlePin = (index: number) => {
+    setPinnedVideo((prevPinned) => (prevPinned === index ? null : index));
+  };
+
+  
   const renderVideo = (
     index: number,
     reference: RefObject<HTMLVideoElement>,
     title: string,
   ) => {
-    const isPipAvailable = "pictureInPictureEnabled" in document;
     // console.log("reference: ", index);
-
+    
     if (title === "Remote Screen Share" && !remoteIsScreenSharing) {
       return null; // Don't render anything if screen sharing has stopped
     } else if (
@@ -900,7 +965,7 @@ export default function VideoPlatform({
     } else if (title == "Remote Video" && !remoteUserJoined) {
       return null;
     }
-
+    
     if (title == "Remote Screen Share") {
       // console.log("reference of ", title, reference?.current?.srcObject);
       // console.log("remoteScreenStream: ", remoteScreenStream);
@@ -913,75 +978,13 @@ export default function VideoPlatform({
         reference.current.srcObject = remoteScreenStream;
       }
     }
-
+    
     const isPinned = pinnedVideo === index;
     const hasPinnedVideo = pinnedVideo !== null;
-
+    
     // Base styles for all screen sizes
     let videoStyles = "relative rounded-lg border border-gray-600 bg-black";
-
-    const toggleFullScreen = (e: React.MouseEvent) => {
-      e.stopPropagation();
-      const videoElement = reference.current;
-      if (!videoElement) return;
-
-      if (!document.fullscreenElement) {
-        if (videoElement.requestFullscreen) {
-          videoElement.requestFullscreen();
-        } else if ((videoElement as any).webkitRequestFullscreen) {
-          // Safari
-          (videoElement as any).webkitRequestFullscreen();
-        }
-      } else {
-        if (document.exitFullscreen) {
-          document.exitFullscreen();
-        } else if ((document as any).webkitExitFullscreen) {
-          // Safari
-          (document as any).webkitExitFullscreen();
-        }
-      }
-
-      setIsFullScreen(!isFullScreen);
-    };
-
-    const getVideoRefByIndex = (
-      index: number,
-    ): RefObject<HTMLVideoElement> | null => {
-      switch (index) {
-        case 0:
-          return localVideoRef;
-        case 1:
-          return remoteVideoRef;
-        case 2:
-          return localscreenShareVideoref;
-        case 3:
-          return remoteScreenVideoRef;
-        default:
-          return null;
-      }
-    };
-
-    const togglePictureInPicture = async (index: number) => {
-      const videoElement = getVideoRefByIndex(index)?.current;
-      if (!videoElement) return;
-
-      try {
-        if (pipActiveIndex !== index) {
-          if (document.pictureInPictureElement) {
-            await document.exitPictureInPicture();
-          }
-          await videoElement.requestPictureInPicture();
-          setPipActiveIndex(index);
-        } else {
-          if (document.pictureInPictureElement) {
-            await document.exitPictureInPicture();
-          }
-          setPipActiveIndex(null);
-        }
-      } catch (error) {
-        console.error("Failed to toggle picture-in-picture mode:", error);
-      }
-    };
+    
 
     return (
       <motion.div
@@ -1028,7 +1031,7 @@ export default function VideoPlatform({
             </motion.div>
             <motion.div
               className="cursor-pointer rounded-full text-white opacity-60 hover:bg-v0dark hover:dark:bg-neutral-400 hover:dark:opacity-95"
-              onClick={toggleFullScreen}
+              onClick={(e) => toggleFullScreen(e, reference)}
             >
               <Fullscreen className="m-2 size-5 text-white sm:size-6" />
             </motion.div>
@@ -1075,17 +1078,15 @@ export default function VideoPlatform({
 
   
   return (
-      <div className="flex h-full w-full flex-1 flex-col items-center justify-between p-1 pb-2">
-        <div className="flex h-full w-full flex-col gap-1 sm:flex-row">
-            <div
-              className={`flex h-full w-full flex-col items-center gap-3 pt-2 sm:grid ${
-                (isScreenSharing && screenTrackVideo) ||
-                remoteIsScreenSharing ||
-                remoteUserJoined
-                  ? "sm:grid-cols-2"
-                  : "sm:grid-cols-1"
-              } sm:pt-0`}
-            >
+      <div className="flex h-full w-full flex-1 flex-col items-center justify-between p-1 pb-2"> 
+        <div 
+        className={`
+          w-full p-1 gap-4 h-screen
+          ${pinnedVideo !== null 
+            ? "flex flex-col md:grid md:grid-cols-[3fr_1fr]" // Use flex column for mobile when pinned
+            : "grid grid-cols-1 md:grid-cols-2"} // Grid for unpinned state
+        `}
+      >
               {localVideoTrack && renderVideo(0, localVideoRef, "Your Video")}
               {remoteUserJoined &&
                 renderVideo(1, remoteVideoRef, "Remote Video")}
@@ -1094,7 +1095,6 @@ export default function VideoPlatform({
                 renderVideo(2, localscreenShareVideoref, "Your Screen Share")}
               {remoteIsScreenSharing &&
                 renderVideo(3, remoteScreenVideoRef, "Remote Screen Share")}
-            </div>
         </div>
         {/*) : (
           <div className="relative h-full w-full overflow-hidden rounded-xl border border-neutral-400 dark:border-neutral-700">

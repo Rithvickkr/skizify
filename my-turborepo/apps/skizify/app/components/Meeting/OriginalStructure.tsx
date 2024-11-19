@@ -394,7 +394,7 @@ export default function VideoPlatform({
         screenTrackVideo.stop();
       }
     };
-  }, [remoteUserJoined, pinnedVideo]);
+  }, [remoteUserJoined]);
 
   // useEffect(() => {
   //   if (remoteScreenStream && remoteScreenVideoRef.current) {
@@ -595,7 +595,7 @@ export default function VideoPlatform({
       localVideoRef.current.srcObject = new MediaStream([localVideoTrack]);
       localVideoRef.current.play();
     }
-  }, [localVideoRef, remoteUserJoined, pinnedVideo]);
+  }, [localVideoRef, remoteUserJoined]);
 
   useEffect(() => {
     // console.log("isScreenSharing: ", isScreenSharing);
@@ -611,7 +611,7 @@ export default function VideoPlatform({
         .play()
         .catch((error) => console.error("Error playing video:", error));
     }
-  }, [isScreenSharing, screenTrackVideo, pinnedVideo]);
+  }, [isScreenSharing, screenTrackVideo]);
 
   // useEffect(() => {
     // console.log("isScreenSharing:", isScreenSharing);

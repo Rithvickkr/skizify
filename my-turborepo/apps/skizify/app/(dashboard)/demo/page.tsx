@@ -15,7 +15,7 @@ const VideoMeeting = () => {
     const hasPinnedVideo = pinnedVideo !== null;
 
     // Base styles for all screen sizes
-    let videoStyles = "relative rounded-lg border border-gray-600 bg-black";
+    let videoStyles = "relative rounded-lg border border-neutral-600 bg-neutral-500";
 
     return (
       <motion.div
@@ -42,7 +42,7 @@ const VideoMeeting = () => {
             e.stopPropagation();
             togglePin(index);
           }}
-          className="absolute top-2 right-2 rounded-full bg-gray-700 p-2 text-white hover:bg-gray-500"
+          className="absolute top-2 right-2 rounded-full bg-neutral-500 p-2 text-white hover:bg-neutral-500"
         >
           {isPinned ? <PinOff size={20} /> : <Pin size={20} />}
         </button>
