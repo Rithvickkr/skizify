@@ -59,22 +59,22 @@ export interface GigsInterface {
       id: string;
       name: string | null;
       userImage: string | null;
-      email : string | null;
+      email: string | null;
     };
     Skizzer: {
       id: string;
       name: string | null;
       userImage: string | null;
-      email : string | null;
+      email: string | null;
     };
     gig: {
       title: string;
       content: string;
-      timeneeded : number;
-      category : string;
+      timeneeded: number;
+      category: string;
     };
   }
-
+  
   export interface GiguserContent {
     id: string,
     gigId: string,

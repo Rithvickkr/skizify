@@ -1,6 +1,6 @@
 "use client";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/solid";
-import { GigStatus } from "@repo/store/types";
+import { GigStatus, meetingsInfo_interface } from "@repo/store/types";
 import {
   add,
   eachDayOfInterval,
@@ -43,6 +43,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "../../../@/components/ui/tooltip";
+import { BorderBeam } from "../../../@/components/ui/border-beam";
 
 function classNames(...classes: (string | boolean | undefined)[]) {
   return classes.filter(Boolean).join(" ");
@@ -214,33 +215,7 @@ const MeetingDetails: React.FC<MeetingDetailsProps> = ({ meeting }) => {
 };
 
 //Data from the GigUser table
-export interface meetingsInfo_interface {
-  id: string;
-  gigId: string;
-  skizzerId: string;
-  UserId: string;
-  status: GigStatus;
-  budget: number;
-  finalDateTime: Date;
-  user: {
-    id: string;
-    name: string | null;
-    userImage: string | null;
-    email: string | null;
-  };
-  Skizzer: {
-    id: string;
-    name: string | null;
-    userImage: string | null;
-    email: string | null;
-  };
-  gig: {
-    title: string;
-    content: string;
-    timeneeded: number;
-    category: string;
-  };
-}
+
 
 export default function Calendar({
   meetings,
@@ -344,8 +319,8 @@ export default function Calendar({
               </div>
               <div className="mx-2 h-[1px] flex-grow bg-gradient-to-r from-neutral-200 to-neutral-300 dark:from-neutral-700 dark:to-neutral-600 sm:mx-4"></div>
             </div>
-            <div className="ml-[50px] mt-3 sm:ml-[100px]">
-              <div className="rounded-lg border border-neutral-200 bg-gradient-to-tr from-white to-neutral-50 p-2 shadow-lg transition-all duration-300 hover:shadow-xl dark:border-neutral-700 dark:from-neutral-900 dark:to-black sm:p-4">
+            <div className="ml-[50px]  mt-3 sm:ml-[100px]">
+                <div className="rounded-lg border border-neutral-200 bg-gradient-to-tr from-white to-neutral-50 p-2 shadow-lg transition-all duration-300 hover:border-neutral-400 hover:shadow-xl dark:border-neutral-800 mr-2 sm:mr-0 dark:from-neutral-900 dark:to-black dark:hover:border-neutral-500 sm:p-4">
                 <div className="flex flex-col gap-2 sm:flex-row sm:gap-4">
                   <div className="h-20 w-20 animate-pulse overflow-hidden rounded-lg bg-neutral-300 dark:bg-neutral-900 sm:h-24 sm:w-24">
                     <img

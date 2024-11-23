@@ -127,35 +127,32 @@ export default function MeetingDashboard({
               <ScrollArea className="no-scrollbar max-h-72 sm:max-h-96 w-full space-y-2 sm:space-y-3 overflow-auto">
                 {meetings.map((meeting, index) => (
                   <div
-                    key={index}
-                    className="hover:black-10 group my-1 sm:my-2 flex cursor-pointer items-center justify-between rounded-lg bg-neutral-200/40 p-3 sm:p-4 transition-all duration-300 dark:bg-gradient-to-r dark:from-neutral-800 dark:to-neutral-900"
+                  key={index}
+                  className="group my-1 sm:my-2 flex cursor-pointer items-center justify-between rounded-lg border border-black/20 bg-black/10 p-3 sm:p-4 transition-all duration-300 hover:border-opacity-50 dark:border-white/20 dark:bg-black/30 dark:hover:border-opacity-50"
                   >
-                    <div className="flex items-center gap-3 sm:gap-4">
-                      <Calendar className="h-4 w-4 sm:h-5 sm:w-5 text-black dark:text-white" />
-                      <div>
-                        <h3 className="font-semibold text-sm sm:text-base">{meeting.gig.title}</h3>
-                        <div className="text-muted-foreground flex flex-wrap items-center gap-1 sm:gap-2 text-xs sm:text-sm">
-                          <Clock className="h-3 w-3 sm:h-4 sm:w-4" />
-                          <span>
-                            {format(
-                              new Date(meeting.finalDateTime),
-                              "dd MMM yyyy",
-                            )}
-                          </span>
-                          <span>•</span>
-                          <span>
-                            {format(new Date(meeting.finalDateTime), "hh:mm a")}
-                          </span>
-                        </div>
-                        <div className="mt-1 flex items-center gap-1">
-                          <User className="h-3 w-3 sm:h-4 sm:w-4 text-black dark:text-white" />
-                          <span className="text-muted-foreground text-xs sm:text-sm">
-                            {meeting.user.name}
-                          </span>
-                        </div>
-                      </div>
+                  <div className="flex items-center gap-3 sm:gap-4">
+                    <Calendar className="h-4 w-4 sm:h-5 sm:w-5 text-black dark:text-white" />
+                    <div>
+                    <h3 className="font-semibold text-sm sm:text-base text-black dark:text-white">{meeting.gig.title}</h3>
+                    <div className="text-muted-foreground flex flex-wrap items-center gap-1 sm:gap-2 text-xs sm:text-sm">
+                      <Clock className="h-3 w-3 sm:h-4 sm:w-4 text-black dark:text-white" />
+                      <span className="text-black dark:text-white">
+                      {format(new Date(meeting.finalDateTime), "dd MMM yyyy")}
+                      </span>
+                      <span className="text-black dark:text-white">•</span>
+                      <span className="text-black dark:text-white">
+                      {format(new Date(meeting.finalDateTime), "hh:mm a")}
+                      </span>
                     </div>
-                    <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5 text-black text-black/50 transition-colors duration-300 dark:text-white group-hover:dark:text-white" />
+                    <div className="mt-1 flex items-center gap-1">
+                      <User className="h-3 w-3 sm:h-4 sm:w-4 text-black dark:text-white" />
+                      <span className="text-muted-foreground text-xs sm:text-sm text-black dark:text-white">
+                      {meeting.user.name}
+                      </span>
+                    </div>
+                    </div>
+                  </div>
+                  <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5 text-black/50 dark:text-white/50 transition-colors duration-300 group-hover:text-black group-hover:dark:text-white" />
                   </div>
                 ))}
               </ScrollArea>
