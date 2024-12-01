@@ -16,7 +16,7 @@ export async function middleware(request: NextRequest) {
 
   // Get the session token using `getToken`
   const secret = process.env.NEXTAUTH_SECRET; // Ensure this is set in your environment variables
-  const token = await getToken({ req: request, secret });
+  const token = await getToken({ req: request as any, secret });
 
   // If there is no token (user is not authenticated)
   if (!token) {

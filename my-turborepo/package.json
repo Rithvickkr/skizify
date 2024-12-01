@@ -21,6 +21,9 @@
     "apps/*",
     "packages/*"
   ],
+  "prisma": {
+    "schema": "prisma/schema.prisma"
+  },
   "dependencies": {
     "@headlessui/react": "^2.1.0",
     "@heroicons/react": "^1.0.6",
