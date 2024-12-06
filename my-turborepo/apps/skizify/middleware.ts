@@ -1,4 +1,4 @@
-import { getSession } from "next-auth/react";
+import { getToken } from "next-auth/jwt"; // Use `getToken` for Edge Runtime compatibility
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
@@ -14,21 +14,20 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // Get the session data
-  const session = await getSession({ req: { headers: Object.fromEntries(request.headers.entries()) } });
+  // Get the session token using `getToken`
+  const secret = process.env.NEXTAUTH_SECRET; // Ensure this is set in your environment variables
+  const token = await getToken({ req: request as any, secret });
 
-  // If there is no session (user is not authenticated)
-  if (!session) {
+  // If there is no token (user is not authenticated)
+  if (!token) {
     return NextResponse.redirect(new URL("/signin", currentUrl.origin));
   }
 
-  // Check if user is a "Skizzer" (assuming you have this property in session)
-  const isSkizzer = session.user.isSksizzer || false;
+  // Check if the user has the required role ("Skizzer")
+  const isSkizzer = token.isSkizzer || false;
 
-  // If the user is authenticated but not a Skizzer, pop the modal
   if (!isSkizzer) {
-    // You can handle the "modal" logic in the frontend instead of redirecting the user
-    // For now, we'll just add a custom header to tell the frontend that they are not a Skizzer
+    // Add a custom header to notify the frontend
     const response = NextResponse.next();
     response.headers.set("X-Is-Skizzer", "false");
     return response;
@@ -38,4 +37,6 @@ export async function middleware(request: NextRequest) {
   return NextResponse.next();
 }
 
-export default middleware;
+export const config = {
+  matcher: ["/protected/:path*"], // Apply middleware to protected routes
+};

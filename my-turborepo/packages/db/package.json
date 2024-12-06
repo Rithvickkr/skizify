@@ -9,5 +9,10 @@
   },
   "exports": {
     "./client": "./index.ts"
-  }
+  },
+  
+  "prisma": {
+  "schema": "prisma/schema.prisma"
+}
+
 }
