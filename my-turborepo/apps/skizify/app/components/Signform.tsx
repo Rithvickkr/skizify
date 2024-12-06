@@ -42,13 +42,26 @@ export default function Signform() {
     }
   };
 
-  const handleGoogleSignIn = () => {
-    console.log("Sign in with Google");
+  const handleGoogleSignIn = async () => {
+    const result = await signIn("google", {
+      redirect: true,
+      callbackUrl: "/explore", // Specify your desired redirect page
+    });
+    if (result?.ok) {
+      // Successfully signed in
+      console.log("Signed in successfully");
+    }
   };
 
-  const handleGithubSignIn = () => {
-    console.log("Sign in with GitHub");
-  };
+  const handleGithubSignIn = async () => {
+    const result = await signIn("github", {
+      redirect: true,
+      callbackUrl: "/explore", // Specify your desired redirect page
+    });
+    if (result?.ok) {
+      // Successfully signed in
+      console.log("Signed in successfully");
+    }  };
 
   return (
     <div

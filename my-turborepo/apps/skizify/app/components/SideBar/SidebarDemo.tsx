@@ -143,7 +143,7 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
       <div className="no-scrollbar flex-1 rounded-xl overflow-y-auto p-2 bg-white dark:bg-black">{children}</div>
 
       {/* Footer */}
-      <hr className="dark:opacity-50 " />
+      <hr className="dark:opacity-30 " />
       <Footer />
     </div>
   );

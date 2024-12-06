@@ -1,9 +1,11 @@
 import db from "@repo/db/client";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
+import GitHubProvider from "next-auth/providers/github";
 import bcrypt from "bcrypt";
 import { NextAuthOptions, Session } from "next-auth";
 import { JWT } from "next-auth/jwt";
+import { UserRole } from "/Users/yash/Documents/CODING/Documents/skizify/my-turborepo/packages/store/src/types";
 
 // To test the connection
 // db.$connect()
@@ -16,6 +18,10 @@ export const authOptions: NextAuthOptions = {
       clientId: process.env.GOOGLE_ID || "",
       clientSecret: process.env.GOOGLE_SECRET || "",
     }),
+    GitHubProvider({
+      clientId: process.env.GITHUB_ID || "",
+      clientSecret: process.env.GITHUB_SECRET || "",
+    }),  
     CredentialsProvider({
       name: "Credentials",
       credentials: {
@@ -83,28 +89,59 @@ export const authOptions: NextAuthOptions = {
       }
       return session;
     },
-    async jwt({ token }) {
-      const dbUser = await db.user.findFirst({
-        where: {
-          email: token.email || "",
-        },
+    async jwt({ token , account , profile  } : { token: JWT; account: any; profile?: any }) {
+    // Handle sign-in via OAuth (Google, GitHub)
+    if (account && profile) {
+      console.log("account: ", profile);
+
+      const email = profile.email || ""; // Fallback for missing email
+      const userImage = profile.picture || profile.avatar_url || ""; // Google (picture) or GitHub (avatar_url)
+
+      let user = await db.user.findFirst({
+        where: { email },
       });
 
-      if (!dbUser) {
-        return token;
+      if (!user) {
+        // Create a new user if it doesn't exist
+        user = await db.user.create({
+          data: {
+            email,
+            name: profile.name || profile.login || "Anonymous User",
+            userImage,
+            password: "", // Set a default or empty password for OAuth users
+          },
+        });
       }
 
-      return {
-        id: dbUser.id,
-        name: dbUser.name,
-        email: dbUser.email,
-        userImage: dbUser.userImage || "",
-        role: dbUser.role,
-        isSksizzer: dbUser.skizzer,
-      };
-    },
-  },
-  pages: {
-    signIn: "/signin",
-  },
+      // Attach user details to the token
+      token.id = user.id;
+      token.name = user.name;
+      token.email = user.email;
+      token.userImage = user.userImage || "";
+      token.role = user.role as UserRole;
+      token.isSksizzer = user.skizzer;
+    }
+
+    // Handle normal (credentials-based) sign-in
+    else if (token.email) {
+      const dbUser = await db.user.findFirst({
+        where: { email: token.email },
+      });
+
+      if (dbUser) {
+        token.id = dbUser.id;
+        token.name = dbUser.name;
+        token.email = dbUser.email;
+        token.userImage = dbUser.userImage || "";
+        token.role = dbUser.role as UserRole;
+        token.isSksizzer = dbUser.skizzer || false;
+      }
+    }
+
+    return token;
+  }
+},
+pages: {
+  signIn: "/signin",
+},
 };
