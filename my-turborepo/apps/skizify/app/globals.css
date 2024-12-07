@@ -136,3 +136,51 @@
 .custom-scrollbar::-webkit-scrollbar-horizontal {
   height: 8px;
 }
+
+
+
+/*Customised Loader when Meeting Link is Getting Created*/
+/* From Uiverse.io by Shoh2008 */ 
+:root {
+  --spinner-color: #333; /* Default color for light mode */
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --spinner-color: #3c3c3c; /* Color for dark mode */
+  }
+}
+
+.lds-hourglass {
+  display: inline-block;
+  position: relative;
+  width: 40px; /* Reduced size */
+  height: 40px;
+}
+
+.lds-hourglass:after {
+  content: " ";
+  display: block;
+  border-radius: 50%;
+  width: 0;
+  height: 0;
+  margin: 4px; /* Adjusted for smaller size */
+  box-sizing: border-box;
+  border: 16px solid var(--spinner-color); /* Use variable for color */
+  border-color: var(--spinner-color) transparent var(--spinner-color) transparent;
+  animation: lds-hourglass 1.2s infinite;
+}
+
+@keyframes lds-hourglass {
+  0% {
+    transform: rotate(0);
+    animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+  }
+  50% {
+    transform: rotate(900deg);
+    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+  100% {
+    transform: rotate(1800deg);
+  }
+}

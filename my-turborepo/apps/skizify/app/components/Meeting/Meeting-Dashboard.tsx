@@ -128,31 +128,31 @@ export default function MeetingDashboard({
                 {meetings.map((meeting, index) => (
                   <div
                   key={index}
-                  className="group my-1 sm:my-2 flex cursor-pointer items-center justify-between rounded-lg border border-black/20 bg-black/10 p-3 sm:p-4 transition-all duration-300 hover:border-opacity-50 dark:border-white/20 dark:bg-black/30 dark:hover:border-opacity-50"
+                  className="group my-1 sm:my-2 flex cursor-pointer items-center justify-between rounded-lg border border-black/20 bg-gradient-to-r from-neutral-100 to-neutral-200 p-3 sm:p-4 shadow-md transition-all duration-300 hover:shadow-lg dark:border-white/20 dark:from-neutral-800 dark:to-neutral-900 dark:hover:shadow-xl"
                   >
                   <div className="flex items-center gap-3 sm:gap-4">
-                    <Calendar className="h-4 w-4 sm:h-5 sm:w-5 text-black dark:text-white" />
+                    <Calendar className="h-4 w-4 sm:h-5 sm:w-5 text-neutral-700 dark:text-neutral-300" />
                     <div>
-                    <h3 className="font-semibold text-sm sm:text-base text-black dark:text-white">{meeting.gig.title}</h3>
+                    <h3 className="font-semibold text-sm sm:text-base text-neutral-800 dark:text-neutral-100">{meeting.gig.title}</h3>
                     <div className="text-muted-foreground flex flex-wrap items-center gap-1 sm:gap-2 text-xs sm:text-sm">
-                      <Clock className="h-3 w-3 sm:h-4 sm:w-4 text-black dark:text-white" />
-                      <span className="text-black dark:text-white">
+                      <Clock className="h-3 w-3 sm:h-4 sm:w-4 text-neutral-700 dark:text-neutral-300" />
+                      <span className="text-neutral-700 dark:text-neutral-300">
                       {format(new Date(meeting.finalDateTime), "dd MMM yyyy")}
                       </span>
-                      <span className="text-black dark:text-white">•</span>
-                      <span className="text-black dark:text-white">
+                      <span className="text-neutral-700 dark:text-neutral-300">•</span>
+                      <span className="text-neutral-700 dark:text-neutral-300">
                       {format(new Date(meeting.finalDateTime), "hh:mm a")}
                       </span>
                     </div>
                     <div className="mt-1 flex items-center gap-1">
-                      <User className="h-3 w-3 sm:h-4 sm:w-4 text-black dark:text-white" />
-                      <span className="text-muted-foreground text-xs sm:text-sm text-black dark:text-white">
+                      <User className="h-3 w-3 sm:h-4 sm:w-4 text-neutral-700 dark:text-neutral-300" />
+                      <span className="text-muted-foreground text-xs sm:text-sm text-neutral-700 dark:text-neutral-300">
                       {meeting.user.name}
                       </span>
                     </div>
                     </div>
                   </div>
-                  <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5 text-black/50 dark:text-white/50 transition-colors duration-300 group-hover:text-black group-hover:dark:text-white" />
+                  <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5 text-neutral-500 dark:text-neutral-400 transition-transform duration-300 group-hover:translate-x-2" />
                   </div>
                 ))}
               </ScrollArea>

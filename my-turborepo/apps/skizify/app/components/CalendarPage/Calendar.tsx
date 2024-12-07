@@ -1,6 +1,6 @@
 "use client";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/solid";
-import { GigStatus, meetingsInfo_interface } from "@repo/store/types";
+import { meetingsInfo_interface } from "@repo/store/types";
 import {
   add,
   eachDayOfInterval,
@@ -15,14 +15,7 @@ import {
   parseISO,
   startOfToday,
 } from "date-fns";
-import {
-  CalendarRange,
-  Clock7,
-  Copy,
-  ExternalLink,
-  Share2,
-  Tag,
-} from "lucide-react";
+import { CalendarRange, Clock7, Copy, Tag } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import {
@@ -36,14 +29,13 @@ import {
   SheetContent,
   SheetTrigger,
 } from "../../../@/components/ui/sheet";
-import { Button } from "../ui/button";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "../../../@/components/ui/tooltip";
-import { BorderBeam } from "../../../@/components/ui/border-beam";
+import { Button } from "../ui/button";
 
 function classNames(...classes: (string | boolean | undefined)[]) {
   return classes.filter(Boolean).join(" ");
@@ -216,7 +208,6 @@ const MeetingDetails: React.FC<MeetingDetailsProps> = ({ meeting }) => {
 
 //Data from the GigUser table
 
-
 export default function Calendar({
   meetings,
 }: {
@@ -319,8 +310,8 @@ export default function Calendar({
               </div>
               <div className="mx-2 h-[1px] flex-grow bg-gradient-to-r from-neutral-200 to-neutral-300 dark:from-neutral-700 dark:to-neutral-600 sm:mx-4"></div>
             </div>
-            <div className="ml-[50px]  mt-3 sm:ml-[100px]">
-                <div className="rounded-lg border border-neutral-200 bg-gradient-to-tr from-white to-neutral-50 p-2 shadow-lg transition-all duration-300 hover:border-neutral-400 hover:shadow-xl dark:border-neutral-800 mr-2 sm:mr-0 dark:from-neutral-900 dark:to-black dark:hover:border-neutral-500 sm:p-4">
+            <div className="ml-[50px] mt-3 sm:ml-[100px]">
+              <div className="mr-2 rounded-lg border border-neutral-200 bg-gradient-to-tr from-white to-neutral-50 p-2 shadow-lg transition-all duration-300 hover:border-neutral-400 hover:shadow-xl dark:border-neutral-800 dark:from-neutral-900 dark:to-black dark:hover:border-neutral-500 sm:mr-0 sm:p-4">
                 <div className="flex flex-col gap-2 sm:flex-row sm:gap-4">
                   <div className="h-20 w-20 animate-pulse overflow-hidden rounded-lg bg-neutral-300 dark:bg-neutral-900 sm:h-24 sm:w-24">
                     <img
@@ -387,10 +378,10 @@ export default function Calendar({
     <div className="flex h-full w-full justify-center dark:bg-black">
       <div className="relative grid h-full w-full grid-cols-1 gap-2 md:gap-3 lg:gap-5 xl:grid-cols-3">
         <ScrollArea className="col-start-0 mb-4 flex-1 rounded-xl border border-black px-0 pl-2 pt-5 dark:border-neutral-600 sm:pt-10 md:mb-0 md:mt-0 md:p-4 md:pl-2 md:pt-0 xl:col-span-2">
-            <h1 className="bg-gradient-to-r from-neutral-900 mt-3 sm:mb-10 mb-6 sm:mt-5 ml-6 sm:ml-5 via-neutral-600 to-neutral-400 bg-clip-text text-2xl font-bold text-transparent dark:from-white dark:via-neutral-300 dark:to-neutral-900 sm:text-4xl">
+          <h1 className="mb-6 ml-6 mt-3 bg-gradient-to-r from-neutral-900 via-neutral-600 to-neutral-400 bg-clip-text text-2xl font-bold text-transparent dark:from-white dark:via-neutral-300 dark:to-neutral-900 sm:mb-10 sm:ml-5 sm:mt-5 sm:text-4xl">
             Scheduled Meetings
-            </h1>
-          <div className="mx-0 my-1  rounded-lg dark:bg-transparent sm:m-3">
+          </h1>
+          <div className="mx-0 my-1 rounded-lg dark:bg-transparent sm:m-3">
             {displayedMeetings.length > 0 ? (
               displayedMeetings.map((meeting) => {
                 const meetingDate = new Date(meeting.finalDateTime);

@@ -92,7 +92,6 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token , account , profile  } : { token: JWT; account: any; profile?: any }) {
     // Handle sign-in via OAuth (Google, GitHub)
     if (account && profile) {
-      console.log("account: ", profile);
 
       const email = profile.email || ""; // Fallback for missing email
       const userImage = profile.picture || profile.avatar_url || ""; // Google (picture) or GitHub (avatar_url)
