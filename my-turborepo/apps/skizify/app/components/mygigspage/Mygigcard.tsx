@@ -2,7 +2,7 @@
 import { GigStatus } from "@repo/store/types";
 import { Avatar, AvatarImage, AvatarFallback } from "../../../@/components/ui/avatar";
 
-import { CalendarRange, CirclePlus, Clock7Icon, Frown, Moon, Plus, Sun } from "lucide-react";
+import { CalendarRange, CirclePlus, Clock7Icon } from "lucide-react";
 import { Card } from "../../../@/components/ui/card";
 
 // import { useRouter } from "next/navigation";
