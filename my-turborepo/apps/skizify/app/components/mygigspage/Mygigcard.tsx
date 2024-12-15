@@ -1,7 +1,8 @@
+"use client"
 import { GigStatus } from "@repo/store/types";
 import { Avatar, AvatarImage, AvatarFallback } from "../../../@/components/ui/avatar";
 
-import { CalendarRange, Clock7Icon } from "lucide-react";
+import { CalendarRange, CirclePlus, Clock7Icon, Frown, Moon, Plus, Sun } from "lucide-react";
 import { Card } from "../../../@/components/ui/card";
 
 // import { useRouter } from "next/navigation";
@@ -15,6 +16,12 @@ import {
 import AcceptedBy from "./AcceptedBy";
 import EditDeleteCard from "./EditDeletecard";
 import RedirectToMeetingPage from "./RedirectingMeetingButton";
+import { motion } from "framer-motion";
+import Link from 'next/link';
+import { Search } from 'lucide-react';
+import { useTheme } from "next-themes";
+import { Button } from "../ui/button";
+import { BackgroundLines } from "../../../@/components/ui/background-lines.tsx";
 
 interface User {
   userImage: string;
@@ -39,7 +46,7 @@ interface MygigCardProps {
 //         gigs.map((gig) => (
 //           <div
 //             key={gig.id}
-//             className="-800 flex max-w-7xl flex-col rounded-md  rounded-tl-3xl border border-neutral-300 p-3 shadow-md transition duration-200 hover/mygiggs:translate-x-2 dark:border-2 dark:border-neutral-600 dark:bg-black"
+//             className="-800 flex max-w-7xl flex-col rounded-md  rounded-tl-3xl border border-neutral-300 p-3 shadow-md transition duration-200 hover/mygiggs:tranneutral-x-2 dark:border-2 dark:border-neutral-600 dark:bg-black"
 //           >
 //             <div className="flex w-full justify-between">
 //               <div className="flex space-x-1">
@@ -125,6 +132,33 @@ export function MygigCard2({
   gigs: GigsInterface[];
   session: any;
 }) {
+
+
+  const containerVariants = {
+    hidden: { opacity: 0, scale: 0.95 },
+    visible: { 
+      opacity: 1, 
+      scale: 1,
+      transition: {
+        delayChildren: 0.3,
+        staggerChildren: 0.2
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: { 
+      y: 0, 
+      opacity: 1,
+      transition: {
+        type: "spring",
+        damping: 12,
+        stiffness: 100
+      }
+    }
+  };
+
   return (
     <div className="flex w-full flex-col items-center space-y-4 pl-3 transition duration-200">
       {Array.isArray(gigs) && gigs.length > 0 ? (
@@ -262,8 +296,43 @@ export function MygigCard2({
           </Card>
         ))
       ) : (
-        <div>No gigs available</div>
-      )}
+        <div className="min-h-screen w-full flex items-center justify-center  bg-gradient-to-br from-neutral-50 to-neutral-100 dark:from-neutral-900 dark:to-neutral-800">
+        
+        <BackgroundLines className="flex items-center justify-center h-full w-full flex-col px-4 relative z-10">
+      <h2 className="bg-clip-text text-transparent text-center bg-gradient-to-b from-neutral-900 to-neutral-700 dark:from-neutral-600 dark:to-white text-3xl md:text-4xl lg:text-7xl font-sans py-2 md:py-5 z-20 font-bold tracking-tight">
+      No Gigs Found
+      </h2>
+      <p className="text-neutral-500 dark:text-neutral-400 text-center mb-4 px-4 sm:px-0">
+        Looks like there are no gigs available at the moment.<br />
+        You can explore existing gigs or create a new one to get started.
+      </p>
+      <div className="flex flex-col space-y-4 mt-7 md:flex-row md:space-y-0 md:space-x-4 z-20">
+        <Link href="/explore">
+          <Button
+        variant={"gooeyLeft"}
+        className="w-44 h-10 rounded-xl cursor-pointer bg-black border dark:border-white border-transparent text-white text-sm"
+          >
+        Explore Gigs
+        <Search className="ml-5 md:ml-2 size-4" />
+          </Button>
+        </Link>
+        <Link href="/postgig">
+          <Button
+        variant={"outline"}
+        className="w-44 h-10 rounded-xl cursor-pointer bg-white text-black border border-black text-sm"
+          >
+        Create New Gigs
+        <CirclePlus className="ml-2 size-4" />
+          </Button>
+        </Link>
+      </div>
+
+    </BackgroundLines>
+
+      </div>
+  
+  
+        )}
     </div>
   );
 }

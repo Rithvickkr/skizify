@@ -10,6 +10,7 @@ import {
   SelectValue,
 } from "../../../@/components/ui/select";
 import { useState, useEffect } from "react";
+import SkeletonSkizzergigs from "./SkeletonSkizzergigs";
 
 export default function SkizzerrequestPage() {
   const [filter, setFilter] = useState<GigStatus | "ALL">("ALL");
@@ -25,7 +26,9 @@ export default function SkizzerrequestPage() {
   }, []);
 
   if (!requests || requests.length === 0) {
-    return <div>No requests are there to show you</div>;
+    return <div>
+      <SkeletonSkizzergigs />
+    </div>;
   }
 
   const filteredRequests =

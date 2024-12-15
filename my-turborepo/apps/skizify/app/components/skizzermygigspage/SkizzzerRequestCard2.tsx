@@ -75,7 +75,7 @@ export default function EnhancedGigCard({
   // />
 
   return (
-    <Card className="group w-full overflow-hidden rounded-xl border border-neutral-200 bg-white text-neutral-800 shadow-md backdrop-blur-md transition-all duration-300 ease-in-out hover:shadow-lg dark:border-neutral-800/50 dark:bg-neutral-900/60 dark:text-neutral-200 dark:shadow-lg dark:hover:shadow-xl">
+    <Card className="group w-full overflow-hidden rounded-lg  border border-neutral-200 bg-white text-neutral-800 shadow-md backdrop-blur-md transition-all duration-300 ease-in-out hover:shadow-lg dark:border-neutral-800/50 dark:bg-neutral-900/60 dark:text-neutral-200 dark:shadow-lg dark:hover:shadow-xl">
       <div className="absolute inset-0 bg-gradient-to-r from-neutral-200/60 via-transparent to-neutral-300/60 opacity-0 transition-opacity duration-500 ease-in-out group-hover:opacity-100 dark:from-neutral-800/10 dark:to-neutral-700/10" />
       <CardHeader className="relative p-3">
         <div className="flex items-center space-x-4">

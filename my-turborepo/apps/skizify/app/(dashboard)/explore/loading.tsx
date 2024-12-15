@@ -1,4 +1,9 @@
-import { Card, CardContent, CardFooter, CardHeader } from "../../../@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+} from "../../../@/components/ui/card";
 import { Skeleton } from "../../../@/components/ui/skeleton";
 
 const SkeletonCard = () => {
@@ -11,7 +16,7 @@ const SkeletonCard = () => {
               <Skeleton className="h-6 w-20 bg-neutral-200 dark:bg-neutral-700" />
             </div>
             <div className="flex flex-col items-center space-y-4 sm:flex-row sm:justify-between sm:space-y-0">
-              <Skeleton className="h-20 w-20 rounded-xl border-4 bg-neutral-200 dark:bg-neutral-700 border-white dark:border-neutral-800 shadow-xl" />
+              <Skeleton className="h-20 w-20 rounded-xl border-4 border-white bg-neutral-200 shadow-xl dark:border-neutral-800 dark:bg-neutral-700" />
               <div className="text-center sm:text-right">
                 <Skeleton className="h-6 w-32 bg-neutral-200 dark:bg-neutral-700" />
                 <Skeleton className="mt-2 h-4 w-24 bg-neutral-200 dark:bg-neutral-700" />
@@ -24,15 +29,20 @@ const SkeletonCard = () => {
               <Skeleton className="mt-4 h-12 w-full bg-neutral-200 dark:bg-neutral-700" />
             </div>
             <div className="grid grid-cols-2 gap-4 text-sm">
-              {Array(4).fill(0).map((_, index) => (
-                <div key={index} className="flex items-center gap-2 transition-all duration-500 ease-in-out group-hover:translate-x-2">
-                  {/* <Skeleton className="h-8 w-8 rounded-md bg-neutral-500 dark:bg-neutral-500" /> */}
-                  <Skeleton className="h-4 w-32 bg-neutral-200 dark:bg-neutral-700" />
-                </div>
-              ))}
+              {Array(4)
+                .fill(0)
+                .map((_, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center gap-2 transition-all duration-500 ease-in-out group-hover:translate-x-2"
+                  >
+                    {/* <Skeleton className="h-8 w-8 rounded-md bg-neutral-500 dark:bg-neutral-500" /> */}
+                    <Skeleton className="h-4 w-32 bg-neutral-200 dark:bg-neutral-700" />
+                  </div>
+                ))}
             </div>
           </CardContent>
-          <CardFooter className="relative z-10 mt-2 flex items-center justify-between rounded-lg bg-white p-5 backdrop-blur-sm dark:bg-neutral-900 ">
+          <CardFooter className="relative z-10 mt-2 flex items-center justify-between rounded-lg bg-white p-5 backdrop-blur-sm dark:bg-neutral-900">
             <Skeleton className="h-6 w-16 bg-neutral-200 dark:bg-neutral-700" />
             <Skeleton className="h-8 w-24 bg-neutral-200 dark:bg-neutral-700" />
           </CardFooter>
@@ -44,10 +54,15 @@ const SkeletonCard = () => {
 
 const SkeletonCardPage = () => {
   return (
-    <div className="mx-auto grid w-full grid-cols-1 gap-2 pl-1 pr-3 md:grid-cols-2 md:pl-2 lg:grid-cols-2 2xl:grid-cols-3 3xl:grid-cols-4 4xl:grid-cols-5">
-      {Array(10).fill(0).map((_, index) => (
-        <SkeletonCard key={index} />
-      ))}
+    <div>
+      <div className="h-24"></div>
+      <div className="mx-auto grid w-full grid-cols-1 gap-2 pl-1 pr-3 md:grid-cols-2 md:pl-2 lg:grid-cols-2 2xl:grid-cols-3 3xl:grid-cols-4 4xl:grid-cols-5">
+        {Array(10)
+          .fill(0)
+          .map((_, index) => (
+            <SkeletonCard key={index} />
+          ))}
+      </div>
     </div>
   );
 };
