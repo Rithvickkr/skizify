@@ -1,4 +1,3 @@
-"use client"
 import { GigStatus } from "@repo/store/types";
 import { Avatar, AvatarImage, AvatarFallback } from "../../../@/components/ui/avatar";
 
@@ -326,12 +325,8 @@ export function MygigCard2({
           </Button>
         </Link>
       </div>
-
     </BackgroundLines>
-
       </div>
-  
-  
         )}
     </div>
   );
