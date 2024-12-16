@@ -15,6 +15,9 @@
       "commands": {
         "build": "npm run prisma:generate && npm run build"
       }
-    }
+    },
+    "prisma": {
+    "schema": "my-turborepo/packages/db/prisma/schema.prisma"
+  }
   }
   

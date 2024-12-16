@@ -5,5 +5,5 @@ import Component from "../../components/Profile2new";
 
 
 export default function Home() {
-  return <Component  />;
+  return <Postform  />;
 }
