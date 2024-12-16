@@ -28,6 +28,7 @@ export async function middleware(request: NextRequest) {
       headers: Object.fromEntries(request.headers),
     },
     secret,
+    
   });
 
   console.log("Token:", token);
