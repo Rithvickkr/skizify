@@ -3,9 +3,6 @@ import { signIn, signOut } from "next-auth/react";
 import { useSession } from "next-auth/react";
 import { setRole } from "../lib/actions/setRole";
 
-import { useRecoilState, RecoilState } from "recoil";
-import { userRoleState } from "@repo/store";
-
 import { Bell } from "lucide-react";
 import WarningPage from "./ui/WarningPage";
 import getInfos from "../lib/actions/getinfos";
@@ -25,13 +22,13 @@ export function AppbarClient() {
   };
 
   const changeRoles = async () => {
-    const role = await setRole();
-    // const info = await getInfos(session.data?.user?.id || "");
-
-    window.location.reload(); // This will hard reload the page
-    // if (role === "SKIZZER" && info?.bio != "") {
-    //   window.location.href = "/profile";
-    // }
+    const info = await getInfos(session.data?.user?.id || "");
+    if (info?.skizzer) {
+      await setRole();
+      window.location.reload();
+    } else {
+      window.location.href = "/createprofile";
+    }
   };
   return (
     <div>
@@ -43,9 +40,9 @@ export function AppbarClient() {
         fn={changeRoles}
       >
         <ToolTip name={"Notification"} className="p-2">
-        <div className="cursor-pointer rounded-full p-2 hover:bg-neutral-100 dark:bg-black hover:dark:bg-[#212125] dark:hover:bg-opacity-75">
-          <Bell className="size-5 md:size-6" strokeWidth={1.8} />
-        </div>
+          <div className="cursor-pointer rounded-full p-2 hover:bg-neutral-100 dark:bg-black hover:dark:bg-[#212125] dark:hover:bg-opacity-75">
+            <Bell className="size-5 md:size-6" strokeWidth={1.8} />
+          </div>
         </ToolTip>
         <WarningPage />
       </Appbar>

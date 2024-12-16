@@ -16,12 +16,12 @@ export async function Sidebar() {
           <div>S</div>
         </div>
         <div className="m-4 cursor-pointer font-display text-3xl font-bold">
-          ABC
+         SkFy
         </div>
       </div>
       <div className="pt-24">
         {session.user.role === UserRole.USER ? (
-          <SidebarItem
+          <SidebarItem 
             href={"/postgig"}
             title={"Post a Gig"}
             icon={<PlusIcon />}

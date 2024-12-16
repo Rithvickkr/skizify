@@ -5,7 +5,7 @@ import GitHubProvider from "next-auth/providers/github";
 import bcrypt from "bcrypt";
 import { NextAuthOptions, Session } from "next-auth";
 import { JWT } from "next-auth/jwt";
-import { UserRole } from "/Users/yash/Documents/CODING/Documents/skizify/my-turborepo/packages/store/src/types";
+import { UserRole } from "@repo/store/types";
 
 // To test the connection
 // db.$connect()
@@ -81,6 +81,7 @@ export const authOptions: NextAuthOptions = {
   secret: process.env.JWT_SECRET || "secret",
   callbacks: {
     async session({ token, session }: { token: JWT; session: any }) {
+      console.log("toke"+token.isSksizzer);
       if (token) {
         session.user.id = token.id;
         session.user.role = token.role;
@@ -139,7 +140,19 @@ export const authOptions: NextAuthOptions = {
 
     return token;
   }
+  
 },
+cookies: {
+  sessionToken: {
+    name: `next-auth.session-token`,
+    options: {
+      httpOnly: true, // Make sure it's httpOnly to prevent XSS
+      sameSite: "lax", // Adjust based on your needs
+      path: "/",
+      secure: process.env.NODE_ENV === "production", // true in production
+    }
+  }},
+
 pages: {
   signIn: "/signin",
 },

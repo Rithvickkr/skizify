@@ -38,6 +38,7 @@ import { ScrollArea } from "../../@/components/ui/scroll-area";
 import { Switch } from "../../@/components/ui/switch";
 import { GitHubLogoIcon, InstagramLogoIcon } from "@radix-ui/react-icons";
 import Timelinecompo from "./timeline";
+import { useRouter } from "next/navigation";
 
 export default function Newprofile() {
   interface form {
@@ -74,6 +75,7 @@ export default function Newprofile() {
     profession: "",
     location: "",
   });
+  const Router = useRouter();
   const heads = [
     {
       head: "Personal Information",
@@ -183,6 +185,10 @@ export default function Newprofile() {
     setIsLoading(false);
     await controls.start({ opacity: 1, y: 0 });
     console.log("Form submitted");
+    setTimeout(() => {
+      Router.push("/explore");
+      
+    }, 2000);
   };
 
   const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
