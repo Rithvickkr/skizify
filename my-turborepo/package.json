@@ -22,7 +22,7 @@
     "packages/*"
   ],
   "prisma": {
-    "schema": "./packages/db/prisma/schema.prisma"
+    "schema": "/packages/db/prisma"
   },
   "dependencies": {
     "@headlessui/react": "^2.1.0",
