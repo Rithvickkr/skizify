@@ -32,7 +32,7 @@ import {
 } from "../../@/components/ui/select";
 import { Textarea } from "../../@/components/ui/textarea";
 import { setformy } from "../lib/actions/setform";
-import { BottomGradient } from "./SignupForm";
+import { BottomGradient } from "./footer/Footer";
 import languages from "../utils/languages";
 import { ScrollArea } from "../../@/components/ui/scroll-area";
 import { Switch } from "../../@/components/ui/switch";
