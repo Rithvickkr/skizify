@@ -177,7 +177,23 @@ export const SidebarLink = ({
       )}
       {...props}
     >
-      <div className={`${selected ? "border-2 border-black dark:border-2 dark:border-white rounded" :""}`}>{link.icon}</div>
+      <div
+        className={cn(
+          "rounded", // General rounded border for icons
+          selected
+            ? "text-white "
+            : "text-neutral-400 dark:text-neutral-600"
+        )}
+      >
+        {/* Pass dynamic classes directly into the icon */}
+        {React.cloneElement(link.icon as React.ReactElement, {
+          className: `size-6 my-0.5 flex-shrink-0 ${selected ? "dark:text-white text-black " : "dark:text-neutral-400 text-neutral-600"}`,
+          // stroke: selected
+          //   ? "white" // Matches the selected color
+          //   : "currentColor", // Matches the unselected gray
+          strokeWidth: selected ? 2.5 : 2, // Makes selected icons stand out
+        })}
+      </div>
 
       <motion.span
         animate={{
