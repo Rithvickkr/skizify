@@ -36,6 +36,7 @@ import {
   TooltipTrigger,
 } from "../../../@/components/ui/tooltip";
 import { Button } from "../ui/button";
+import { BackgroundLines } from "../../../@/components/ui/background-lines.tsx";
 
 function classNames(...classes: (string | boolean | undefined)[]) {
   return classes.filter(Boolean).join(" ");
@@ -272,7 +273,7 @@ export default function Calendar({
       <div className="mt-6">
         <Button
           variant="outline"
-          className="border-neutral-400/45 px-6 py-2"
+          className="border-neutral-400/45 px-6 py-2 z-30 relative"
           onClick={() => router.push("/explore")}
         >
           Schedule a Meeting
@@ -378,9 +379,9 @@ export default function Calendar({
     <div className="flex h-full w-full justify-center dark:bg-black">
       <div className="relative grid h-full w-full grid-cols-1 gap-2 md:gap-3 lg:gap-5 xl:grid-cols-3">
         <ScrollArea className="col-start-0 mb-4 flex-1 rounded-xl border border-black px-0 pl-2 pt-5 dark:border-neutral-600 sm:pt-10 md:mb-0 md:mt-0 md:p-4 md:pl-2 md:pt-0 xl:col-span-2">
-          <h1 className="mb-6 ml-6 mt-3 bg-gradient-to-r from-neutral-900 via-neutral-600 to-neutral-400 bg-clip-text text-2xl font-bold text-transparent dark:from-white dark:via-neutral-300 dark:to-neutral-900 sm:mb-10 sm:ml-5 sm:mt-5 sm:text-4xl">
-            Scheduled Meetings
-          </h1>
+        <h2 className="bg-clip-text text-transparent text-left bg-gradient-to-b from-neutral-900 to-neutral-700 dark:from-neutral-600 dark:to-white text-lg md:text-2xl lg:text-5xl font-sans py-2 md:py-5 z-20 font-bold tracking-tight">
+        Scheduled Meetings
+          </h2>
           <div className="mx-0 my-1 rounded-lg dark:bg-transparent sm:m-3">
             {displayedMeetings.length > 0 ? (
               displayedMeetings.map((meeting) => {
@@ -412,7 +413,9 @@ export default function Calendar({
                 );
               })
             ) : (
+                      <BackgroundLines className="flex items-center justify-center h-full w-full flex-col px-4 relative z-10">
               <EmptyTimelineState />
+              </BackgroundLines>
             )}
           </div>
         </ScrollArea>
