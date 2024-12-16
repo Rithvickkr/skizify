@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "prisma:generate": "prisma generate ",
+    "prisma:generate": "prisma generate --schema=../packages/db/prisma/schema.prisma",
     "prisma:migrate": "prisma migrate deploy",
     "build": "npm run prisma:generate && next build",
     "start": "next start",
