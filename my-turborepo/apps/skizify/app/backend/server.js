@@ -9,6 +9,7 @@ const prisma = new PrismaClient();
 import express from 'express'; // or whatever server framework you're using
 const app = express();
 
+
 // Add the setInterval code here to run every hour and delete expired meetings
 setInterval(async () => {
     const now = new Date();

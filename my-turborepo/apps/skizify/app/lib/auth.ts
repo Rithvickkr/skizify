@@ -7,10 +7,12 @@ import { NextAuthOptions, Session } from "next-auth";
 import { JWT } from "next-auth/jwt";
 import { UserRole } from "@repo/store/types";
 
+
 // To test the connection
 // db.$connect()
 //   .then(() => console.log('Database connected successfully'))
 //   .catch((e) => console.error('Database connection error:', e));
+
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -141,6 +143,7 @@ export const authOptions: NextAuthOptions = {
     return token;
   }
   
+
 },
 cookies: {
   sessionToken: {
@@ -151,10 +154,13 @@ cookies: {
       path: "/",
       secure: process.env.NODE_ENV === "production", // true in production
     }
-  }},
-
-  
+  }},  
 pages: {
   signIn: "/signin",
 },
 };
+
+
+
+
+

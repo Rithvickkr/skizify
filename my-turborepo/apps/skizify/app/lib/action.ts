@@ -20,6 +20,7 @@ interface GetSignedURLParams {
 }
 
 
+
 const allowedFileTypes = [
   "image/jpeg",
   "image/png",
