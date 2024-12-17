@@ -29,7 +29,6 @@ const maxFileSize = 1048576 * 5 // 5 MB
 
 const generateFileName = (bytes = 32) => crypto.randomBytes(bytes).toString("hex")
 
-
 export async function getSignedURL({
   session,
   region,
