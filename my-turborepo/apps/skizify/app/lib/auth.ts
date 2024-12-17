@@ -81,7 +81,7 @@ export const authOptions: NextAuthOptions = {
   secret: process.env.JWT_SECRET || "secret",
   callbacks: {
     async session({ token, session }: { token: JWT; session: any }) {
-      console.log("toke"+token.isSksizzer);
+      
       if (token) {
         session.user.id = token.id;
         session.user.role = token.role;
