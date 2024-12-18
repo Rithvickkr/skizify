@@ -1,5 +1,9 @@
 import { GigStatus } from "@repo/store/types";
-import { Avatar, AvatarImage, AvatarFallback } from "../../../@/components/ui/avatar";
+import {
+  Avatar,
+  AvatarImage,
+  AvatarFallback,
+} from "../../../@/components/ui/avatar";
 
 import { CalendarRange, CirclePlus, Clock7Icon } from "lucide-react";
 import { Card } from "../../../@/components/ui/card";
@@ -16,8 +20,8 @@ import AcceptedBy from "./AcceptedBy";
 import EditDeleteCard from "./EditDeletecard";
 import RedirectToMeetingPage from "./RedirectingMeetingButton";
 import { motion } from "framer-motion";
-import Link from 'next/link';
-import { Search } from 'lucide-react';
+import Link from "next/link";
+import { Search } from "lucide-react";
 import { useTheme } from "next-themes";
 import { Button } from "../ui/button";
 import { BackgroundLines } from "../../../@/components/ui/background-lines.tsx";
@@ -131,31 +135,29 @@ export function MygigCard2({
   gigs: GigsInterface[];
   session: any;
 }) {
-
-
   const containerVariants = {
     hidden: { opacity: 0, scale: 0.95 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       scale: 1,
       transition: {
         delayChildren: 0.3,
-        staggerChildren: 0.2
-      }
-    }
+        staggerChildren: 0.2,
+      },
+    },
   };
 
   const itemVariants = {
     hidden: { y: 20, opacity: 0 },
-    visible: { 
-      y: 0, 
+    visible: {
+      y: 0,
       opacity: 1,
       transition: {
         type: "spring",
         damping: 12,
-        stiffness: 100
-      }
-    }
+        stiffness: 100,
+      },
+    },
   };
 
   return (
@@ -172,11 +174,14 @@ export function MygigCard2({
               <div className="mb-3 flex flex-col items-center justify-between space-y-4 sm:mb-5 sm:flex-row sm:items-center sm:space-y-0">
                 <div className="flex flex-col items-center space-y-1 sm:flex-row sm:items-start sm:space-x-4 sm:space-y-0">
                   <div className="relative">
-                    <Avatar className="sm:size-16 size-14 sm:rounded-xl rounded-lg border-4 bg-black text-white dark:bg-white dark:text-black border-white dark:border-neutral-800 shadow-xl transition-all duration-500 ease-in-out group-hover:scale-105 group-hover:rotate-6">
-                      <AvatarImage src={session?.user.userImage} alt={session?.user.name} />
-                        <AvatarFallback className="bg-black text-white dark:bg-white dark:text-black">
+                    <Avatar className="size-14 rounded-lg border-4 border-white bg-black text-white shadow-xl transition-all duration-500 ease-in-out group-hover:rotate-6 group-hover:scale-105 dark:border-neutral-800 dark:bg-white dark:text-black sm:size-16 sm:rounded-xl">
+                      <AvatarImage
+                        src={session?.user.userImage}
+                        alt={session?.user.name}
+                      />
+                      <AvatarFallback className="bg-black text-white dark:bg-white dark:text-black">
                         {session?.user.name?.charAt(0)}
-                        </AvatarFallback>
+                      </AvatarFallback>
                     </Avatar>
                   </div>
                   <div>
@@ -295,39 +300,44 @@ export function MygigCard2({
           </Card>
         ))
       ) : (
-        <div className="min-h-screen w-full flex items-center justify-center  bg-gradient-to-br from-neutral-50 to-neutral-100 dark:from-neutral-900 dark:to-neutral-800">
-        
-        <BackgroundLines className="flex items-center justify-center h-full w-full flex-col px-4 relative z-10">
-      <h2 className="bg-clip-text text-transparent text-center bg-gradient-to-b from-neutral-900 to-neutral-700 dark:from-neutral-600 dark:to-white text-3xl md:text-4xl lg:text-7xl font-sans py-2 md:py-5 z-20 font-bold tracking-tight">
-      No Gigs Found
-      </h2>
-      <p className="text-neutral-500 dark:text-neutral-400 text-center mb-4 px-4 sm:px-0">
-        Looks like there are no gigs available at the moment.<br />
-        You can explore existing gigs or create a new one to get started.
-      </p>
-      <div className="flex flex-col space-y-4 mt-7 md:flex-row md:space-y-0 md:space-x-4 z-20">
-        <Link href="/explore">
-          <Button
-        variant={"gooeyLeft"}
-        className="w-44 h-10 rounded-xl cursor-pointer bg-black border dark:border-white border-transparent text-white text-sm"
+        <div className="flex min-h-screen w-full items-center justify-center bg-gradient-to-br from-neutral-50 to-neutral-100 dark:from-neutral-900 dark:to-neutral-800">
+          <BackgroundLines
+            svgOptions={{
+              duration: 4,
+            }}
+            className="relative z-10 flex h-full w-full flex-col items-center justify-center px-4"
           >
-        Explore Gigs
-        <Search className="ml-5 md:ml-2 size-4" />
-          </Button>
-        </Link>
-        <Link href="/postgig">
-          <Button
-        variant={"outline"}
-        className="w-44 h-10 rounded-xl cursor-pointer bg-white text-black border border-black text-sm"
-          >
-        Create New Gigs
-        <CirclePlus className="ml-2 size-4" />
-          </Button>
-        </Link>
-      </div>
-    </BackgroundLines>
-      </div>
-        )}
+            <h2 className="font-sans z-20 bg-gradient-to-b from-neutral-900 to-neutral-700 bg-clip-text py-2 text-center text-3xl font-bold tracking-tight text-transparent dark:from-neutral-600 dark:to-white md:py-5 md:text-4xl lg:text-7xl">
+              No Gigs Found
+            </h2>
+            <p className="mb-4 px-4 text-center text-neutral-500 dark:text-neutral-400 sm:px-0">
+              Looks like there are no gigs available at the moment.
+              <br />
+              You can explore existing gigs or create a new one to get started.
+            </p>
+            <div className="z-20 mt-7 flex flex-col space-y-4 md:flex-row md:space-x-4 md:space-y-0">
+              <Link href="/explore">
+                <Button
+                  variant={"gooeyLeft"}
+                  className="h-10 w-44 cursor-pointer rounded-xl border border-transparent bg-black text-sm text-white dark:border-white"
+                >
+                  Explore Gigs
+                  <Search className="ml-5 size-4 md:ml-2" />
+                </Button>
+              </Link>
+              <Link href="/postgig">
+                <Button
+                  variant={"outline"}
+                  className="h-10 w-44 cursor-pointer rounded-xl border border-black bg-white text-sm text-black"
+                >
+                  Create New Gigs
+                  <CirclePlus className="ml-2 size-4" />
+                </Button>
+              </Link>
+            </div>
+          </BackgroundLines>
+        </div>
+      )}
     </div>
   );
 }

@@ -1,3 +1,3 @@
 export default function loader() {
-  return <div>loading...</div>;
+  return <div>loading...2</div>;
 }

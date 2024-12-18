@@ -989,7 +989,7 @@ export default function VideoPlatform({
     const hasPinnedVideo = pinnedVideo !== null;
 
     // Base styles for all screen sizes
-    let videoStyles = "relative rounded-lg border border-gray-600 bg-black";
+    let videoStyles = "relative rounded-lg border border-neutral-600 bg-black";
 
     return (
       <motion.div
@@ -1018,7 +1018,7 @@ export default function VideoPlatform({
           autoPlay
           playsInline
           controls={false}
-          className="absolute inset-0 h-full w-full object-cover"
+          className="absolute inset-0 h-full w-full rounded-lg object-cover"
         />
         <div className="absolute bottom-2 left-2 flex items-center justify-center rounded bg-neutral-800 px-2 py-1 text-white">
           {title}
@@ -1231,24 +1231,24 @@ export default function VideoPlatform({
       </div>
 
       <div
-        className={`fixed inset-y-0 right-0 z-50 h-screen transition-all duration-500 ease-in-out ${
+        className={`fixed inset-y-0 right-0 z-50 h-full transition-all duration-500 ease-in-out ${
           isChatBarVisible
-        ? "w-[80%] opacity-100 md:w-[50%] lg:w-[30%]"
+        ? "w-[80%] opacity-100 md:w-[50%] lg:w-[25%]"
         : "w-0 opacity-0"
         }`}
       >
-        <div className="flex h-full flex-col overflow-hidden rounded-l-2xl border border-gray-200 bg-white shadow-lg dark:border-white/10 dark:bg-black dark:shadow-[0_0_30px_rgba(255,255,255,0.1)]">
-          <div className="flex items-center justify-between border-b border-gray-200 px-6 py-4 dark:border-white/10">
+        <div className="flex h-full flex-col overflow-hidden rounded-l-2xl border border-neutral-200 bg-white shadow-2xl  dark:border-white/30 dark:bg-black dark:shadow-[0_0_30px_rgba(255,255,255,0.1)]">
+          <div className="flex items-center justify-between border-b border-neutral-200 px-6 py-4 dark:border-white/10">
         <div className="flex items-center gap-2">
-          <MessageSquare className="size-5 text-gray-600 dark:text-white/70" />
-          <div className="text-lg font-semibold text-gray-800 dark:text-white/90">
+          <MessageSquare className="size-5 text-neutral-600 dark:text-white/70" />
+          <div className="text-lg font-semibold text-neutral-800 dark:text-white/90">
             Chat Room
           </div>
         </div>
         <Button
           variant="ghost"
           size="icon"
-          className="rounded-full text-gray-600 hover:bg-gray-100 dark:text-white/70 dark:hover:bg-white/10"
+          className="rounded-full text-neutral-600 hover:bg-neutral-100 dark:text-white/70 dark:hover:bg-white/10"
           onClick={() => setIsChatBarVisible(false)}
         >
           <X className="size-5" />
@@ -1273,8 +1273,8 @@ export default function VideoPlatform({
         <div className="space-y-6">
           {messages.length === 0 ? (
             <div className="flex flex-col items-center justify-center space-y-3 py-10 text-center">
-          <MessageSquareOff className="size-12 text-gray-400 dark:text-white" />
-          <p className="text-gray-500 dark:text-white/50 text-sm md:text-base lg:text-xl">
+          <MessageSquareOff className="size-12 text-neutral-400 dark:text-white" />
+          <p className="text-neutral-500 dark:text-white/50 text-sm md:text-base lg:text-xl">
             No messages yet <br />Start the conversation!
           </p>
             </div>
@@ -1287,16 +1287,16 @@ export default function VideoPlatform({
           )}
         </div>
           </div>
-          <div className="border-t border-gray-200 bg-gray-50 p-4 dark:border-white/10 dark:bg-white/5">
+          <div className="border-t border-neutral-200 bg-neutral-50 p-4 dark:border-white/10 dark:bg-white/5">
         <div className="flex items-center gap-3">
           <Textarea
             placeholder={`${!permissionToChat ? "Chat is disabled, waiting for others to join..." : "Type a message..."}`}
             className={`${
           !permissionToChat ? "cursor-not-allowed opacity-60" : ""
-            } flex-1 resize-none rounded-xl border-gray-200 bg-white text-gray-800 text-sm md:text-base
+            } flex-1 resize-none rounded-xl border-neutral-200 bg-white text-neutral-800 text-sm md:text-base
             dark:border-white/20 dark:bg-black/50 dark:text-white dark:shadow-[inset_0_0_20px_rgba(255,255,255,0.05)]
-            placeholder:text-gray-400 dark:placeholder:text-white/40 placeholder:text-xs md:placeholder:text-sm
-            focus:border-gray-300 focus:ring-1 focus:ring-gray-300
+            placeholder:text-neutral-400 dark:placeholder:text-white/40 placeholder:text-xs md:placeholder:text-sm
+            focus:border-neutral-300 focus:ring-1 focus:ring-neutral-300
             dark:focus:border-white/30 dark:focus:ring-white/30`}
             onChange={(e) => {
           if (permissionToChat) {
@@ -1330,8 +1330,8 @@ export default function VideoPlatform({
             disabled={!message.trim() || !permissionToChat}
             className={`rounded-xl ${
           message.trim() && permissionToChat
-            ? "bg-gray-800 text-white hover:bg-gray-900 dark:bg-white/90 dark:text-black dark:shadow-[0_0_20px_rgba(255,255,255,0.3)] dark:hover:bg-white"
-            : "bg-gray-200 dark:bg-white/20"
+            ? "bg-neutral-800 text-white hover:bg-neutral-900 dark:bg-white/90 dark:text-black dark:shadow-[0_0_20px_rgba(255,255,255,0.3)] dark:hover:bg-white"
+            : "bg-neutral-200 dark:bg-white/20"
             }`}
             onClick={(e) =>
           messageHandler(
@@ -1361,63 +1361,63 @@ const ChatStructure: React.FC<{ data: Chat }> = ({ data }) => {
       {data.userId === session.data?.user.id ? (
         <div className="flex items-end justify-end gap-3">
           <div className="group relative max-w-[85%] space-y-1">
-            <div className="rounded-2xl rounded-br-sm bg-white/90 p-4 text-black shadow-[0_0_20px_rgba(255,255,255,0.2)] transition-all hover:bg-white">
+            <div className="rounded-2xl rounded-br-sm bg-black p-4 text-white dark:text-black shadow-[0_0_20px_rgba(0,0,0,0.1)] transition-all  dark:bg-white/90 dark:shadow-[0_0_20px_rgba(255,255,255,0.2)] ">
               <p className="break-words text-[15px] leading-relaxed">
                 {data.message}
               </p>
             </div>
             <div className="flex items-center justify-end gap-2">
-              <span className="text-xs text-white/50">
+              <span className="text-xs text-neutral-500 dark:text-white/50">
                 {new Date(data.messageTime).toLocaleTimeString([], {
                   hour: "2-digit",
                   minute: "2-digit",
                 })}
               </span>
-              <span className="text-xs text-white/70">
+              <span className="text-xs text-neutral-500 dark:text-white/70">
                 {data.seenStatus ? (
                   <div className="flex items-center">
                     <CheckCheck className="size-4 text-blue-400" />
                   </div>
                 ) : (
-                  <Check className="size-4 text-gray-400" />
+                  <Check className="size-4 text-neutral-400" />
                 )}
               </span>
             </div>
           </div>
-          <Avatar className="h-8 w-8 shadow-[0_0_10px_rgba(255,255,255,0.2)] ring-2 ring-white/30 transition-transform hover:scale-110">
+          <Avatar className="h-8 w-8 shadow-[0_0_10px_rgba(0,0,0,0.1)] ring-2 ring-neutral-300 transition-transform hover:scale-110 dark:shadow-[0_0_10px_rgba(255,255,255,0.2)] dark:ring-white/30">
             <AvatarImage
               src={data.userImage}
               alt={data.name}
               className="rounded-full object-cover"
             />
-            <AvatarFallback className="bg-white/10 text-sm font-medium text-white">
+            <AvatarFallback className="bg-neutral-300 text-sm font-medium text-neutral-800 dark:bg-white/10 dark:text-white">
               {data.name.charAt(0)}
             </AvatarFallback>
           </Avatar>
         </div>
       ) : (
         <div className="flex items-end gap-3">
-          <Avatar className="h-8 w-8 shadow-[0_0_10px_rgba(255,255,255,0.2)] ring-2 ring-white/30 transition-transform hover:scale-110">
+          <Avatar className="h-8 w-8 shadow-[0_0_10px_rgba(0,0,0,0.1)] ring-2 ring-neutral-300 transition-transform hover:scale-110 dark:shadow-[0_0_10px_rgba(255,255,255,0.2)] dark:ring-white/30">
             <AvatarImage
               src={data.userImage}
               alt={data.name}
               className="rounded-full object-cover"
             />
-            <AvatarFallback className="bg-white/10 text-sm font-medium text-white">
+            <AvatarFallback className="bg-neutral-300 text-sm font-medium text-neutral-800 dark:bg-white/10 dark:text-white">
               {data.name.charAt(0)}
             </AvatarFallback>
           </Avatar>
-          <div className="group relative max-w-[85%] space-y-1">
+          <div className="group relative max-w-[85%]  space-y-1">
             <div className="flex flex-col gap-1">
-              <span className="text-xs text-white/50">{data.name}</span>
-              <div className="rounded-2xl rounded-bl-sm bg-white/20 p-4 text-white shadow-[0_0_15px_rgba(255,255,255,0.1)] transition-all hover:bg-white/30">
+              <span className="text-xs text-neutral-500 dark:text-white/50">{data.name}</span>
+                <div className="rounded-2xl rounded-bl-sm border dark:border-0 bg-neutral-200 p-4 text-black shadow-[0_0_15px_rgba(0,0,0,0.1)] transition-all  dark:text-white dark:bg-white/20 dark:shadow-[0_0_15px_rgba(255,255,255,0.1)] ">
                 <p className="break-words text-[15px] leading-relaxed">
                   {data.message}
                 </p>
+                </div>
               </div>
-            </div>
             <div className="flex justify-start">
-              <span className="text-xs text-white/50">
+              <span className="text-xs text-neutral-500 dark:text-white/50">
                 {new Date(data.messageTime).toLocaleTimeString([], {
                   hour: "2-digit",
                   minute: "2-digit",
@@ -1430,242 +1430,3 @@ const ChatStructure: React.FC<{ data: Chat }> = ({ data }) => {
     </div>
   );
 };
-
-{
-  /* <div className="flex h-full w-full flex-1 flex-col items-center justify-between p-1 pb-2"> */
-}
-{
-  /*  */
-}
-{
-  /* <div */
-}
-// className={`h-screen w-full gap-4 p-1 ${
-// pinnedVideo !== null
-// ? "flex flex-col md:grid md:grid-cols-[3fr_1fr]" // Use flex column for mobile when pinned
-// : "grid grid-cols-1 md:grid-cols-2"
-// } // Grid for unpinned state`}
-// >
-{
-  /* {localVideoTrack && renderVideo(0, localVideoRef, "Your Video")} */
-}
-{
-  /* {remoteUserJoined && renderVideo(1, remoteVideoRef, "Remote Video")} */
-}
-{
-  /* {isScreenSharing && */
-}
-// screenTrackVideo &&
-// renderVideo(2, localscreenShareVideoref, "Your Screen Share")}
-{
-  /* {remoteIsScreenSharing && */
-}
-// renderVideo(3, remoteScreenVideoRef, "Remote Screen Share")}
-{
-  /* </div> */
-}
-{
-  /* {/*) : ( */
-}
-// <div className="relative h-full w-full overflow-hidden rounded-xl border border-neutral-400 dark:border-neutral-700">
-// <video
-// ref={localVideoRef}
-// autoPlay
-// className="absolute inset-0 h-full w-full object-cover"
-// />
-// </div>
-// )}*/}
-{
-  /*  */
-}
-{
-  /* <div className=""> */
-}
-{
-  /* <Dock */
-}
-// direction="middle"
-// className="gap-7 rounded-md dark:border-neutral-800"
-// >
-{
-  /* <DockIcon> */
-}
-{
-  /* <ButtonsDock */
-}
-// shortcut="Ctrl A"
-// name={isAudioMuted ? "Unmute" : "Mute"}
-// onClick={toggleAudio}
-// >
-{
-  /* {isAudioMuted ? ( */
-}
-// <MicOffIcon
-// strokeWidth={1.7}
-// className="size-4 lg:size-5 xl:size-6"
-// />
-// ) : (
-// <MicIcon
-// strokeWidth={1.7}
-// className="size-4 lg:size-5 xl:size-6"
-// />
-// )}
-{
-  /* </ButtonsDock> */
-}
-{
-  /* </DockIcon> */
-}
-{
-  /* <DockIcon> */
-}
-{
-  /* <ButtonsDock */
-}
-// shortcut="Ctrl V"
-// name={isVideoMuted ? "Start Video" : "Stop Video"}
-// onClick={toggleVideo}
-// >
-{
-  /* {isVideoMuted ? ( */
-}
-// <VideoOff
-// strokeWidth={1.7}
-// className="size-4 lg:size-5 xl:size-6"
-// />
-// ) : (
-// <Video
-// strokeWidth={1.7}
-// className="size-4 lg:size-5 xl:size-6"
-// />
-// )}
-{
-  /* </ButtonsDock> */
-}
-{
-  /* </DockIcon> */
-}
-{
-  /* <DockIcon> */
-}
-{
-  /* <ButtonsDock */
-}
-// shortcut="Ctrl E"
-// name="Call-End"
-// className="bg-red-600 text-white hover:bg-red-600 dark:bg-red-600 hover:dark:bg-red-600"
-// onClick={endMeeting}
-// >
-{
-  /* <PhoneIcon */
-}
-// strokeWidth={1.7}
-// className="size-4 lg:size-5 xl:size-6"
-// />
-{
-  /* </ButtonsDock> */
-}
-{
-  /* </DockIcon> */
-}
-{
-  /* <DockIcon> */
-}
-{
-  /* <ButtonsDock */
-}
-// shortcut="Ctrl S"
-// name="ScreenShare"
-// onClick={isScreenSharing ? stopScreenShare : startScreenShare}
-// >
-{
-  /* {isScreenSharing ? ( */
-}
-// <ScreenShareOff
-// strokeWidth={1.7}
-// className="size-4 lg:size-5 xl:size-6"
-// />
-// ) : (
-// <ScreenShare
-// strokeWidth={1.7}
-// className="size-4 lg:size-5 xl:size-6"
-// />
-// )}
-{
-  /* </ButtonsDock> */
-}
-{
-  /* </DockIcon> */
-}
-{
-  /* <DockIcon> */
-}
-{
-  /* <ButtonsDock */
-}
-// shortcut="Ctrl C"
-// name="Chat"
-// onClick={() => {
-// toggleChat();
-//Mark messages as seen when chat is opened
-// if (
-// !isChatBarVisible &&
-// messages.some(
-// (m) => !m.seenStatus && m.userId !== session.data?.user.id,
-// )
-// ) {
-// updateMessagesSeen();
-// }
-// }}
-// >
-{
-  /* <div className="relative"> */
-}
-{
-  /* {!isChatBarVisible && */
-}
-// messages.some(
-// (m) => !m.seenStatus && m.userId !== session.data?.user.id,
-// ) && (
-// <div className="absolute -right-1 -top-1 h-2 w-2 animate-pulse rounded-full bg-black shadow-[0_0_10px_rgba(255,255,255,0.7)] dark:bg-white/80" />
-// )}
-{
-  /* {isChatBarVisible ? ( */
-}
-// <MessageSquareOff
-// strokeWidth={1.7}
-// className="size-4 dark:text-white/90 lg:size-5 xl:size-6"
-// />
-// ) : (
-// <MessageSquare
-// strokeWidth={1.7}
-// className="size-4 dark:text-white/90 lg:size-5 xl:size-6"
-// />
-// )}
-{
-  /* </div> */
-}
-{
-  /* </ButtonsDock> */
-}
-{
-  /* </DockIcon> */
-}
-{
-  /* </Dock> */
-}
-{
-  /* </div> */
-}
-{
-  /*  */
-}
-{
-  /* <div */
-}
-// className={`transition-all duration-500 ease-in-out lg:relative lg:block ${
-// isChatBarVisible
-// ? "md:max-w-50% fixed inset-y-0 right-0 z-50 w-[80%] opacity-100 lg:static lg:w-3/12"
-// : "fixed -right-full w-0 opacity-0 lg:w-0 lg:opacity-100"
-// } `}
-// ></div>

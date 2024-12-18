@@ -273,7 +273,7 @@ export default function Calendar({
       <div className="mt-6">
         <Button
           variant="outline"
-          className="border-neutral-400/45 px-6 py-2 z-30 relative"
+          className="relative z-30 border-neutral-400/45 px-6 py-2"
           onClick={() => router.push("/explore")}
         >
           Schedule a Meeting
@@ -379,8 +379,8 @@ export default function Calendar({
     <div className="flex h-full w-full justify-center dark:bg-black">
       <div className="relative grid h-full w-full grid-cols-1 gap-2 md:gap-3 lg:gap-5 xl:grid-cols-3">
         <ScrollArea className="col-start-0 mb-4 flex-1 rounded-xl border border-black px-0 pl-2 pt-5 dark:border-neutral-600 sm:pt-10 md:mb-0 md:mt-0 md:p-4 md:pl-2 md:pt-0 xl:col-span-2">
-        <h2 className="bg-clip-text text-transparent text-left bg-gradient-to-b from-neutral-900 to-neutral-700 dark:from-neutral-600 dark:to-white text-lg md:text-2xl lg:text-5xl font-sans py-2 md:py-5 z-20 font-bold tracking-tight">
-        Scheduled Meetings
+          <h2 className="font-sans z-20 bg-gradient-to-b from-neutral-900 to-neutral-700 bg-clip-text py-2 text-left text-lg font-bold tracking-tight text-transparent dark:from-neutral-600 dark:to-white md:py-5 md:text-2xl lg:text-5xl">
+            Scheduled Meetings
           </h2>
           <div className="mx-0 my-1 rounded-lg dark:bg-transparent sm:m-3">
             {displayedMeetings.length > 0 ? (
@@ -413,8 +413,13 @@ export default function Calendar({
                 );
               })
             ) : (
-                      <BackgroundLines className="flex items-center justify-center h-full w-full flex-col px-4 relative z-10">
-              <EmptyTimelineState />
+              <BackgroundLines
+                svgOptions={{
+                  duration: 4,
+                }}
+                className="relative z-10 flex h-full w-full flex-col items-center justify-center px-4"
+              >
+                <EmptyTimelineState />
               </BackgroundLines>
             )}
           </div>
