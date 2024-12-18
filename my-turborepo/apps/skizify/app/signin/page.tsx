@@ -15,7 +15,6 @@ import { Separator } from "../../@/components/ui/separator";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { BackgroundBeams } from "../../@/components/ui/background-beams";
-    
 
 const HeroSection = () => {
   const [name, setName] = useState("");
@@ -68,15 +67,15 @@ const HeroSection = () => {
       <div className="relative flex h-screen w-full items-center justify-center rounded-lg bg-gradient-to-bl from-white via-white to-background dark:from-neutral-900 dark:via-black dark:to-black">
         <div className="w-full px-4 py-10 sm:px-8 sm:py-20 md:px-24">
           <div className="grid items-center justify-center gap-8 lg:grid-cols-2 lg:gap-12">
-            <div className="text-center mt-10 lg:mt-0 lg:text-left">
+            <div className="mt-10 text-center lg:mt-0 lg:text-left">
               <p className="block bg-gradient-to-l from-blue-600 to-violet-500 bg-clip-text text-sm font-medium text-transparent dark:from-blue-400 dark:to-violet-400">
                 Where Video Ideas Come to Life
               </p>
               <div className="mt-6 max-w-3xl md:mb-14">
-                <h1 className="mb-3 md:mb-7 scroll-m-20 bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text text-xl md:text-3xl font-extrabold tracking-tight text-transparent dark:from-white dark:to-neutral-300 ">
+                <h1 className="mb-3 scroll-m-20 bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text text-xl font-extrabold tracking-tight text-transparent dark:from-white dark:to-neutral-300 md:mb-7 md:text-3xl">
                   Connect, Collaborate, Solve with Ease
                 </h1>
-                <p className="hidden md:block text-muted-foreground text-sm md:text-lg dark:text-neutral-400">
+                <p className="text-muted-foreground hidden text-sm dark:text-neutral-400 md:block md:text-lg">
                   Your one-stop platform where creative minds meet video
                   experts. Post your gigs, discover talented creators, and watch
                   your vision take flight.
@@ -98,7 +97,7 @@ const HeroSection = () => {
                   />
                 </svg>
                 <div className="relative z-10">
-                  <p className="hidden md:block text-2xl italic text-foreground/90 dark:text-neutral-300">
+                  <p className="hidden text-2xl italic text-foreground/90 dark:text-neutral-300 md:block">
                     "This platform has transformed the way I solve my doubts. I
                     posted my query, connected with an expert instantly, and
                     walked away with all the clarity I needed. It's seamless and
@@ -129,7 +128,7 @@ const HeroSection = () => {
                       <div className="flex flex-col md:flex-row md:space-x-4">
                         <Button
                           onClick={handleGoogleSignIn}
-                          className="h-12 w-full border bg-white px-3 text-sm md:text-base text-neutral-700 hover:bg-neutral-50 dark:border-neutral-800 dark:bg-black dark:text-neutral-300 dark:hover:bg-white/5 sm:h-10 sm:text-sm"
+                          className="h-12 w-full border bg-white px-3 text-sm text-neutral-700 hover:bg-neutral-50 dark:border-neutral-800 dark:bg-black dark:text-neutral-300 dark:hover:bg-white/5 sm:h-10 sm:text-sm md:text-base"
                         >
                           <svg
                             className="mr-2 h-auto w-5 sm:w-4"
@@ -159,7 +158,7 @@ const HeroSection = () => {
                         </Button>
                         <Button
                           onClick={handleGithubSignIn}
-                          className="mt-4 h-12 w-full border bg-white px-3 text-sm md:text-base text-neutral-700 hover:bg-neutral-50 dark:border-neutral-800 dark:bg-black dark:text-neutral-300 dark:hover:bg-white/5 sm:h-10 sm:text-sm md:mt-0"
+                          className="mt-4 h-12 w-full border bg-white px-3 text-sm text-neutral-700 hover:bg-neutral-50 dark:border-neutral-800 dark:bg-black dark:text-neutral-300 dark:hover:bg-white/5 sm:h-10 sm:text-sm md:mt-0 md:text-base"
                         >
                           <svg
                             className="mr-2 h-auto w-6 sm:w-5"
@@ -185,6 +184,7 @@ const HeroSection = () => {
                         <div className="grid grid-cols-2 gap-4">
                           <Input
                             placeholder="Name"
+                            onChange={(e) => setName(e.target.value)}
                             className="col-span-2 border border-black/20 bg-transparent dark:border-neutral-700 dark:text-neutral-300 dark:placeholder:text-neutral-500"
                           />
                           <Input
@@ -214,7 +214,7 @@ const HeroSection = () => {
                               className="relative dark:text-neutral-300"
                             >
                               Accept terms and conditions
-                              <span className="absolute left-0 bottom-0 h-[2px] w-0 bg-blue-500 transition-all duration-300 group-hover:w-full"></span>
+                              <span className="absolute bottom-0 left-0 h-[2px] w-0 bg-blue-500 transition-all duration-300 group-hover:w-full"></span>
                             </Label>
                           </div>
                           <Button
@@ -239,14 +239,6 @@ const HeroSection = () => {
 };
 
 export default HeroSection;
-
-
-
-
-
-
-
-
 
 // "use client";
 // import { motion } from "framer-motion";
@@ -527,4 +519,3 @@ export default HeroSection;
 //     </div>
 //   );
 // }
-
