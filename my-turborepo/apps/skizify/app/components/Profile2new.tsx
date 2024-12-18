@@ -187,7 +187,7 @@ export default function Newprofile() {
     await controls.start({ opacity: 1, y: 0 });
     console.log("Form submitted");
     setTimeout(() => {
-      Router.push("/explore");
+      window.location.href = "/explore";
       
     }, 2000);
   };

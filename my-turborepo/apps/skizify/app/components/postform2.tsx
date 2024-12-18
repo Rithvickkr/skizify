@@ -54,13 +54,17 @@ export default function Postform() {
     endtime: "",
     description: "",
     category: "",
+    timeneed: "",
   });
 
   interface FormErrors {
     Title?: string;
-    date?: string;
-    time?: string;
-    location?: string;
+    startdate?: string;
+    starttime?: string;
+    enddate?: string;
+    endtime?: string;
+    category?: string;
+    slot?: string;
     description?: string;
 
     [key: string]: string | undefined;
@@ -83,14 +87,24 @@ export default function Postform() {
 
   const validateForm = () => {
     let newErrors: FormErrors = {};
-    if (!formData.Title.trim()) newErrors.Title = "gig name is required";
-    if (!formData.startdate) newErrors.date = "Date is required";
-    if (!formData.starttime) newErrors.time = "Time is required";
-    if (!formData.enddate) newErrors.date = "Date is required";
-    if (!formData.endtime) newErrors.time = "Time is required";
-    if (!formData.description.trim())
-      newErrors.description = "description is required";
-    if (!formData.category.trim()) newErrors.category = "category is required";
+    if (currentStep === 0) {
+      if (!formData.Title.trim()) newErrors.Title = "gig name is required";
+      if (!formData.description.trim())
+        newErrors.description = "description is required";
+      else return true;
+    }
+    if (currentStep === 1) {
+      if (!formData.startdate) newErrors.startdate = "Start Date is required";
+      if (!formData.starttime) newErrors.starttime = "Start Time is required";
+      if (!formData.enddate) newErrors.enddate = "End Date is required";
+      if (!formData.endtime) newErrors.endtime = "End Time is required";
+      else return true;
+    }
+    if (currentStep === 2) {
+      if (!formData.category.trim()) newErrors.category = "slot is required";
+      if (!timeneed) newErrors.slot = "slot is required";
+      else return true;
+    }
     setErrors(newErrors);
     if (Object.keys(newErrors).length > 0) return false;
     else return true;
@@ -137,6 +151,7 @@ export default function Postform() {
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     try {
+      if (!validateForm()) return;
       await GigSet(
         formData.Title,
         formData.description,
@@ -184,12 +199,13 @@ export default function Postform() {
   };
 
   const formSteps = [
-    { title: "Details", fields: ["Title", "description"] },
+    { Title: "Details", fields: ["Title", "description"] },
     {
       Title: "Date & Time",
       fields: ["startdate", "starttime", "enddate", "endtime"],
     },
-    { title: "Category", fields: ["category"] },
+    { Title: "Category", fields: ["category"] },
+    
   ];
 
   return (
@@ -264,15 +280,6 @@ export default function Postform() {
                         )
                       ) : (
                         <div className="relative">
-                          {/* {field === "startdate" || field === "enddate" ? (
-                            <CalendarIcon className="absolute left-3 top-1/2 -translate-y-1/2 transform text-white" />
-                          ) : field === "starttime" || field === "endtime" ? (
-                            <ClockIcon className="absolute left-3 top-1/2 -translate-y-1/2 transform text-white" />
-                          ) : (
-                            field === "edit" && (
-                              <Pencil className="absolute left-3 top-1/2 -translate-y-1/2 transform text-white" />
-                            )
-                          )} */}
                           <div>
                             {field === "category" ? (
                               <>
@@ -286,7 +293,10 @@ export default function Postform() {
                                     }}
                                   >
                                     <SelectTrigger>
-                                      <SelectValue placeholder="Select a category" />
+                                      <SelectValue
+                                        className="bg-white bg-opacity-20"
+                                        placeholder="Select a category"
+                                      />
                                     </SelectTrigger>
                                     <SelectContent className="bg-white p-1 pr-2 dark:border-0 dark:bg-black">
                                       <SelectItem
@@ -334,6 +344,15 @@ export default function Postform() {
                                     </SelectContent>
                                   </Select>
                                 </div>
+                                <div className="">
+                                  {errors[field] && (
+                                    console.log(errors[field]),
+                                    <p className="mt-1 text-sm text-red-300">
+                                      category is required
+                                    </p>
+                                  )}
+                                </div>
+
                                 <div className="pt-2">
                                   <Label htmlFor="timeneeded">Slot</Label>
                                   <Popover>
@@ -380,7 +399,9 @@ export default function Postform() {
                               <>
                                 {field === "startdate" ||
                                 field === "enddate" ? (
-                                  <div>
+                                  <div
+                                    className={`${errors[field] ? "border-red-500" : ""} flex flex-col`}
+                                  >
                                     <DatePicker
                                       slotProps={{
                                         popper: {
@@ -400,8 +421,6 @@ export default function Postform() {
                                           },
                                         },
                                         textField: {
-                                          placeholder: `Enter event ${field}`,
-
                                           variant: "outlined",
 
                                           size: "small",
@@ -447,67 +466,79 @@ export default function Postform() {
                                   </div>
                                 ) : (
                                   <>
-                                    {field === "starttime" ||
-                                    field === "endtime" ? (
-                                      <TimePicker
-                                        sx={{
-                                          backgroundColor: "#484848",
-                                          color: "white",
-                                          borderRadius: "10px",
-                                          borderColor: "white",
+                                    <div className="mt-3 flex flex-col">
+                                      {field === "starttime" ||
+                                      field === "endtime" ? (
+                                        <>
+                                          <div>
+                                            <TimePicker
+                                              sx={{
+                                                backgroundColor: "#484848",
+                                                color: "white",
+                                                borderRadius: "10px",
+                                                borderColor: "white",
 
-                                          width: "100%",
-                                        }}
-                                        slotProps={{
-                                          popper: {
-                                            sx: {
-                                              ...{
-                                                "& .MuiPickersDay-root.Mui-selected":
-                                                  {
-                                                    backgroundColor: "#484848",
-                                                  },
-                                                "& .MuiPickersDay-root.Mui-selected:hover":
-                                                  {
-                                                    backgroundColor: "#484848",
-                                                  },
+                                                width: "100%",
+                                              }}
+                                              slotProps={{
+                                                popper: {
+                                                  sx: {
+                                                    ...{
+                                                      "& .MuiPickersDay-root.Mui-selected":
+                                                        {
+                                                          backgroundColor:
+                                                            "#484848",
+                                                        },
+                                                      "& .MuiPickersDay-root.Mui-selected:hover":
+                                                        {
+                                                          backgroundColor:
+                                                            "#484848",
+                                                        },
 
-                                                "& .MuiPickersDay-root:hover": {
-                                                  backgroundColor: "#484848",
-                                                  color: "white",
+                                                      "& .MuiPickersDay-root:hover":
+                                                        {
+                                                          backgroundColor:
+                                                            "#484848",
+                                                          color: "white",
+                                                        },
+                                                    },
+                                                  },
                                                 },
-                                              },
-                                            },
-                                          },
-                                          textField: {
-                                            variant: "outlined",
-                                            size: "small",
-                                            error: false,
-                                          },
-                                        }}
-                                        value={
-                                          formData[field] as unknown as
-                                            | PickerValidDate
-                                            | null
-                                            | undefined
-                                        }
-                                        onChange={(time) => {
-                                          setFormData({
-                                            ...formData,
-                                            [field]: (time || "").toString(),
-                                          });
-                                        }}
-                                      />
-                                    ) : (
-                                      <Input
-                                        type="text"
-                                        id={field}
-                                        name={field}
-                                        value={formData[field]}
-                                        onChange={handleChange}
-                                        placeholder={`Enter event ${field}`}
-                                        className={`mt-3 rounded-md border-neutral-300 bg-white bg-opacity-20 pl-10 text-white placeholder-neutral-200 focus:border-transparent focus:outline-none ${errors[field] ? "border-red-500" : ""} `}
-                                      />
-                                    )}
+                                                textField: {
+                                                  variant: "outlined",
+                                                  size: "small",
+                                                  error: false,
+                                                },
+                                              }}
+                                              value={
+                                                formData[field] as unknown as
+                                                  | PickerValidDate
+                                                  | null
+                                                  | undefined
+                                              }
+                                              onChange={(time) => {
+                                                setFormData({
+                                                  ...formData,
+                                                  [field]: (
+                                                    time || ""
+                                                  ).toString(),
+                                                });
+                                              }}
+                                            />
+                                          </div>
+                                        </>
+                                      ) : (
+                                        <Input
+                                          type="text"
+                                          id={field}
+                                          name={field}
+                                          value={formData[field]}
+                                          onChange={handleChange}
+                                          placeholder={`Enter event bxd ${field}`}
+                                          className={`rounded-md border-neutral-300 bg-white bg-opacity-20 text-white placeholder-neutral-200 focus:border-transparent focus:outline-none ${errors[field] ? "border-red-500" : ""} `}
+                                        />
+                                      )}
+                                    </div>
                                   </>
                                 )}
                               </>
@@ -544,7 +575,11 @@ export default function Postform() {
                   type="button"
                   variant="gooeyLeft"
                   className="bg-white text-black opacity-90 hover:opacity-100"
-                  onClick={() => setCurrentStep(currentStep + 1)}
+                  onClick={() => {
+                    if (validateForm()) {
+                      setCurrentStep(currentStep + 1);
+                    }
+                  }}
                 >
                   Next
                   <ChevronRightIcon className="ml-2 size-5" />
