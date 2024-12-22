@@ -67,3 +67,8 @@
     @apply bg-background text-foreground;
   }
 }
+
+body ::selection {
+  background: black !important; /* Forces the background color to black */
+  color: white !important;      /* Forces the text color to white */
+}

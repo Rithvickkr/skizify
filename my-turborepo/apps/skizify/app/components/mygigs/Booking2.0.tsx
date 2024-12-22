@@ -60,10 +60,10 @@ export function BookButton2({
             </CredenzaTitle>
             <CredenzaDescription>
               <div className="flex flex-col">
-                <div className="mb-1 ml-2 h-7 justify-items-center font-display text-2xl font-semibold">
+                <div className="mb-1 mt-4 h-7 justify-items-center tracking-wide text-2xl font-semibold">
                   {gig.title || "Title"}
                 </div>
-                <ScrollArea className=" w-full truncate text-wrap rounded-md border dark:border-neutral-500 p-2 px-2 text-sm">
+                <ScrollArea className=" w-full tracking-wider truncate text-wrap rounded-md border dark:border-neutral-500 p-2 px-2 text-sm">
                   {gig.content}
                   <ScrollBar orientation="vertical" />
                 </ScrollArea>
@@ -71,35 +71,12 @@ export function BookButton2({
             </CredenzaDescription>
           </CredenzaHeader>
           <CredenzaBody>
-            {/* <div className="flex h-fit items-center justify-between px-2">
-              <div className="mr-3 flex gap-2 text-sm text-gray-500 dark:text-gray-400">
-                <div className="self-center">
-                  <Clock7 className="size-6" />
-                </div>
-                <div className="self-center text-base font-normal">{`${Datetimepackage.startTime} - ${Datetimepackage.endTime}`}</div>
-              </div>
-            </div> */}
             <div className="mt-3">
               <SelectDATE Datetimepackage={Datetimepackage} gig={gig} />
             </div>
           </CredenzaBody>
-          {/* <CredenzaFooter className="flex justify-between space-x-4">
-            <CredenzaClose asChild>
-              <button>Close</button>
-            </CredenzaClose>
-            <ButtonE
-              className="m-1 flex-1 bg-white text-black shadow hover:bg-white hover:ring-black dark:bg-white dark:text-black dark:hover:bg-white dark:hover:text-black dark:hover:ring-white"
-              variant="ringHover"
-            >
-              Message
-            </ButtonE>
-            <BookmeetingButton gig={gig} />
-          </CredenzaFooter> */}
         </CredenzaContent>
       </Credenza>
     </div>
   );
 }
-// if (startDate.getDay() === endDate.getDay()) {
-//   days.push(startDate); // If start time and end time are the same, add the single date to the array
-//   {`${Month(date) } ${date.getDay()}, ${date.getFullYear()}`}

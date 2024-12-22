@@ -36,6 +36,7 @@
     "@repo/store": "*",
     "@tabler/icons-react": "^3.11.0",
     "@types/bcrypt": "^5.0.2",
+    "@types/rc-slider": "^9.3.0",
     "bcrypt": "^5.1.1",
     "date-fns": "^3.6.0",
     "dayjs": "^1.11.11",

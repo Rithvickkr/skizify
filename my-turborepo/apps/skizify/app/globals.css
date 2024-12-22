@@ -184,3 +184,17 @@
     transform: rotate(1800deg);
   }
 }
+
+
+html ::selection,
+body ::selection {
+  background: black !important; 
+  color: white !important;
+}
+
+/* Dark Mode Selection Styles */
+html.dark ::selection,
+body.dark ::selection {
+  background: white !important; 
+  color: black !important;
+}

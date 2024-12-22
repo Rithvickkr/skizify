@@ -52,6 +52,7 @@ interface MeetingDetailsProps {
 }
 
 const MeetingDetails: React.FC<MeetingDetailsProps> = ({ meeting }) => {
+  const router = useRouter();
   const meetingDate = new Date(meeting.finalDateTime);
 
   return (
@@ -60,148 +61,174 @@ const MeetingDetails: React.FC<MeetingDetailsProps> = ({ meeting }) => {
       className="animate-in slide-in-from-right fixed w-full translate-x-0 transform overflow-y-auto border-l bg-white p-0 text-neutral-900 transition-transform duration-1000 ease-in-out motion-reduce:transition-none dark:border-neutral-800 dark:bg-[#18181B] dark:text-white md:w-[600px]"
     >
       <div className="animate-in slide-in-from-right flex h-full flex-col duration-300">
-        {/* Header Section */}
-        <div className="sticky top-0 z-10 flex flex-col items-start justify-between border-b border-neutral-200 bg-white p-3 dark:border-neutral-800 dark:bg-[#18181B] sm:flex-row sm:items-center">
-          <div className="flex w-full items-center space-x-3 sm:w-auto">
-            <Avatar className="h-8 w-8 bg-neutral-100 dark:bg-neutral-800 sm:h-10 sm:w-10">
-              <AvatarImage
-                src={meeting.Skizzer.userImage || "/placeholder-logo.png"}
-                alt="Skizzer Avatar"
-              />
-              <AvatarFallback>
-                {meeting.Skizzer.name?.substring(0, 2).toUpperCase() || "SK"}
-              </AvatarFallback>
-            </Avatar>
-            <div className="flex-1">
-              <h2 className="text-sm font-semibold sm:text-base">
-                {meeting.Skizzer.name}
-              </h2>
-              <p className="max-w-[180px] truncate text-xs text-neutral-600 dark:text-neutral-400 sm:max-w-none sm:text-sm">
-                {meeting.Skizzer.email}
-              </p>
-            </div>
+      {/* Header Section */}
+      <div className="sticky top-0 z-10 flex flex-col items-start justify-between border-b border-neutral-200 bg-white p-3 dark:border-neutral-800 dark:bg-[#18181B] sm:flex-row sm:items-center">
+        <div className="flex w-full items-center space-x-3 sm:w-auto">
+        <Avatar className="h-8 w-8 bg-neutral-100 dark:bg-neutral-800 sm:h-10 sm:w-10">
+          <AvatarImage
+          src={meeting.Skizzer.userImage || "/placeholder-logo.png"}
+          alt="Skizzer Avatar"
+          />
+          <AvatarFallback>
+          {meeting.Skizzer.name?.substring(0, 2).toUpperCase() || "SK"}
+          </AvatarFallback>
+        </Avatar>
+        <div className="flex-1">
+          <h2 className="text-sm font-semibold sm:text-base">
+          {meeting.Skizzer.name}
+          </h2>
+          <p className="max-w-[180px] truncate text-xs text-neutral-600 dark:text-neutral-400 sm:max-w-none sm:text-sm">
+          {meeting.Skizzer.email}
+          </p>
+        </div>
+        </div>
+        <div className="absolute right-2 top-3 sm:static">
+        <TooltipProvider>
+          <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => {
+              navigator.clipboard.writeText(window.location.href);
+              const button = document.getElementById("copyButton");
+              if (button) {
+              button.innerHTML = "Copied!";
+              setTimeout(() => {
+                button.innerHTML = "Copy Link";
+              }, 2000);
+              }
+            }}
+            className="group relative text-neutral-600 transition-all duration-300 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white"
+            >
+            <Copy className="h-4 w-4 transition-transform group-hover:scale-110 sm:h-5 sm:w-5" />
+            <span id="copyButton" className="sr-only">
+              Copy Link
+            </span>
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent className="bg-black px-2 text-white dark:bg-white dark:text-black">
+            <p>Copy meeting link</p>
+          </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <ScrollArea className="flex-1">
+        <div className="space-y-4 p-3 sm:p-4">
+        {/* Event Image */}
+        <div className="aspect-video w-full overflow-hidden rounded-lg sm:aspect-square">
+          <img
+          src={
+            "https://skizify-bucket.s3.ap-south-1.amazonaws.com/Screenshot+2024-11-09+at+10.53.03%E2%80%AFPM.png"
+          }
+          alt="Meeting Cover"
+          className="h-full w-full object-cover"
+          />
+        </div>
+
+        {/* Event Title */}
+        <div className="text-left">
+          <h1 className="text-lg font-bold sm:text-2xl">
+          {meeting.gig.title}
+          </h1>
+          <p className="mt-1 text-sm text-neutral-600 dark:text-neutral-400">
+          {meeting.gig.category}
+          </p>
+        </div>
+
+        {/* Date and Location */}
+        <div className="space-y-3 rounded-lg dark:bg-neutral-900">
+          <div className="flex items-center space-x-3 rounded-lg bg-neutral-200 p-3 dark:bg-neutral-800">
+          <CalendarRange className="h-4 w-4 text-neutral-600 dark:text-neutral-400 sm:h-5 sm:w-5" />
+          <div>
+            <p className="text-sm font-medium sm:text-base">
+            {format(meetingDate, "EEEE dd MMMM")}
+            </p>
+            <p className="text-xs text-neutral-600 dark:text-neutral-400 sm:text-sm">
+            {format(meetingDate, "h:mm a")}
+            </p>
           </div>
-          <div className="absolute right-2 top-3 sm:static">
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => {
-                      navigator.clipboard.writeText(window.location.href);
-                      const button = document.getElementById("copyButton");
-                      if (button) {
-                        button.innerHTML = "Copied!";
-                        setTimeout(() => {
-                          button.innerHTML = "Copy Link";
-                        }, 2000);
-                      }
-                    }}
-                    className="group relative text-neutral-600 transition-all duration-300 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white"
-                  >
-                    <Copy className="h-4 w-4 transition-transform group-hover:scale-110 sm:h-5 sm:w-5" />
-                    <span id="copyButton" className="sr-only">
-                      Copy Link
-                    </span>
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent className="bg-black px-2 text-white dark:bg-white dark:text-black">
-                  <p>Copy meeting link</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+          </div>
+          <div className="flex items-center space-x-3 rounded-lg bg-neutral-200 p-3 dark:bg-neutral-800">
+          <Clock7 className="h-4 w-4 text-neutral-600 dark:text-neutral-400 sm:h-5 sm:w-5" />
+          <div>
+            <p className="text-sm font-medium sm:text-base">Duration</p>
+            <p className="text-xs text-neutral-600 dark:text-neutral-400 sm:text-sm">
+            {meeting.gig.timeneeded} minutes
+            </p>
+          </div>
           </div>
         </div>
 
-        {/* Main Content */}
-        <ScrollArea className="flex-1">
-          <div className="space-y-4 p-3 sm:p-4">
-            {/* Event Image */}
-            <div className="aspect-video w-full overflow-hidden rounded-lg sm:aspect-square">
-              <img
-                src={
-                  "https://skizify-bucket.s3.ap-south-1.amazonaws.com/Screenshot+2024-11-09+at+10.53.03%E2%80%AFPM.png"
-                }
-                alt="Meeting Cover"
-                className="h-full w-full object-cover"
-              />
-            </div>
-
-            {/* Event Title */}
-            <div className="text-left">
-              <h1 className="text-lg font-bold sm:text-2xl">
-                {meeting.gig.title}
-              </h1>
-              <p className="mt-1 text-sm text-neutral-600 dark:text-neutral-400">
-                {meeting.gig.category}
-              </p>
-            </div>
-
-            {/* Date and Location */}
-            <div className="space-y-3 rounded-lg dark:bg-neutral-900">
-              <div className="flex items-center space-x-3 rounded-lg bg-neutral-200 p-3 dark:bg-neutral-800">
-                <CalendarRange className="h-4 w-4 text-neutral-600 dark:text-neutral-400 sm:h-5 sm:w-5" />
-                <div>
-                  <p className="text-sm font-medium sm:text-base">
-                    {format(meetingDate, "EEEE dd MMMM")}
-                  </p>
-                  <p className="text-xs text-neutral-600 dark:text-neutral-400 sm:text-sm">
-                    {format(meetingDate, "h:mm a")}
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-center space-x-3 rounded-lg bg-neutral-200 p-3 dark:bg-neutral-800">
-                <Clock7 className="h-4 w-4 text-neutral-600 dark:text-neutral-400 sm:h-5 sm:w-5" />
-                <div>
-                  <p className="text-sm font-medium sm:text-base">Duration</p>
-                  <p className="text-xs text-neutral-600 dark:text-neutral-400 sm:text-sm">
-                    {meeting.gig.timeneeded} minutes
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Registration */}
-            <div className="space-y-3 rounded-lg bg-neutral-100 p-3 dark:bg-neutral-900">
-              <h3 className="text-sm font-medium sm:text-base">
-                Meeting Details
-              </h3>
-              <p className="rounded-lg bg-gradient-to-r from-green-100 to-green-200 px-3 py-2 text-sm font-medium text-green-800 dark:from-green-900 dark:to-green-800 dark:text-green-100 sm:text-base">
-                Budget: ${meeting.budget}
-              </p>
-              <div className="flex items-center space-x-3 rounded-lg bg-white p-3 dark:bg-neutral-800">
-                <Avatar className="h-8 w-8">
-                  <AvatarImage
-                    src={meeting.user.userImage || "/placeholder-avatar.png"}
-                  />
-                  <AvatarFallback>
-                    {meeting.user.name?.substring(0, 2).toUpperCase() || "U"}
-                  </AvatarFallback>
-                </Avatar>
-                <p className="text-xs sm:text-sm">
-                  {meeting.user.name} <br /> {meeting.user.email}
-                </p>
-              </div>
-              <Button
-                variant={"gooeyLeft"}
-                className="w-full bg-neutral-900 py-4 text-sm text-white hover:bg-neutral-800 dark:bg-white dark:text-black dark:hover:bg-neutral-200 sm:text-base"
-              >
-                Join Meeting
-              </Button>
-            </div>
-
-            {/* About Meeting */}
-            <div className="space-y-3 pb-4">
-              <h3 className="text-sm font-medium sm:text-base">
-                About Meeting
-              </h3>
-              <p className="text-xs leading-relaxed text-neutral-600 dark:text-neutral-400 sm:text-sm">
-                {meeting.gig.content}
-              </p>
-            </div>
+        {/* Registration */}
+        <div className="space-y-3 rounded-lg bg-neutral-100 p-3 dark:bg-neutral-900">
+          <h3 className="text-sm font-medium sm:text-base">
+          Meeting Details
+          </h3>
+          <p className="rounded-lg bg-gradient-to-r from-green-100 to-green-200 px-3 py-2 text-sm font-medium text-green-800 dark:from-green-900 dark:to-green-800 dark:text-green-100 sm:text-base">
+          Budget: ${meeting.budget}
+          </p>
+          <div className="flex items-center space-x-3 rounded-lg bg-white p-3 dark:bg-neutral-800">
+          <Avatar className="h-8 w-8">
+            <AvatarImage
+            src={meeting.user.userImage || "/placeholder-avatar.png"}
+            />
+            <AvatarFallback>
+            {meeting.user.name?.substring(0, 2).toUpperCase() || "U"}
+            </AvatarFallback>
+          </Avatar>
+          <p className="text-xs sm:text-sm">
+            {meeting.user.name} <br /> {meeting.user.email}
+          </p>
           </div>
-        </ScrollArea>
+          <Button
+          variant={"gooeyLeft"}
+          className="w-full bg-neutral-900 py-4 text-sm text-white hover:bg-neutral-800 dark:bg-white dark:text-black dark:hover:bg-neutral-200 sm:text-base"
+          >
+          Join Meeting
+          </Button>
+        </div>
+
+        {/* About Meeting */}
+        <div className="space-y-3 pb-4">
+          <h3 className="text-sm font-medium sm:text-base">
+          About Meeting
+          </h3>
+          <p className="text-xs leading-relaxed text-neutral-600 dark:text-neutral-400 sm:text-sm">
+          {meeting.gig.content}
+          </p>
+        </div>
+
+        {/* Attendees */}
+        <div className="space-y-3 pb-4">
+          <h3 className="text-sm font-medium sm:text-base">Attendees</h3>
+          <div className="flex -space-x-2 overflow-hidden">
+            <p>No attendees available</p>
+          </div>
+        </div>
+
+        {/* Action Buttons */}
+        <div className="flex space-x-3">
+            <Button
+            variant="gooeyLeft"
+            className="flex-1 py-2 text-sm sm:py-3 sm:text-base border dark:border-white/50 dark:bg-white dark:text-black"
+            onClick={() => router.push("/reschedule")}
+            >
+            Reschedule
+            </Button>
+            <Button
+            variant="destructive"
+            className="flex-1 bg-red-600 py-2 text-sm text-white hover:bg-red-700 dark:bg-red-800 dark:hover:bg-red-900 sm:py-3 sm:text-base"
+            onClick={() => router.push("/cancel")}
+            >
+            Cancel
+            </Button>
+        </div>
+        </div>
+      </ScrollArea>
       </div>
     </SheetContent>
   );
