@@ -195,6 +195,6 @@ body ::selection {
 /* Dark Mode Selection Styles */
 html.dark ::selection,
 body.dark ::selection {
-  background: white !important; 
-  color: black !important;
+  background: #474747 !important; 
+  color: white !important;
 }
