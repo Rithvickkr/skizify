@@ -31,7 +31,6 @@ export async function middleware(request: NextRequest) {
     
   });
 
-  console.log("Token:", token);
 
   // If there is no token (user is not authenticated)
   if (!token) {

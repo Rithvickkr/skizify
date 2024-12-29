@@ -273,7 +273,7 @@ export default function Postform() {
                             name={field}
                             value={formData[field]}
                             onChange={handleChange}
-                            placeholder={`Enter event ${field}`}
+                            placeholder={`Description`}
                             className={`mt-3 border-white bg-white bg-opacity-20 text-white placeholder-white ${errors[field] ? "border-red-500" : ""}`}
                             rows={4}
                           />
@@ -534,7 +534,7 @@ export default function Postform() {
                                           name={field}
                                           value={formData[field]}
                                           onChange={handleChange}
-                                          placeholder={`Enter event bxd ${field}`}
+                                          placeholder={`Title`}
                                           className={`rounded-md border-neutral-300 bg-white bg-opacity-20 text-white placeholder-neutral-200 focus:border-transparent focus:outline-none ${errors[field] ? "border-red-500" : ""} `}
                                         />
                                       )}

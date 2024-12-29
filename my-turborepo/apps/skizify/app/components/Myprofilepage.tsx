@@ -1,73 +1,141 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
+import { useSession } from "next-auth/react";
+import Image from "next/image";
 import {
-  Avatar,
-  AvatarImage,
-  AvatarFallback,
-} from "../../@/components/ui/avatar";
-import { AnimatePresence, motion } from "framer-motion";
-
-import {
-  Activity,
-  Aperture,
-  Award,
-  BookOpen,
-  Briefcase,
-  ChevronRight,
-  Code,
-  Github,
-  GraduationCap,
-  Languages,
-  Linkedin,
-  LogOut,
-  Mail,
-  MapPin,
-  School,
-  Trash2,
-  Twitter,
-  Upload,
-} from "lucide-react";
-import { useRef, useState } from "react";
+  motion,
+  AnimatePresence,
+  useScroll,
+  useTransform,
+} from "framer-motion";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "../../@/components/ui/dialog";
-import { DrawerDialogDemo } from "./darwerform";
+import { Badge } from "../../@/components/ui/badge";
+import { Button } from "./ui/button";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "../../@/components/ui/card";
+import { Separator } from "../../@/components/ui/separator";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "../../@/components/ui/tabs";
+import {
+  Activity,
+  BookOpen,
+  Building2,
+  Code2,
+  Edit3,
+  GraduationCap,
+  Github,
+  Languages,
+  LinkedinIcon,
+  LogOut,
+  MapPin,
+  MessageSquare,
+  School,
+  Settings,
+  Star,
+  Timer,
+  Trash2,
+  Trophy,
+  Twitter,
+  User2,
+  Upload,
+} from "lucide-react";
+
 import { getSignedURL } from "../lib/action";
 import setImageInDB from "../lib/actions/setImage_in_DB";
-import { useSession } from "next-auth/react";
-import { Button } from "./ui/button";
 import { ProfilePageProps } from "../(dashboard)/profile/page";
+import { Icons } from "./footer/Footer";
 
-export default function EnhancedMyProfileSection({
+const SkillBar = ({ skill, level }: { skill: string; level: number }) => (
+  <div className="space-y-2">
+    <div className="flex justify-between text-sm">
+      <span>{skill}</span>
+      <span className="text-muted-foreground">{level}%</span>
+    </div>
+    <div className="bg-muted h-2 rounded-full">
+      <motion.div
+        initial={{ width: 0 }}
+        animate={{ width: `${level}%` }}
+        transition={{ duration: 1, ease: "easeOut" }}
+        className="h-full rounded-full bg-gradient-to-r from-primary to-primary/50"
+      />
+    </div>
+  </div>
+);
+
+const StatCard = ({
+  icon: Icon,
+  label,
+  value,
+}: {
+  icon: any;
+  label: string;
+  value: string;
+}) => (
+  <motion.div
+    whileHover={{ scale: 1.02 }}
+    className="bg-card flex items-center gap-7 hover:bg-accent relative cursor-pointer overflow-hidden rounded-xl border p-6 transition-colors"
+  >
+    {/* <div className="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-black/10" /> */}
+    <Icon className="h-8 w-8 text-black" />
+    <div className="mt-4 space-y-1">
+      <p className="text-4xl font-bold tracking-tight">{value}</p>
+      <p className="text-muted-foreground text-sm">{label}</p>
+    </div>
+  </motion.div>
+);
+
+export default function ProfilePage({
   info,
   datauser,
 }: {
   info: ProfilePageProps;
   datauser: any;
 }) {
-  const [showAllActivity, setShowAllActivity] = useState(false);
-  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
-  const [avatarSrc, setAvatarSrc] = useState<string | null>(null);
-  const [isHovered, setIsHovered] = useState(false);
+  const { data: session } = useSession();
+
+  // -- States for file uploading (avatar), just like old code
   const [isDragging, setIsDragging] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const session = useSession();
   const [loading, setLoading] = useState(false);
   const [statusMessage, setStatusMessage] = useState("");
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // -- Activity array
+  const [activities] = useState([
+    { id: 1, text: "Completed a new project", date: "2 days ago" },
+    { id: 2, text: "Added a new skill", date: "1 week ago" },
+    { id: 3, text: "Updated profile picture", date: "2 weeks ago" },
+    { id: 4, text: "Joined a new team", date: "1 month ago" },
+  ]);
+
+  // -- For sticky tabs
+  const [activeTab, setActiveTab] = useState("achievements");
+  const [isScrolled, setIsScrolled] = useState(false);
+  const { scrollYProgress } = useScroll();
+  const headerOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
+
+  // -- For S3 file upload
   const computeSHA256 = async (file: File) => {
     const buffer = await file.arrayBuffer();
     const hashBuffer = await crypto.subtle.digest("SHA-256", buffer);
     const hashArray = Array.from(new Uint8Array(hashBuffer));
-    const hashHex = hashArray
-      .map((b) => b.toString(16).padStart(2, "0"))
-      .join("");
-    return hashHex;
+    return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
   };
 
   const handleFileChange = async (
@@ -75,7 +143,6 @@ export default function EnhancedMyProfileSection({
   ) => {
     const file = event.target.files?.[0];
     if (file) {
-      console.log("file: ", file);
       setLoading(true);
       setStatusMessage("Uploading...");
 
@@ -98,7 +165,6 @@ export default function EnhancedMyProfileSection({
         }
 
         const url = signedURLResult.success?.url;
-
         if (!url) {
           setStatusMessage("Failed to get signed URL");
           setLoading(false);
@@ -113,9 +179,8 @@ export default function EnhancedMyProfileSection({
           body: file,
         });
 
-        if (session.data?.user.id) {
-          await setImageInDB({ userId: session.data.user.id, url });
-          setAvatarSrc(url);
+        if (session?.user?.id) {
+          await setImageInDB({ userId: session.user.id, url });
           setStatusMessage("Upload complete!");
         }
       } catch (error) {
@@ -133,356 +198,488 @@ export default function EnhancedMyProfileSection({
     const file = event.dataTransfer.files[0];
     if (file) {
       const fakeEvent = {
-        target: {
-          files: [file],
-        },
+        target: { files: [file] },
       } as unknown as React.ChangeEvent<HTMLInputElement>;
       await handleFileChange(fakeEvent);
     }
   };
-
   const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     setIsDragging(true);
   };
-
   const handleDragLeave = () => {
     setIsDragging(false);
   };
 
-  // const [name, setName] = useState("Jane Doe");
-  // const [bio, setBio] = useState(
-  //   "Full-stack developer passionate about creating beautiful and functional web applications.",
-  // );
+  // -- Scroll effect
+  useEffect(() => {
+    const handleScroll = () => setIsScrolled(window.scrollY > 50);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
-  const [activities] = useState([
-    { id: 1, text: "Completed a new project", date: "2 days ago" },
-    { id: 2, text: "Added a new skill", date: "1 week ago" },
-    { id: 3, text: "Updated profile picture", date: "2 weeks ago" },
-    { id: 4, text: "Joined a new team", date: "1 month ago" },
-  ]);
-  const [Editform, setEditform] = useState({
-    name: "",
-    email: "",
-    bio: "",
-    education: "",
-    language: "",
-    location: "",
-    Achievement: "",
-  });
-  const userdata = datauser;
+  const tabItems = [
+    { value: "achievements", label: "Achievements", icon: Trophy },
+    { value: "overview", label: "Overview", icon: User2 },
+    { value: "activity", label: "Activity", icon: Star },
+  ];
 
   return (
-    <div className="mx-auto max-w-4xl rounded-xl p-6 shadow-2xl transition-all duration-300">
-      <div className="relative mb-8 flex justify-center">
-        <Dialog>
-          <DialogTrigger asChild>
-            <div
-              className="relative inline-block cursor-pointer"
-              onMouseEnter={() => setIsHovered(true)}
-              onMouseLeave={() => setIsHovered(false)}
-            >
-              <Avatar className="size-32 border-2 ring-2 ring-neutral-200 dark:ring-neutral-900 cursor-pointer bg-neutral-800 text-4xl dark:bg-neutral-200">
-                <AvatarImage
-                  src={session.data?.user.userImage || ""}
-                  alt={session.data?.user.name || ""}
-                />
-                <AvatarFallback className="text-5xl text-neutral-200 dark:text-neutral-800">
-                  {session.data?.user.name?.charAt(0).toUpperCase() || ""}
-                </AvatarFallback>
-              </Avatar>
-              {isHovered && (
-                <div className="absolute inset-0 flex items-center justify-center rounded-full bg-black bg-opacity-50">
-                  <Upload className="size-10 text-white opacity-65" />
+    <div className="min-h-screen w-full bg-white text-black transition-colors">
+      {/* Hero Section */}
+      <div className="relative mb-5 overflow-hidden pb-12">
+        <div className="absolute inset-0 bg-black" />
+        <div className="relative mx-auto max-w-5xl px-4 pt-10">
+          <motion.div
+            initial={{ y: 50, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.6 }}
+            className="flex flex-col items-center space-y-6 rounded-lg p-4"
+          >
+            {/* Avatar + Upload */}
+            <div className="group relative">
+              <Dialog>
+                <DialogContent className="hidden" />
+                <div className="relative h-48 w-48 overflow-hidden rounded-full border-4 border-white bg-neutral-200 shadow-lg transition-transform group-hover:scale-105">
+                  <Image
+                    src={
+                      session?.user?.userImage
+                        ? session.user.userImage
+                        : "/placeholder.svg"
+                    }
+                    alt="Profile"
+                    width={192}
+                    height={192}
+                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
                 </div>
-              )}
-            </div>
-          </DialogTrigger>
-          <DialogContent className="max-w-xl rounded-lg text-neutral-800 dark:border-neutral-400/50 dark:text-zinc-200">
-            <DialogHeader>
-              <DialogTitle>Upload Avatar</DialogTitle>
-              <DialogDescription>
-                Drag and drop an image or click to select a file.
-              </DialogDescription>
-            </DialogHeader>
-            {/* {statusMessage && (
-              <p className="relative border rounded-md border-neutral-300 bg-neutral-100 px-4 py-3 text-sm text-neutral-700 dark:border-neutral-700 dark:bg-neutral-900/50 dark:text-neutral-300 transition-all duration-300 animate-pulse">
-                {statusMessage}
-              </p>
-            )} */}
-            <div
-              className={`mt-4 rounded-lg border-2 border-dashed p-8 text-center ${
-                isDragging
-                  ? "border-black border-dashed dark:border-white "
-                  : "border-gray-300 dark:dark:border-neutral-400/50"
-              }`}
-              onDrop={handleDrop}
-              onDragOver={handleDragOver}
-              onDragLeave={handleDragLeave}
-            >
+                <Button
+                  size="icon"
+                  variant="secondary"
+                  className="absolute bottom-2 right-2 rounded-full shadow-md"
+                  onClick={() => fileInputRef.current?.click()}
+                >
+                  {loading ? (
+                    <Upload className="h-4 w-4 animate-pulse" />
+                  ) : (
+                    <Edit3 className="h-4 w-4" />
+                  )}
+                </Button>
+              </Dialog>
               <input
-                type="file"
                 ref={fileInputRef}
-                onChange={(e) => {
-                  handleFileChange(e);
-                }}
-                className="hidden"
+                type="file"
                 accept="image/*"
+                className="hidden"
+                onChange={handleFileChange}
               />
-              <Button
-                onClick={() => fileInputRef.current?.click()}
-                variant="outline"
-                className={`border-neutral-500 opacity-80 hover:opacity-100 dark:border-white dark:text-white ${loading ? "animate-pulse" : ""}`}
-                disabled={loading}
+            </div>
+            {/* Name/Bio */}
+            <div className="text-center">
+              <motion.h1
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.2 }}
+                className="text-4xl font-bold tracking-tight text-white"
               >
-                {loading ? "Uploading..." : "Select Image"}
-              </Button>
-              {loading ? "" :  (
-                <p className="mt-2 text-sm text-gray-500">
-                  or drag and drop your image here
-                </p>
-              )}
-            </div>
-          </DialogContent>
-        </Dialog>
-      </div>
-
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="mb-8 text-center"
-      >
-        <h1 className="mb-2 text-3xl font-bold dark:text-gray-100">{userdata.name}</h1>
-        <p className="text-muted-foreground mb-4 dark:text-gray-300">{userdata.bio}</p>
-        <DrawerDialogDemo skills={userdata.skills} langs={userdata.languages}/>
-      </motion.div>
-
-      <div className="mb-8 grid grid-cols-1 gap-8 md:grid-cols-2">
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="bg-card text-card-foreground rounded-lg p-6 shadow-lg dark:bg-zinc-900 dark:text-gray-100"
-        >
-          <h2 className="mb-4 text-xl font-semibold">Details</h2>
-          <div className="space-y-2">
-            <div className="flex items-center">
-              <Mail
-                size={20}
-                className="text-muted-foreground mr-2 dark:text-gray-400"
-              />
-              <span>{session.data?.user.email}</span>
-            </div>
-            <div className="flex items-center">
-              <School
-                size={20}
-                className="text-muted-foreground mr-2 dark:text-gray-400"
-              />
-              <span>NIt kkr</span>
-            </div>
-            <div className="flex items-center">
-              <GraduationCap
-                size={20}
-                className="text-muted-foreground mr-2 dark:text-gray-400"
-              />
-              <span>Btech</span>
-            </div>
-            <div className="flex items-center">
-              <Briefcase
-                size={20}
-                className="text-muted-foreground mr-2 dark:text-gray-400"
-              />
-              <span>{userdata.profession}</span>
-            </div>
-            <div className="flex items-center">
-              <Languages
-                size={20}
-                className="text-muted-foreground mr-2 dark:text-gray-400"
-              />
-              <span>{userdata.languages}</span>
-            </div>
-            <div className="flex items-center">
-              <MapPin
-                size={20}
-                className="text-muted-foreground mr-2 dark:text-gray-400"
-              />
-              <span>{userdata.location}</span>
-            </div>
-          </div>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-          className="bg-card text-card-foreground rounded-lg p-6 shadow-lg dark:bg-zinc-900 dark:text-gray-100"
-        >
-          <h2 className="mb-4 text-xl font-semibold">Skills</h2>
-          <div className="mb-4 flex flex-wrap gap-2">
-            {userdata.skills.map((skill: any, index: number) => (
-              <motion.span
-                key={index}
-                className="flex cursor-pointer items-center rounded-full bg-primary/10 px-3 py-1 text-primary dark:bg-primary/20 dark:text-primary-foreground"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                {datauser?.name || session?.user?.name || "My Profile"}
+              </motion.h1>
+              <motion.p
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.3 }}
+                className="text-lg text-neutral-600"
               >
-                {skill}
-              </motion.span>
-            ))}
-          </div>
-        </motion.div>
-      </div>
-
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.6 }}
-        className="bg-card text-card-foreground mb-8 rounded-lg p-6 shadow-lg dark:bg-zinc-900 dark:text-gray-100"
-      >
-        <h2 className="mb-4 text-xl font-semibold">Social Media</h2>
-        <div className="flex space-x-4">
-          <motion.a
-            href="#"
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            className="text-muted-foreground hover:text-primary dark:text-gray-400 dark:hover:text-primary-foreground"
-          >
-            <Github size={24} />
-          </motion.a>
-          <motion.a
-            href="#"
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            className="text-muted-foreground hover:text-primary dark:text-gray-400 dark:hover:text-primary-foreground"
-          >
-            <Twitter size={24} />
-          </motion.a>
-          <motion.a
-            href="#"
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            className="text-muted-foreground hover:text-primary dark:text-gray-400 dark:hover:text-primary-foreground"
-          >
-            <Linkedin size={24} />
-          </motion.a>
+                {datauser?.bio || "A short bio goes here..."}
+              </motion.p>
+            </div>
+            {statusMessage && (
+              <p className="text-sm text-neutral-600">{statusMessage}</p>
+            )}
+          </motion.div>
         </div>
-      </motion.div>
+      </div>
 
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.8 }}
-        className="bg-card text-card-foreground mb-8 rounded-lg p-6 shadow-lg dark:bg-zinc-900 dark:text-gray-100"
-      >
-        <h2 className="mb-4 text-xl font-semibold">Activity</h2>
-        <ul className="space-y-4">
-          {activities
-            .slice(0, showAllActivity ? activities.length : 2)
-            .map((activity) => (
-              <motion.li
-                key={activity.id}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.3 }}
-                className="flex items-start"
+      {/* Stats Section */}
+      <div className="mx-auto max-w-5xl px-4">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <StatCard icon={Star} label="Total Projects" value="24" />
+          <StatCard icon={Trophy} label="Achievements" value="12" />
+          <StatCard icon={User2} label="Followers" value="1.2k" />
+          <StatCard icon={Code2} label="Contributions" value="3.4k" />
+        </div>
+      </div>
+
+      {/* Main Content (Tabs) */}
+      <main className="mx-auto max-w-5xl space-y-8 p-4 pt-12">
+        <Tabs
+          value={activeTab}
+          onValueChange={setActiveTab}
+          className="space-y-8"
+        >
+          <div className="sticky top-16 z-40 -mx-4 backdrop-blur-xl">
+            <div className="">
+              <div className="mx-auto max-w-5xl">
+                <TabsList className="h-12 w-full justify-evenly bg-black/5 p-1">
+                  {tabItems.map((item) => (
+                    <TabsTrigger
+                      key={item.value}
+                      value={item.value}
+                      className="relative flex h-full items-center gap-2 px-6 text-sm transition-colors data-[state=active]:bg-white md:text-base"
+                    >
+                      <div className="flex items-center gap-3 rounded-none">
+                        <item.icon
+                          className={`h-5 w-5 transition-colors ${
+                            activeTab === item.value
+                              ? "text-neutral-800"
+                              : "text-neutral-500"
+                          }`}
+                        />
+                        <span
+                          className={`font-medium transition-colors ${
+                            activeTab === item.value
+                              ? "text-neutral-800"
+                              : "text-neutral-500"
+                          }`}
+                        >
+                          {item.label}
+                        </span>
+                      </div>
+                    </TabsTrigger>
+                  ))}
+                </TabsList>
+              </div>
+            </div>
+          </div>
+
+          <AnimatePresence mode="wait">
+            {/* Overview Tab */}
+            <TabsContent
+              value="overview"
+              className="space-y-8 bg-white text-black transition-colors dark:bg-neutral-900 dark:text-neutral-100"
+            >
+              <motion.div
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: -20, opacity: 0 }}
+                className="grid gap-8 lg:grid-cols-3"
               >
-                <Activity
-                  size={20}
-                  className="mr-2 mt-1 text-primary dark:text-primary-foreground"
-                />
-                <div>
-                  <p className="font-medium">{activity.text}</p>
-                  <p className="text-muted-foreground text-sm dark:text-gray-400">
-                    {activity.date}
-                  </p>
-                </div>
-              </motion.li>
-            ))}
-        </ul>
-        {!showAllActivity && (
+                {/* About Section */}
+                <Card className="rounded-lg border border-neutral-200 bg-neutral-100 p-4 shadow dark:border-neutral-700 dark:bg-neutral-800 lg:col-span-2">
+                  <CardHeader>
+                    <CardTitle className="mb-2 flex items-center gap-2 text-xl font-semibold md:text-2xl">
+                      <User2 className="h-5 w-5" />
+                      About
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-6">
+                    <p className="leading-relaxed text-neutral-600 dark:text-neutral-200">
+                      {datauser?.bio ||
+                        "Passionate developer focused on modern web experiences."}
+                    </p>
+                    <div className="grid gap-4 sm:grid-cols-2">
+                      <div className="flex items-start gap-3">
+                        <div className="rounded-lg bg-neutral-200 p-2 dark:bg-neutral-700">
+                          <Building2 className="h-5 w-5 text-neutral-700 dark:text-neutral-200" />
+                        </div>
+                        <div>
+                          <p className="text-sm text-neutral-600 dark:text-neutral-300">
+                            Institution
+                          </p>
+                          <p className="font-medium text-black dark:text-white">
+                            {datauser?.education || "NIT KKR"}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <div className="rounded-lg bg-neutral-200 p-2 dark:bg-neutral-700">
+                          <GraduationCap className="h-5 w-5 text-neutral-700 dark:text-neutral-200" />
+                        </div>
+                        <div>
+                          <p className="text-sm text-neutral-600 dark:text-neutral-300">
+                            Degree
+                          </p>
+                          <p className="font-medium text-black dark:text-white">
+                            BTech
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <div className="rounded-lg bg-neutral-200 p-2 dark:bg-neutral-700">
+                          <Code2 className="h-5 w-5 text-neutral-700 dark:text-neutral-200" />
+                        </div>
+                        <div>
+                          <p className="text-sm text-neutral-600 dark:text-neutral-300">
+                            Role
+                          </p>
+                          <p className="font-medium text-black dark:text-white">
+                            {datauser?.profession || "Engineer"}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <div className="rounded-lg bg-neutral-200 p-2 dark:bg-neutral-700">
+                          <MapPin className="h-5 w-5 text-neutral-700 dark:text-neutral-200" />
+                        </div>
+                        <div>
+                          <p className="text-sm text-neutral-600 dark:text-neutral-300">
+                            Location
+                          </p>
+                          <p className="font-medium text-black dark:text-white">
+                            {datauser?.location || "Unknown"}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Connect Section */}
+                <Card className="rounded-lg border border-neutral-200 bg-neutral-100 p-4 shadow dark:border-neutral-700 dark:bg-neutral-800">
+                  <CardHeader>
+                    <CardTitle className="mb-2 flex items-center gap-2 text-xl font-semibold">
+                      <Star className="h-5 w-5" />
+                      Connect
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid gap-4">
+                      <Button
+                        variant="outline"
+                        className="flex h-14 items-center justify-start gap-4 rounded-lg bg-white px-4 shadow-sm hover:bg-neutral-200 dark:bg-neutral-700 dark:text-neutral-100 dark:hover:bg-neutral-600"
+                      >
+                        <Icons.github className="h-5 w-5" />
+                        <div className="flex flex-col items-start">
+                          <span className="text-sm font-medium">Github</span>
+                          <span className="text-xs text-neutral-600 dark:text-neutral-300">
+                            500+ contributions
+                          </span>
+                        </div>
+                      </Button>
+                      <Button
+                        variant="outline"
+                        className="flex h-14 items-center justify-start gap-4 rounded-lg bg-white px-4 shadow-sm hover:bg-neutral-200 dark:bg-neutral-700 dark:text-neutral-100 dark:hover:bg-neutral-600"
+                      >
+                        <Icons.x className="h-5 w-5" />
+                        <div className="flex flex-col items-start">
+                          <span className="text-sm font-medium">Twitter</span>
+                          <span className="text-xs text-neutral-600 dark:text-neutral-300">
+                            1.2k followers
+                          </span>
+                        </div>
+                      </Button>
+                      <Button
+                        variant="outline"
+                        className="flex h-14 items-center justify-start gap-4 rounded-lg bg-white px-4 shadow-sm hover:bg-neutral-200 dark:bg-neutral-700 dark:text-neutral-100 dark:hover:bg-neutral-600"
+                      >
+                        <Icons.linkedin className="h-5 w-5" />
+                        <div className="flex flex-col items-start">
+                          <span className="text-sm font-medium">LinkedIn</span>
+                          <span className="text-xs text-neutral-600 dark:text-neutral-300">
+                            500+ connections
+                          </span>
+                        </div>
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Skills & Expertise */}
+                <Card className="rounded-lg border border-neutral-200 bg-neutral-100 p-4 shadow dark:border-neutral-700 dark:bg-neutral-800 lg:col-span-3">
+                  <CardHeader>
+                    <CardTitle className="mb-2 flex items-center gap-2 text-xl font-semibold">
+                      <BookOpen className="h-5 w-5" />
+                      Skills & Expertise
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid gap-6 sm:grid-cols-2">
+                      {(datauser?.skills || ["React", "TypeScript"]).map(
+                        (skill: string, idx: number) => (
+                          <SkillBar
+                            key={idx}
+                            skill={skill}
+                            level={80 + (idx % 5) * 4}
+                          />
+                        ),
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            </TabsContent>
+
+            {/* Activity Tab */}
+            <TabsContent value="activity">
+              <motion.div
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: -20, opacity: 0 }}
+              >
+                <Card className="bg-neutral-100 shadow">
+                  <CardContent className="p-4 pt-6">
+                    <div className="space-y-6">
+                      {activities.map((activity, i) => (
+                        <motion.div
+                          key={activity.id}
+                          initial={{ x: -20, opacity: 0 }}
+                          animate={{ x: 0, opacity: 1 }}
+                          transition={{ delay: i * 0.1 }}
+                          className="flex gap-4"
+                        >
+                          <div className="relative">
+                            <div className="rounded-full bg-neutral-200 p-2">
+                              <Activity className="h-4 w-4" />
+                            </div>
+                            {i !== activities.length - 1 && (
+                              <div className="absolute left-1/2 top-8 h-16 w-px bg-neutral-400" />
+                            )}
+                          </div>
+                          <div className="flex-1 space-y-1">
+                            <p className="font-medium">{activity.text}</p>
+                            <p className="text-sm text-neutral-600">
+                              {activity.date}
+                            </p>
+                            <p className="mt-2 text-sm text-neutral-600">
+                              Some more details about this activity...
+                            </p>
+                          </div>
+                        </motion.div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            </TabsContent>
+
+            {/* Achievements Tab */}
+            <TabsContent value="achievements">
+              <motion.div
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: -20, opacity: 0 }}
+                className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3"
+              >
+                {[
+                  {
+                    icon: Trophy,
+                    title: "Top Contributor",
+                    description: "Ranked #1 contributor this month",
+                    date: "This Month",
+                  },
+                  {
+                    icon: Timer,
+                    title: "Learning Streak",
+                    description: "Maintained a 30-day learning streak",
+                    date: "30 Days",
+                  },
+                  {
+                    icon: Code2,
+                    title: "Code Master",
+                    description: "Reached 1000+ commits milestone",
+                    date: "1000+ Commits",
+                  },
+                  {
+                    icon: Star,
+                    title: "Rising Star",
+                    description: "Featured developer of the month",
+                    date: "This Month",
+                  },
+                  {
+                    icon: Languages,
+                    title: "Polyglot",
+                    description: "Mastered 5+ programming languages",
+                    date: "Achievement",
+                  },
+                  {
+                    icon: School,
+                    title: "Mentor",
+                    description: "Helped 50+ developers grow",
+                    date: "Lifetime",
+                  },
+                ].map((achievement, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ scale: 0.95, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ delay: i * 0.1 }}
+                    whileHover={{ scale: 1.02 }}
+                    className="group relative cursor-pointer overflow-hidden rounded-xl border border-neutral-300 bg-neutral-100 shadow-lg"
+                  >
+                    <motion.div
+                      className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-neutral-200 sm:h-40 sm:w-40"
+                      animate={{ scale: [1, 4, 1] }}
+                      whileHover={{
+                        scale: [1, 4, 1],
+                        transition: { duration: 0.5 },
+                      }}
+                    />
+                    <div className="relative p-4 sm:p-6">
+                      <achievement.icon className="h-8 w-8 sm:h-12 sm:w-12" />
+                      <div className="mt-3 space-y-1 sm:mt-4 sm:space-y-2">
+                        <h3 className="text-base font-semibold tracking-tight sm:text-lg">
+                          {achievement.title}
+                        </h3>
+                        <p className="text-xs text-neutral-600 sm:text-sm lg:text-base">
+                          {achievement.description}
+                        </p>
+                        <p className="text-xs font-medium sm:text-sm">
+                          {achievement.date}
+                        </p>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </motion.div>
+            </TabsContent>
+          </AnimatePresence>
+        </Tabs>
+      </main>
+
+      {/* Footer Actions */}
+      <div className="mx-auto mt-16 max-w-5xl px-4 pb-8">
+        <Separator className="mb-8 bg-neutral-300" />
+        <div className="flex items-center justify-between">
           <Button
-            variant="link"
-            onClick={() => setShowAllActivity(true)}
-            className="mt-4 dark:text-primary-foreground"
+            variant="destructive"
+            className="bg-red-600 text-white hover:bg-red-700"
+            onClick={() => setShowDeleteConfirmation(true)}
           >
-            See All Activity <ChevronRight size={16} className="ml-1" />
+            <Trash2 className="mr-2 h-4 w-4" />
+            Delete Account
           </Button>
-        )}
-      </motion.div>
-
-      {/* New section: Achievements */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 1.2 }}
-        className="bg-card text-card-foreground mb-8 rounded-lg p-6 shadow-lg dark:bg-zinc-900 dark:text-gray-100"
-      >
-        <h2 className="mb-4 text-xl font-semibold">Achievements</h2>
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-          <div className="flex items-center space-x-2">
-            <Award className="text-yellow-500" size={24} />
-            <div>
-              <p className="font-medium">Top Contributor</p>
-              <p className="text-muted-foreground text-sm dark:text-gray-400">
-                This Month
-              </p>
-            </div>
-          </div>
-          <div className="flex items-center space-x-2">
-            <BookOpen className="text-green-500" size={24} />
-            <div>
-              <p className="font-medium">Learning Streak</p>
-              <p className="text-muted-foreground text-sm dark:text-gray-400">
-                30 Days
-              </p>
-            </div>
-          </div>
-          <div className="flex items-center space-x-2">
-            <Code className="text-blue-500" size={24} />
-            <div>
-              <p className="font-medium">Code Master</p>
-              <p className="text-muted-foreground text-sm dark:text-gray-400">
-                1000+ Commits
-              </p>
-            </div>
-          </div>
+          <Button
+            variant="default"
+            className="bg-neutral-800 text-white shadow hover:bg-neutral-700"
+          >
+            <LogOut className="mr-2 h-4 w-4" />
+            Log Out
+          </Button>
         </div>
-      </motion.div>
-
-      <div className="flex items-center justify-between">
-        <Button
-          variant="destructive"
-          onClick={() => setShowDeleteConfirmation(true)}
-        >
-          <Trash2 size={20} className="mr-2" /> Delete Account
-        </Button>
-        <Button>
-          <LogOut size={20} className="mr-2" /> Log Out
-        </Button>
       </div>
 
+      {/* Delete Confirmation Modal */}
       <AnimatePresence>
         {showDeleteConfirmation && (
           <motion.div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
           >
             <motion.div
               initial={{ scale: 0.9 }}
               animate={{ scale: 1 }}
               exit={{ scale: 0.9 }}
-              className="w-full max-w-md rounded-lg bg-background p-6 shadow-xl dark:bg-zinc-900"
+              className="w-full max-w-md rounded-lg border border-neutral-300 bg-white p-6 shadow-xl"
             >
-              <h2 className="mb-4 text-2xl font-bold dark:text-gray-100">
-                Confirm Account Deletion
-              </h2>
-              <p className="mb-6 dark:text-gray-300">
-                Are you sure you want to delete your account? This action cannot
-                be undone.
-              </p>
+              <DialogHeader>
+                <DialogTitle>Confirm Account Deletion</DialogTitle>
+                <DialogDescription className="text-neutral-600">
+                  Are you sure you want to delete your account? This action
+                  cannot be undone.
+                </DialogDescription>
+              </DialogHeader>
               <div className="flex justify-end space-x-4">
                 <Button onClick={() => setShowDeleteConfirmation(false)}>
                   Cancel
@@ -493,6 +690,16 @@ export default function EnhancedMyProfileSection({
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Drag & drop area if wanted */}
+      <Dialog open={false}>
+        <DialogContent
+          className="hidden"
+          onDrop={handleDrop}
+          onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
+        />
+      </Dialog>
     </div>
   );
 }
