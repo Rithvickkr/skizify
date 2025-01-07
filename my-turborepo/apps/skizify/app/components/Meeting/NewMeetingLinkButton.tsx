@@ -15,6 +15,7 @@ import { Label } from "../../../@/components/ui/label";
 import { Input } from "../../../@/components/ui/input";
 import { Clipboard } from "lucide-react";
 import { BorderBeam } from "../../../@/components/ui/border-beam";
+import CopyLinkButton from "./CopyButtonMeeting";
 
 
 export default function CreateMeetingLinkButton() {
@@ -108,16 +109,8 @@ export default function CreateMeetingLinkButton() {
                 className="col-span-9"
                 readOnly
               />
-              {!copied && (
-                <Clipboard
-                  className="col-span-1 size-8 cursor-pointer rounded-md p-2 hover:bg-black/20 dark:hover:bg-white/15 dark:bg-white/20 "
-                  onClick={() => {
-                    navigator.clipboard.writeText(meetingLink);
-                    setCopied(true);
-                    setTimeout(() => setCopied(false), 2000);
-                  }}
-                />
-              )}
+              
+              <CopyLinkButton meetingLink={meetingLink} />
 
               {copied && (
                 <CircleCheckBig className=" text-white col-span-1 size-8 cursor-pointer rounded-md p-2 bg-green-500" />

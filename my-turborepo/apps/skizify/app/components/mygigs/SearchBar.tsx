@@ -38,9 +38,9 @@ export default function SearchBar() {
   }, []);
 
   return (
-    <div className="my-1 flex w-full justify-center md:justify-end">
+    <div className="my-1 flex w-full justify-center md:justify-end md:pr-3">
       <form className="2xl:1/4 w-[95%] lg:w-1/3 4xl:w-1/5">
-        <div className="relative z-10 flex w-full items-center space-x-1 rounded-lg border bg-background p-2 shadow-lg">
+        <div className="relative z-10 flex w-full items-center space-x-1 rounded-lg border border-white/30 bg-background p-2 shadow-lg">
           {/* 
                     flex-[1_0_0%] is a shorthand for flex-grow, flex-shrink and flex-basis
                     flex-grow: 1 - takes up as much space as possible
