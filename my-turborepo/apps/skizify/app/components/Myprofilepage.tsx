@@ -228,7 +228,7 @@ export default function ProfilePage({
     <div className="min-h-screen w-full rounded-lg bg-white text-black transition-colors dark:bg-black md:rounded-2xl">
       {/* Hero Section */}
       <div className="relative mb-5 overflow-hidden pb-12">
-        <div className="absolute inset-0 bg-black" />
+        <div className="absolute inset-0 rounded-lg md:rounded-xl bg-black" />
         <div className="relative mx-auto max-w-5xl px-4 pt-10">
           <motion.div
             initial={{ y: 50, opacity: 0 }}
