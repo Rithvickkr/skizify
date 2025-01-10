@@ -88,10 +88,10 @@ const StatCard = ({
 }) => (
   <motion.div
     whileHover={{ scale: 1.02 }}
-    className="bg-card flex items-center gap-7 hover:bg-accent relative cursor-pointer overflow-hidden rounded-xl border p-6 transition-colors"
+    className="bg-card hover:bg-accent relative flex cursor-pointer items-center gap-7 overflow-hidden rounded-xl border p-6 transition-colors dark:text-white/80"
   >
     {/* <div className="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-black/10" /> */}
-    <Icon className="h-8 w-8 text-black" />
+    <Icon className="h-8 w-8 text-black dark:text-white" />
     <div className="mt-4 space-y-1">
       <p className="text-4xl font-bold tracking-tight">{value}</p>
       <p className="text-muted-foreground text-sm">{label}</p>
@@ -225,7 +225,7 @@ export default function ProfilePage({
   ];
 
   return (
-    <div className="min-h-screen w-full bg-white text-black transition-colors">
+    <div className="min-h-screen w-full rounded-lg bg-white text-black transition-colors dark:bg-black md:rounded-2xl">
       {/* Hero Section */}
       <div className="relative mb-5 overflow-hidden pb-12">
         <div className="absolute inset-0 bg-black" />
@@ -255,7 +255,7 @@ export default function ProfilePage({
                 </div>
                 <Button
                   size="icon"
-                  className="absolute bg-white text-black bottom-2 right-2 hover:bg-neutral-200 rounded-full shadow-md"
+                  className="absolute bottom-2 right-2 rounded-full bg-white text-black shadow-md hover:bg-neutral-200"
                   onClick={() => fileInputRef.current?.click()}
                 >
                   {loading ? (
@@ -310,7 +310,7 @@ export default function ProfilePage({
       </div>
 
       {/* Main Content (Tabs) */}
-      <main className="mx-auto max-w-5xl space-y-8 p-4 pt-12">
+      <main className="mx-auto max-w-5xl space-y-8 rounded-lg p-4 pt-12 md:rounded-xl">
         <Tabs
           value={activeTab}
           onValueChange={setActiveTab}
@@ -319,26 +319,26 @@ export default function ProfilePage({
           <div className="sticky top-16 z-40 -mx-4 backdrop-blur-xl">
             <div className="">
               <div className="mx-auto max-w-5xl">
-                <TabsList className="h-12 w-full justify-evenly bg-black/5 p-1">
+                <TabsList className="h-12 w-full justify-evenly bg-black/5 p-1 dark:bg-white/10">
                   {tabItems.map((item) => (
                     <TabsTrigger
                       key={item.value}
                       value={item.value}
-                      className="relative flex h-full items-center gap-2 px-6 text-sm transition-colors data-[state=active]:bg-white md:text-base"
+                      className="relative flex h-full items-center gap-2 px-6 text-sm transition-colors data-[state=active]:bg-white data-[state=active]:dark:bg-neutral-800 md:text-base"
                     >
                       <div className="flex items-center gap-3 rounded-none">
                         <item.icon
                           className={`h-5 w-5 transition-colors ${
                             activeTab === item.value
-                              ? "text-neutral-800"
-                              : "text-neutral-500"
+                              ? "text-neutral-800 dark:text-neutral-100"
+                              : "text-neutral-500 dark:text-neutral-400"
                           }`}
                         />
                         <span
                           className={`font-medium transition-colors ${
                             activeTab === item.value
-                              ? "text-neutral-800"
-                              : "text-neutral-500"
+                              ? "text-neutral-800 dark:text-neutral-100"
+                              : "text-neutral-500 dark:text-neutral-400"
                           }`}
                         >
                           {item.label}
@@ -355,145 +355,147 @@ export default function ProfilePage({
             {/* Overview Tab */}
             <TabsContent
               value="overview"
-              className="space-y-8 bg-white text-black transition-colors"
+              className="space-y-8 rounded-lg bg-white p-4 text-black transition-colors dark:bg-black"
             >
               <motion.div
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: -20, opacity: 0 }}
-              className="grid gap-8 lg:grid-cols-3"
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: -20, opacity: 0 }}
+                className="grid gap-8 lg:grid-cols-3"
               >
-              {/* About Section */}
-              <Card className="rounded-lg border border-neutral-200 bg-neutral-100 p-4 shadow lg:col-span-2">
-                <CardHeader>
-                <CardTitle className="mb-2 flex items-center gap-2 text-xl font-semibold md:text-2xl">
-                  <User2 className="h-5 w-5" />
-                  About
-                </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                <p className="leading-relaxed text-neutral-600">
-                  {datauser?.bio ||
-                  "Passionate developer focused on modern web experiences."}
-                </p>
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <div className="flex items-start gap-3">
-                  <div className="rounded-lg bg-neutral-200 p-2">
-                    <Building2 className="h-5 w-5 text-neutral-700" />
-                  </div>
-                  <div>
-                    <p className="text-sm text-neutral-600">Institution</p>
-                    <p className="font-medium text-black">
-                    {datauser?.education || "NIT KKR"}
+                {/* About Section */}
+                <Card className="rounded-lg border border-neutral-200 bg-neutral-100 p-4 shadow lg:col-span-2">
+                  <CardHeader>
+                    <CardTitle className="mb-2 flex items-center gap-2 text-xl font-semibold md:text-2xl">
+                      <User2 className="h-5 w-5" />
+                      About
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-6">
+                    <p className="leading-relaxed text-neutral-600">
+                      {datauser?.bio ||
+                        "Passionate developer focused on modern web experiences."}
                     </p>
-                  </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                  <div className="rounded-lg bg-neutral-200 p-2">
-                    <GraduationCap className="h-5 w-5 text-neutral-700" />
-                  </div>
-                  <div>
-                    <p className="text-sm text-neutral-600">Degree</p>
-                    <p className="font-medium text-black">BTech</p>
-                  </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                  <div className="rounded-lg bg-neutral-200 p-2">
-                    <Code2 className="h-5 w-5 text-neutral-700" />
-                  </div>
-                  <div>
-                    <p className="text-sm text-neutral-600">Role</p>
-                    <p className="font-medium text-black">
-                    {datauser?.profession || "Engineer"}
-                    </p>
-                  </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                  <div className="rounded-lg bg-neutral-200 p-2">
-                    <MapPin className="h-5 w-5 text-neutral-700" />
-                  </div>
-                  <div>
-                    <p className="text-sm text-neutral-600">Location</p>
-                    <p className="font-medium text-black">
-                    {datauser?.location || "Unknown"}
-                    </p>
-                  </div>
-                  </div>
-                </div>
-                </CardContent>
-              </Card>
-
-              {/* Connect Section */}
-              <Card className="rounded-lg border border-neutral-200 bg-neutral-100 p-4 shadow">
-                <CardHeader>
-                <CardTitle className="mb-2 flex items-center gap-2 text-xl font-semibold">
-                  <Star className="h-5 w-5" />
-                  Connect
-                </CardTitle>
-                </CardHeader>
-                <CardContent>
-                <div className="grid gap-4">
-                  <Button
-                  variant="outline"
-                  className="flex h-14 items-center justify-start gap-4 rounded-lg bg-white px-4 shadow-sm hover:bg-neutral-200"
-                  >
-                  <Icons.github className="h-5 w-5" />
-                  <div className="flex flex-col items-start">
-                    <span className="text-sm font-medium">Github</span>
-                    <span className="text-xs text-neutral-600">
-                    500+ contributions
-                    </span>
-                  </div>
-                  </Button>
-                  <Button
-                  variant="outline"
-                  className="flex h-14 items-center justify-start gap-4 rounded-lg bg-white px-4 shadow-sm hover:bg-neutral-200"
-                  >
-                  <Icons.x className="h-5 w-5" />
-                  <div className="flex flex-col items-start">
-                    <span className="text-sm font-medium">Twitter</span>
-                    <span className="text-xs text-neutral-600">
-                    1.2k followers
-                    </span>
-                  </div>
-                  </Button>
-                  <Button
-                  variant="outline"
-                  className="flex h-14 items-center justify-start gap-4 rounded-lg bg-white px-4 shadow-sm hover:bg-neutral-200"
-                  >
-                  <Icons.linkedin className="h-5 w-5" />
-                  <div className="flex flex-col items-start">
-                    <span className="text-sm font-medium">LinkedIn</span>
-                    <span className="text-xs text-neutral-600">
-                    500+ connections
-                    </span>
-                  </div>
-                  </Button>
-                </div>
-                </CardContent>
-              </Card>
-
-              {/* Skills & Expertise */}
-              <Card className="rounded-lg border border-neutral-200 bg-neutral-100 p-4 shadow lg:col-span-3">
-                <CardHeader>
-                <CardTitle className="mb-2 flex items-center gap-2 text-xl font-semibold">
-                  <BookOpen className="h-5 w-5" />
-                  Skills & Expertise
-                </CardTitle>
-                </CardHeader>
-                <CardContent>
-                <CardContent>
-                    <div className="grid gap-6 sm:grid-cols-2">
-                      <SkillBar skill="React" level={95} />
-                      <SkillBar skill="Next.js" level={90} />
-                      <SkillBar skill="TypeScript" level={85} />
-                      <SkillBar skill="Node.js" level={80} />
-                      <SkillBar skill="UI/UX Design" level={75} />
-                      <SkillBar skill="DevOps" level={70} />
+                    <div className="grid gap-4 sm:grid-cols-2">
+                      <div className="flex items-start gap-3">
+                        <div className="rounded-lg bg-neutral-200 p-2">
+                          <Building2 className="h-5 w-5 text-neutral-700" />
+                        </div>
+                        <div>
+                          <p className="text-sm text-neutral-600">
+                            Institution
+                          </p>
+                          <p className="font-medium text-black">
+                            {datauser?.education || "NIT KKR"}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <div className="rounded-lg bg-neutral-200 p-2">
+                          <GraduationCap className="h-5 w-5 text-neutral-700" />
+                        </div>
+                        <div>
+                          <p className="text-sm text-neutral-600">Degree</p>
+                          <p className="font-medium text-black">BTech</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <div className="rounded-lg bg-neutral-200 p-2">
+                          <Code2 className="h-5 w-5 text-neutral-700" />
+                        </div>
+                        <div>
+                          <p className="text-sm text-neutral-600">Role</p>
+                          <p className="font-medium text-black">
+                            {datauser?.profession || "Engineer"}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <div className="rounded-lg bg-neutral-200 p-2">
+                          <MapPin className="h-5 w-5 text-neutral-700" />
+                        </div>
+                        <div>
+                          <p className="text-sm text-neutral-600">Location</p>
+                          <p className="font-medium text-black">
+                            {datauser?.location || "Unknown"}
+                          </p>
+                        </div>
+                      </div>
                     </div>
                   </CardContent>
-                </CardContent>
-              </Card>
+                </Card>
+
+                {/* Connect Section */}
+                <Card className="rounded-lg border border-neutral-200 bg-neutral-100 p-4 shadow">
+                  <CardHeader>
+                    <CardTitle className="mb-2 flex items-center gap-2 text-xl font-semibold">
+                      <Star className="h-5 w-5" />
+                      Connect
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid gap-4">
+                      <Button
+                        variant="outline"
+                        className="flex h-14 items-center justify-start gap-4 rounded-lg bg-white px-4 shadow-sm hover:bg-neutral-200"
+                      >
+                        <Icons.github className="h-5 w-5" />
+                        <div className="flex flex-col items-start">
+                          <span className="text-sm font-medium">Github</span>
+                          <span className="text-xs text-neutral-600">
+                            500+ contributions
+                          </span>
+                        </div>
+                      </Button>
+                      <Button
+                        variant="outline"
+                        className="flex h-14 items-center justify-start gap-4 rounded-lg bg-white px-4 shadow-sm hover:bg-neutral-200"
+                      >
+                        <Icons.x className="h-5 w-5" />
+                        <div className="flex flex-col items-start">
+                          <span className="text-sm font-medium">Twitter</span>
+                          <span className="text-xs text-neutral-600">
+                            1.2k followers
+                          </span>
+                        </div>
+                      </Button>
+                      <Button
+                        variant="outline"
+                        className="flex h-14 items-center justify-start gap-4 rounded-lg bg-white px-4 shadow-sm hover:bg-neutral-200"
+                      >
+                        <Icons.linkedin className="h-5 w-5" />
+                        <div className="flex flex-col items-start">
+                          <span className="text-sm font-medium">LinkedIn</span>
+                          <span className="text-xs text-neutral-600">
+                            500+ connections
+                          </span>
+                        </div>
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Skills & Expertise */}
+                <Card className="rounded-lg border border-neutral-200 bg-neutral-100 p-4 shadow lg:col-span-3">
+                  <CardHeader>
+                    <CardTitle className="mb-2 flex items-center gap-2 text-xl font-semibold">
+                      <BookOpen className="h-5 w-5" />
+                      Skills & Expertise
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <CardContent>
+                      <div className="grid gap-6 sm:grid-cols-2">
+                        <SkillBar skill="React" level={95} />
+                        <SkillBar skill="Next.js" level={90} />
+                        <SkillBar skill="TypeScript" level={85} />
+                        <SkillBar skill="Node.js" level={80} />
+                        <SkillBar skill="UI/UX Design" level={75} />
+                        <SkillBar skill="DevOps" level={70} />
+                      </div>
+                    </CardContent>
+                  </CardContent>
+                </Card>
               </motion.div>
             </TabsContent>
 
@@ -625,8 +627,8 @@ export default function ProfilePage({
       </main>
 
       {/* Footer Actions */}
-      <div className="mx-auto mt-16 max-w-5xl px-4 pb-8">
-        <Separator className="mb-8 bg-neutral-300" />
+      <div className="mx-auto mt-4 max-w-5xl px-4 pb-8">
+        <Separator className="mb-8 bg-black dark:bg-white/20 shadow-xl" />
         <div className="flex items-center justify-between">
           <Button
             variant="destructive"

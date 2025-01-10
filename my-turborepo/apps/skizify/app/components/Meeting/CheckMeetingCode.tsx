@@ -9,39 +9,46 @@ const CheckMeetingCode: React.FC = () => {
   const [isValid, setIsValid] = useState<boolean | null>(null);
 
 const checkMeetingId = async () => {
-    try {
-        const response = await fetch("/api/check-meetingId", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ meetingId }),
-        });
+  try {
+    const urlMatch = meetingId.match(
+      /(?:(?:https?:\/\/)?(?:localhost:\d+|[\w.-]+)\/(?:meeting|instant-meeting)\/)([a-zA-Z0-9-]+)$/
+    );
+    const actualMeetingId = urlMatch ? urlMatch[1] : meetingId;
 
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.message);
-        }
-        const data = await response.json();
+    const response = await fetch("/api/check-meetingId", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ meetingId: actualMeetingId }),
+    });
 
-        if (data.isValid) {
-            if (data.table === 'meeting') {
-                window.location.href = `/meeting/${meetingId}`;
-            } else if (data.table === 'instant-meeting') {
-                window.location.href = `/instant-meeting/${meetingId}`;
-            }
-        }
-        setIsValid(data.isValid);
-    } catch (error) {
-        console.error("Error checking meeting ID:", error);
-        setIsValid(false);
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message);
     }
+
+    const data = await response.json();
+
+    if (data.isValid) {
+      if (data.table === "meeting") {
+        window.location.href = `/meeting/${actualMeetingId}`;
+      } else if (data.table === "instant-meeting") {
+        window.location.href = `/instant-meeting/${actualMeetingId}`;
+      }
+    }
+
+    setIsValid(data.isValid);
+  } catch (error) {
+    console.error("Error checking meeting ID:", error);
+    setIsValid(false);
+  }
 };
   return (
     <div>
       <Input
         placeholder="Meeting code"
-        className="w-full rounded-lg border border-neutral-600 bg-neutral-800 px-5 py-6 text-lg text-neutral-200 placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-neutral-500"
+        className="w-full rounded-lg border border-neutral-600  dark:border-white/20 bg-neutral-800 px-5 py-6 text-lg text-neutral-200 placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-neutral-500"
         value={meetingId}
         onChange={(e) => setMeetingId(e.target.value)}
       />
@@ -57,7 +64,7 @@ const checkMeetingId = async () => {
         </Button>
       </div>
       {isValid === false && (
-        <p className="mt-4 text-red-500">Meeting ID is not valid.</p>
+        <p className="mt-4 mx-auto text-red-500 text-sm">Meeting ID is not valid.</p>
       )}
     </div>
   );

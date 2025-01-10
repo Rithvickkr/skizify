@@ -31,7 +31,7 @@ export default function CopyLinkButton({meetingLink}:{meetingLink : string}) {
           <Button
             variant="outline"
             size="icon"
-            className="disabled:opacity-100"
+            className="disabled:opacity-100 border border-white/20"
             onClick={handleCopy}
             aria-label={copied ? "Copied" : "Copy to clipboard"}
             disabled={copied}

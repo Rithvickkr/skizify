@@ -5,6 +5,7 @@ const prisma = new PrismaClient();
 
 export async function POST(req: Request) {
     const { meetingId } = await req.json();
+    console.log("meetingId: ", meetingId);
 
     if (!meetingId) {
         return Response.json({ message: 'Meeting ID is required' });

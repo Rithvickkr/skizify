@@ -18,6 +18,7 @@ import "rc-tooltip/assets/bootstrap.css";
 import { CheckCheck } from "lucide-react";
 import { acceptGig } from "../../lib/actions/Skizzer-accept-gig";
 import { GigsInterface } from "@repo/store/types";
+import { Input } from "../../../@/components/ui/input";
 
 function getDatesBetweenDates(startDate: Date, endDate: Date): Date[] {
   const days: Date[] = [];
@@ -251,20 +252,26 @@ export function SelectDATE({
         </Label>
 
         <Button className="h-9 rounded border  dark:border-neutral-500 bg-transparent p-0 text-black hover:bg-transparent hover:shadow hover:ring-black dark:bg-transparent dark:text-white dark:hover:text-black ">
-          <input
-            className="h-full w-full rounded border-0 text-sm text-black placeholder-black placeholder:text-sm placeholder:font-light     focus:border-transparent focus:outline-none focus:ring-0 dark:border dark:border-neutral-500 dark:bg-transparent dark:text-white placeholder:dark:text-white"
-            type="text"
-            placeholder="Budget"
-            required
-            onChange={(e) => {
-              try {
-                setBudget(Number(e.target.value));
-              } catch (err) {
-                console.log("", err);
-              }
-            }}
+          <Input
+        className="h-full w-full rounded border-0 text-sm text-black placeholder-black placeholder:text-sm placeholder:font-light     focus:border-transparent focus:outline-none focus:ring-0 dark:border dark:border-neutral-500 dark:bg-transparent dark:text-white placeholder:dark:text-white"
+        type="number"
+        min="0"
+        placeholder="Budget"
+        required
+        onChange={(e) => {
+          try {
+            setBudget(Number(e.target.value));
+          } catch (err) {
+            console.log("Invalid input:", err);
+          }
+        }}
+        onKeyDown={(e) => {
+          // Prevent 'e', '+', '-' as they are valid in number inputs
+          if (['e', 'E', '+', '-'].includes(e.key)) {
+            e.preventDefault();
+          }
+        }}
           />
-          {/*Enter the Zod validation , user can put*/}
         </Button>
       </div>
       <div className="mt-3 flex justify-between space-x-4">

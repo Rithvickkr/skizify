@@ -93,7 +93,7 @@ model GigUser {
 //These are the meeting Records which will be Related to the
 model meeting {
   id            String        @id @default(uuid())
-  gigUserId     String        @unique
+  gigUserId     String        @unique //This is the meeting ID
   status        MeetingStatus @default(UNBOOKED_PENDING) //This is the Status of the Meeting, If it is Pending or Ended
   GigUser       GigUser       @relation(fields: [gigUserId], references: [id])
   createdAt     DateTime      @default(now())

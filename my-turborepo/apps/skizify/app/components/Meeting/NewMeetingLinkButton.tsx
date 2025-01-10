@@ -106,7 +106,7 @@ export default function CreateMeetingLinkButton() {
               <Input
                 id="name"
                 value={meetingLink}
-                className="col-span-9"
+                className="col-span-9 border border-white/20"
                 readOnly
               />
               
