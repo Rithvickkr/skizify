@@ -1,7 +1,8 @@
 export default function Home() {
     return (
-        <div>
-            Hello I am making a Home Page
-        </div>
+        <main className="relative min-h-screen w-screen overflow-x-hidden">
+            Hello
+            
+        </main>
     )
 }
