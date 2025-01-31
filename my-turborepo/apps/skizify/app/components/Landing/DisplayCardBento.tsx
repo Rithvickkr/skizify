@@ -46,6 +46,7 @@ export default function DisplayCardsDemo() {
                                 Showcase your content with stacked, animated cards
                             </p>
                         </div>
+                        
                         <div className="-ml-8 w-full">
                             <DisplayCards cards={customCards} />
                         </div>
