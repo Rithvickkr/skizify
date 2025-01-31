@@ -11,6 +11,7 @@
     "@repo/eslint-config": "*",
     "@repo/typescript-config": "*",
     "prettier": "^3.2.5",
+    "shadcn-ui": "^0.9.4",
     "turbo": "^2.0.6"
   },
   "engines": {
