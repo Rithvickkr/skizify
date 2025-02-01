@@ -1,58 +1,122 @@
 "use client";
 
-import DisplayCards from "../../../@repo/store/components/ui/display-cards";
-import { Card } from "../../../@/components/ui/card";
-import { Rocket, Star, Zap } from "lucide-react";
+import { AlertTriangle, CheckCircle, XCircle } from "lucide-react";
+import { cn } from "../../utils/cn";
+import { useState } from "react";
 
-export default function DisplayCardsDemo() {
-    const customCards = [
-        {
-            icon: <Rocket className="size-5 text-blue-400" />,
-            title: "Launch",
-            description: "Ready for takeoff",
-            date: "Today",
-            iconClassName: "text-blue-500",
-            titleClassName: "font-semibold text-blue-500",
-            className: "[grid-area:stack] transition-all duration-500 ease-in-out hover:-translate-y-6 hover:shadow-xl before:absolute before:w-full before:h-full before:rounded-xl before:content-[''] before:bg-background/60 before:backdrop-blur-sm grayscale hover:before:opacity-0 before:transition-opacity hover:grayscale-0 before:left-0 before:top-0",
-        },
-        {
-            icon: <Star className="size-5 text-yellow-400" />,
-            title: "Featured",
-            description: "Top rated content",
-            date: "2 days ago",
-            iconClassName: "text-yellow-500",
-            titleClassName: "font-semibold text-yellow-500",
-            className: "[grid-area:stack] translate-x-8 translate-y-8 transition-all duration-500 ease-in-out hover:-translate-y-2 hover:shadow-xl before:absolute before:w-full before:h-full before:rounded-xl before:content-[''] before:bg-background/60 before:backdrop-blur-sm grayscale hover:before:opacity-0 before:transition-opacity hover:grayscale-0 before:left-0 before:top-0",
-        },
-        {
-            icon: <Zap className="size-5 text-purple-400" />,
-            title: "Trending",
-            description: "Most popular this week",
-            date: "Last week",
-            iconClassName: "text-purple-500",
-            titleClassName: "font-semibold text-purple-500",
-            className: "[grid-area:stack] translate-x-16 translate-y-16 transition-all duration-500 ease-in-out hover:translate-y-8 hover:shadow-xl",
-        },
-    ];
+interface Update {
+  status: "off-track" | "at-risk" | "on-track";
+  message: string;
+  date: string;
+}
 
-    return (
-        <div className="flex min-h-[350px] w-full items-center justify-center py-12">
-            <div className="w-full max-w-4xl px-4">
-                <Card className="relative overflow-hidden p-10 shadow-lg">
-                    <div className="space-y-12">
-                        <div className="space-y-3">
-                            <h4 className="text-lg font-semibold">Custom Display Cards</h4>
-                            <p className="text-sm text-muted-foreground">
-                                Showcase your content with stacked, animated cards
-                            </p>
-                        </div>
-                        
-                        <div className="-ml-8 w-full">
-                            <DisplayCards cards={customCards} />
-                        </div>
+const updates: Update[] = [
+  {
+    status: "on-track",
+    message: "We are ready to launch next Thursday",
+    date: "Sep 8",
+  },
+  {
+    status: "at-risk",
+    message: "Project timeline needs adjustment",
+    date: "Oct 10",
+  },
+  {
+    status: "off-track",
+    message: "Unexpected roadblocks forced us to take a different...",
+    date: "Oct 12",
+  },
+];
+
+const statusConfig = {
+  "off-track": {
+    icon: XCircle,
+    label: "Off track",
+    className: "text-red-500 transition-colors",
+  },
+  "at-risk": {
+    icon: AlertTriangle,
+    label: "At risk",
+    className: "text-yellow-500 transition-colors",
+  },
+  "on-track": {
+    icon: CheckCircle,
+    label: "On track",
+    className: "text-green-500 transition-colors",
+  },
+};
+
+export default function ProjectUpdates() {
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+
+  return (
+    <div className="bg-black p-8">
+      <div className="mx-auto max-w-2xl">
+        <h1 className="mb-3 text-4xl font-semibold text-white">
+          Project updates
+        </h1>
+        <p className="mb-12 text-xl text-gray-400">
+          Communicate progress and project health with built-in project updates.
+        </p>
+        <div className="relative h-[100px] [perspective:3000px] [transform-style:preserve-3d]">
+          <div className="absolute top-[10%] [transform-style:preserve-3d]">
+            {updates.map((update, index) => {
+              const status = statusConfig[update.status];
+              const Icon = status.icon;
+              const isHovered = hoveredIndex === index;
+
+              return (
+                <div
+                  key={index}
+                  className={cn(
+                    "absolute flex h-[150px] w-[350px] cursor-pointer items-center rounded-xl border border-white/10 bg-gradient-to-r from-black/30 from-40% via-white/5 via-100% to-black p-8 backdrop-blur-md",
+                    "transition-all duration-1000 ease-in-out [transform-style:preserve-3d] hover:z-10",
+                  )}
+                  style={{
+                    transform: `
+                                        rotateY(35deg)
+                                        rotateX(-10deg)
+                                        rotateZ(-7deg)
+                                        translateX(${(2 - index) * 60}px)
+                                        translateY(${(2 - index) * 35}px)
+                                        ${isHovered ? "translateY(-60px)" : "translateY(0px)"}
+                                    `,
+                    transition: "all 0.5s cubic-bezier(0.4, 0, 0.2, 1)",
+                    boxShadow: `
+                                        0 0 0 1px rgba(255,255,255,0.05),
+                                        ${
+                                          isHovered
+                                            ? "0 35px 70px -15px rgba(0,0,0,0.7)"
+                                            : "0 20px 40px -10px rgba(0,0,0,0.5)"
+                                        },
+                                        inset 0 1px 0 0 rgba(255,255,255,0.05)
+                                    `,
+                    zIndex: 2 - index,
+                  }}
+                  onMouseEnter={() => setHoveredIndex(index)}
+                  onMouseLeave={() => setHoveredIndex(null)}
+                >
+                  <div
+                    className="relative grayscale [transform-style:preserve-3d] first:grayscale-0 hover:grayscale-0"
+                    style={{
+                      transition: "all 1s cubic-bezier(0.4, 0, 0.2, 1)",
+                    }}
+                  >
+                    <div className="flex items-center gap-2">
+                      <Icon className={cn("h-5 w-5", status.className)} />
+                      <span className={cn("font-medium", status.className)}>
+                        {status.label}
+                      </span>
                     </div>
-                </Card>
-            </div>
+                    <p className="text- mt-2 text-white">{update.message}</p>
+                    <p className="mt-1 text-sm text-zinc-400">{update.date}</p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
-    );
+      </div>
+    </div>
+  );
 }
