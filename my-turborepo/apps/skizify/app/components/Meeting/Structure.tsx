@@ -35,7 +35,7 @@ import {
 import { Textarea } from "../../../@/components/ui/textarea";
 import { Button } from "../ui/button";
 import ButtonsDock from "./Buttons-dock";
-// const URL = "http://localhost:3003";
+// const URL = "ws://localhost:3001";
 const URL = "wss://skizify-ws-server.onrender.com";
 
 export interface Chat {
@@ -1089,30 +1089,31 @@ export default function VideoPlatform({
 
   return (
     <div className="flex h-[90vh] w-full flex-1 flex-col items-center justify-between p-1 pb-2">
-      <div
-        className={`h-screen w-full gap-4 p-1 ${
-          pinnedVideo !== null
-            ? "flex flex-col md:grid md:grid-cols-[3fr_1fr]" // Use flex column for mobile when pinned
-            : "grid grid-cols-1 md:grid-cols-2"
-        } // Grid for unpinned state`}
-      >
-        {localVideoTrack && renderVideo(0, localVideoRef, "Your Video")}
-        {remoteUserJoined && renderVideo(1, remoteVideoRef, "Remote Video")}
-        {isScreenSharing &&
-          screenTrackVideo &&
-          renderVideo(2, localscreenShareVideoref, "Your Screen Share")}
-        {remoteIsScreenSharing &&
-          renderVideo(3, remoteScreenVideoRef, "Remote Screen Share")}
-      </div>
-      {/*) : (
-          <div className="relative h-full w-full overflow-hidden rounded-xl border border-neutral-400 dark:border-neutral-700">
-            <video
-              ref={localVideoRef}
-              autoPlay
-              className="absolute inset-0 h-full w-full object-cover"
-            />
-          </div>
-        )}*/}
+      {remoteUserJoined ? (
+        <div
+          className={`h-screen w-full gap-4 p-1 ${
+            pinnedVideo !== null
+              ? "flex flex-col md:grid md:grid-cols-[3fr_1fr]"
+              : "grid grid-cols-1 md:grid-cols-2"
+          }`}
+        >
+          {localVideoTrack && renderVideo(0, localVideoRef, "Your Video")}
+          {remoteUserJoined && renderVideo(1, remoteVideoRef, "Remote Video")}
+          {isScreenSharing &&
+            screenTrackVideo &&
+            renderVideo(2, localscreenShareVideoref, "Your Screen Share")}
+          {remoteIsScreenSharing &&
+            renderVideo(3, remoteScreenVideoRef, "Remote Screen Share")}
+        </div>
+      ) : (
+        <div className="relative h-full w-full overflow-hidden rounded-xl border border-neutral-400 dark:border-neutral-700">
+          <video
+            ref={localVideoRef}
+            autoPlay
+            className="absolute inset-0 h-full w-full object-cover"
+          />
+        </div>
+      )}
 
       <div className="">
         <Dock
@@ -1170,25 +1171,27 @@ export default function VideoPlatform({
               />
             </ButtonsDock>
           </DockIcon>
-          <DockIcon>
+            <DockIcon>
             <ButtonsDock
               shortcut="Ctrl S"
               name="ScreenShare"
               onClick={isScreenSharing ? stopScreenShare : startScreenShare}
+              disabled={!remoteUserJoined}
+              className={!remoteUserJoined ? "cursor-not-allowed opacity-50" : ""}
             >
               {isScreenSharing ? (
-                <ScreenShareOff
-                  strokeWidth={1.7}
-                  className="size-4 lg:size-5 xl:size-6"
-                />
+              <ScreenShareOff
+                strokeWidth={1.7}
+                className="size-4 lg:size-5 xl:size-6"
+              />
               ) : (
-                <ScreenShare
-                  strokeWidth={1.7}
-                  className="size-4 lg:size-5 xl:size-6"
-                />
+              <ScreenShare
+                strokeWidth={1.7}
+                className="size-4 lg:size-5 xl:size-6"
+              />
               )}
             </ButtonsDock>
-          </DockIcon>
+            </DockIcon>
           <DockIcon>
             <ButtonsDock
               shortcut="Ctrl C"
@@ -1233,120 +1236,117 @@ export default function VideoPlatform({
       <div
         className={`fixed inset-y-0 right-0 z-50 h-full transition-all duration-500 ease-in-out ${
           isChatBarVisible
-        ? "w-[80%] opacity-100 md:w-[50%] lg:w-[25%]"
-        : "w-0 opacity-0"
+            ? "w-[80%] opacity-100 md:w-[50%] lg:w-[25%]"
+            : "w-0 opacity-0"
         }`}
       >
-        <div className="flex h-full flex-col overflow-hidden rounded-l-2xl border border-neutral-200 bg-white shadow-2xl  dark:border-white/30 dark:bg-black dark:shadow-[0_0_30px_rgba(255,255,255,0.1)]">
+        <div className="flex h-full flex-col overflow-hidden rounded-l-2xl border border-neutral-200 bg-white shadow-2xl dark:border-white/30 dark:bg-black dark:shadow-[0_0_30px_rgba(255,255,255,0.1)]">
           <div className="flex items-center justify-between border-b border-neutral-200 px-6 py-4 dark:border-white/10">
-        <div className="flex items-center gap-2">
-          <MessageSquare className="size-5 text-neutral-600 dark:text-white/70" />
-          <div className="text-lg font-semibold text-neutral-800 dark:text-white/90">
-            Chat Room
-          </div>
-        </div>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="rounded-full text-neutral-600 hover:bg-neutral-100 dark:text-white/70 dark:hover:bg-white/10"
-          onClick={() => setIsChatBarVisible(false)}
-        >
-          <X className="size-5" />
-        </Button>
+            <div className="flex items-center gap-2">
+              <MessageSquare className="size-5 text-neutral-600 dark:text-white/70" />
+              <div className="text-lg font-semibold text-neutral-800 dark:text-white/90">
+                Chat Room
+              </div>
+            </div>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="rounded-full text-neutral-600 hover:bg-neutral-100 dark:text-white/70 dark:hover:bg-white/10"
+              onClick={() => setIsChatBarVisible(false)}
+            >
+              <X className="size-5" />
+            </Button>
           </div>
           <div
-        className="no-scrollbar flex-1 overflow-y-auto p-4 pt-6"
-        style={{
-          overflowY: messages.length > 4 ? "auto" : "visible",
-          minHeight: "200px",
-        }}
-        onScroll={(e) => {
-          if (
-            messages.some(
-          (m) => !m.seenStatus && m.userId !== session.data?.user.id,
-            )
-          ) {
-            updateMessagesSeen();
-          }
-        }}
+            className="no-scrollbar flex-1 overflow-y-auto p-4 pt-6"
+            style={{
+              overflowY: messages.length > 4 ? "auto" : "visible",
+              minHeight: "200px",
+            }}
+            onScroll={(e) => {
+              if (
+                messages.some(
+                  (m) => !m.seenStatus && m.userId !== session.data?.user.id,
+                )
+              ) {
+                updateMessagesSeen();
+              }
+            }}
           >
-        <div className="space-y-6">
-          {messages.length === 0 ? (
-            <div className="flex flex-col items-center justify-center space-y-3 py-10 text-center">
-          <MessageSquareOff className="size-12 text-neutral-400 dark:text-white" />
-          <p className="text-neutral-500 dark:text-white/50 text-sm md:text-base lg:text-xl">
-            No messages yet <br />Start the conversation!
-          </p>
+            <div className="space-y-6">
+              {messages.length === 0 ? (
+                <div className="flex flex-col items-center justify-center space-y-3 py-10 text-center">
+                  <MessageSquareOff className="size-12 text-neutral-400 dark:text-white" />
+                  <p className="text-sm text-neutral-500 dark:text-white/50 md:text-base lg:text-xl">
+                    No messages yet <br />
+                    Start the conversation!
+                  </p>
+                </div>
+              ) : (
+                messages.map((data: Chat, index: any) => (
+                  <div key={index}>
+                    <ChatStructure data={data} />
+                  </div>
+                ))
+              )}
             </div>
-          ) : (
-            messages.map((data: Chat, index: any) => (
-          <div key={index}>
-            <ChatStructure data={data} />
-          </div>
-            ))
-          )}
-        </div>
           </div>
           <div className="border-t border-neutral-200 bg-neutral-50 p-4 dark:border-white/10 dark:bg-white/5">
-        <div className="flex items-center gap-3">
-          <Textarea
-            placeholder={`${!permissionToChat ? "Chat is disabled, waiting for others to join..." : "Type a message..."}`}
-            className={`${
-          !permissionToChat ? "cursor-not-allowed opacity-60" : ""
-            } flex-1 resize-none rounded-xl border-neutral-200 bg-white text-neutral-800 text-sm md:text-base
-            dark:border-white/20 dark:bg-black/50 dark:text-white dark:shadow-[inset_0_0_20px_rgba(255,255,255,0.05)]
-            placeholder:text-neutral-400 dark:placeholder:text-white/40 placeholder:text-xs md:placeholder:text-sm
-            focus:border-neutral-300 focus:ring-1 focus:ring-neutral-300
-            dark:focus:border-white/30 dark:focus:ring-white/30`}
-            onChange={(e) => {
-          if (permissionToChat) {
-            setMessage(e.target.value);
-          }
-            }}
-            value={message}
-            readOnly={!permissionToChat}
-            onKeyDown={(e) => {
-          if (
-            e.key === "Enter" &&
-            !e.shiftKey &&
-            permissionToChat &&
-            message.trim()
-          ) {
-            e.preventDefault();
-            messageHandler(
-              e,
-              session.data?.user.name || "",
-              session.data?.user.id || "",
-              false,
-              session.data?.user.userImage,
-            );
-          }
-            }}
-            style={{ maxHeight: "100px" }}
-          />
-          <Button
-            variant="ghost"
-            size="icon"
-            disabled={!message.trim() || !permissionToChat}
-            className={`rounded-xl ${
-          message.trim() && permissionToChat
-            ? "bg-neutral-800 text-white hover:bg-neutral-900 dark:bg-white/90 dark:text-black dark:shadow-[0_0_20px_rgba(255,255,255,0.3)] dark:hover:bg-white"
-            : "bg-neutral-200 dark:bg-white/20"
-            }`}
-            onClick={(e) =>
-          messageHandler(
-            e,
-            session.data?.user.name || "",
-            session.data?.user.id || "",
-            false,
-            session.data?.user.userImage,
-          )
-            }
-          >
-            <Send className="size-5" />
-            <span className="sr-only">Send</span>
-          </Button>
-        </div>
+            <div className="flex items-center gap-3">
+              <Textarea
+                placeholder={`${!permissionToChat ? "Chat is disabled, waiting for others to join..." : "Type a message..."}`}
+                className={`${
+                  !permissionToChat ? "cursor-not-allowed opacity-60" : ""
+                } flex-1 resize-none rounded-xl border-neutral-200 bg-white text-sm text-neutral-800 placeholder:text-xs placeholder:text-neutral-400 focus:border-neutral-300 focus:ring-1 focus:ring-neutral-300 dark:border-white/20 dark:bg-black/50 dark:text-white dark:shadow-[inset_0_0_20px_rgba(255,255,255,0.05)] dark:placeholder:text-white/40 dark:focus:border-white/30 dark:focus:ring-white/30 md:text-base md:placeholder:text-sm`}
+                onChange={(e) => {
+                  if (permissionToChat) {
+                    setMessage(e.target.value);
+                  }
+                }}
+                value={message}
+                readOnly={!permissionToChat}
+                onKeyDown={(e) => {
+                  if (
+                    e.key === "Enter" &&
+                    !e.shiftKey &&
+                    permissionToChat &&
+                    message.trim()
+                  ) {
+                    e.preventDefault();
+                    messageHandler(
+                      e,
+                      session.data?.user.name || "",
+                      session.data?.user.id || "",
+                      false,
+                      session.data?.user.userImage,
+                    );
+                  }
+                }}
+                style={{ maxHeight: "100px" }}
+              />
+              <Button
+                variant="ghost"
+                size="icon"
+                disabled={!message.trim() || !permissionToChat}
+                className={`rounded-xl ${
+                  message.trim() && permissionToChat
+                    ? "bg-neutral-800 text-white hover:bg-neutral-900 dark:bg-white/90 dark:text-black dark:shadow-[0_0_20px_rgba(255,255,255,0.3)] dark:hover:bg-white"
+                    : "bg-neutral-200 dark:bg-white/20"
+                }`}
+                onClick={(e) =>
+                  messageHandler(
+                    e,
+                    session.data?.user.name || "",
+                    session.data?.user.id || "",
+                    false,
+                    session.data?.user.userImage,
+                  )
+                }
+              >
+                <Send className="size-5" />
+                <span className="sr-only">Send</span>
+              </Button>
+            </div>
           </div>
         </div>
       </div>
@@ -1361,7 +1361,7 @@ const ChatStructure: React.FC<{ data: Chat }> = ({ data }) => {
       {data.userId === session.data?.user.id ? (
         <div className="flex items-end justify-end gap-3">
           <div className="group relative max-w-[85%] space-y-1">
-            <div className="rounded-2xl rounded-br-sm bg-black p-4 text-white dark:text-black shadow-[0_0_20px_rgba(0,0,0,0.1)] transition-all  dark:bg-white/90 dark:shadow-[0_0_20px_rgba(255,255,255,0.2)] ">
+            <div className="rounded-2xl rounded-br-sm bg-black p-4 text-white shadow-[0_0_20px_rgba(0,0,0,0.1)] transition-all dark:bg-white/90 dark:text-black dark:shadow-[0_0_20px_rgba(255,255,255,0.2)]">
               <p className="break-words text-[15px] leading-relaxed">
                 {data.message}
               </p>
@@ -1407,15 +1407,17 @@ const ChatStructure: React.FC<{ data: Chat }> = ({ data }) => {
               {data.name.charAt(0)}
             </AvatarFallback>
           </Avatar>
-          <div className="group relative max-w-[85%]  space-y-1">
+          <div className="group relative max-w-[85%] space-y-1">
             <div className="flex flex-col gap-1">
-              <span className="text-xs text-neutral-500 dark:text-white/50">{data.name}</span>
-                <div className="rounded-2xl rounded-bl-sm border dark:border-0 bg-neutral-200 p-4 text-black shadow-[0_0_15px_rgba(0,0,0,0.1)] transition-all  dark:text-white dark:bg-white/20 dark:shadow-[0_0_15px_rgba(255,255,255,0.1)] ">
+              <span className="text-xs text-neutral-500 dark:text-white/50">
+                {data.name}
+              </span>
+              <div className="rounded-2xl rounded-bl-sm border bg-neutral-200 p-4 text-black shadow-[0_0_15px_rgba(0,0,0,0.1)] transition-all dark:border-0 dark:bg-white/20 dark:text-white dark:shadow-[0_0_15px_rgba(255,255,255,0.1)]">
                 <p className="break-words text-[15px] leading-relaxed">
                   {data.message}
                 </p>
-                </div>
               </div>
+            </div>
             <div className="flex justify-start">
               <span className="text-xs text-neutral-500 dark:text-white/50">
                 {new Date(data.messageTime).toLocaleTimeString([], {
