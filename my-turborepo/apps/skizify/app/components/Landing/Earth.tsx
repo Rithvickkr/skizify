@@ -1,12 +1,12 @@
 "use client"
 import Spline from '@splinetool/react-spline/next';
 
-export default function Earth() {
+export default function Home() {
   return (
-    <main             className="w-full h-20 md:h-full z-10 relative">
+    <main>
       <Spline
-        scene="https://prod.spline.design/xa7vl12mzbXmgiCi/scene.splinecode" 
-        />
+        scene="https://prod.spline.design/h278ZWDgVFxWZ9qh/scene.splinecode" 
+      />
     </main>
   );
 }
