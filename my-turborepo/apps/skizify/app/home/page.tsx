@@ -11,6 +11,8 @@ export default function Home() {
     <main className="relative min-h-screen w-screen overflow-x-hidden">
         <NavbarLanding />
         <BlurBottomScreen />
+        
+      <Earth/>
       <div className="mx-auto max-w-[80%]">
         <div className="mt-20">
           <BentoGridLandingDemo />
@@ -21,7 +23,6 @@ export default function Home() {
           <TextRevealDemo />
       </div>
 
-      <Earth/>
   
     </main>
   );
