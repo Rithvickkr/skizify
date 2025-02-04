@@ -1,6 +1,5 @@
 'use client'
 
-import { SplineScene } from "../../../@repo/store/components/ui/splite";
 import { Card } from "../../../@/components/ui/card";
 import { Spotlight } from "../../../@repo/store/components/ui/Spotlight";
 import { HoverCard } from "./HoverCard";
@@ -16,10 +15,10 @@ export function Robot() {
 
             <div className="flex h-full">
         <div className="flex-1 relative">
-          <SplineScene 
+          {/* <SplineScene 
         scene="https://prod.spline.design/E12tL9nXP1IFs6vR/scene.splinecode" 
         className="w-full h-20 md:h-full z-10 relative"
-          />
+          /> */}
         </div>
         {/* Left content */}
         <div className="flex-1 bg-transparent p-8 relative flex flex-col justify-center">
@@ -34,10 +33,10 @@ export function Robot() {
 
         {/* Right content */}
         <div className="flex-1 relative">
-          <SplineScene 
+          {/* <SplineScene 
             scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
             className="w-full h-20 md:h-full z-10 relative"
-          />
+          /> */}
         </div>
       </div>
       </HoverCard>

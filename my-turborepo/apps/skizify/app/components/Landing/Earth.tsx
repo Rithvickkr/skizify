@@ -1,15 +1,14 @@
 "use client"
 import React from 'react';
-import Spline from '@splinetool/react-spline';
 
 export default function LandingPage() {
   return (
-    <div className="relative min-h-screen w-screen overflow-hidden bg-gray-900">
+    <div className="relative min-h-screen w-screen overflow-hidden bg-black">
       {/* Spline 3D model as the background */}
-      <Spline
+      {/* <Spline
         className="absolute inset-0 w-full h-full object-cover"
         scene="https://prod.spline.design/h278ZWDgVFxWZ9qh/scene.splinecode"
-      />
+      /> */}
 
       {/* Monochrome overlay to give a dramatic, toned look */}
       <div className="absolute inset-0 bg-black opacity-10"></div>

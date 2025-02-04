@@ -5,23 +5,21 @@ import NavbarLanding from "../components/Landing/Navbar";
 import { TextRevealDemo } from "../components/Landing/TextReveal";
 import { Robot } from "../components/Landing/Robot";
 import Earth from "../components/Landing/Earth";
+import Frontpage from "../components/Landing/FrontPage";
 
 export default function Home() {
   return (
     <main className="relative min-h-screen w-screen overflow-x-hidden">
-        <NavbarLanding />
+        {/* <NavbarLanding /> */}
         <BlurBottomScreen />
         
-      <Earth/>
+      <Frontpage />
       <div className="mx-auto max-w-[80%]">
         <div className="mt-20">
           <BentoGridLandingDemo />
         </div>
       </div>
-        <Robot />
-      <div className="text-yellow-500">
-          <TextRevealDemo />
-      </div>
+        {/* <Robot /> */}
 
   
     </main>

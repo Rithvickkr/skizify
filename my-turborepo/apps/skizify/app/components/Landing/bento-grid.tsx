@@ -1,3 +1,4 @@
+import { GlowingEffect } from "../../../components/ui/glowing-effect";
 import { cn } from "../../utils/cn";
 
 export const BentoGrid = ({
@@ -21,9 +22,9 @@ export const BentoGrid = ({
 
 export const BentoGridItem = ({
   className,
+  header,
   title,
   description,
-  header,
   icon,
 }: {
   className?: string;
@@ -39,6 +40,16 @@ export const BentoGridItem = ({
         className
       )}
     >
+        <GlowingEffect
+          blur={0}
+          borderWidth={3}
+          spread={80}
+          glow={true}
+          disabled={false}
+          proximity={64}
+          inactiveZone={0.01}
+        />
+
       {header}
     </div>
   );
