@@ -2,7 +2,7 @@
 
 import { Card } from "../../../@/components/ui/card";
 import { Spotlight } from "../../../@repo/store/components/ui/Spotlight";
-import { HoverCard } from "./HoverCard";
+import { HoverCard } from "./Bento/HoverCard";
  
 export function Robot() {
   return (

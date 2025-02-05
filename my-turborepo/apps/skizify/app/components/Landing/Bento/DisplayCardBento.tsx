@@ -1,7 +1,7 @@
 "use client";
 
 import { AlertTriangle, CheckCircle, XCircle } from "lucide-react";
-import { cn } from "../../utils/cn";
+import { cn } from "../../../utils/cn";
 import { useState } from "react";
 import { HoverCard } from "./HoverCard";
 

@@ -1,5 +1,5 @@
-import { GlowingEffect } from "../../../components/ui/glowing-effect";
-import { cn } from "../../utils/cn";
+import { GlowingEffect } from "../../../../components/ui/glowing-effect";
+import { cn } from "../../../utils/cn";
 
 export const BentoGrid = ({
   className,
@@ -11,7 +11,7 @@ export const BentoGrid = ({
   return (
     <div
       className={cn(
-        "grid md:grid-rows-12 grid-cols-1 md:grid-cols-4 gap-4 max-w-7xl mx-auto ",
+        "grid md:grid-rows-12 grid-cols-1 md:grid-cols-12  gap-1 max-w-7xl mx-auto ",
         className
       )}
     >
@@ -36,7 +36,7 @@ export const BentoGridItem = ({
   return (
     <div
       className={cn(
-        "row-span-1 rounded-lg group/bento hover:shadow-xl transition duration-200 shadow-input dark:shadow-none p-1 dark:bg-black dark:border-white/[0.2] bg-white border-[0.1rem] border-transparent justify-between flex flex-col space-y-4",
+        "row-span-1 rounded-lg group/bento hover:shadow-xl transition duration-200 shadow-input dark:shadow-none p-1 dark:bg-black  bg-white  justify-between flex flex-col space-y-4",
         className
       )}
     >
