@@ -5,6 +5,8 @@ import { cn } from "../../utils/cn";
 import { useState } from "react";
 import { HoverCard } from "./HoverCard";
 
+// ... (keep the interfaces and data the same)
+
 interface Update {
   status: "off-track" | "at-risk" | "on-track";
   message: string;
@@ -47,6 +49,8 @@ const statusConfig = {
   },
 };
 
+
+
 export default function ProjectUpdates() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
@@ -62,9 +66,9 @@ export default function ProjectUpdates() {
   };
 
   return (
-    <HoverCard classname="h-full w-full bg-black p-4 sm:p-8">
+    <HoverCard classname="h-full w-full bg-black/90 p-4 sm:p-8 rounded-2xl">
       <div className="mx-auto w-full max-w-2xl">
-        <h1 className="mb-3 text-lg font-semibold text-white drop-shadow-lg sm:text-lg">
+        <h1 className="mb-3 text-2xl font-bold text-white drop-shadow-lg bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
           Project Updates
         </h1>
         <p className="mb-6 text-base text-gray-400 sm:mb-12 sm:text-base">
@@ -81,43 +85,45 @@ export default function ProjectUpdates() {
               <div
                 key={index}
                 className={cn(
-                  "absolute flex h-28 w-56 items-center rounded-xl border border-white/10 bg-white/5 bg-clip-padding shadow-lg backdrop-blur-md backdrop-filter transition-all duration-700 hover:z-10 sm:h-28 sm:w-64 md:h-32 md:w-72",
+                  "absolute flex h-28 w-56 items-center rounded-xl border border-white/20 bg-gradient-to-br from-white/10 to-white/5 bg-clip-padding shadow-lg backdrop-blur-md backdrop-filter transition-all duration-500 hover:z-10 sm:h-28 sm:w-64 md:h-32 md:w-72",
+                  isHovered && "scale-105"
                 )}
                 style={{
                   transform: `rotateY(35deg) rotateX(-10deg) rotateZ(-7deg)
-                                        translateX(${(2 - index) * 60}px)
-                                        translateY(${(2 - index) * 35}px)
-                              ${isHovered ? "translateY(-25px)" : ""}`,
+                    translateX(${(2 - index) * 60}px)
+                    translateY(${(2 - index) * 35}px)
+                    ${isHovered ? "translateY(-25px)" : ""}`,
                   boxShadow: `
-                    0 0 0 1px rgba(255,255,255,0.05),
+                    0 0 0 1px rgba(255,255,255,0.1),
                     ${
                       isHovered
-                        ? "0 25px 50px -15px rgba(0,0,0,0.8)"
-                        : "0 15px 30px -10px rgba(0,0,0,0.5)"
+                        ? "0 30px 60px -20px rgba(0,0,0,0.9)"
+                        : "0 15px 30px -10px rgba(0,0,0,0.7)"
                     },
-                    inset 0 1px 0 0 rgba(255,255,255,0.05)
+                    inset 0 1px 0 0 rgba(255,255,255,0.1)
                   `,
                   zIndex: 2 - index,
                 }}
                 onMouseEnter={() => setHoveredIndex(index)}
                 onMouseLeave={() => setHoveredIndex(null)}
               >
-                <div className="p-4 sm:p-5">
+                <div className="p-4 sm:p-5 w-full">
                   <div className="flex items-center gap-2">
-                    <Icon className={cn("h-5 w-5", status.className)} />
+                    <Icon className={cn("h-5 w-5", status.className, "filter drop-shadow-glow")} />
                     <span
                       className={cn(
                         "text-base font-semibold",
                         status.className,
+                        "filter drop-shadow-glow"
                       )}
                     >
                       {status.label}
                     </span>
                   </div>
-                  <p className="mt-2 text-sm font-light text-white">
+                  <p className="mt-2 text-sm font-light text-white/90 leading-relaxed">
                     {update.message}
                   </p>
-                  <p className="mt-1 text-xs text-gray-300">{update.date}</p>
+                  <p className="mt-2 text-xs text-gray-300/80">{update.date}</p>
                 </div>
               </div>
             );

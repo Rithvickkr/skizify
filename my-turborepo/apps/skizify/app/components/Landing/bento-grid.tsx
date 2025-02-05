@@ -40,16 +40,6 @@ export const BentoGridItem = ({
         className
       )}
     >
-        <GlowingEffect
-          blur={0}
-          borderWidth={3}
-          spread={80}
-          glow={true}
-          disabled={false}
-          proximity={64}
-          inactiveZone={0.01}
-        />
-
       {header}
     </div>
   );

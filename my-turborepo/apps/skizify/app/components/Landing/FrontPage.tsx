@@ -4,6 +4,7 @@ import { Button } from "../ui/button";
 import { Spotlight } from "../../../components/ui/spotlight";
 import { useEffect, useState } from "react";
 import { ArrowRight } from "lucide-react";
+import Spline from "@splinetool/react-spline";
 
 export default function Home() {
   const [isHovered, setIsHovered] = useState(false);
@@ -17,40 +18,20 @@ export default function Home() {
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
   return (
-    <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-black text-white">
-      {/* /* Spotlight effect */}
-        <Spotlight
-          className="-top-40 right-0 md:right-60 md:-bottom-20"
-          fill="#878787"
-        />
+    <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-transparent text-white">
+      <Spotlight
+        className="-top-40 right-0 md:right-60 md:-bottom-20"
+        fill="#878787"
+      />
+
+{/* <Spline
+        className="absolute inset-0 object-cover " // Added scale-125 to make it 25% larger
+        scene="https://prod.spline.design/gVruKhRHEFS5vuGw/scene.splinecode" 
+      />
+ */}
 
 
-        {/* Navbar */}
-      <nav className="absolute left-0 right-0 top-0 mx-auto flex max-w-7xl items-center justify-between p-6">
-        <span className="text-xl font-semibold">liveblocks</span>
-        <div className="flex gap-6">
-          <a href="#" className="text-gray-400 hover:text-white">
-            Product
-          </a>
-          <a href="#" className="text-gray-400 hover:text-white">
-            Resources
-          </a>
-          <a href="#" className="text-gray-400 hover:text-white">
-            Docs
-          </a>
-          <a href="#" className="text-gray-400 hover:text-white">
-            Pricing
-          </a>
-        </div>
-        <div className="flex gap-4">
-          <Button variant="ghost" className="text-gray-300">
-            Book a demo
-          </Button>
-          <Button className="rounded-md bg-white px-6 py-2 text-black">
-            Sign in
-          </Button>
-        </div>
-      </nav>
+      
 
       {/* Hero Section */}
       <div className=" px-6 relative text-center">
@@ -62,9 +43,9 @@ export default function Home() {
             onMouseLeave={() => setIsHovered(false)}
           >
             {/* Shimmer effect */}
-            <div className="absolute inset-0 -translate-x-full animate-[shimmer_4s_infinite] bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+            <div className="absolute inset-0 -translate-x-full animate-[shimmer_3s_infinite] bg-gradient-to-r from-transparent via-white/5 to-transparent"></div>
             
-            <span className="rounded-full bg-red-500/10 px-2 py-0.5 text-xs font-medium text-red-700">
+            <span className="rounded-full bg-white px-2 py-0.5 text-xs font-medium text-neutral-700 shadow-md shadow-white/50">
               New
             </span>
             <span className="text-sm text-neutral-300">
@@ -77,7 +58,7 @@ export default function Home() {
             </div>
           </a>
         </div>
-        <h1 className="text-5xl font-bold leading-tight md:text-7xl">
+        <h1 className="text-5xl font-bold leading-tight md:text-7xl bg-gradient-to-b from-white via-white/90 to-white/70 bg-clip-text text-transparent">
           Ready-made <br className="hidden md:block" /> collaborative features
         </h1>
         <p className="mx-auto mt-4 max-w-2xl text-lg text-gray-400">
@@ -86,7 +67,7 @@ export default function Home() {
           derailing your roadmap.
         </p>
         <div className="mt-6 flex flex-col justify-center gap-4 md:flex-row">
-          <Button className="rounded-md bg-white px-6 py-3 text-lg text-black">
+          <Button  variant="gooeyLeft" className="rounded-md bg-white px-6 py-3 text-lg text-black">
             Start today for free
           </Button>
           <Button variant="ghost" className="text-lg text-white">

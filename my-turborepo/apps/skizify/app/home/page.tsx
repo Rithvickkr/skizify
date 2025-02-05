@@ -5,17 +5,20 @@ import { TextRevealDemo } from "../components/Landing/TextReveal";
 import { Robot } from "../components/Landing/Robot";
 import Earth from "../components/Landing/Earth";
 import Frontpage from "../components/Landing/FrontPage";
-import MacOSWindow from "../components/Landing/Carousel";
+import MacOSWindow from "../components/Landing/MacOsWindow";
+import Spline from "@splinetool/react-spline";
+import { BentoLanding } from "../components/Landing/BentoLanding";
 
 export default function Home() {
   return (
-    <main className="relative min-h-screen w-screen overflow-x-hidden">
-        
+    <main className="relative min-h-screen bg-[#121212] w-screen overflow-x-hidden">
+        <NavbarLanding />
       <Frontpage />
       <MacOSWindow />
       <div className="mx-auto max-w-[80%]">
         <div className="mt-20">
-          {/* <BentoGridLandingDemo /> */}
+          {/* <BentoLanding /> */}
+          <BentoGridLandingDemo />
         </div>
       </div>
         {/* <Robot /> */}
