@@ -53,6 +53,8 @@ export const theme = {
 		animation: {
 			"border-beam": "border-beam calc(var(--duration)*1s) infinite linear",
 			shine: "shine var(--duration) infinite linear",
+			spotlight: "spotlight 2s ease .75s 1 forwards",
+
 		},
 		keyframes: {
 			"border-beam": {
@@ -63,6 +65,16 @@ export const theme = {
 				"50%": { "background-position": "100% 100%" },
 				to: { "background-position": "0% 0%" },
 			},
+			spotlight: {
+				"0%": {
+				  opacity: 0,
+				  transform: "translate(-72%, -62%) scale(0.5)",
+				},
+				"100%": {
+				  opacity: 1,
+				  transform: "translate(-50%,-40%) scale(1)",
+				},
+			  },	  
 		},
 	},
 };
