@@ -84,6 +84,7 @@ export const theme = {
 
 
 
+
 export const plugins = [
 	nextui(),
 	plugin(),
