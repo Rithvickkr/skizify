@@ -22,6 +22,7 @@ import RedirectToMeetingPage from "./RedirectingMeetingButton";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { Search } from "lucide-react";
+import { useTheme } from "next-themes";
 import { Button } from "../ui/button";
 import { BackgroundLines } from "../../../@/components/ui/background-lines.tsx";
 
