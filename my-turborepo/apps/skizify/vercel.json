@@ -17,7 +17,7 @@
       }
     },
     "prisma": {
-    "schema": "/packages/db/prisma"
+    "schema": "./db/prisma"
   }
   }
   
