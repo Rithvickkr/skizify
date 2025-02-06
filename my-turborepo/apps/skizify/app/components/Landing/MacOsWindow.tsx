@@ -1,7 +1,7 @@
 "use client"
-import { AnimatePresence, motion, Variants } from 'framer-motion';
-import { Battery, Bell, Github, Wifi } from "lucide-react";
 import React, { useEffect, useState } from 'react';
+import { motion, AnimatePresence, Variants } from 'framer-motion';
+import { Wifi, Battery, Bell, Github } from "lucide-react";
 
 
 interface Slide {
@@ -105,7 +105,7 @@ const MacOSWindow: React.FC = () => {
     <div className="min-h-screen bg-transparent p-8 flex flex-col items-center justify-center">
       {/* Main window container */}
 
-      <div className="w-full max-w-5xl bg-zinc-900/80 rounded-2xl shadow-[0_0_80px_rgba(255,255,255,0.1)] backdrop-blur-xl border border-zinc-800/50 overflow-hidden">
+      <div className="w-full max-w-4xl bg-zinc-900/80 rounded-2xl shadow-[0_0_80px_rgba(255,255,255,0.1)] backdrop-blur-xl border border-zinc-800/50 overflow-hidden">
       <div>
         
       </div>
@@ -170,7 +170,7 @@ const MacOSWindow: React.FC = () => {
       </div>
 
       {/* Main content area */}
-      <div className="h-[550px] relative overflow-hidden bg-gradient-to-br from-zinc-900 to-black">
+      <div className="h-[450px] relative overflow-hidden bg-gradient-to-br from-zinc-900 to-black">
       {/* Background gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-br from-zinc-800/30 to-black/70" />
 
