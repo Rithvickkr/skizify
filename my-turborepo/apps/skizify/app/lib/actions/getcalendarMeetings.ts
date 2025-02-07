@@ -86,7 +86,7 @@ export async function getUsercalendarMeetingsdetails() {
     }
   } catch (err) {
     console.log("Error fetching details in Calendar, due to -->", err);
-    throw new Error("error fetching fetails for calendar");
+    // throw new Error("error fetching fetails for calendar");
   }
 }
 
@@ -143,6 +143,6 @@ export async function getSkizzercalendarMeetingsdetails() {
     }
   } catch (err) {
     console.log("Error fetching details in Calendar, due to -->", err);
-    throw new Error("error fetching fetails for calendar");
+    // throw new Error("error fetching fetails for calendar");
   }
 }

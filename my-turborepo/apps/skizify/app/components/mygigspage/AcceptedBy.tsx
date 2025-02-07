@@ -35,7 +35,7 @@ export default async function AcceptedBy({ gig }: { gig: GigsInterface }) {
         <CredenzaContent className="border border-black dark:border-neutral-500 ">
           <CredenzaHeader>
             <CredenzaTitle>
-              <div className="font-display text-2xl font-bold md:text-4xl">
+              <div className="text-2xl font-bold md:text-4xl">
                 Search Results
               </div>
             </CredenzaTitle>

@@ -74,7 +74,7 @@ model Reviews {
 model GigUser {
   id            String    @id @default(uuid())
   gig           Gigs      @relation(fields: [gigId], references: [id], onDelete: Cascade) // onDelete: Cascade ensures that if the related gig is deleted, the corresponding GigUser record is also deleted.
-  gigId         String    @unique
+  gigId         String    
   user          User      @relation(name: "UserCreatedGig", fields: [UserId], references: [id])
   Skizzer       User      @relation(name: "UserAccptedGig", fields: [skizzerId], references: [id])
   skizzerId     String

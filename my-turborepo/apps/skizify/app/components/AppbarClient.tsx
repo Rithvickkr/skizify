@@ -23,12 +23,12 @@ export function AppbarClient() {
 
   const changeRoles = async () => {
     const info = await getInfos(session.data?.user?.id || "");
-    if (info?.skizzer) {
+    // if (info?.skizzer) {
       await setRole();
       window.location.reload();
-    } else {
-      window.location.href = "/createprofile";
-    }
+    // } else {
+    //   window.location.href = "/createprofile";
+    // }
   };
   return (
     <div>

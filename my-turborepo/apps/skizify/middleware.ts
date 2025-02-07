@@ -42,9 +42,9 @@ export async function middleware(request: NextRequest) {
   console.log("isSkizzer:", isSkizzer);
 
   // If the user is not a Skizzer, redirect them to the "Create Profile" page
-  if (!isSkizzer) {
-    return NextResponse.redirect(new URL("/createprofile", currentUrl.origin));
-  }
+  // if (!isSkizzer) {
+  //   return NextResponse.redirect(new URL("/createprofile", currentUrl.origin));
+  // }
 
   // Allow the request to continue if the user is authenticated and is a Skizzer
   return NextResponse.next();

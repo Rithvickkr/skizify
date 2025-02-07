@@ -41,7 +41,7 @@ export default function SkizzerselectCard({
         {SKizzersInfo.map((skizzer: any) => {
           return (
             <div
-              className={`flex cursor-pointer justify-between rounded-md p-4 shadow-md hover:border hover:border-black dark:hover:border-white ${selectedCard === skizzer.id ? "border border-black bg-neutral-100 dark:border-white dark:bg-transparent" : ""}`}
+              className={`flex cursor-pointer dark:border dark:border-neutral-300/40 justify-between rounded-md p-4 shadow-md hover:border hover:border-black dark:hover:border-white ${selectedCard === skizzer.id ? "border border-black bg-neutral-100 dark:border-[#ffffff] dark:bg-black" : ""}`}
               key={skizzer.id}
               onClick={() => setselectedCard(skizzer.id)}
             >
