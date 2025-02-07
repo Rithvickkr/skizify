@@ -2,8 +2,8 @@
 import React, { useEffect, useState } from 'react';
 
 import { AnimatePresence, motion, Variants } from 'framer-motion';
-import { Battery, Bell, Github, Wifi } from "lucide-react";
-
+import { Battery, Bell, Wifi } from "lucide-react";
+import { Icons } from '../footer/Footer';
 
 
 interface Slide {
@@ -138,7 +138,7 @@ const MacOSWindow: React.FC = () => {
       <div className="flex items-center gap-6">
         {/* GitHub Icon & Count */}
         <div className="flex items-center gap-1">
-          <Github className="w-4 h-4 text-zinc-400" />
+          <Icons.github className="w-4 h-4 text-zinc-400" />
           <span className="text-xs font-medium text-zinc-400">49</span>
         </div>
 

@@ -1,7 +1,7 @@
 "use client";
 import { BentoGrid, BentoGridItem } from "./bento-grid";
-import DisplayCardsDemo from "./DisplayCardBento";
-import { HoverCard } from "./HoverCard";
+import DisplayCardsDemo from "../DisplayCardBento";
+import { HoverCard } from "../HoverCard";
 
 export default function BentoGridLandingDemo() {
   return (
@@ -16,7 +16,7 @@ export default function BentoGridLandingDemo() {
       className="md:col-span-5 md:row-span-5"
       />
       <BentoGridItem
-      header={<DisplayCardsDemo />}
+      header={<HoverCard children={undefined} />}
       className="md:col-span-7 md:row-span-5"
       />
       <BentoGridItem

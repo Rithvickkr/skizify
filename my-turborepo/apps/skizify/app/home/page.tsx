@@ -1,18 +1,14 @@
-import { Text } from "lucide-react";
-import BentoGridLandingDemo from "../components/Landing/BentoGridLandingPage";
-import NavbarLanding from "../components/Landing/Navbar";
-import { TextRevealDemo } from "../components/Landing/TextReveal";
-import { Robot } from "../components/Landing/Robot";
-import Earth from "../components/Landing/Earth";
+import BentoGridLandingDemo from "../components/Landing/Bento/BentoGridLandingPage";
+import DisplayCardBento from "../components/Landing/DisplayCardBento";
 import Frontpage from "../components/Landing/FrontPage";
+import WorldMapDemo from "../components/Landing/IndivisualSections/WorldMap";
 import MacOSWindow from "../components/Landing/MacOsWindow";
-import Spline from "@splinetool/react-spline";
-import { BentoLanding } from "../components/Landing/BentoLanding";
+import NavbarLanding from "../components/Landing/Navbar";
 
 export default function Home() {
   return (
-    <main className="relative min-h-screen bg-black w-screen overflow-x-hidden">
-        <NavbarLanding />
+    <main className="relative font-mono min-h-screen w-screen overflow-x-hidden bg-black">
+      <NavbarLanding />
       <Frontpage />
       <MacOSWindow />
       <div className="mx-auto max-w-[80%]">
@@ -20,10 +16,10 @@ export default function Home() {
           {/* <BentoLanding /> */}
           <BentoGridLandingDemo />
         </div>
+        <DisplayCardBento />
       </div>
-        {/* <Robot /> */}
-
-  
+      <WorldMapDemo />
+      {/* <Robot /> */}
     </main>
   );
 }

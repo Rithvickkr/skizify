@@ -3,7 +3,7 @@
 import { motion, MotionValue, useScroll, useTransform } from "motion/react";
 import { ComponentPropsWithoutRef, FC, ReactNode, useRef } from "react";
 
-import { cn } from "../../lib/utils";
+import { cn } from "../../app/utils/cn";
 
 export interface TextRevealProps extends ComponentPropsWithoutRef<"div"> {
   text: string;
@@ -14,7 +14,6 @@ export const TextReveal: FC<TextRevealProps> = ({ text, className }) => {
 
   const { scrollYProgress } = useScroll({
     target: targetRef,
-    offset: ["start end", "center center"],  // Adjust when the animation begins
   });
   const words = text.split(" ");
 
@@ -28,7 +27,7 @@ export const TextReveal: FC<TextRevealProps> = ({ text, className }) => {
         <p
           ref={targetRef}
           className={
-            "flex flex-wrap p-5 text-2xl font-bold text-blue-800 md:p-8 md:text-3xl lg:p-10 lg:text-4xl xl:text-5xl"
+            "flex flex-wrap p-5 text-2xl font-bold text-black/20 dark:text-white/20 md:p-8 md:text-3xl lg:p-10 lg:text-4xl xl:text-5xl"
           }
         >
           {words.map((word, i) => {
@@ -59,7 +58,7 @@ const Word: FC<WordProps> = ({ children, progress, range }) => {
       <span className={"absolute opacity-30"}>{children}</span>
       <motion.span
         style={{ opacity: opacity }}
-        className={"text-green-600"}
+        className={"text-black dark:text-white"}
       >
         {children}
       </motion.span>

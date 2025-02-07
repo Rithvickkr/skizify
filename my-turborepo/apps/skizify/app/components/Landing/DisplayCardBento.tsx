@@ -51,7 +51,7 @@ const statusConfig = {
 
 
 
-export default function ProjectUpdates() {
+export default function DisplayCardBento() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   const getTranslate = (index: number) => {

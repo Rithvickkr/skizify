@@ -11,7 +11,7 @@ export function HoverCard({
   return (
     <div
       className={cn(
-        "group relative flex h-full border border-neutral-600/40 rounded-lg w-full items-center justify-center overflow-hidden bg-black/60 backdrop-blur-sm transition-all duration-500 hover:border-neutral-500/40",
+        "group relative flex h-full rounded-xl w-full items-center justify-center overflow-hidden bg-black/60 backdrop-blur-sm transition-all duration-500 hover:border-neutral-500/40",
         classname
       )}
       onMouseMove={(e) => {
