@@ -11,7 +11,7 @@ import { BentoLanding } from "../components/Landing/BentoLanding";
 
 export default function Home() {
   return (
-    <main className="relative min-h-screen bg-[#121212] w-screen overflow-x-hidden">
+    <main className="relative min-h-screen bg-black w-screen overflow-x-hidden">
         <NavbarLanding />
       <Frontpage />
       <MacOSWindow />

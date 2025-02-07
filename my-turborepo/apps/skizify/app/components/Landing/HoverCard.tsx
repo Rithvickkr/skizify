@@ -1,6 +1,5 @@
 import { ReactNode } from "react";
 import { cn } from "../../utils/cn";
-// import { GlowingEffect } from "../../../components/ui/glowing-effect";
 
 export function HoverCard({
   children,
@@ -12,29 +11,31 @@ export function HoverCard({
   return (
     <div
       className={cn(
-        "group relative flex h-full w-full items-center justify-center overflow-hidden bg-black transition-all duration-300",
-        classname,
+        "group relative flex h-full border border-neutral-600/40 rounded-lg w-full items-center justify-center overflow-hidden bg-black/60 backdrop-blur-sm transition-all duration-500 hover:border-neutral-500/40",
+        classname
       )}
       onMouseMove={(e) => {
         const rect = e.currentTarget.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
-        e.currentTarget.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 40%, transparent 90%)`;
+        e.currentTarget.style.background = `
+          radial-gradient(
+            800px circle at ${x}px ${y}px,
+            rgba(255, 255, 255, 0.06),
+            transparent 40%
+          ),
+          radial-gradient(
+            600px circle at ${x}px ${y}px,
+            rgba(255, 255, 255, 0.04),
+            transparent 40%
+          ),
+          rgba(0, 0, 0, 0.6)
+        `;
       }}
       onMouseLeave={(e) => {
-        e.currentTarget.style.background = "";
+        e.currentTarget.style.background = "rgba(0, 0, 0, 0.6)";
       }}
     >
-      {/* <GlowingEffect
-        blur={0}
-        borderWidth={3}
-        spread={80}
-        glow={true}
-        disabled={false}
-        proximity={64}
-        inactiveZone={0.01}
-      /> */}
-
       {children}
     </div>
   );
