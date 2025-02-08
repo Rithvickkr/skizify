@@ -27,10 +27,10 @@ export default function WorldMap({
 
   // Slightly change the dotted map style for a modern look.
   const svgMap = map.getSVG({
-    radius: 0.12,
-    color: "#888888",
+    radius: 0.22,
+    color: "#222222",
     shape: "hexagon",
-    backgroundColor: "#1a1a1a",
+    backgroundColor: "#000000",
   });
 
   const projectPoint = (lat: number, lng: number) => {
@@ -49,10 +49,10 @@ export default function WorldMap({
   };
 
   return (
-    <div className="w-full h-full bg-gradient-to-br from-black to-black rounded-[40px] relative font-sans overflow-hidden shadow-2xl">
+    <div className="w-full h-full bg-black  relative font-sans overflow-hidden shadow-2xl">
       <Image
         src={`data:image/svg+xml;utf8,${encodeURIComponent(svgMap)}`}
-        className="h-full w-full [mask-image:linear-gradient(to_bottom,transparent,white_10%,white_90%,transparent)] pointer-events-none select-none"
+        className="h-full w-full  pointer-events-none select-none"
         alt="world map"
         height="495"
         width="1056"

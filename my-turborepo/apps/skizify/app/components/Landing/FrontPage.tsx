@@ -58,7 +58,7 @@ export default function Home() {
             </div>
           </a>
         </div>
-        <h1 className="text-5xl font-bold leading-tight md:text-7xl bg-gradient-to-b from-white via-white/90 to-white/70 bg-clip-text text-transparent">
+        <h1 className="text-5xl font-bold font-inter leading-tight md:text-7xl bg-gradient-to-b from-white via-white/90 to-white/70 bg-clip-text text-transparent">
           Ready-made <br className="hidden md:block" /> collaborative features
         </h1>
         <p className="mx-auto mt-4 max-w-2xl text-lg text-gray-400">
@@ -70,9 +70,16 @@ export default function Home() {
           <Button  variant="gooeyLeft" className="rounded-md bg-white px-6 py-3 text-lg text-black">
             Start today for free
           </Button>
-          <Button variant="ghost" className="text-lg text-white">
-            Book a demo →
-          </Button>
+            <Button 
+            variant="gooeyRight" 
+            className="text-lg text- bg-black relative group overflow-hidden transition-all duration-300 bg-gradient-to-r from-white/5 to-white/10 "
+            >
+            <span className="relative z-10 flex items-center gap-2 group-hover:translate-x-1 transition-transform duration-300">
+              Book a demo
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
+            </span>
+            <div className="absolute inset-0 -translate-x-full group-hover:translate-x-0 bg-gradient-to-r from-white/5 to-white/10 transition-transform duration-500" />
+            </Button>
         </div>
       </div>
     </div>

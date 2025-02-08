@@ -30,6 +30,7 @@ export const theme = {
 		display: ["Archivo"],
 		time: ['Libre Franklin"', "sans-serif"],
 		helvetica: ["Helvetica", "Arial", "sans-serif"],
+		inter: ["Inter", "sans-serif"],
 	},
 	extend: {
 		colors: {

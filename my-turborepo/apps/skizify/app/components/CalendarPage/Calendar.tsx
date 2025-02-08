@@ -341,7 +341,7 @@ export default function Calendar({
             <div className="ml-[50px] mt-3 sm:ml-[100px]">
               <div className="mr-2 rounded-lg border border-neutral-200 bg-gradient-to-tr from-white to-neutral-50 p-2 shadow-lg transition-all duration-300 hover:border-neutral-400 hover:shadow-xl dark:border-neutral-800 dark:from-neutral-900 dark:to-black dark:hover:border-neutral-500 sm:mr-0 sm:p-4">
                 <div className="flex flex-col gap-2 sm:flex-row sm:gap-4">
-                  <div className="h-20 w-20 animate-pulse overflow-hidden rounded-lg bg-neutral-300 dark:bg-neutral-900 sm:h-24 sm:w-24">
+                  <div className="h-20 w-20 overflow-hidden rounded-lg bg-neutral-300 dark:bg-neutral-900 sm:h-24 sm:w-24">
                     <img
                       src={
                         "https://skizify-bucket.s3.ap-south-1.amazonaws.com/Screenshot+2024-11-09+at+10.53.03%E2%80%AFPM.png"
@@ -356,7 +356,7 @@ export default function Calendar({
                         {title}
                       </h3>
                       {price && (
-                        <span className="whitespace-nowrap rounded-full bg-gradient-to-r from-green-100 to-green-200 px-2 py-1 text-[10px] font-medium text-green-800 dark:from-green-900 dark:to-green-800 dark:text-green-100 sm:px-3 sm:text-sm">
+                        <span className="whitespace-nowrap rounded-md bg-gradient-to-r from-green-100 to-green-200 px-2 py-1 text-[10px] font-medium text-green-800 dark:from-green-900 dark:to-green-800 dark:text-green-100 sm:px-3 sm:text-sm">
                           {price}
                         </span>
                       )}
