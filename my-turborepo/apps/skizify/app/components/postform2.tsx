@@ -74,6 +74,7 @@ export default function Postform() {
 
   const [currentStep, setCurrentStep] = useState(0);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;
@@ -150,8 +151,12 @@ export default function Postform() {
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
+    setIsSubmitting(true);
     try {
-      if (!validateForm()) return;
+      if (!validateForm()) {
+        setIsSubmitting(false);
+        return;
+      }
       await GigSet(
         formData.Title,
         formData.description,
@@ -163,16 +168,6 @@ export default function Postform() {
         formData.category,
       );
       console.log("Form submitted:", formData);
-      // {
-      //   Title: ';KNE;RKNG',
-      //   startdate: 'Mon Dec 30 2024 00:00:00 GMT+0530 (India Standard Time)',
-      //   starttime: 'Sun Nov 03 2024 04:00:00 GMT+0530 (India Standard Time)',
-      //   enddate: 'Tue Dec 31 2024 00:00:00 GMT+0530 (India Standard Time)',
-      //   endtime: 'Sun Nov 03 2024 08:00:00 GMT+0530 (India Standard Time)',
-      //   description: 'ELRKGNLWKEG',
-      //   category: 'Art'
-      // }
-
       setIsSubmitted(true);
       setTimeout(() => {
         setIsSubmitted(false);
@@ -195,6 +190,8 @@ export default function Postform() {
         description: "There was a problem with your request.",
         action: <ToastAction altText="Try again">Try again</ToastAction>,
       });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -590,8 +587,13 @@ export default function Postform() {
                   variant="gooeyLeft"
                   className="min-w-28 bg-white text-black opacity-90 hover:opacity-100"
                   onClick={handleSubmit}
+                  disabled={isSubmitting}
                 >
-                  Submit
+                  {isSubmitting ? (
+                    <div className="spinner">Submitting...</div>
+                  ) : (
+                    "Submit"
+                  )}
                 </Button>
               )}
             </div>

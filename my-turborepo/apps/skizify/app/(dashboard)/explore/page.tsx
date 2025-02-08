@@ -18,11 +18,18 @@ export default async function Page({
   const session = await getServerSession(authOptions);
   console.log("session: ", session);
   const filteredGigs = filtergigs(gigs, session);
+
   return (
     <div className="flex h-fit w-full flex-col items-center rounded-lg pb-4">
       <div className="mt-4 w-full">
         <SearchBar />
-        <GigStructure gigs={filteredGigs} page={page} per_page={per_page} />
+        {filteredGigs.length > 0 ? (
+          <GigStructure gigs={filteredGigs} page={page} per_page={per_page} />
+        ) : (
+          <div className="text-center text-gray-500 mt-4">
+            No gigs available at the moment.
+          </div>
+        )}
       </div>
     </div>
   );
