@@ -1,46 +1,52 @@
 "use client";
 import React, { ReactNode } from "react";
-import { Mail, User, Clock, Video, Lock, Edit, Star } from "lucide-react";
+import {
+    Mail,
+    User,
+    Clock,
+    Video,
+    Lock,
+    Edit,
+    Star,
+    Shield,
+    Globe,
+    Layers,
+    Users,
+    MessageSquare,
+    CheckCircle,
+} from "lucide-react";
 
 interface BlockProps {
+    mobileGridClasses?: string;
     gridClasses: string;
-    title?: string;
-    description?: string;
-    date?: string;
-    icon?: ReactNode;
-    quality?: string;
-    children?: ReactNode;
+    title: string;
+    description: string;
+    quality: string;
+    icon: ReactNode;
 }
 
 const Block: React.FC<BlockProps> = ({
+    mobileGridClasses = "",
     gridClasses,
     title,
     description,
-    date,
-    icon,
     quality,
-    children,
+    icon,
 }) => {
     return (
         <div
-            className={`flex cursor-pointer flex-col border-t-1 border-t-neutral-600 overflow-hidden rounded-xl border border-neutral-800/50 bg-gradient-to-b from-black/40 to-neutral-900 p-6 transition-transform duration-300 hover:scale-105 hover:-rotate-1 ${gridClasses}`}
+            className={`flex flex-col border border-neutral-800/80 cursor-pointer rounded-md sm:rounded-xl bg-gradient-to-br from-neutral-800/60 to-black/60 p-6 transition-all duration-300 hover:shadow-2xl hover:scale-105 ${mobileGridClasses} ${gridClasses}`}
         >
-            <div className="space-y-2 flex flex-col flex-grow">
-                {title && (
-                    <div className="flex items-center gap-2">
-                        <h3 className="font-medium text-neutral-200">{title}</h3>
-                        {icon && <span className="text-neutral-400">{icon}</span>}
-                    </div>
-                )}
-                {description && (
-                    <p className="line-clamp-2 text-sm text-neutral-400">{description}</p>
-                )}
-                {quality && (
-                    <p className="mt-auto text-xs text-neutral-500">{quality}</p>
-                )}
-                {date && <p className="text-xs text-neutral-500">{date}</p>}
+            <div className="flex flex-col flex-grow space-y-2">
+                <div className="flex items-center gap-2">
+                    <span className="text-base sm:text-lg text-neutral-200">{icon}</span>
+                    <h3 className="text-xs sm:text-sm font-semibold text-neutral-200">{title}</h3>
+                </div>
+                <p className="text-xs sm:text-sm text-neutral-400">{description}</p>
             </div>
-            {children}
+            <div className="mt-4 flex justify-between text-xs text-neutral-500">
+                <span>{quality}</span>
+            </div>
         </div>
     );
 };
@@ -49,80 +55,120 @@ const Home: React.FC = () => {
     const blocks = [
         {
             title: "Post Your Doubt",
-            description:
-                "Kickstart your learning by posting your doubt or query. Set your topic, desired timeframe, and even your preliminary budget. You’re in complete control from the start.",
-            date: "Feb 3, 2025",
+            description: "Kickstart your learning by posting a query.",
             quality: "User-Controlled",
             icon: <Mail size={16} />,
-            gridClasses: "col-span-2 row-span-2",
+            mobileGridClasses: "col-span-2 row-span-1",
+            gridClasses: "col-span-1 row-span-1 sm:col-span-2 sm:row-span-2",
         },
         {
             title: "Skizzer Applications",
-            description:
-                "Our network of verified professionals—Skizzers—will quickly apply to your posted gig. Review their tailored offers and proposals to find the expert who best matches your learning style.",
-            date: "Feb 3, 2025",
+            description: "Verified experts apply to your doubt.",
             quality: "Verified Experts",
             icon: <User size={16} />,
-            gridClasses: "col-start-3 row-start-1",
+            mobileGridClasses: "col-span-1 row-span-1",
+            gridClasses: "col-span-1 row-span-1 sm:col-span-1 sm:row-span-2",
         },
         {
-            title: "Custom Timeframe & Budget",
-            description:
-                "You decide when and how much. Post your preferred schedule and budget, and let the professionals choose the time slots and rates that work for them. Flexibility for both parties.",
-            date: "Feb 3, 2025",
+            title: "Custom Time & Budget",
+            description: "Set flexible schedules & budgets.",
             quality: "Flexible",
             icon: <Clock size={16} />,
-            gridClasses: "col-start-3 row-start-2 row-span-2",
+            mobileGridClasses: "col-span-1 row-span-1",
+            gridClasses: "col-span-1 row-span-1 sm:col-span-1 sm:row-span-2",
         },
         {
             title: "Live Video Sessions",
-            description:
-                "Once you select a Skizzer, enjoy a live, one-on-one video call tailored to your needs. Ask questions, dive deep into topics, and gain personalized guidance in real time.",
-            date: "Feb 3, 2025",
+            description: "One-on-one live video calls.",
             quality: "Interactive",
             icon: <Video size={16} />,
-            gridClasses: "col-start-1 row-start-3",
+            mobileGridClasses: "col-span-2 row-span-1",
+            gridClasses: "col-span-1 row-span-1 sm:col-span-2 sm:row-span-1",
         },
         {
             title: "Secure Transactions",
-            description:
-                "Rest easy with our secure payment system. The chosen expert sets the price, and you only pay when you’re satisfied after the session.",
-            date: "Feb 3, 2025",
+            description: "Only pay when satisfied.",
             quality: "Safe & Transparent",
             icon: <Lock size={16} />,
-            gridClasses: "col-start-2 row-start-3 row-span-2",
+            mobileGridClasses: "col-span-2 row-span-1",
+            gridClasses: "col-span-1 row-span-1 sm:col-span-2 sm:row-span-2",
         },
         {
             title: "Customized Learning",
-            description:
-                "Every session is tailored to your needs. Whether it’s in-depth problem solving or a quick doubt clearance, the learning experience is as unique as you are.",
-            date: "Jan 9, 2025",
+            description: "Personalized learning for every need.",
             quality: "Personalized",
             icon: <Edit size={16} />,
-            gridClasses: "col-start-1 row-start-4",
+            mobileGridClasses: "col-span-1 row-span-1",
+            gridClasses: "col-span-1 row-span-1",
         },
         {
             title: "Review & Ratings",
-            description:
-                "After your session, provide feedback on your Skizzer. Your reviews help build a trusted community where quality guidance is the norm.",
-            date: "Feb 3, 2025",
+            description: "Provide feedback to experts.",
             quality: "Community-Driven",
             icon: <Star size={16} />,
-            gridClasses: "col-start-3 row-start-4",
+            mobileGridClasses: "col-span-1 row-span-1",
+            gridClasses: "col-span-1 row-span-1",
+        },
+        {
+            title: "End-to-End Encryption",
+            description: "100% secure video sessions.",
+            quality: "Encrypted",
+            icon: <Shield size={16} />,
+            mobileGridClasses: "col-span-1 row-span-1",
+            gridClasses: "col-span-1 row-span-1 sm:col-span-1 sm:row-span-2",
+        },
+        {
+            title: "Global Accessibility",
+            description: "Connect worldwide!",
+            quality: "Borderless Learning",
+            icon: <Globe size={16} />,
+            mobileGridClasses: "col-span-1 row-span-1",
+            gridClasses: "col-span-1 row-span-1",
+        },
+        {
+            title: "Multi-Topic Support",
+            description: "Experts in various fields.",
+            quality: "Diverse Expertise",
+            icon: <Layers size={16} />,
+            mobileGridClasses: "col-span-2 row-span-1",
+            gridClasses: "col-span-1 row-span-1 sm:col-span-1 sm:row-span-2",
+        },
+        {
+            title: "Community Discussions",
+            description: "Join discussions & forums.",
+            quality: "Collaborative",
+            icon: <Users size={16} />,
+            mobileGridClasses: "col-span-1 row-span-1",
+            gridClasses: "col-span-1 row-span-1 sm:col-span-1 sm:row-span-2",
+        },
+        {
+            title: "Instant Messaging",
+            description: "Chat before sessions.",
+            quality: "Real-Time Communication",
+            icon: <MessageSquare size={16} />,
+            mobileGridClasses: "col-span-1 row-span-1",
+            gridClasses: "col-span-1 row-span-1 sm:col-span-1 sm:row-span-2",
+        },
+        {
+            title: "Verified Skizzers",
+            description: "Rigorously vetted professionals.",
+            quality: "Trusted & Vetted",
+            icon: <CheckCircle size={16} />,
+            mobileGridClasses: "col-span-2 row-span-1",
+            gridClasses: "col-span-1 row-span-1 sm:col-span-2 sm:row-span-2",
         },
     ];
 
     return (
-        <div className="relative flex min-h-screen items-center justify-center bg-black p-5">
-            {/* Animated background overlay */}
-            <div
-                className="absolute inset-0 animate-pulse opacity-60 bg-[url('/retrofuture.png')] bg-cover bg-center"
-            />
+        <div className="relative flex min-h-screen items-center sm:p-0 p-1 justify-center bg-black">
+            {/* Animated Background */}
+            <div className="absolute inset-0 animate-pulse opacity-60 bg-[url('/retrofuture.png')] bg-cover bg-center" />
             <div className="absolute inset-0 bg-black/70" />
 
+            {/* Responsive Grid Layout */}
             <div
-                className="relative grid w-full max-w-5xl grid-cols-3 gap-4"
-                style={{ gridAutoRows: "200px" }}
+                className="relative grid w-full max-w-6xl grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-1 sm:gap-3"
+                style={{ gridAutoRows: "180px" }}
             >
                 {blocks.map((block, index) => (
                     <Block key={index} {...block} />

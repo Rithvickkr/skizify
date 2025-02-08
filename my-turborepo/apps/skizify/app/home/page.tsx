@@ -2,6 +2,7 @@ import BentoGridLandingDemo from "../components/Landing/Bento/BentoGridLandingPa
 import BentoGrid from "../components/Landing/BentoTry";
 import DisplayCardBento from "../components/Landing/DisplayCardBento";
 import Frontpage from "../components/Landing/FrontPage";
+import FAQ from "../components/Landing/IndivisualSections/FaQ";
 import WorldMapDemo from "../components/Landing/IndivisualSections/WorldMap";
 import MacOSWindow from "../components/Landing/MacOsWindow";
 import NavbarLanding from "../components/Landing/Navbar";
@@ -12,15 +13,17 @@ export default function Home() {
       <NavbarLanding />
       <Frontpage />
       <MacOSWindow />
-      <div className="mx-auto max-w-[80%]">
+      <div className="mx-auto max-w-5xl">
         <div className="mt-20">
           {/* <BentoLanding /> */}
           <BentoGridLandingDemo />
           <BentoGrid />
+          <FAQ />
         </div>
         <DisplayCardBento />
       </div>
       <WorldMapDemo />
+
       {/* <Robot /> */}
     </main>
   );
