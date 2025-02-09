@@ -21,7 +21,7 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "../../packages/ui/src/Tooltip.tsx",
-    "public/types/**/*.ts"
+    "out/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"
