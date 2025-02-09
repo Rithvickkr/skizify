@@ -24,7 +24,6 @@ const nextConfig = {
   reactStrictMode: false, // Disable strict mode to prevent double rendering
 
   // 🔹 Added fixes for the "No Output Directory" issue:
-  output: "export", // Enables static export
   distDir: "out", // Ensures Next.js exports to 'out'
   trailingSlash: true, // Optional: Adds trailing slashes to URLs for better static export support
 };
