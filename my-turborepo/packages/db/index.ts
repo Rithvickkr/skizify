@@ -12,4 +12,4 @@ const prisma: ReturnType<typeof prismaClientSingleton> = globalThis.prismaGlobal
 
 export default prisma
 
-if (process.env.NODE_ENV !== 'production') globalThis.prismaGlobal = prisma
+if (process.env.NODE_ENV !== 'production') globalThis.prismaGlobal = prisma  
