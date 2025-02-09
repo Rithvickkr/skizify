@@ -14,12 +14,7 @@
     },
     "command": "npm run prisma:generate && npm run build",
     "outputDirectory": ".next" 
-  },
-  "builds": [
-    {
-      "src": "package.json",
-      "use": "@vercel/static-build",
-      "config": { "distDir": "build" }
-    }
-  ]
+  }
+  
+  
 }
