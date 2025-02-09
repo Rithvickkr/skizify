@@ -24,11 +24,11 @@ export default function Home() {
         fill="#878787"
       />
 
-{/* <Spline
-        className="absolute inset-0 object-cover " // Added scale-125 to make it 25% larger
+ {/* <Spline
+        className="absolute inset-0 object-cover "
         scene="https://prod.spline.design/gVruKhRHEFS5vuGw/scene.splinecode" 
-      />
- */}
+      /> */}
+ 
 
 
       

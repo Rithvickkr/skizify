@@ -55,6 +55,8 @@ export const theme = {
 			"border-beam": "border-beam calc(var(--duration)*1s) infinite linear",
 			shine: "shine var(--duration) infinite linear",
 			spotlight: "spotlight 2s ease .75s 1 forwards",
+			spin: 'spin 20s linear infinite',
+			'spin-reverse': 'spin 20s linear infinite reverse',	
 
 		},
 		keyframes: {

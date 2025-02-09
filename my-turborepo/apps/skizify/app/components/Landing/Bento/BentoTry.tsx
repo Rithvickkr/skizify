@@ -35,17 +35,17 @@ const Block: React.FC<BlockProps> = ({
 }) => {
     return (
         <div
-            className={`flex flex-col border border-neutral-800/80 cursor-pointer rounded-md sm:rounded-xl bg-gradient-to-br from-neutral-800/60 to-black/60 p-6 transition-all duration-300 hover:shadow-2xl hover:scale-105 ${mobileGridClasses} ${gridClasses}`}
+            className={`flex flex-col border border-t-neutral-500 border-neutral-800/80 cursor-pointer rounded-md sm:rounded-xl bg-gradient-to-b from-neutral-800/70 to-black/70 p-6 transition-all duration-300 hover:shadow-2xl hover:from-neutral-800/70 hover:to-black/90 ${mobileGridClasses} ${gridClasses}`}
         >
             <div className="flex flex-col flex-grow space-y-2">
-                <div className="flex items-center gap-2">
-                    <span className="text-base sm:text-lg text-neutral-200">{icon}</span>
-                    <h3 className="text-xs sm:text-sm font-semibold text-neutral-200">{title}</h3>
-                </div>
-                <p className="text-xs sm:text-sm text-neutral-400">{description}</p>
+            <div className="flex items-center gap-2">
+                <span className="text-base sm:text-lg text-neutral-200">{icon}</span>
+                <h3 className="text-xs sm:text-sm font-semibold text-neutral-200">{title}</h3>
+            </div>
+            <p className="text-xs sm:text-sm text-neutral-400">{description}</p>
             </div>
             <div className="mt-4 flex justify-between text-xs text-neutral-500">
-                <span>{quality}</span>
+            <span>{quality}</span>
             </div>
         </div>
     );
@@ -163,7 +163,7 @@ const Home: React.FC = () => {
         <div className="relative flex min-h-screen items-center sm:p-0 p-1 justify-center bg-black">
             {/* Animated Background */}
             <div className="absolute inset-0 animate-pulse opacity-60 bg-[url('/retrofuture.png')] bg-cover bg-center" />
-            <div className="absolute inset-0 bg-black/70" />
+            <div className="absolute inset-0 bg-black/40" />
 
             {/* Responsive Grid Layout */}
             <div

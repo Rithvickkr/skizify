@@ -4,21 +4,13 @@ import DisplayCardsDemo from "../DisplayCardBento";
 import { HoverCard } from "../HoverCard";
 import { Icons } from "../../footer/Footer";
 import WorldMap from "../../../../components/ui/world-map";
+import DottedLogos from "./SocialRings";
 
 export default function BentoGridLandingDemo() {
   return (
     <BentoGrid className="mx-auto max-w-5xl">
       <BentoGridItem
-        header={
-          <HoverCard>
-            <div className="bg-zinc-500">
-              
-            OINOWIENWEIJBGEIWJBG
-            <br />
-            lkneelkwjng
-            </div>
-          </HoverCard>
-        }
+        header={<HoverCard> </HoverCard>}
         title="Title"
         description="Description"
         icon={<Icons.x />}
@@ -75,7 +67,7 @@ export default function BentoGridLandingDemo() {
         icon={<Icons.x />}
       />
       <BentoGridItem
-        header={<HoverCard children={undefined} />}
+        header={<DottedLogos />}
         className="md:col-span-5 md:row-span-5"
         title="Title"
         description="Description"

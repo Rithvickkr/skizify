@@ -76,6 +76,7 @@ export const Icons = {
       ></path>
     </svg>
   ),
+  
 };
 
 const SocialMedia: social = {

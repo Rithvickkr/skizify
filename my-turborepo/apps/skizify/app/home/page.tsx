@@ -1,5 +1,5 @@
 import BentoGridLandingDemo from "../components/Landing/Bento/BentoGridLandingPage";
-import BentoGrid from "../components/Landing/BentoTry";
+import BentoTry from "../components/Landing/Bento/BentoTry";
 import DisplayCardBento from "../components/Landing/DisplayCardBento";
 import Frontpage from "../components/Landing/FrontPage";
 import FAQ from "../components/Landing/IndivisualSections/FaQ";
@@ -17,7 +17,7 @@ export default function Home() {
         <div className="mt-20">
           {/* <BentoLanding /> */}
           <BentoGridLandingDemo />
-          <BentoGrid />
+          <BentoTry />
           <FAQ />
         </div>
         <DisplayCardBento />
