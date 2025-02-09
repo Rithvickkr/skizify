@@ -59,6 +59,7 @@ import { getSignedURL } from "../lib/action";
 import setImageInDB from "../lib/actions/setImage_in_DB";
 import { ProfilePageProps } from "../(dashboard)/profile/page";
 import { Icons } from "./footer/Footer";
+import { DrawerDialogDemo } from "./darwerform";
 
 const SkillBar = ({ skill, level }: { skill: string; level: number }) => (
   <div className="space-y-2">
@@ -224,6 +225,15 @@ export default function ProfilePage({
     { value: "activity", label: "Activity", icon: Star },
   ];
 
+  // State for editable fields
+  const [editableData] = useState({
+    name: datauser?.name || session?.user?.name || "My Profile",
+    bio: datauser?.bio || "A short bio goes here...",
+    education: datauser?.education || "NIT KKR",
+    profession: datauser?.profession || "Engineer",
+    location: datauser?.location || "Unknown",
+  });
+
   return (
     <div className="min-h-screen w-full rounded-lg bg-white text-black transition-colors dark:bg-black md:rounded-2xl">
       {/* Hero Section */}
@@ -281,7 +291,7 @@ export default function ProfilePage({
                 transition={{ delay: 0.2 }}
                 className="text-4xl font-bold tracking-tight text-white"
               >
-                {datauser?.name || session?.user?.name || "My Profile"}
+                {editableData.name}
               </motion.h1>
               <motion.p
                 initial={{ y: 20, opacity: 0 }}
@@ -289,7 +299,7 @@ export default function ProfilePage({
                 transition={{ delay: 0.3 }}
                 className="text-lg text-neutral-600"
               >
-                {datauser?.bio || "A short bio goes here..."}
+                {editableData.bio}
               </motion.p>
             </div>
             {statusMessage && (
@@ -297,6 +307,11 @@ export default function ProfilePage({
             )}
           </motion.div>
         </div>
+      </div>
+
+      {/* Edit Button */}
+      <div className="flex justify-center mb-4">
+       <DrawerDialogDemo skills={[]} langs={[]} />
       </div>
 
       {/* Stats Section */}
@@ -373,8 +388,7 @@ export default function ProfilePage({
                   </CardHeader>
                   <CardContent className="space-y-6">
                     <p className="leading-relaxed text-neutral-600">
-                      {datauser?.bio ||
-                        "Passionate developer focused on modern web experiences."}
+                      {editableData.bio}
                     </p>
                     <div className="grid gap-4 sm:grid-cols-2">
                       <div className="flex items-start gap-3">
@@ -385,9 +399,7 @@ export default function ProfilePage({
                           <p className="text-sm text-neutral-600">
                             Institution
                           </p>
-                          <p className="font-medium text-black">
-                            {datauser?.education || "NIT KKR"}
-                          </p>
+                          {editableData.education}
                         </div>
                       </div>
                       <div className="flex items-start gap-3">
@@ -405,9 +417,7 @@ export default function ProfilePage({
                         </div>
                         <div>
                           <p className="text-sm text-neutral-600">Role</p>
-                          <p className="font-medium text-black">
-                            {datauser?.profession || "Engineer"}
-                          </p>
+                          {editableData.profession}
                         </div>
                       </div>
                       <div className="flex items-start gap-3">
@@ -416,9 +426,7 @@ export default function ProfilePage({
                         </div>
                         <div>
                           <p className="text-sm text-neutral-600">Location</p>
-                          <p className="font-medium text-black">
-                            {datauser?.location || "Unknown"}
-                          </p>
+                          {editableData.location}
                         </div>
                       </div>
                     </div>

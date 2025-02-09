@@ -17,7 +17,7 @@ import { Input } from "../../@/components/ui/input";
 import { Label } from "../../@/components/ui/label";
 import { Textarea } from "../../@/components/ui/textarea";
 
-export default function Component() {
+export default function rkprof() {
   const [theme, setTheme] = useState("light");
   const [skills, setSkills] = useState<string[]>([]);
   const [newSkill, setNewSkill] = useState("");

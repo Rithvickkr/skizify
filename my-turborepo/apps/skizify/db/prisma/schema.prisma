@@ -1,0 +1,142 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              String    @id @default(uuid())
+  username        String?   @unique
+  email           String    @unique
+  name            String?
+  password        String
+  userImage       String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  gigsCreated     Gigs[]    @relation(name: "Author")
+  gigUsertable    GigUser[] @relation(name: "UserCreatedGig")
+  gigSkizzerTable GigUser[] @relation(name: "UserAccptedGig")
+  authType        AuthType?
+  languages       String[]
+  reviewsGiven    Reviews[] @relation(name: "GivenbyUser")
+  reviewsReceived Reviews[] @relation(name: "GiventoUser")
+  role            UserRole  @default(USER)
+  confirmedGigs   Gigs[]    @relation(name: "ConfirmedUser")
+  bio             String?
+  education       String?
+  skills          String[]
+  achievements    String[]
+  qualification   String?
+  profession      String?
+  skizzer        Boolean   @default(false)
+  location        String?
+  linkedin        String?
+  github          String?
+  X              String?
+}
+
+model Gigs {
+  id              String    @id @default(uuid())
+  title           String
+  content         String
+  startDateTime   DateTime
+  endDateTime     DateTime
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  timeneeded      Int
+  authorId        String
+  confirmUserId   String?
+  Budgetfinalised Int?
+  finalDateTime   DateTime?
+  confirmedUser   User?     @relation(name: "ConfirmedUser", fields: [confirmUserId], references: [id])
+  status          GigStatus @default(PENDING)
+  author          User      @relation(name: "Author", fields: [authorId], references: [id])
+  acceptedUsers   GigUser[] ///WHAT THIS MEANS IS THAT IT CONTAINS ALL THE ELEMENTS WHICH HAS GIGid equal to the original id
+  Interval        Json
+  category        String
+}
+
+model Reviews {
+  id          String   @id @default(uuid())
+  content     String
+  rating      Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  givento     String
+  givenby     String
+  giventoUser User     @relation(name: "GiventoUser", fields: [givento], references: [id])
+  givenbyUser User     @relation(name: "GivenbyUser", fields: [givenby], references: [id])
+}
+
+model GigUser {
+  id            String    @id @default(uuid())
+  gig           Gigs      @relation(fields: [gigId], references: [id], onDelete: Cascade) // onDelete: Cascade ensures that if the related gig is deleted, the corresponding GigUser record is also deleted.
+  gigId         String    
+  user          User      @relation(name: "UserCreatedGig", fields: [UserId], references: [id])
+  Skizzer       User      @relation(name: "UserAccptedGig", fields: [skizzerId], references: [id])
+  skizzerId     String
+  UserId        String
+  status        GigStatus @default(PENDING)
+  budget        Int
+  finalDateTime DateTime
+  meeting       meeting? //This is the Meeting Record One on One Because we will make a meeting Record when the 2 users are Confirmed that they will have a meeting
+
+  //@@unique([skizzerId, UserId]) This means they can never build realtion in future
+  @@unique([gigId, skizzerId]) //There will be Unique relation B/w gigid and Skizer
+}
+
+//We will make a meeting Record when the 2 users are Confirmed that they will have a meeting //That's why we will make a meeting Record
+
+//These are the meeting Records which will be Related to the
+model meeting {
+  id            String        @id @default(uuid())
+  gigUserId     String        @unique //This is the meeting ID
+  status        MeetingStatus @default(UNBOOKED_PENDING) //This is the Status of the Meeting, If it is Pending or Ended
+  GigUser       GigUser       @relation(fields: [gigUserId], references: [id])
+  createdAt     DateTime      @default(now())
+  @@index([gigUserId])
+}
+  // meetingId     String        //This is the Meeting Id of the Meeting
+
+model InstantMeeting {
+  id            String        @id @default(uuid())
+  meetingId     String        @unique//This is the Meeting Id of the Meeting //they will be generated at a Time of Meeting
+  hostId        String        //This is the Host Id of the Meeting
+  guestId       String?       //This is the Guest Id of the Meeting //Not necessary because Other Person can Join or Not
+  status        MeetingStatus @default(UNBOOKED_PENDING) //This is the Status of the Meeting, If it is Pending or Ended
+  createdAt     DateTime      @default(now())
+  expiresAt     DateTime?     // New field for expiration date
+  @@index([meetingId])
+
+}
+
+enum MeetingStatus {
+  UNBOOKED_PENDING
+  BOOKED_PENDING
+  ONGOING //When the meeting Time is Ongoing Then Before 30 Minutes we will send the Notification
+  ENDED
+}
+
+enum AuthType {
+  GOOGLE
+  FACEBOOK
+  GITHUB
+  PENDING
+  LINKEDIN
+}
+
+enum GigStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+  IGNORED
+  CONFIRMED
+}
+
+enum UserRole {
+  USER
+  SKIZZER
+}

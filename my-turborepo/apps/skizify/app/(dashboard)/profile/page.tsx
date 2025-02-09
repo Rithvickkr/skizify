@@ -3,6 +3,7 @@ import Newprofile from "../../components/Profile2new";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../lib/auth";
 import getInfos from "../../lib/actions/getinfos";
+import { DrawerDialogDemo } from "../../components/darwerform";
 
 interface User {
   name?: string | null;
@@ -32,6 +33,7 @@ export default async function ProfilePage() {
   return (
     <div>
       <EnhancedMyProfileSection datauser={datauser} info={info} />
+      {/* <DrawerDialogDemo skills={[]} langs={[]} /> */}
     </div>
   );
 }
