@@ -17,7 +17,7 @@ export const Providers = ({ children }: { children: React.ReactNode }) => {
           enableSystem
           disableTransitionOnChange
         >
-          <div className="no-scrollbar w-full">
+          <div className="no-scrollbar font-inter tracking-wide w-full">
             <RecoilRoot>{children}</RecoilRoot>
           </div>
         </ThemeProvider>
