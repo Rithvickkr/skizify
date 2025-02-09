@@ -59,8 +59,8 @@
   justify-content: space-between;
   align-items: center;
   width: auto;
-  font-family: system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial,
-    "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+  font-family: system-ui, "Segoe UI", "Roboto", "Helvetica Neue", "Arial",
+    "Noto Sans", "sans-serif", "Apple Color Emoji", "Segoe UI Emoji",
     "Segoe UI Symbol", "Noto Color Emoji";
   padding-top: 48px;
 
@@ -121,7 +121,7 @@
   }
 }
 
-/* Mobile */
+
 @media (max-width: 700px) {
   .content {
     padding: 4rem;
@@ -198,7 +198,7 @@
   }
 }
 
-/* Enable hover only on non-touch devices */
+
 @media (hover: hover) and (pointer: fine) {
   .card:hover {
     background: rgba(var(--card-rgb), 0.1);
@@ -259,18 +259,18 @@
 }
 
 .code {
-  font-family: Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-family:"Menlo", "Monaco", "Consolas", "Liberation Mono", "Courier New", monospace;
   font-weight: 700;
 }
 
-/* Tablet and Smaller Desktop */
+
 @media (min-width: 701px) and (max-width: 1120px) {
   .grid {
     grid-template-columns: repeat(2, 50%);
   }
 }
 
-/* Gradients */
+
 .gradient {
   position: absolute;
   mix-blend-mode: normal;

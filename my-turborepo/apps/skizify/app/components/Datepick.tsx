@@ -17,7 +17,7 @@ export default function Datepick() {
         granularity="second"
         label="Date and time range"
         value={date}
-        onChange={setDate}
+        onChange={(value) => setDate(value ?? { start: parseAbsoluteToLocal("2024-04-01T18:45:22Z"), end: parseAbsoluteToLocal("2024-04-08T19:15:22Z") })}
       />
     </div>
   );

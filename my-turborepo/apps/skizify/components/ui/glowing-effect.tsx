@@ -53,10 +53,11 @@ const GlowingEffect = memo(
             lastPosition.current = { x: mouseX, y: mouseY };
           }
 
-          const center = [left + width * 0.5, top + height * 0.5];
+          const centerX = left + width * 0.5;
+          const centerY = top + height * 0.5;
           const distanceFromCenter = Math.hypot(
-            mouseX - center[0],
-            mouseY - center[1]
+            mouseX - centerX,
+            mouseY - centerY
           );
           const inactiveRadius = 0.5 * Math.min(width, height) * inactiveZone;
 
@@ -78,7 +79,7 @@ const GlowingEffect = memo(
           const currentAngle =
             parseFloat(element.style.getPropertyValue("--start")) || 0;
           let targetAngle =
-            (180 * Math.atan2(mouseY - center[1], mouseX - center[0])) /
+            (180 * Math.atan2(mouseY - centerY, mouseX - centerX)) /
               Math.PI +
             90;
 

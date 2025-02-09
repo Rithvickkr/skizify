@@ -28,7 +28,7 @@ export const darkMode = ["class"];
 export const theme = {
 	fontFamily: {
 		display: ["Archivo"],
-		time: ['Libre Franklin"', "sans-serif"],
+		time: ["Libre Franklin", "sans-serif"],
 		helvetica: ["Helvetica", "Arial", "sans-serif"],
 		inter: ["Inter", "sans-serif"],
 	},

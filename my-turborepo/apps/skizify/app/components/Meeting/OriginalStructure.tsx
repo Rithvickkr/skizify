@@ -1265,7 +1265,7 @@ export default function VideoPlatform({
 
       <div
         className={`transition-all duration-500 ease-in-out lg:relative lg:block ${
-          isChatBarVisibles
+          isChatBarVisible
             ? "md:max-w-50% fixed inset-y-0 right-0 z-50 w-[80%] opacity-100 lg:static lg:w-3/12"
             : "fixed -right-full w-0 opacity-0 lg:w-0 lg:opacity-100"
         } `}
