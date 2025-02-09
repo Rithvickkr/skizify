@@ -18,6 +18,20 @@
         ".next/**",
         "!.next/cache/**",
         "dist/**"
+      ],
+      "env": [
+        "DATABASE_URL",
+        "JWT_SECRET",
+        "GOOGLE_ID",
+        "GOOGLE_SECRET",
+        "NEXTAUTH_SECRET",
+        "NEXTAUTH_URL",
+        "API_URL",
+        "AWS_BUCKET_NAME",
+        "AWS_BUCKET_REGION",
+        "AWS_SECRET_ACCESS_KEY",
+        "GITHUB_ID",
+        "GITHUB_SECRET"
       ]
     },
     "lint": {

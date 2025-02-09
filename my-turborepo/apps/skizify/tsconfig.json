@@ -4,7 +4,9 @@
     "skipLibCheck": true,
     "noImplicitAny": false,
     "paths": {
-      "@repo/store": ["../../packages/store/src"]
+      "@repo/store": [
+        "../../packages/store/src"
+      ]
     },
     "plugins": [
       {
@@ -17,7 +19,11 @@
     "next.config.js",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts"
-, "../../packages/ui/src/Tooltip.tsx"  ],
-  "exclude": ["node_modules"]
+    ".next/types/**/*.ts",
+    "../../packages/ui/src/Tooltip.tsx",
+    "out/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }
