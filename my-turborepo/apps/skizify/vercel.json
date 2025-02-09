@@ -12,8 +12,8 @@
     "env": {
       "DATABASE_URL": "@database_url"
     },
-    "command": "npm run prisma:generate && npm run build",
-    "outputDirectory": ".next" 
+    "command": "npm run prisma:generate && npm run build"
+    
   }
   
 }
