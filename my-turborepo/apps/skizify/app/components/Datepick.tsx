@@ -5,7 +5,7 @@ import { DateValue, parseAbsoluteToLocal } from "@internationalized/date";
 import { RangeValue } from "@react-types/shared";
 
 export default function Datepick() {
-  let [date, setDate] = React.useState<RangeValue<DateValue>>({
+  let [date, setDate] = React.useState<RangeValue<DateValue> | undefined>({
     start: parseAbsoluteToLocal("2024-04-01T18:45:22Z"),
     end: parseAbsoluteToLocal("2024-04-08T19:15:22Z"),
   });
@@ -17,7 +17,7 @@ export default function Datepick() {
         granularity="second"
         label="Date and time range"
         value={date}
-        onChange={(value) => setDate(value ?? { start: parseAbsoluteToLocal("2024-04-01T18:45:22Z"), end: parseAbsoluteToLocal("2024-04-08T19:15:22Z") })}
+        onChange={(value: RangeValue<DateValue> | null) => setDate(value ?? undefined)}
       />
     </div>
   );
