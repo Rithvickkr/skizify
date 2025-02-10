@@ -9,20 +9,20 @@ import NavbarLanding from "../components/Landing/Navbar";
 
 export default function Home() {
   return (
-    <main className="relative font-inter min-h-screen w-screen overflow-x-hidden bg-black">
-      <NavbarLanding />
-      <Frontpage />
-      <MacOSWindow />
+    <main className="relative font-inter min-h-screen w-screen overflow-x-hidden bg-black no-scrollbar scroll-smooth">
+      {/* <NavbarLanding /> */}
+      {/* <Frontpage /> */}
+      {/* <MacOSWindow /> */}
       <div className="mx-auto max-w-5xl">
         <div className="mt-20">
           {/* <BentoLanding /> */}
           <BentoGridLandingDemo />
-          <BentoTry />
-          <FAQ />
+          {/* <BentoTry /> */}
+          {/* <FAQ /> */}
         </div>
-        <DisplayCardBento />
+        {/* <DisplayCardBento /> */}
       </div>
-      <WorldMapDemo />
+      {/* <WorldMapDemo /> */}
 
       {/* <Robot /> */}
     </main>

@@ -53,8 +53,9 @@ const BentoMap: React.FC = () => {
           opacity: 0.6,
         }}
       />
-
-      <div className="absolute inset-0 bg-gradient-to-tr from-green-400/20 to-transparent" />
+      <div className="absolute inset-0 bg-black/30" />
+      {/* <div className="absolute inset-0 bg-gradient-to-b bg-black/30" /> */}
+      <div className="absolute inset-0 bg-gradient-to-tr from-green-800/60 to-transparent" />
       {/* <div className="absolute inset-0 backdrop-blur-sm" /> */}
 
       {/* Animated gradient overlay */}
@@ -62,14 +63,14 @@ const BentoMap: React.FC = () => {
 
       {/* Content */}
       <div className="relative flex h-full flex-col justify-end space-y-4 p-8">
-        <div className="flex items-center space-x-2">
-          <div className="h-3 w-3 animate-pulse rounded-full bg-green-400" />
-          <span className="text-sm font-medium text-green-400">
-            Live Connections
+        <div className="group flex w-fit items-center gap-3 rounded-full bg-gradient-to-r from-green-950/50 to-green-900/30 px-4 py-2 backdrop-blur-sm">
+          <span className="h-2 w-2 rounded-full bg-green-400 shadow-[0_0_12px] shadow-green-400/50 motion-safe:animate-pulse"></span>
+          <span className="text-xs font-medium tracking-wider text-green-300/90">
+            Live Network
           </span>
         </div>
 
-        <h2 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-black-500/70 drop-shadow-lg">
+        <h2 className="to-black-500/70 bg-gradient-to-r from-green-400 bg-clip-text text-3xl font-extrabold text-transparent drop-shadow-lg">
           Connect Globally
         </h2>
 
@@ -80,20 +81,20 @@ const BentoMap: React.FC = () => {
 
         {/* Stats */}
         <div className="flex space-x-6 pt-4">
-          <div className="group cursor-pointer transition transform duration-300 hover:scale-105">
-            <span className="block text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-black-500/70 drop-shadow-lg">
+          <div className="group transform cursor-pointer transition duration-300 hover:scale-105">
+            <span className="block bg-gradient-to-r from-green-700 via-green-400 to-green-900 bg-clip-text text-2xl font-extrabold text-transparent drop-shadow-lg">
               150+
             </span>
             <span className="text-sm text-zinc-400">Countries</span>
           </div>
-          <div className="group cursor-pointer transition transform duration-300 hover:scale-105">
-            <span className="block text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-black-500/70 drop-shadow-lg">
+          <div className="group transform cursor-pointer transition duration-300 hover:scale-105">
+            <span className="block bg-gradient-to-r from-green-700 via-green-400 to-green-900 bg-clip-text text-2xl font-extrabold text-transparent drop-shadow-lg">
               1M+
             </span>
             <span className="text-sm text-zinc-400">Professionals</span>
           </div>
-          <div className="group cursor-pointer transition transform duration-300 hover:scale-105">
-            <span className="block text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-black-500/70 drop-shadow-lg">
+          <div className="group transform cursor-pointer transition duration-300 hover:scale-105">
+            <span className="block bg-gradient-to-r from-green-700 via-green-400 to-green-900 bg-clip-text text-2xl font-extrabold text-transparent drop-shadow-lg">
               24/7
             </span>
             <span className="text-sm text-zinc-400">Active</span>

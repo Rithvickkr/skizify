@@ -20,7 +20,7 @@ export const NavbarLanding = () => {
   }, []);
 
   return (
-    <nav className={`fixed z-20 left-0 right-0 top-6 mx-auto max-w-5xl items-center justify-between px-6 py-4 rounded-xl transition-all duration-500 border border-transparent ${hasScrolled ? 'backdrop-blur-xl bg-black/10  border-white/10' : ''}`}>
+    <nav className={`fixed z-20 left-1/2 transform -translate-x-1/2 top-6 w-full max-w-5xl items-center justify-between px-6 py-4 rounded-xl transition-all duration-500 border border-transparent ${hasScrolled ? 'backdrop-blur-xl bg-black/10 border-white/10' : ''}`}>
       <div className="flex items-center justify-between">
       <div className="flex items-center">
         <Link

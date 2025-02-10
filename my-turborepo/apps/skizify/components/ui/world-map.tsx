@@ -28,7 +28,7 @@ export default function WorldMap({
   // Slightly change the dotted map style for a modern look.
   const svgMap = map.getSVG({
     radius: 0.22,
-    color: "#222222",
+    color: "#777777",
     shape: "hexagon",
     backgroundColor: "#000000",
   });
