@@ -191,7 +191,7 @@ export default function Footer() {
   );
 }
 
-const renderDropdown = (
+export const renderDropdown = (
   platform: string,
   Icon: React.ComponentType<IconProps>,
 ) => (
