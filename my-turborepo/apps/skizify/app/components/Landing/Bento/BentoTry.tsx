@@ -1,23 +1,20 @@
 "use client";
-import React, { ReactNode } from "react";
 import {
-  Mail,
-  User,
+  CheckCircle,
   Clock,
-  Video,
-  Lock,
   Edit,
-  Star,
-  Shield,
   Globe,
   Layers,
-  Users,
+  Lock,
+  Mail,
   MessageSquare,
-  CheckCircle,
+  Shield,
+  Star,
+  User,
+  Users,
+  Video,
 } from "lucide-react";
-import { CiPlay1 } from "react-icons/ci";
-import { BsGlobeCentralSouthAsia } from "react-icons/bs";
-import { effect } from "zod";
+import React, { ReactNode } from "react";
 
 interface BlockProps {
   mobileGridClasses?: string;
@@ -40,28 +37,29 @@ const Block: React.FC<BlockProps> = ({
 }) => {
   return (
     <div
-      className={`group relative flex cursor-pointer flex-col rounded-xl border border-l-2 border-neutral-700 border-b-transparent border-r-transparent border-t-neutral-500 bg-gradient-to-b from-neutral-900 via-black/50 to-neutral-900/80 p-4 shadow shadow-black/30 transition-all hover:shadow-lg ${mobileGridClasses} ${gridClasses}`}
+      className={`group relative flex cursor-pointer flex-col rounded-lg sm:rounded-xl border border-neutral-700 bg-gradient-to-b from-neutral-800 to-black p-4 shadow-md transition-all duration-500 ease-in-out ${mobileGridClasses} ${gridClasses}`}
+      aria-label={title}
     >
-      <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-1000 group-hover:opacity-100">
+      {effect && (
+      <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity hover:rotate-90 duration-1000 ease-in-out group-hover:opacity-100">
         {effect}
       </div>
-
-      <div className="z-10 flex flex-grow flex-col space-y-3">
-        <div className="flex items-center gap-3">
-          <h3 className="mr-4 text-sm font-normal tracking-wider text-neutral-300">
-            {title}
-          </h3>
-          <span className="text-xl text-neutral-100">{icon}</span>
-        </div>
-        <p className="text-sm text-neutral-300">{description}</p>
+      )}
+      <div className="relative z-10 flex flex-col flex-grow justify-between space-y-3">
+      <div className="flex items-center justify-between">
+        <h3 className="text-sm font-medium tracking-wide text-neutral-300">
+        {title}
+        </h3>
+        <span className="text-xl text-neutral-100">{icon}</span>
       </div>
-      <div className="z-10 mt-5 flex justify-between text-xs text-neutral-400">
-        <span>{quality}</span>
+      <p className="text-sm text-neutral-400">{description}</p>
+      </div>
+      <div className="relative z-10 mt-3 text-xs text-neutral-500">
+      {quality}
       </div>
     </div>
   );
 };
-
 const Home: React.FC = () => {
   const blocks = [
     {
@@ -89,7 +87,7 @@ const Home: React.FC = () => {
       icon: <Clock size={16} strokeWidth={1.2} />,
       mobileGridClasses: "col-span-1 row-span-1",
       gridClasses: "col-span-1 row-span-1 sm:col-span-1 sm:row-span-2",
-      effect: <Effect3 />,
+      effect: <Effect7 />,
     },
     {
       title: "Live Video Sessions",
@@ -212,7 +210,7 @@ const Effect1 = () => {
         backgroundImage: "url('/circle1.png')",
         backgroundSize: "cover",
         backgroundPosition: "center",
-        opacity: 0.3,
+        opacity: 0.2,
       }}
     />
   );
@@ -226,7 +224,7 @@ const Effect2 = () => {
         backgroundImage: "url('/circle2.png')",
         backgroundSize: "cover",
         backgroundPosition: "center",
-        opacity: 0.3,
+        opacity: 0.2,
       }}
     />
   );
@@ -240,7 +238,7 @@ const Effect3 = () => {
         backgroundImage: "url('/circle3.png')",
         backgroundSize: "cover",
         backgroundPosition: "center",
-        opacity: 0.3,
+        opacity: 0.2,
       }}
     />
   );
@@ -253,7 +251,7 @@ const Effect4 = () => {
         backgroundImage: "url('/circle4.png')",
         backgroundSize: "cover",
         backgroundPosition: "center",
-        opacity: 0.3,
+        opacity: 0.2,
       }}
     />
   );
@@ -266,7 +264,7 @@ const Effect5 = () => {
         backgroundImage: "url('/circle5.png')",
         backgroundSize: "cover",
         backgroundPosition: "center",
-        opacity: 0.3,
+        opacity: 0.2,
       }}
     />
   );
@@ -279,7 +277,7 @@ const Effect6 = () => {
         backgroundImage: "url('/circle6.png')",
         backgroundSize: "cover",
         backgroundPosition: "center",
-        opacity: 0.3,
+        opacity: 0.2,
       }}
     />
   );
@@ -292,7 +290,7 @@ const Effect7 = () => {
         backgroundImage: "url('/circle7.png')",
         backgroundSize: "cover",
         backgroundPosition: "center",
-        opacity: 0.3,
+        opacity: 0.2,
       }}
     />
   );
