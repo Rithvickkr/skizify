@@ -16,8 +16,8 @@ export default function Home() {
       <div className="mx-auto max-w-5xl">
         <div className="mt-20">
           {/* <BentoLanding /> */}
-          <BentoGridLandingDemo />
-          {/* <BentoTry /> */}
+          {/* <BentoGridLandingDemo /> */}
+          <BentoTry />
           {/* <FAQ /> */}
         </div>
         {/* <DisplayCardBento /> */}
