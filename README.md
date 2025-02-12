@@ -1,5 +1,6 @@
 # SKizify Meeting Platform
-<img width="1110" alt="Screenshot 2025-02-12 at 6 56 35 PM" src="https://github.com/user-attachments/assets/cb96561a-071d-4ed0-ac6b-dfa00592a730" />
+<img width="1466" alt="Screenshot 2025-02-12 at 7 01 25 PM" src="https://github.com/user-attachments/assets/7bb6b727-fadd-4287-8ebb-de57571897ba" />
+
 <img width="1056" alt="Screenshot 2025-02-12 at 6 58 00 PM" src="https://github.com/user-attachments/assets/c5e7347a-017e-49fc-ad7f-c6992dab7ac1" />
 <img width="1317" alt="Screenshot 2025-02-12 at 6 58 36 PM" src="https://github.com/user-attachments/assets/52878b26-30dc-407d-ba7b-4e2ff47125b5" />
 
@@ -7,7 +8,7 @@
 
 <img width="1119" alt="Screenshot 2025-02-12 at 6 56 06 PM" src="https://github.com/user-attachments/assets/e8ae31cb-537f-435a-8b0a-309d4ac824b7" />
 
-<img width="800" alt="Screenshot 2025-02-12 at 6 42 24 PM" src="https://github.com/user-attachments/assets/ee963704-23e4-42f4-bf7f-c17eb4f400b0" />
+<img width="500" alt="Screenshot 2025-02-12 at 6 42 24 PM" src="https://github.com/user-attachments/assets/ee963704-23e4-42f4-bf7f-c17eb4f400b0" />
 
 
 SKizify Meeting Platform is a secure, scalable, and high-performance solution for hosting online meetings, video conferences, and collaborative sessions. Built with modern web technologies, SKizify focuses on delivering a seamless experience for remote teams, educational sessions, webinars, and virtual events.
