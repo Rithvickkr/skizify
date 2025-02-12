@@ -64,16 +64,17 @@ Manage participants with customizable roles (host, co-host, participant) and per
 ## Architecture & Technologies
 
 ### Frontend
-- Developed with React.js for dynamic and responsive user interfaces
+- Developed with NEXT for dynamic and responsive user interfaces
 - Utilizes modern CSS frameworks and responsive design practices
+- Tailwind, ShadCN, Acertanity .....
 
 ### Backend
 - Powered by Node.js and Express.js for a robust REST API
 - Implements real-time communication using WebRTC and Socket.io
 
 ### Database
-- Supports MongoDB or PostgreSQL for storing user data, meeting logs, and configuration settings
-- Uses an ORM/ODM layer to streamline data operations
+- Supports PostgreSQL for storing user data, meeting logs, and configuration settings
+- Uses Prisma as ORM/ODM layer to streamline data operations
 
 ### Additional Components
 - TURN/STUN Servers: For reliable connectivity even behind restrictive networks
@@ -85,7 +86,7 @@ Before setting up SKizify, ensure that your development environment includes:
 
 - Node.js (v14 or higher)
 - npm or yarn
-- Database: MongoDB or PostgreSQL instance (local or remote)
+- Database: PostgreSQL instance (local or remote)
 - A modern web browser (e.g., Chrome, Firefox, Edge)
 - (Optional) Docker for containerized deployments
 
