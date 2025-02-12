@@ -1,4 +1,11 @@
 # SKizify Meeting Platform
+<img width="1110" alt="Screenshot 2025-02-12 at 6 56 35 PM" src="https://github.com/user-attachments/assets/cb96561a-071d-4ed0-ac6b-dfa00592a730" />
+<img width="1056" alt="Screenshot 2025-02-12 at 6 58 00 PM" src="https://github.com/user-attachments/assets/c5e7347a-017e-49fc-ad7f-c6992dab7ac1" />
+<img width="1317" alt="Screenshot 2025-02-12 at 6 58 36 PM" src="https://github.com/user-attachments/assets/52878b26-30dc-407d-ba7b-4e2ff47125b5" />
+
+<img width="1116" alt="Screenshot 2025-02-12 at 6 54 45 PM" src="https://github.com/user-attachments/assets/dd1ff742-7ae4-4165-b60d-4a5d823ff59d" />
+
+<img width="1119" alt="Screenshot 2025-02-12 at 6 56 06 PM" src="https://github.com/user-attachments/assets/e8ae31cb-537f-435a-8b0a-309d4ac824b7" />
 
 <img width="800" alt="Screenshot 2025-02-12 at 6 42 24 PM" src="https://github.com/user-attachments/assets/ee963704-23e4-42f4-bf7f-c17eb4f400b0" />
 
