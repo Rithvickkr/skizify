@@ -49,7 +49,7 @@ export default function Home() {
               New
             </span>
             <span className="text-sm text-neutral-300">
-              AI Copilots ready to drop into your app
+              Real-time collaboration tools at your fingertips
             </span>
             <div className="p-2 bg-white/10 rounded-full group-hover:bg-white/20">
               <ArrowRight
@@ -59,12 +59,12 @@ export default function Home() {
           </a>
         </div>
         <h1 className="text-5xl font-bold font-inter leading-tight md:text-7xl bg-gradient-to-b from-white via-white/90 to-white/70 bg-clip-text text-transparent">
-          Ready-made <br className="hidden md:block" /> collaborative features
+          Skizify<br className="hidden md:block" />Your Collaborative Workspace
         </h1>
         <p className="mx-auto mt-4 max-w-2xl text-lg text-gray-400">
-          Liveblocks provides customizable pre-built features that boost user
-          engagement by adding collaboration to your product. All without
-          derailing your roadmap.
+          Skizify empowers your projects with seamless collaborative features,
+          enabling real-time team interactions and enhanced productivity.
+          Transform your workflow without complex integrations.
         </p>
         <div className="mt-6 flex flex-col justify-center gap-4 md:flex-row">
           <Button  variant="gooeyLeft" className="rounded-md bg-white px-6 py-3 text-lg text-black">
