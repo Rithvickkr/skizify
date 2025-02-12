@@ -1,9 +1,10 @@
 'use client'
 // import Footer from "@/components/Footer2";
-import Landing from "../components/Landing/LandingFor_Footer";
+
 import { useEffect } from "react";
 import Lenis from 'lenis';
 import Footer1 from "../components/footer/Footer1";
+import LandingPage from "../components/Landing/Earth";
 
 export default function Home() {
 
@@ -20,7 +21,7 @@ export default function Home() {
 
   return (
     <main>
-      <Landing />
+      <LandingPage />
       <Footer1 />
     </main>
   );

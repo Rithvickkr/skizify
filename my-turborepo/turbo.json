@@ -19,6 +19,7 @@
         "!.next/cache/**",
         "dist/**"
       ],
+    
       "env": [
         "DATABASE_URL",
         "JWT_SECRET",

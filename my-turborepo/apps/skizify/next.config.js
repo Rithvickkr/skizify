@@ -22,7 +22,9 @@ const nextConfig = {
     ],
   },
   reactStrictMode: false, // Disable strict mode to prevent double rendering
-
+  experimental: {
+    outputFileTracing: true,
+  },
 };
 
 module.exports = nextConfig;
