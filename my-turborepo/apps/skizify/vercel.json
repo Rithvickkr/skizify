@@ -3,7 +3,7 @@
  
   "build": {
     "env": {
-      "DB_URL": "@database_url"
+      "DB_URL": "@db_url"
     }
   }
 }  
