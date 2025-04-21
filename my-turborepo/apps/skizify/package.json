@@ -67,6 +67,7 @@
     "nodemailer": "^6.9.14",
     "peerjs": "^1.5.4",
     "prettier-plugin-tailwindcss": "^0.6.1",
+    "prisma": "^6.6.0",
     "rc-slider": "^10.6.2",
     "rc-tooltip": "^6.2.0",
     "react": "^18.2.0",
