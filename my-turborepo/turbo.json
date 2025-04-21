@@ -21,7 +21,7 @@
       ],
     
       "env": [
-        "DATABASE_URL",
+        "DB_URL",
         "JWT_SECRET",
         "GOOGLE_ID",
         "GOOGLE_SECRET",
