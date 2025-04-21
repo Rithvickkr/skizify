@@ -1,9 +1,8 @@
 {
   "version": 2,
- 
   "build": {
     "env": {
-      "DB_URL": "@db_url"
+      "DB_URL": "@skziify_db_url"
     }
   }
-}  
+}
