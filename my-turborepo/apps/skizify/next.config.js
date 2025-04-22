@@ -5,7 +5,7 @@ const nextConfig = {
   },
   transpilePackages: ["@repo/ui"],
   images: {
-    formats: [],
+    formats: ["image/avif", "image/webp"],
     domains: [
       "images.unsplash.com",
       "www.gravatar.com",
