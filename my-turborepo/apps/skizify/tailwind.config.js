@@ -1,6 +1,6 @@
-import defaultTheme from "tailwindcss/defaultTheme";
+
 import flattenColorPalette from "tailwindcss/lib/util/flattenColorPalette";
-import { nextui, colors as nextUiColors } from "@nextui-org/theme";
+
 import { content as _content, plugin } from "flowbite-react/tailwind";
 
 /** Plugin to add CSS variables for all colors */
