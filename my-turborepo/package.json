@@ -31,8 +31,15 @@
     "@internationalized/date": "^3.5.4",
     "@mui/material": "^6.3.0",
     "@mui/x-date-pickers": "^7.23.3",
+    "@nextui-org/theme": "^2.4.5",
     "@prisma/client": "^6.0.0",
     "@repo/store": "*",
+    "@repo/ui": "*",
+    "@repo/db": "*",
+    "@splinetool/react-spline": "^4.0.0",
+    "@splinetool/runtime": "^1.9.59",
+    
+
     "@tabler/icons-react": "^3.11.0",
     "@types/bcrypt": "^5.0.2",
     "@types/rc-slider": "^9.3.0",
