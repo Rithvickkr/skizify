@@ -2,7 +2,7 @@ import db from "@repo/db/client";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import GitHubProvider from "next-auth/providers/github";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { NextAuthOptions, Session } from "next-auth";
 import { JWT } from "next-auth/jwt";
 import { UserRole } from "@repo/store/types";
