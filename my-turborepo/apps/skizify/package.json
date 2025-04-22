@@ -44,6 +44,7 @@
     "@radix-ui/react-tooltip": "^1.0.7",
     "@repo/store": "*",
     "@repo/ui": "*",
+    "@repo/db": "*",
     "@splinetool/react-spline": "^4.0.0",
     "@splinetool/runtime": "^1.9.59",
     "@tabler/icons-react": "^3.29.0",
