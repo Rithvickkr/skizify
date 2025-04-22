@@ -4,7 +4,7 @@ import { Inter } from "next/font/google";
 import { Providers } from "./providers";
 import { Toaster } from "../@/components/ui/toaster";
 
-// import {NextUIProvider} from "@nextui-org/react";
+
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,10 +22,10 @@ export default function RootLayout({
     <html lang="en" className="no-scrollbar" suppressHydrationWarning>
       <body className={inter.className} suppressHydrationWarning={true}>
         <Providers>
-          {/* <NextUIProvider> */}
+          
           {children}
           <Toaster />
-          {/* </NextUIProvider> */}
+          
         </Providers>
       </body>
     </html>
