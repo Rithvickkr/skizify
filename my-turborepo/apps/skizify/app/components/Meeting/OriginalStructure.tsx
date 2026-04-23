@@ -36,7 +36,7 @@ import { Textarea } from "../../../@/components/ui/textarea";
 import { Button } from "../ui/button";
 import ButtonsDock from "./Buttons-dock";
 // const URL = "http://localhost:3003";
-const URL = "wss://skizifywsserver-production.up.railway.app";
+const URL = "wss://skizifywsserver-production-2eea.up.railway.app";
 
 
 export interface Chat {
